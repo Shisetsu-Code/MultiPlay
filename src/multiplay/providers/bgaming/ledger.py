@@ -392,21 +392,37 @@ def _switch_records(
     environment: str,
 ) -> list[EndpointRecord]:
     records: list[EndpointRecord] = []
-    for exchange in evidence.http:
-        if exchange.method != "GET" or not _switch_response(exchange.response_body):
+    for index, exchange in enumerate(evidence.http):
+        if exchange.method.upper() != "GET":
             continue
+
         parts = urlsplit(exchange.url)
-        query = parse_qs(parts.query, keep_blank_values=True)
-        if not {"game", "from"}.intersection(query):
+        if not is_bgaming_host((parts.hostname or "").casefold()):
+            continue
+        query = parse_qs(parts.query, keep_blank_values=False)
+        game = str((query.get("game") or [""])[0]).strip()
+        source = str((query.get("from") or [""])[0]).strip()
+        if not game or not source:
+            continue
+        if exchange.response_status is None or not 200 <= exchange.response_status < 400:
+            continue
+
+        response_proven = _switch_response(exchange.response_body)
+        child_init_proven = _switch_child_init_after(evidence, index, game)
+        if not response_proven and not child_init_proven:
             continue
 
         request_format = {
             "query": {
-                key: f"<dynamic:{key}>"
-                for key in sorted(query)
+                "from": "<dynamic:from>",
+                "game": "<dynamic:game>",
             }
         }
         _dynamic, sensitive = classify_payload_fields(request_format)
+        notes = list(_replay_notes(SWITCHABLE_CONTAINER))
+        if child_init_proven and not response_proven:
+            notes.append("validation=successful switch GET followed by selected child init")
+
         records.append(
             EndpointRecord(
                 provider="bgaming",
@@ -416,9 +432,10 @@ def _switch_records(
                 method="GET",
                 endpoint_template=sanitize_endpoint_url(exchange.url),
                 request_format=request_format,
-                response_format=template_payload(
-                    exchange.response_body,
-                    request_side=False,
+                response_format=(
+                    template_payload(exchange.response_body, request_side=False)
+                    if response_proven
+                    else None
                 ),
                 dynamic_fields=["$.query.from", "$.query.game"],
                 sensitive_fields=sensitive,
@@ -429,10 +446,34 @@ def _switch_records(
                     if environment == "live"
                     else ValidationState.UNKNOWN
                 ),
-                notes=_replay_notes(SWITCHABLE_CONTAINER),
+                notes=notes,
             )
         )
     return records
+
+
+def _switch_child_init_after(
+    evidence: EvidenceBundle,
+    switch_index: int,
+    target_identifier: str,
+) -> bool:
+    wanted = target_identifier.casefold()
+    for exchange in evidence.http[switch_index + 1 :]:
+        body = exchange.request_body
+        if (
+            exchange.method.upper() != "POST"
+            or not isinstance(body, dict)
+            or str(body.get("command") or "") != "init"
+        ):
+            continue
+        path_parts = {
+            part.casefold()
+            for part in urlsplit(exchange.url).path.split("/")
+            if part
+        }
+        if wanted in path_parts:
+            return True
+    return False
 
 
 def _switch_response(value) -> bool:
