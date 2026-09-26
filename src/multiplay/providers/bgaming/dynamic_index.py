@@ -120,7 +120,7 @@ def _run_probe(
 ) -> dict[str, Any]:
     try:
         raw = probe_index(index)
-    except Exception as exc:
+    except (OSError, RuntimeError, TypeError, ValueError) as exc:
         raw = {
             "index": index,
             "outcome": PROTOCOL_ERROR,

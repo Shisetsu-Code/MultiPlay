@@ -6,7 +6,6 @@ from html.parser import HTMLParser
 from typing import Any
 from urllib.parse import urlsplit, urlunsplit
 
-
 _SENSITIVE_KEYS = {
     "play_token",
     "drops_token",
