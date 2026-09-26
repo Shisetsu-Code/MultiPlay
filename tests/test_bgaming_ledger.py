@@ -103,6 +103,8 @@ def test_hyperhive_ledger_keeps_replay_requirements():
     assert "provider_family=hyperhive-jsonrpc" in play.notes
     assert play.request_format["params"]["token"] == "<redacted>"
     assert play.request_format["params"]["req"]["bet"] == "<dynamic:bet>"
+    assert play.request_format["params"]["req"]["bet_type"] == "bet"
+    assert "$.params.req.bet_type" not in play.dynamic_fields
 
 
 def test_legacy_spin_ledger_keeps_family_and_dynamic_line_bets():

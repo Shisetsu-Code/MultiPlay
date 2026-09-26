@@ -100,7 +100,13 @@ def explore_browser(
             record_har_mode="full",
         )
 
+        attached_pages: set[int] = set()
+
         def attach_page(page) -> None:
+            key = id(page)
+            if key in attached_pages:
+                return
+            attached_pages.add(key)
             page.on("request", lambda request: _record_request(events, request))
             page.on("response", lambda response: _record_response(events, response))
             page.on("websocket", lambda websocket: _record_websocket(events, websocket))

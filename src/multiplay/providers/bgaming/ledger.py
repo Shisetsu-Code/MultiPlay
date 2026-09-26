@@ -60,6 +60,8 @@ def build_bgaming_endpoint_records(
             ):
                 record.action = f"rpc:{method}"
 
+        if family == HYPERHIVE_JSONRPC:
+            _normalize_hyperhive_record(record, sample)
         if family == LEGACY_LINES and record.action == "spin":
             _normalize_legacy_spin_record(record)
         record.notes = list(dict.fromkeys(record.notes))
@@ -121,6 +123,93 @@ def _replay_notes(family: str) -> list[str]:
             "live_replay=use fresh identifier/api/CSRF returned by switch",
         ]
     return []
+
+
+
+_HYPERHIVE_DYNAMIC_KEYS = {
+    "action_id",
+    "bet",
+    "exponent",
+    "id",
+    "nonce",
+    "round_id",
+    "stake",
+    "state_lock",
+    "timestamp",
+}
+_HYPERHIVE_SENSITIVE_MARKERS = {
+    "authorization",
+    "cookie",
+    "csrf",
+    "password",
+    "secret",
+    "session",
+    "token",
+}
+
+
+def _normalize_hyperhive_record(record: EndpointRecord, sample) -> None:
+    if sample is None or not isinstance(sample.request_body, dict):
+        return
+    payload = sample.request_body
+    if payload.get("jsonrpc") != "2.0":
+        return
+
+    dynamic: list[str] = []
+    sensitive: list[str] = []
+    record.request_format = _hyperhive_value(
+        payload,
+        path="$",
+        dynamic=dynamic,
+        sensitive=sensitive,
+    )
+    record.dynamic_fields = sorted(set(dynamic))
+    record.sensitive_fields = sorted(set(sensitive))
+
+
+def _hyperhive_value(
+    value,
+    *,
+    path: str,
+    dynamic: list[str],
+    sensitive: list[str],
+):
+    if isinstance(value, dict):
+        out = {}
+        for raw_key, child in value.items():
+            key = str(raw_key)
+            child_path = f"{path}.{key}"
+            lowered = key.casefold()
+
+            if any(marker in lowered for marker in _HYPERHIVE_SENSITIVE_MARKERS):
+                out[key] = "<redacted>"
+                sensitive.append(child_path)
+                continue
+
+            if lowered in _HYPERHIVE_DYNAMIC_KEYS:
+                out[key] = f"<dynamic:{key}>"
+                dynamic.append(child_path)
+                continue
+
+            out[key] = _hyperhive_value(
+                child,
+                path=child_path,
+                dynamic=dynamic,
+                sensitive=sensitive,
+            )
+        return out
+
+    if isinstance(value, list):
+        return [
+            _hyperhive_value(
+                child,
+                path=f"{path}[]",
+                dynamic=dynamic,
+                sensitive=sensitive,
+            )
+            for child in value
+        ]
+    return value
 
 
 def _normalize_legacy_spin_record(record: EndpointRecord) -> None:
