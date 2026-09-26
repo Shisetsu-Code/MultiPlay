@@ -1,0 +1,171 @@
+name: BGaming next purchase screenshots
+
+on:
+  workflow_dispatch:
+  push:
+    branches: ["main"]
+    paths:
+      - ".github/workflows/bgaming-next-purchase-screenshots.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  screenshots:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - run: python -m pip install --upgrade pip
+      - run: pip install -e ".[browser,dev]"
+      - run: python -m playwright install --with-deps chromium
+
+      - name: Fetch current catalog
+        run: |
+          mkdir -p artifacts
+          multiplay bgaming-catalog --output artifacts/catalog.json
+
+      - name: Capture unresolved purchase-capable screens
+        run: |
+          python - <<'PY'
+          import json
+          import time
+          from pathlib import Path
+          from urllib.parse import urlsplit
+
+          from playwright.sync_api import sync_playwright
+
+          from multiplay.pipeline import analyze_evidence
+          from multiplay.providers.bgaming.browser_discovery import (
+              _observe_hyperhive_init_capabilities,
+          )
+          from multiplay.providers.bgaming.probe import probe_bgaming_demo
+
+          root = Path("artifacts")
+          catalog = json.loads((root / "catalog.json").read_text())
+          family_map = json.loads(
+              Path("knowledge/providers/bgaming/family-map.json").read_text()
+          )
+          ledger = json.loads(
+              Path("knowledge/providers/bgaming/endpoints.json").read_text()
+          )
+
+          already_observed = set()
+          for record in ledger:
+              if not str(record.get("action") or "").startswith("rpc:play:variant-"):
+                  continue
+              host = (urlsplit(str(record.get("endpoint_template") or "")).hostname or "")
+              suffix = ".demo.bgaming-network.com"
+              if host.endswith(suffix):
+                  already_observed.add(host[: -len(suffix)])
+
+          entries = family_map.get("entries") or {}
+          records = [
+              item
+              for item in catalog.get("records") or []
+              if "hyperhive-jsonrpc" in entries.get(str(item.get("slug") or ""), [])
+              and str(item.get("slug") or "") not in already_observed
+          ]
+
+          selected = []
+          with sync_playwright() as p:
+              browser = p.chromium.launch(headless=True)
+              for item in records:
+                  if len(selected) >= 3:
+                      break
+
+                  slug = str(item.get("slug") or "")
+                  target = str(
+                      item.get("execution_url")
+                      or item.get("demo_url")
+                      or item.get("public_url")
+                      or ""
+                  )
+                  if not target:
+                      continue
+
+                  try:
+                      probe = probe_bgaming_demo(target, timeout_s=30)
+                      analysis = analyze_evidence(probe.evidence, provider="bgaming")
+                      families = {
+                          str(reason).removeprefix("runtime:")
+                          for reason in (analysis.provider_decision.reasons if analysis.provider_decision else ())
+                          if str(reason).startswith("runtime:")
+                      }
+                      if "hyperhive-jsonrpc" not in families:
+                          continue
+
+                      capabilities = _observe_hyperhive_init_capabilities(
+                          probe.metadata.launch_url,
+                          root=root / "capabilities",
+                          slug=slug,
+                          settle_ms=5000,
+                      )
+                      if not capabilities.get("has_purchases"):
+                          time.sleep(1.5)
+                          continue
+
+                      out = root / "screens" / slug
+                      out.mkdir(parents=True, exist_ok=True)
+                      context = browser.new_context(
+                          viewport={"width": 1440, "height": 900},
+                          device_scale_factor=1,
+                      )
+                      page = context.new_page()
+                      page.goto(
+                          probe.metadata.launch_url,
+                          wait_until="domcontentloaded",
+                          timeout=60000,
+                      )
+                      page.wait_for_timeout(18000)
+                      page.screenshot(
+                          path=str(out / "00-current.jpg"),
+                          type="jpeg",
+                          quality=65,
+                      )
+                      context.close()
+
+                      selected.append(
+                          {
+                              "slug": slug,
+                              "name": str(item.get("name") or slug),
+                              "launch_url": probe.metadata.to_dict()["launch_url"],
+                              "capabilities": capabilities,
+                          }
+                      )
+                  except (OSError, RuntimeError, TypeError, ValueError) as exc:
+                      print(slug, type(exc).__name__, str(exc))
+                  time.sleep(1.5)
+
+              browser.close()
+
+          (root / "selection.json").write_text(
+              json.dumps(
+                  {
+                      "already_observed_purchase_slugs": sorted(already_observed),
+                      "selected": selected,
+                  },
+                  ensure_ascii=False,
+                  indent=2,
+              )
+              + "\n",
+              encoding="utf-8",
+          )
+          print(json.dumps(selected, ensure_ascii=False, indent=2))
+          PY
+
+      - name: Upload screenshots
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: bgaming-next-purchase-screenshots
+          path: |
+            artifacts/selection.json
+            artifacts/screens
+          if-no-files-found: warn
+          retention-days: 7
