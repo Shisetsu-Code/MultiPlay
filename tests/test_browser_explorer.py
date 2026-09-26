@@ -1,6 +1,7 @@
 from multiplay.browser.explorer import (
     ClickCandidate,
     _candidate_key,
+    _candidate_region,
     _next_candidate,
     _safe_url,
     event_is_stateful,
@@ -78,3 +79,38 @@ def test_static_asset_get_is_not_stateful():
         "resource_type": "script",
     }
     assert not event_is_stateful(event)
+
+
+
+def test_region_attempt_cap_prevents_animated_cell_loops():
+    candidate = ClickCandidate(
+        "visual",
+        565.5,
+        225.0,
+        70,
+        fingerprint="new-frame",
+    )
+    attempts = {_candidate_region(candidate): 3}
+    assert _next_candidate(
+        [candidate],
+        set(),
+        attempts,
+        max_region_attempts=3,
+    ) is None
+
+
+def test_region_attempt_cap_still_allows_new_control_before_limit():
+    candidate = ClickCandidate(
+        "visual",
+        565.5,
+        225.0,
+        70,
+        fingerprint="new-control",
+    )
+    attempts = {_candidate_region(candidate): 2}
+    assert _next_candidate(
+        [candidate],
+        set(),
+        attempts,
+        max_region_attempts=3,
+    ) == candidate
