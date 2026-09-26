@@ -1,4 +1,5 @@
-from multiplay.providers.bgaming.catalog import parse_catalog_html
+import multiplay.providers.bgaming.catalog as catalog_module
+from multiplay.providers.bgaming.catalog import crawl_catalog, parse_catalog_html
 
 
 def test_catalog_parser_keeps_stable_demo():
@@ -58,3 +59,72 @@ def test_catalog_parser_marks_coming_soon_without_demo():
     item = parse_catalog_html(html)[0]
     assert item.availability == "COMING_SOON"
     assert item.execution_url.endswith("/games/future-game")
+
+
+def test_full_catalog_paginates_rest_and_stays_authoritative(monkeypatch):
+    first_html = """
+    <div data-catalog-card>
+      <a href="/games/first">Details</a>
+      <a href="https://demo.bgaming-network.com/play/First/FUN">Play Demo</a>
+      <img alt="First">
+      <span class="game-type-text">Slots</span>
+    </div>
+    """
+    page_two = """
+    <div data-catalog-card>
+      <a href="/games/second">Details</a>
+      <a href="https://demo.bgaming-network.com/play/Second/FUN">Play Demo</a>
+      <img alt="Second">
+      <span class="game-type-text">Slots</span>
+    </div>
+    """
+
+    monkeypatch.setattr(
+        catalog_module,
+        "fetch_catalog_html",
+        lambda *_args, **_kwargs: first_html,
+    )
+    monkeypatch.setattr(
+        catalog_module,
+        "_fetch_catalog_page",
+        lambda *_args, **_kwargs: {
+            "page": 2,
+            "total": 2,
+            "hasMore": False,
+            "html": page_two,
+        },
+    )
+
+    result = crawl_catalog()
+    assert result.authoritative is True
+    assert result.pages == 2
+    assert [item.slug for item in result.records] == ["first", "second"]
+
+
+def test_catalog_marks_total_change_non_authoritative(monkeypatch):
+    first_html = """
+    <div data-catalog-card>
+      <a href="/games/first">Details</a>
+      <img alt="First">
+      <span class="game-type-text">Slots</span>
+    </div>
+    """
+    payloads = {
+        2: {"page": 2, "total": 3, "hasMore": True, "html": first_html},
+        3: {"page": 3, "total": 4, "hasMore": False, "html": first_html},
+    }
+
+    monkeypatch.setattr(
+        catalog_module,
+        "fetch_catalog_html",
+        lambda *_args, **_kwargs: first_html,
+    )
+    monkeypatch.setattr(
+        catalog_module,
+        "_fetch_catalog_page",
+        lambda *_args, page, **_kwargs: payloads[page],
+    )
+
+    result = crawl_catalog()
+    assert result.authoritative is False
+    assert any("total changed" in item for item in result.diagnostics)

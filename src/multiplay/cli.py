@@ -28,6 +28,7 @@ def main() -> int:
     catalog.add_argument("--url", default="https://bgaming.com/game-type/slots")
     catalog.add_argument("--html")
     catalog.add_argument("--output")
+    catalog.add_argument("--max-pages", type=int, default=100)
 
     finalize = sub.add_parser("finalize-provider", help="Close a provider analysis snapshot")
     finalize.add_argument("provider")
@@ -125,17 +126,22 @@ def _analyze(args: argparse.Namespace) -> int:
 
 def _bgaming_catalog(args: argparse.Namespace) -> int:
     from .providers.bgaming.catalog import (
+        catalog_crawl_json,
         catalog_json,
-        fetch_catalog_html,
+        crawl_catalog,
         parse_catalog_html,
     )
 
-    html = (
-        Path(args.html).read_text(encoding="utf-8")
-        if args.html
-        else fetch_catalog_html(args.url)
-    )
-    rendered = catalog_json(parse_catalog_html(html, base_url=args.url))
+    if args.html:
+        html = Path(args.html).read_text(encoding="utf-8")
+        rendered = catalog_json(parse_catalog_html(html, base_url=args.url))
+    else:
+        rendered = catalog_crawl_json(
+            crawl_catalog(
+                catalog_url=args.url,
+                max_pages=args.max_pages,
+            )
+        )
     if args.output:
         Path(args.output).write_text(rendered, encoding="utf-8")
     else:

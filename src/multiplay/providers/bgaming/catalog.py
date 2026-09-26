@@ -5,10 +5,11 @@ import re
 from dataclasses import asdict, dataclass, field
 from html.parser import HTMLParser
 from typing import Any
-from urllib.parse import parse_qs, urljoin, urlsplit
+from urllib.parse import parse_qs, urlencode, urljoin, urlsplit
 from urllib.request import Request, urlopen
 
 BGAMING_SLOTS_URL = "https://bgaming.com/game-type/slots"
+BGAMING_CATALOG_SEARCH_URL = "https://bgaming.com/wp-json/bg/v1/games/search"
 _VOID_TAGS = {
     "area",
     "base",
@@ -44,6 +45,24 @@ class BGamingCatalogRecord:
 
     def to_dict(self) -> dict[str, Any]:
         return asdict(self)
+
+
+@dataclass(frozen=True, slots=True)
+class CatalogCrawlResult:
+    records: tuple[BGamingCatalogRecord, ...]
+    pages: int
+    authoritative: bool
+    diagnostics: tuple[str, ...] = ()
+
+    def to_dict(self) -> dict[str, Any]:
+        return {
+            "provider": "bgaming",
+            "record_count": len(self.records),
+            "pages": self.pages,
+            "authoritative": self.authoritative,
+            "diagnostics": list(self.diagnostics),
+            "records": [item.to_dict() for item in self.records],
+        }
 
 
 @dataclass(slots=True)
@@ -137,6 +156,184 @@ def fetch_catalog_html(
     )
     with urlopen(request, timeout=max(1.0, float(timeout_s))) as response:
         return response.read().decode("utf-8", errors="replace")
+
+
+
+def crawl_catalog(
+    *,
+    catalog_url: str = BGAMING_SLOTS_URL,
+    search_url: str = BGAMING_CATALOG_SEARCH_URL,
+    max_pages: int = 100,
+    timeout_s: float = 30.0,
+) -> CatalogCrawlResult:
+    limit = max(1, int(max_pages))
+    diagnostics: list[str] = []
+    by_slug: dict[str, BGamingCatalogRecord] = {}
+
+    first_html = fetch_catalog_html(catalog_url, timeout_s=timeout_s)
+    first_raw = parse_catalog_html(first_html, base_url=catalog_url)
+    first, _rejected = filter_records_by_game_type(first_raw, "Slots")
+    if not first_raw:
+        raise ValueError("BGaming initial catalog did not expose data-catalog-card records.")
+    if not first:
+        raise ValueError("BGaming initial catalog did not expose valid Slots records.")
+    _merge_catalog_records(by_slug, first)
+
+    if limit == 1:
+        diagnostics.append("crawl limited to one page")
+        return CatalogCrawlResult(
+            records=tuple(_sorted_records(by_slug)),
+            pages=1,
+            authoritative=False,
+            diagnostics=tuple(diagnostics),
+        )
+
+    page = 2
+    has_more = True
+    expected_total_pages: int | None = None
+    authoritative = True
+
+    while has_more and page <= limit:
+        try:
+            payload = _fetch_catalog_page(
+                search_url,
+                page=page,
+                timeout_s=timeout_s,
+            )
+        except (OSError, TimeoutError, ValueError) as exc:
+            authoritative = False
+            diagnostics.append(
+                f"page {page} failed: {type(exc).__name__}"
+            )
+            break
+
+        reported_page = _as_positive_int(payload.get("page")) or page
+        if reported_page != page:
+            authoritative = False
+            diagnostics.append(
+                f"unexpected page: requested={page}, reported={reported_page}"
+            )
+            break
+
+        reported_total = _as_positive_int(payload.get("total"))
+        if expected_total_pages is None:
+            expected_total_pages = reported_total
+        elif (
+            reported_total is not None
+            and reported_total != expected_total_pages
+        ):
+            authoritative = False
+            diagnostics.append(
+                "REST total changed during crawl: "
+                f"{expected_total_pages}->{reported_total}"
+            )
+            break
+
+        html = str(payload.get("html") or "")
+        raw_records = parse_catalog_html(html, base_url=catalog_url)
+        records, _rejected = filter_records_by_game_type(raw_records, "Slots")
+        _merge_catalog_records(by_slug, records)
+
+        has_more = bool(payload.get("hasMore"))
+        if has_more and not raw_records:
+            authoritative = False
+            diagnostics.append(f"page {page} empty while hasMore=true")
+            break
+        page += 1
+
+    terminal_page = page - 1
+    if has_more and page > limit:
+        authoritative = False
+        diagnostics.append(f"crawl limited to {limit} pages")
+    if (
+        not has_more
+        and expected_total_pages is not None
+        and terminal_page != expected_total_pages
+    ):
+        authoritative = False
+        diagnostics.append(
+            "terminal page does not match REST total: "
+            f"terminal={terminal_page}, total={expected_total_pages}"
+        )
+
+    return CatalogCrawlResult(
+        records=tuple(_sorted_records(by_slug)),
+        pages=terminal_page,
+        authoritative=authoritative,
+        diagnostics=tuple(diagnostics),
+    )
+
+
+def catalog_crawl_json(result: CatalogCrawlResult) -> str:
+    return json.dumps(
+        result.to_dict(),
+        indent=2,
+        ensure_ascii=False,
+    ) + "\n"
+
+
+def _fetch_catalog_page(
+    url: str,
+    *,
+    page: int,
+    timeout_s: float,
+) -> dict[str, Any]:
+    params = {
+        "sort": "release_date",
+        "order": "DESC",
+        "posts_per_page": 25,
+        "format": "html",
+        "columns_style": 1,
+        "game_type": 1,
+        "game_label": 1,
+        "most_popular": 0,
+        "ver": 105,
+        "filter": "game",
+        "page": int(page),
+        "lang": "en",
+    }
+    request = Request(
+        f"{url}?{urlencode(params)}",
+        headers={
+            "User-Agent": (
+                "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
+                "AppleWebKit/537.36 Chrome/136 Safari/537.36"
+            ),
+            "Accept": "application/json",
+        },
+    )
+    with urlopen(request, timeout=max(1.0, float(timeout_s))) as response:
+        payload = json.loads(response.read().decode("utf-8", errors="replace"))
+    if not isinstance(payload, dict):
+        raise ValueError("BGaming catalog REST response is not an object.")
+    return payload
+
+
+def _merge_catalog_records(
+    target: dict[str, BGamingCatalogRecord],
+    records: list[BGamingCatalogRecord],
+) -> None:
+    for item in records:
+        target.setdefault(item.slug, item)
+
+
+def _sorted_records(
+    records: dict[str, BGamingCatalogRecord],
+) -> list[BGamingCatalogRecord]:
+    return sorted(
+        records.values(),
+        key=lambda item: (item.name.casefold(), item.slug),
+    )
+
+
+def _as_positive_int(value: Any) -> int | None:
+    if isinstance(value, bool):
+        return None
+    try:
+        number = int(value)
+    except (TypeError, ValueError):
+        return None
+    return number if number > 0 else None
 
 
 def parse_catalog_html(
