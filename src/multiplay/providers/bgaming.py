@@ -5,7 +5,8 @@ from typing import Any
 from urllib.parse import urlsplit
 
 from multiplay.models import EvidenceBundle, ProtocolContract
-from multiplay.providers.base import ProviderAdapter, ProviderDecision
+
+from .base import ProviderAdapter, ProviderDecision
 
 
 API_V2 = "api-v2"
@@ -80,10 +81,12 @@ class BGamingProviderAdapter(ProviderAdapter):
                 if item.family != UNKNOWN
             )
 
-        if any(contract.family == "jsonrpc-2.0" for contract in contracts):
-            if any(_jsonrpc_bgaming_shape(x.request_body) for x in evidence.http):
-                score = max(score, 0.98)
-                reasons.append("BGaming-compatible JSON-RPC play/init envelope")
+        if (
+            any(contract.family == "jsonrpc-2.0" for contract in contracts)
+            and any(_jsonrpc_bgaming_shape(x.request_body) for x in evidence.http)
+        ):
+            score = max(score, 0.98)
+            reasons.append("BGaming-compatible JSON-RPC play/init envelope")
 
         recognized = score >= 0.75
         return ProviderDecision(
