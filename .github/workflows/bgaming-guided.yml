@@ -20,7 +20,7 @@ jobs:
           python-version: "3.12"
       - run: python -m pip install playwright
       - run: python -m playwright install --with-deps chromium
-      - name: Click top visual element
+      - name: Click inner game element
         run: |
           mkdir -p artifacts
           python - <<'PY'
@@ -39,12 +39,12 @@ jobs:
               page.mouse.click(505, 455)
               page.wait_for_timeout(3000)
 
-              target = max(
-                  [f for f in page.frames if "bling-blitz-diamond-drop.demo.bgaming-network.com" in f.url],
-                  key=lambda f: len(f.url),
+              inner = next(
+                  f for f in page.frames
+                  if "bling-blitz-diamond-drop.demo.bgaming-network.com/?token=" in f.url
               )
-              print("frame:", target.url)
-              print("elements:", target.evaluate("""() => document.elementsFromPoint(720, 690).map((el, i) => ({
+              print("inner:", inner.url)
+              print("elements:", inner.evaluate("""() => document.elementsFromPoint(720, 690).map((el, i) => ({
                   i,
                   tag: el.tagName,
                   id: el.id || '',
@@ -55,10 +55,10 @@ jobs:
 
               page.screenshot(path="artifacts/before.jpg", type="jpeg", quality=65)
 
-              target.evaluate("""() => {
+              inner.evaluate("""() => {
                   const x = 720, y = 690;
                   const el = document.elementFromPoint(x, y);
-                  if (!el) throw new Error('No element at PLAY');
+                  if (!el) throw new Error('No inner element at PLAY');
                   for (const type of ['pointermove','pointerdown','mousedown','pointerup','mouseup','click']) {
                     const Ctor = type.startsWith('pointer') ? PointerEvent : MouseEvent;
                     el.dispatchEvent(new Ctor(type, {
