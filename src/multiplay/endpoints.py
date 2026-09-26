@@ -262,10 +262,28 @@ def _field_classes(value: Any, *, path: str = "$") -> tuple[list[str], list[str]
 
 
 def _sanitize_url(url: str) -> str:
-    if "?" not in url:
-        return url
-    base, _ = url.split("?", 1)
-    return base
+    from urllib.parse import urlsplit, urlunsplit
+
+    parts = urlsplit(url)
+    clean_segments: list[str] = []
+    uuid_re = re.compile(
+        r"^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$",
+        re.IGNORECASE,
+    )
+    opaque_re = re.compile(r"^[A-Za-z0-9_-]{20,}$")
+
+    for segment in parts.path.split("/"):
+        if uuid_re.fullmatch(segment):
+            clean_segments.append("<dynamic>")
+        elif segment.isdigit() and len(segment) >= 5:
+            clean_segments.append("<id>")
+        elif opaque_re.fullmatch(segment) and not segment.isalpha():
+            clean_segments.append("<dynamic>")
+        else:
+            clean_segments.append(segment)
+
+    clean_path = "/".join(clean_segments)
+    return urlunsplit((parts.scheme, parts.netloc, clean_path, "", ""))
 
 
 def _fingerprint(record: EndpointRecord) -> str:
