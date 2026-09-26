@@ -20,16 +20,16 @@ jobs:
           python-version: "3.12"
       - run: python -m pip install playwright
       - run: python -m playwright install --with-deps chromium
-      - name: Test visible PLAY hit area
+      - name: Probe vertical PLAY hit area
         run: |
           mkdir -p artifacts
           python - <<'PY'
           from playwright.sync_api import sync_playwright
 
           points = [
-              ("left", 600, 690),
+              ("top", 720, 660),
               ("center", 720, 690),
-              ("right", 840, 690),
+              ("bottom", 720, 720),
           ]
 
           with sync_playwright() as p:
