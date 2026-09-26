@@ -102,10 +102,15 @@ class ProtocolContract:
 @dataclass(slots=True)
 class AnalysisResult:
     status: AnalysisStatus
-    protocol: ProtocolContract | None
+    contracts: list[ProtocolContract] = field(default_factory=list)
     provider: str | None = None
     detections: list[ProtocolDetection] = field(default_factory=list)
     reasons: list[str] = field(default_factory=list)
+
+    @property
+    def protocol(self) -> ProtocolContract | None:
+        """Compatibility convenience for single-family captures."""
+        return self.contracts[0] if len(self.contracts) == 1 else None
 
 
 @dataclass(frozen=True, slots=True)
@@ -138,8 +143,8 @@ class EndpointRecord:
     transport: str
     method: str | None
     endpoint_template: str
-    request_format: dict[str, Any] | str | None
-    response_format: dict[str, Any] | str | None
+    request_format: dict[str, Any] | list[Any] | str | None
+    response_format: dict[str, Any] | list[Any] | str | None
     dynamic_fields: list[str] = field(default_factory=list)
     sensitive_fields: list[str] = field(default_factory=list)
     evidence: list[str] = field(default_factory=list)
