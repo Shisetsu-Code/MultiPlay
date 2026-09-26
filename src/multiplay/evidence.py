@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import base64
+import binascii
 import json
 import re
 from pathlib import Path
@@ -128,7 +129,7 @@ def _response_body(content: Any) -> Any:
     if content.get("encoding") == "base64":
         try:
             text = base64.b64decode(str(text)).decode("utf-8", errors="replace")
-        except Exception:
+        except (binascii.Error, ValueError):
             return None
     return _parse_text_payload(text, str(content.get("mimeType") or "").lower())
 
