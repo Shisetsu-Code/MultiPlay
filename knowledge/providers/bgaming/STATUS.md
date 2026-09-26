@@ -117,25 +117,45 @@ Current base action now demonstrated through Playwright causal evidence:
 - provider blockers: none
 - MultiPlay status: WIRE_COMPLETE
 
+Additional current causal evidence:
+
+- one purchase-capable HyperHive init advertised 9 purchase entries;
+- Playwright demonstrated `purchased_feature="buy_bonus"`;
+- that purchase request used a dynamic non-empty `state_lock`;
+- the provider returned HTTP 200;
+- the purchase is stored separately from base play in the endpoint ledger.
+
 Still pending where advertised/encountered:
 
-- exact state_lock behavior on games that use it
-- custom_req variants
-- purchased_feature variants
-- continuation actions
+- remaining advertised purchase variants;
+- custom_req variants;
+- continuation actions;
+- any additional state_lock wire shapes not yet observed.
 
 ### legacy-lines
 
-- init with line_bets/lines
-- full per-line spin request
-- demonstrated non-wagering terminal/finish path when required
+Current causal browser evidence demonstrates:
+
+- init with line_bets/lines;
+- full per-line spin request;
+- repeated successful spin request using fresh client_seed.
+
+Still required only if encountered:
+
+- demonstrated non-wagering terminal/finish path for non-closed rounds.
 
 ### switchable-container
 
-- lobby/container bootstrap
-- variant switch GET
-- fresh child identifier/api/CSRF response
-- child init/spin
+Current causal browser evidence demonstrates:
+
+- lobby/container bootstrap;
+- variant switch GET with dynamic `game` / `from`;
+- redirected child launch with redacted launch token;
+- selected child init.
+
+Still pending:
+
+- child base spin through the switched runtime.
 
 ### dynamic pickers
 
@@ -171,6 +191,8 @@ No game title, button text, endpoint, payload or coordinate is hardcoded.
 Use interactive HAR capture only if the causal explorer cannot expose a required branch.
 
 Current HyperHive base evidence is documented in HYPERHIVE-BASE-2026-09-26.md.
+Current HyperHive purchase evidence is documented in HYPERHIVE-PURCHASE-2026-09-26.md.
+Current switchable transition evidence is documented in SWITCHABLE-2026-09-26.md.
 
 Then capture/analyze only distinct runtime shapes/branches that remain unresolved.
 
