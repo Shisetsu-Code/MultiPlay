@@ -8,6 +8,7 @@ on:
       - ".github/workflows/bgaming-hyperhive-demo.yml"
       - "src/multiplay/browser/**"
       - "src/multiplay/providers/bgaming/browser_discovery.py"
+      - "src/multiplay/providers/bgaming/capabilities.py"
       - "src/multiplay/cli.py"
 
 permissions:
@@ -22,11 +23,11 @@ jobs:
       matrix:
         include:
           - id: base
-            extra_args: ""
-            max_clicks: "40"
+            require_purchases: false
+            max_clicks: 40
           - id: purchases
-            extra_args: "--require-purchases"
-            max_clicks: "64"
+            require_purchases: true
+            max_clicks: 64
 
     steps:
       - uses: actions/checkout@v4
@@ -45,8 +46,25 @@ jobs:
           multiplay bgaming-catalog --output artifacts/catalog.json
 
       - name: Discover HyperHive actions through Playwright
+        shell: bash
         run: |
-          multiplay bgaming-browser-discover             --catalog artifacts/catalog.json             --family hyperhive-jsonrpc             --output-dir artifacts/browser             --max-probes 100             --probe-delay 1.0             --timeout 30             --max-clicks 32             --settle-ms 4500             --knowledge-root artifacts/knowledge             --output artifacts/browser-result.json
+          EXTRA=()
+          if [ "${{ matrix.require_purchases }}" = "true" ]; then
+            EXTRA+=(--require-purchases)
+          fi
+
+          multiplay bgaming-browser-discover \
+            --catalog artifacts/catalog.json \
+            --family hyperhive-jsonrpc \
+            --output-dir "artifacts/browser-${{ matrix.id }}" \
+            --max-probes 160 \
+            --probe-delay 1.0 \
+            --timeout 30 \
+            --max-clicks "${{ matrix.max_clicks }}" \
+            --settle-ms 4500 \
+            --knowledge-root artifacts/knowledge \
+            --output "artifacts/browser-result-${{ matrix.id }}.json" \
+            "${EXTRA[@]}"
 
       - name: Show causal summary
         if: always()
@@ -62,6 +80,18 @@ jobs:
               browser = payload.get("browser") or {}
               print("clicks_attempted:", browser.get("clicks_attempted"))
               print("stateful_effects:", browser.get("stateful_effects"))
+
+          selection = Path("artifacts/browser-${{ matrix.id }}/selection.json")
+          if selection.exists():
+              payload = json.loads(selection.read_text())
+              print("selection:", payload.get("selected"))
+              attempts = payload.get("attempts") or []
+              capable = [
+                  item
+                  for item in attempts
+                  if (item.get("capabilities") or {}).get("has_purchases")
+              ]
+              print("purchase-capable candidates:", len(capable))
 
           trace = Path("artifacts/browser-${{ matrix.id }}/trace.json")
           if trace.exists():
