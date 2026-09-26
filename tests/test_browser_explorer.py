@@ -1,4 +1,11 @@
-from multiplay.browser.explorer import _safe_url, event_is_stateful, event_signature
+from multiplay.browser.explorer import (
+    ClickCandidate,
+    _candidate_key,
+    _next_candidate,
+    _safe_url,
+    event_is_stateful,
+    event_signature,
+)
 
 
 def test_http_post_is_stateful():
@@ -37,3 +44,16 @@ def test_safe_url_redacts_credentials_but_keeps_nonsecret_query():
     assert "secret" not in safe
     assert "abc" not in safe
     assert "lang=en" in safe
+
+
+
+def test_visual_candidate_identity_changes_with_patch_fingerprint():
+    first = ClickCandidate("visual", 100, 200, 10, fingerprint="aaa")
+    second = ClickCandidate("visual", 100, 200, 10, fingerprint="bbb")
+    assert _candidate_key(first) != _candidate_key(second)
+
+
+def test_persistent_dom_candidate_is_not_retried():
+    candidate = ClickCandidate("dom", 100, 200, 1000, label="button volume")
+    seen = {_candidate_key(candidate)}
+    assert _next_candidate([candidate], seen) is None
