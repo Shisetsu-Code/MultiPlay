@@ -36,7 +36,7 @@ jobs:
               )
               page.wait_for_timeout(10000)
               page.mouse.click(505, 455)
-              page.wait_for_timeout(1500)
+              page.wait_for_timeout(5000)
               page.screenshot(path="artifacts/before-play.jpg", type="jpeg", quality=65)
               page.mouse.click(720, 690)
               page.wait_for_timeout(5000)
