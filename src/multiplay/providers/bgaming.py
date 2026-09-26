@@ -7,7 +7,6 @@ from urllib.parse import urlsplit
 from ..models import EvidenceBundle, ProtocolContract
 from .base import ProviderAdapter, ProviderDecision
 
-
 API_V2 = "api-v2"
 LEGACY_LINES = "legacy-lines"
 HYPERHIVE_JSONRPC = "hyperhive-jsonrpc"
