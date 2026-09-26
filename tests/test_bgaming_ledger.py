@@ -59,7 +59,8 @@ def test_bgaming_ledger_normalizes_command_and_switch_endpoint():
     switch = next(item for item in records if item.action == "switch_variant")
 
     assert "provider_family=api-v2" in spin.notes
-    assert spin.endpoint_template.endswith("/api/Foo/<id>/session-value")
+    assert spin.endpoint_template.endswith("/api/Foo/<id>/<session>")
+    assert "session-value" not in spin.endpoint_template
     assert switch.request_format == {
         "query": {
             "from": "<dynamic:from>",

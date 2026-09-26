@@ -246,7 +246,7 @@ def _validate_hyperhive(evidence: EvidenceBundle) -> list[str]:
     if purchase_hint and not purchase_observed:
         reasons.append(
             "hyperhive-jsonrpc: purchased_feature appears in current evidence but no "
-            "play request demonstrates its wire."
+            "play request demonstrates the purchase wire."
         )
     return reasons
 

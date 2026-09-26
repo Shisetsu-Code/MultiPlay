@@ -16,7 +16,8 @@ from .classify import (
     SWITCHABLE_CONTAINER,
     classify_bgaming,
 )
-from .wire import is_api_v2_command, is_jsonrpc_bgaming_shape, is_legacy_init
+from .bootstrap import sanitize_session_url
+from .wire import is_api_v2_command, is_legacy_init
 
 
 def build_bgaming_endpoint_records(
@@ -45,6 +46,7 @@ def build_bgaming_endpoint_records(
         if family:
             record.notes.append(f"provider_family={family}")
             record.notes.extend(_replay_notes(family))
+        record.endpoint_template = sanitize_session_url(record.endpoint_template)
 
         if sample is not None and isinstance(sample.request_body, dict):
             command = sample.request_body.get("command")
@@ -140,7 +142,7 @@ def _switch_records(
                 for key in sorted(query)
             }
         }
-        dynamic, sensitive = classify_payload_fields(request_format)
+        _dynamic, sensitive = classify_payload_fields(request_format)
         records.append(
             EndpointRecord(
                 provider="bgaming",
@@ -154,7 +156,7 @@ def _switch_records(
                     exchange.response_body,
                     request_side=False,
                 ),
-                dynamic_fields=dynamic,
+                dynamic_fields=["$.query.from", "$.query.game"],
                 sensitive_fields=sensitive,
                 evidence=[source_ref, exchange.evidence_id],
                 demo_state=ValidationState.OBSERVED,
