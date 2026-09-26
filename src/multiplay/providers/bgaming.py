@@ -4,8 +4,7 @@ from dataclasses import dataclass
 from typing import Any
 from urllib.parse import urlsplit
 
-from multiplay.models import EvidenceBundle, ProtocolContract
-
+from ..models import EvidenceBundle, ProtocolContract
 from .base import ProviderAdapter, ProviderDecision
 
 
