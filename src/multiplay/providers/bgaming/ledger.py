@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+import hashlib
+import json
 from urllib.parse import parse_qs, urlsplit
 
 from ...endpoints import (
@@ -66,6 +68,13 @@ def build_bgaming_endpoint_records(
             _normalize_legacy_spin_record(record)
         record.notes = list(dict.fromkeys(record.notes))
 
+    records.extend(
+        _hyperhive_variant_records(
+            evidence=evidence,
+            source_ref=source_ref,
+            environment=environment,
+        )
+    )
     records.extend(
         _switch_records(
             evidence=evidence,
@@ -232,6 +241,137 @@ def _normalize_legacy_spin_record(record: EndpointRecord) -> None:
         if "$.extra_data.client_seed" not in record.dynamic_fields:
             record.dynamic_fields.append("$.extra_data.client_seed")
     record.dynamic_fields.sort()
+
+
+
+def _hyperhive_variant_records(
+    *,
+    evidence: EvidenceBundle,
+    source_ref: str,
+    environment: str,
+) -> list[EndpointRecord]:
+    merged: dict[tuple[str, str], EndpointRecord] = {}
+
+    for exchange in evidence.http:
+        body = exchange.request_body
+        if (
+            exchange.response_status is None
+            or not 200 <= exchange.response_status < 400
+            or not isinstance(body, dict)
+            or body.get("jsonrpc") != "2.0"
+            or body.get("method") != "play"
+        ):
+            continue
+
+        params = body.get("params")
+        req = params.get("req") if isinstance(params, dict) else None
+        if not isinstance(req, dict):
+            continue
+
+        discriminator = _hyperhive_discriminator(req)
+        canonical = json.dumps(
+            discriminator,
+            ensure_ascii=False,
+            sort_keys=True,
+            separators=(",", ":"),
+        )
+        variant = (
+            "base"
+            if not discriminator
+            else "variant-" + hashlib.sha256(canonical.encode("utf-8")).hexdigest()[:12]
+        )
+
+        dynamic: list[str] = []
+        sensitive: list[str] = []
+        request_format = _hyperhive_value(
+            body,
+            path="$",
+            dynamic=dynamic,
+            sensitive=sensitive,
+        )
+        action = f"rpc:play:{variant}"
+        endpoint = sanitize_session_url(exchange.url)
+        key = (endpoint, action)
+
+        existing = merged.get(key)
+        if existing is not None:
+            if exchange.evidence_id not in existing.evidence:
+                existing.evidence.append(exchange.evidence_id)
+            continue
+
+        notes = [
+            *_replay_notes(HYPERHIVE_JSONRPC),
+            f"variant={variant}",
+        ]
+        if discriminator:
+            notes.append(f"variant_discriminator={canonical}")
+
+        merged[key] = EndpointRecord(
+            provider="bgaming",
+            protocol_family=HYPERHIVE_JSONRPC,
+            action=action,
+            transport="HTTP",
+            method="POST",
+            endpoint_template=endpoint,
+            request_format=request_format,
+            response_format=template_payload(
+                exchange.response_body,
+                request_side=False,
+            ),
+            dynamic_fields=sorted(set(dynamic)),
+            sensitive_fields=sorted(set(sensitive)),
+            evidence=[source_ref, exchange.evidence_id],
+            demo_state=ValidationState.OBSERVED,
+            live_state=(
+                ValidationState.OBSERVED
+                if environment == "live"
+                else ValidationState.UNKNOWN
+            ),
+            notes=notes,
+        )
+
+    return list(merged.values())
+
+
+def _hyperhive_discriminator(req: dict) -> dict:
+    out = {}
+    for raw_key, value in req.items():
+        key = str(raw_key)
+        lowered = key.casefold()
+        if lowered in {"bet", "bet_type"}:
+            continue
+        if lowered in _HYPERHIVE_DYNAMIC_KEYS:
+            continue
+        if any(marker in lowered for marker in _HYPERHIVE_SENSITIVE_MARKERS):
+            continue
+
+        cleaned = _hyperhive_discriminator_value(value)
+        if cleaned not in ({}, [], None):
+            out[key] = cleaned
+    return out
+
+
+def _hyperhive_discriminator_value(value):
+    if isinstance(value, dict):
+        out = {}
+        for raw_key, child in value.items():
+            key = str(raw_key)
+            lowered = key.casefold()
+            if lowered in _HYPERHIVE_DYNAMIC_KEYS:
+                continue
+            if any(marker in lowered for marker in _HYPERHIVE_SENSITIVE_MARKERS):
+                continue
+            cleaned = _hyperhive_discriminator_value(child)
+            if cleaned not in ({}, [], None):
+                out[key] = cleaned
+        return out
+    if isinstance(value, list):
+        return [
+            cleaned
+            for child in value
+            if (cleaned := _hyperhive_discriminator_value(child)) not in ({}, [], None)
+        ]
+    return value
 
 
 def _switch_records(

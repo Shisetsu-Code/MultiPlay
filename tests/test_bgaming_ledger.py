@@ -156,3 +156,71 @@ def test_legacy_spin_ledger_keeps_family_and_dynamic_line_bets():
         "2": "<dynamic:line_bet>",
     }
     assert spin.request_format["extra_data"]["client_seed"] == "<dynamic:client_seed>"
+
+
+def test_hyperhive_ledger_keeps_observed_play_variants_separate():
+    evidence = EvidenceBundle(
+        http=[
+            _exchange(
+                "base",
+                "POST",
+                "https://demo.bgaming-network.com/api/api",
+                {
+                    "id": "a",
+                    "jsonrpc": "2.0",
+                    "method": "play",
+                    "params": {
+                        "token": "secret",
+                        "req": {"bet": 100, "bet_type": "bet"},
+                    },
+                },
+                {"jsonrpc": "2.0", "id": "a", "result": {"final": True}},
+            ),
+            _exchange(
+                "purchase",
+                "POST",
+                "https://demo.bgaming-network.com/api/api",
+                {
+                    "id": "b",
+                    "jsonrpc": "2.0",
+                    "method": "play",
+                    "params": {
+                        "token": "secret",
+                        "req": {
+                            "bet": 100,
+                            "bet_type": "bet",
+                            "purchased_feature": "buy_bonus",
+                            "custom_req": {
+                                "action": "spin",
+                                "exponent": 2,
+                                "stake": 100,
+                                "isNormalBuy": True,
+                            },
+                        },
+                    },
+                },
+                {"jsonrpc": "2.0", "id": "b", "result": {"final": True}},
+            ),
+        ]
+    )
+    analysis = MultiProtocolAnalyzer().analyze(evidence, provider="bgaming")
+    records = BGamingProviderAdapter().endpoint_records(
+        evidence,
+        analysis,
+        source_ref="fixture:hyperhive-variants",
+        environment="demo",
+    )
+
+    base = next(item for item in records if item.action == "rpc:play:base")
+    purchase = next(
+        item
+        for item in records
+        if item.action.startswith("rpc:play:variant-")
+    )
+
+    assert base.protocol_family == "hyperhive-jsonrpc"
+    assert purchase.protocol_family == "hyperhive-jsonrpc"
+    assert purchase.request_format["params"]["req"]["purchased_feature"] == "buy_bonus"
+    assert purchase.request_format["params"]["req"]["custom_req"]["action"] == "spin"
+    assert purchase.request_format["params"]["req"]["custom_req"]["stake"] == "<dynamic:stake>"
+    assert any("purchased_feature" in note for note in purchase.notes)

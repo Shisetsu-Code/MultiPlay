@@ -9,6 +9,7 @@ on:
       - "src/multiplay/browser/**"
       - "src/multiplay/providers/bgaming/browser_discovery.py"
       - "src/multiplay/providers/bgaming/capabilities.py"
+      - "src/multiplay/providers/bgaming/ledger.py"
       - "src/multiplay/cli.py"
 
 permissions:
