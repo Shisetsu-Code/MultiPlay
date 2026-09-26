@@ -1,0 +1,72 @@
+name: BGaming non-wagering sweep
+
+on:
+  workflow_dispatch:
+    inputs:
+      limit:
+        description: "Maximum catalog games to probe; 0 means all"
+        required: false
+        default: "0"
+  push:
+    branches: ["main"]
+    paths:
+      - ".github/workflows/bgaming-sweep.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  sweep:
+    runs-on: ubuntu-latest
+    timeout-minutes: 180
+    env:
+      SWEEP_LIMIT: ${{ inputs.limit || '0' }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - run: python -m pip install --upgrade pip
+      - run: pip install -e ".[dev]"
+
+      - name: Fetch current BGaming catalog
+        run: |
+          mkdir -p artifacts/knowledge
+          multiplay bgaming-catalog --output artifacts/catalog.json
+
+      - name: Probe catalog without wagering
+        run: |
+          multiplay bgaming-sweep \
+            --catalog artifacts/catalog.json \
+            --limit "$SWEEP_LIMIT" \
+            --delay 0.25 \
+            --timeout 30 \
+            --knowledge-root artifacts/knowledge \
+            --output artifacts/sweep.json
+
+      - name: Show summary
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          report = json.loads(Path("artifacts/sweep.json").read_text())
+          for key in (
+              "catalog_records",
+              "attempted",
+              "runtime_family_counts",
+              "status_counts",
+              "failure_counts",
+          ):
+              print(f"{key}: {report.get(key)}")
+          PY
+
+      - name: Upload sweep evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: bgaming-non-wagering-sweep
+          path: artifacts
+          if-no-files-found: error
+          retention-days: 7

@@ -28,9 +28,11 @@ Implemented and covered by CI:
 - API-v2 observed-wire templates
 - BGaming catalog HTML parser
 - ephemeral demo token protection
+- non-wagering catalog sweep with per-game failure retention and runtime-family summary
 - CLI commands:
   - multiplay bgaming-catalog
   - multiplay bgaming-probe
+  - multiplay bgaming-sweep
   - multiplay capture-har
   - multiplay analyze-dir
 - recursive batch HAR ingestion with consolidated endpoint knowledge
@@ -114,9 +116,11 @@ Generate the current target corpus:
 
     multiplay bgaming-catalog --output bgaming-catalog.json
 
-Then run the non-wagering bootstrap/init probe against public/detail or demo URLs where possible:
+Then run the non-wagering bootstrap/init sweep against the current catalog:
 
-    multiplay bgaming-probe <url> --output captures/bgaming/<game>-probe.json
+    multiplay bgaming-sweep --catalog bgaming-catalog.json --output captures/bgaming/sweep.json
+
+Use `bgaming-probe` for individual follow-up targets.
 
 Use interactive HAR capture only for families/branches that still require runtime action evidence.
 

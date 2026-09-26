@@ -47,6 +47,17 @@ def main() -> int:
     analyze_dir.add_argument("--no-recursive", action="store_true")
     analyze_dir.add_argument("--output")
 
+    sweep = sub.add_parser(
+        "bgaming-sweep",
+        help="Probe a BGaming catalog without wagering and summarize runtime families",
+    )
+    sweep.add_argument("--catalog", required=True)
+    sweep.add_argument("--limit", type=int, default=0)
+    sweep.add_argument("--delay", type=float, default=0.25)
+    sweep.add_argument("--timeout", type=float, default=30.0)
+    sweep.add_argument("--knowledge-root", default="knowledge/providers")
+    sweep.add_argument("--output")
+
     catalog = sub.add_parser("bgaming-catalog", help="Fetch/parse the BGaming slots catalog")
     catalog.add_argument("--url", default="https://bgaming.com/game-type/slots")
     catalog.add_argument("--html")
@@ -68,6 +79,8 @@ def main() -> int:
         return _capture_har(args)
     if args.command == "analyze-dir":
         return _analyze_dir(args)
+    if args.command == "bgaming-sweep":
+        return _bgaming_sweep(args)
     if args.command == "bgaming-catalog":
         return _bgaming_catalog(args)
     if args.command == "finalize-provider":
@@ -170,6 +183,24 @@ def _analyze_dir(args: argparse.Namespace) -> int:
     else:
         print(rendered, end="")
     return 0
+
+def _bgaming_sweep(args: argparse.Namespace) -> int:
+    from .providers.bgaming.sweep import sweep_catalog_file
+
+    report = sweep_catalog_file(
+        args.catalog,
+        limit=args.limit,
+        delay_s=args.delay,
+        timeout_s=args.timeout,
+        knowledge_root=args.knowledge_root,
+    )
+    rendered = json.dumps(report, indent=2, ensure_ascii=False) + "\n"
+    if args.output:
+        Path(args.output).write_text(rendered, encoding="utf-8")
+    else:
+        print(rendered, end="")
+    return 0
+
 
 def _bgaming_catalog(args: argparse.Namespace) -> int:
     from .providers.bgaming.catalog import (
