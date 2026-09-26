@@ -11,6 +11,7 @@ from multiplay.models import (
     ProtocolTransition,
     Transport,
 )
+
 from .base import ProtocolAdapter
 
 _ACTION_KEYS = ("action", "command", "cmd", "op", "operation", "event", "type", "mode", "na")
