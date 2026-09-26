@@ -1,0 +1,30 @@
+from multiplay.providers.bgaming.demo_spin import (
+    legacy_spin_options,
+    resolve_base_bet,
+)
+
+
+def test_resolve_base_bet_prefers_default():
+    assert resolve_base_bet(
+        {"options": {"default_bet": 20, "available_bets": [10, 20, 50]}}
+    ) == 20
+
+
+def test_resolve_base_bet_falls_back_to_smallest_available():
+    assert resolve_base_bet(
+        {"options": {"available_bets": [50, 10, 20]}}
+    ) == 10
+
+
+def test_legacy_spin_uses_options_bets_for_every_line():
+    wager, count, options = legacy_spin_options(
+        {
+            "options": {
+                "line_bets": [5, 2, 10],
+                "lines": [[0], [1], [2]],
+            }
+        }
+    )
+    assert wager == 2.0
+    assert count == 3
+    assert options == {"bets": {"0": 2, "1": 2, "2": 2}}

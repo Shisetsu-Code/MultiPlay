@@ -87,6 +87,7 @@ class _HttpSession:
         *,
         timeout_s: float,
         headers: dict[str, str],
+        allow_http_error: bool = False,
     ) -> _HttpResult:
         body = json.dumps(payload, separators=(",", ":")).encode("utf-8")
         return self._request(
@@ -99,6 +100,7 @@ class _HttpSession:
                 "Content-Type": "application/json",
                 **headers,
             },
+            allow_http_error=allow_http_error,
         )
 
     def _request(
@@ -109,6 +111,7 @@ class _HttpSession:
         method: str = "GET",
         data: bytes | None = None,
         headers: dict[str, str] | None = None,
+        allow_http_error: bool = False,
     ) -> _HttpResult:
         request = Request(
             url,
@@ -135,6 +138,12 @@ class _HttpSession:
                 )
         except HTTPError as exc:
             safe = sanitize_session_url(exc.geturl() or url)
+            if allow_http_error:
+                return _HttpResult(
+                    status=int(exc.code),
+                    url=exc.geturl() or url,
+                    text=exc.read().decode("utf-8", errors="replace"),
+                )
             raise RuntimeError(f"BGaming probe HTTP {exc.code}: {safe}") from exc
         except URLError as exc:
             raise RuntimeError(

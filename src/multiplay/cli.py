@@ -22,6 +22,15 @@ def main() -> int:
     analyze.add_argument("--knowledge-root", default="knowledge/providers")
     analyze.add_argument("--output")
 
+    demo_spin = sub.add_parser(
+        "bgaming-demo-spin",
+        help="Execute one BGaming demo base spin and record the observed wire",
+    )
+    demo_spin.add_argument("url")
+    demo_spin.add_argument("--timeout", type=float, default=30.0)
+    demo_spin.add_argument("--knowledge-root", default="knowledge/providers")
+    demo_spin.add_argument("--output")
+
     probe = sub.add_parser(
         "bgaming-probe",
         help="Resolve a BGaming demo and run a non-wagering bootstrap/init probe",
@@ -73,6 +82,8 @@ def main() -> int:
     args = parser.parse_args()
     if args.command == "analyze-har":
         return _analyze(args)
+    if args.command == "bgaming-demo-spin":
+        return _bgaming_demo_spin(args)
     if args.command == "bgaming-probe":
         return _bgaming_probe(args)
     if args.command == "capture-har":
@@ -118,6 +129,42 @@ def _analyze(args: argparse.Namespace) -> int:
             environment=args.environment,
             records=records,
         )
+    return 0
+
+
+def _bgaming_demo_spin(args: argparse.Namespace) -> int:
+    from .providers.bgaming.demo_spin import run_demo_base_spin
+
+    demo = run_demo_base_spin(args.url, timeout_s=args.timeout)
+    result = analyze_evidence(demo.evidence, provider="bgaming")
+    source_ref = "demo-spin:bgaming:" + demo.metadata.identifier
+    records = (
+        result.provider_adapter.endpoint_records(
+            demo.evidence,
+            result.analysis,
+            source_ref=source_ref,
+            environment="demo",
+        )
+        if result.provider_adapter is not None
+        else None
+    )
+    ProviderKnowledgeStore(args.knowledge_root).record_analysis(
+        provider="bgaming",
+        analysis=result.analysis,
+        evidence=demo.evidence,
+        source_ref=source_ref,
+        environment="demo",
+        records=records,
+    )
+    payload = {
+        "demo": demo.metadata.to_dict(),
+        "analysis": result.to_dict(),
+    }
+    rendered = json.dumps(payload, indent=2, ensure_ascii=False) + "\n"
+    if args.output:
+        Path(args.output).write_text(rendered, encoding="utf-8")
+    else:
+        print(rendered, end="")
     return 0
 
 
