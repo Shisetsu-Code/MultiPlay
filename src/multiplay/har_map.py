@@ -195,8 +195,9 @@ def build_har_map(path: str | Path) -> dict[str, Any]:
             or urlsplit(url).path.casefold().endswith((".js", ".mjs"))
         ):
             host = (urlsplit(url).hostname or "").casefold()
-            if not action_hosts or host in action_hosts:
+            if not action_hosts or _same_provider_domain(host, action_hosts):
                 actions.extend(_javascript_controls(body, url))
+                actions.extend(_javascript_declared_buttons(body, url))
 
     actions.extend(_observed_request_actions(endpoints))
     actions = _dedupe_actions(actions)
@@ -282,10 +283,117 @@ def render_har_map(report: dict[str, Any], *, action_id: str | None = None) -> s
     return "\n".join(lines) + "\n"
 
 
+
+_TELEMETRY_HOST_MARKERS = (
+    "google-analytics.com",
+    "analytics.google.com",
+    "doubleclick.net",
+    "googletagmanager.com",
+)
+_STATIC_SUFFIXES = (
+    ".png",
+    ".jpg",
+    ".jpeg",
+    ".webp",
+    ".gif",
+    ".svg",
+    ".woff",
+    ".woff2",
+    ".ttf",
+    ".otf",
+    ".mp3",
+    ".ogg",
+    ".wav",
+    ".css",
+)
+
+
+def _is_protocol_endpoint(method: str, url: str) -> bool:
+    parsed = urlsplit(url)
+    host = (parsed.hostname or "").casefold()
+    path = parsed.path.casefold()
+    query = parsed.query.casefold()
+    verb = str(method or "").upper()
+
+    if parsed.scheme in {"blob", "data"}:
+        return False
+    if any(marker in host for marker in _TELEMETRY_HOST_MARKERS):
+        return False
+    if "/cdn-cgi/rum" in path or "/analytics/" in path or path.endswith("/g/collect"):
+        return False
+    if path.endswith(_STATIC_SUFFIXES):
+        return False
+
+    if verb not in {"GET", "HEAD", "OPTIONS"}:
+        return True
+
+    return (
+        "/api/" in path
+        or path.endswith("/api")
+        or "/lobby/" in path
+        or "/launch" in path
+        or ("game=" in query and "from=" in query)
+        or ("launch_token=" in query and "/games/" in path)
+    )
+
+
+def _host_root(host: str) -> str:
+    labels = [part for part in str(host or "").casefold().split(".") if part]
+    return ".".join(labels[-2:]) if len(labels) >= 2 else ".".join(labels)
+
+
+def _same_provider_domain(host: str, provider_hosts: set[str]) -> bool:
+    root = _host_root(host)
+    return bool(root and root in {_host_root(item) for item in provider_hosts})
+
+
+_BUTTON_COMPONENT_RE = re.compile(
+    r'c\s*:\s*["\']'
+    r'([A-Za-z0-9_$]*(?:Button|BuyFeature)[A-Za-z0-9_$]*)'
+    r'["\']\s*,\s*p\s*:\s*\{',
+    re.IGNORECASE,
+)
+_BUTTON_NAME_RE = re.compile(r'\bname\s*:\s*["\']([^"\']{1,120})["\']')
+_ONCLICK_RE = re.compile(
+    r'\bonClick\s*:\s*'
+    r'(\[[^\]]{1,500}\]|["\'][^"\']{1,500}["\'])',
+    re.IGNORECASE,
+)
+
+
+def _javascript_declared_buttons(text: str, source: str) -> list[dict[str, Any]]:
+    rows: list[dict[str, Any]] = []
+    for match in _BUTTON_COMPONENT_RE.finditer(text):
+        window = text[match.start() : min(len(text), match.start() + 1800)]
+        name_match = _BUTTON_NAME_RE.search(window)
+        onclick_match = _ONCLICK_RE.search(window)
+        if name_match is None and onclick_match is None:
+            continue
+
+        label = str(name_match.group(1)) if name_match else match.group(1)
+        onclick = str(onclick_match.group(1)) if onclick_match else ""
+        rows.append(
+            {
+                "kind": "declared_button",
+                "source": source,
+                "event": "click",
+                "label": label,
+                "handler": onclick.strip("[]\"'")[:300],
+                "element": label,
+                "handler_hint": " ".join(window[:1000].split()),
+                "wire_markers": sorted(_wire_markers_text(window)),
+                "endpoint_ids": [],
+                "confidence": "HIGH" if onclick else "MEDIUM",
+            }
+        )
+    return rows
+
 def _endpoint_inventory(evidence) -> list[dict[str, Any]]:
     grouped: dict[tuple[str, str], dict[str, Any]] = {}
 
     for exchange in evidence.http:
+        if not _is_protocol_endpoint(exchange.method, exchange.url):
+            continue
         endpoint = sanitize_endpoint_url(exchange.url)
         key = (exchange.method, endpoint)
         current = grouped.get(key)
