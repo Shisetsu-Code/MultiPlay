@@ -9,6 +9,11 @@ from .classify import (
     BGamingClassification,
     classify_bgaming,
 )
+from .client_contracts import (
+    ClientActionContract,
+    ClientActionVariant,
+    discover_client_action_contracts,
+)
 from .contracts import (
     CHOICE_COMMAND_FIELDS,
     COMMAND_CONTRACTS,
@@ -48,12 +53,15 @@ __all__ = [
     "BGamingProviderAdapter",
     "BGamingState",
     "BootstrapOptions",
+    "ClientActionContract",
+    "ClientActionVariant",
     "ChoiceContract",
     "CommandContract",
     "build_feature_session",
     "choice_values",
     "classify_bgaming",
     "classify_command",
+    "discover_client_action_contracts",
     "extract_bootstrap_options",
     "probe_contiguous_index_domain",
     "prove_contiguous_index_domain",

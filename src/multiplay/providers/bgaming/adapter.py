@@ -13,6 +13,7 @@ from .classify import (
     UNKNOWN,
     classify_bgaming,
 )
+from .client_contracts import discover_client_action_contracts
 from .contracts import CHOICE_COMMAND_FIELDS, KNOWN_API_V2_COMMANDS
 from .wire import (
     available_actions,
@@ -143,10 +144,23 @@ def _validate_api_v2(evidence: EvidenceBundle) -> list[str]:
     advertised: set[str] = set()
     for exchange in evidence.http:
         advertised.update(available_actions(exchange.response_body))
+    client_contracts = discover_client_action_contracts(evidence)
 
     for action in sorted(advertised - {"", "init", "spin"}):
         if action not in KNOWN_API_V2_COMMANDS:
-            reasons.append(f"api-v2: unknown advertised action {action!r}.")
+            client = client_contracts.get(action)
+            if client is not None and client.replay_eligible:
+                reasons.append(
+                    f"api-v2: action {action!r} has a client serializer contract "
+                    "but no runtime request demonstrates it."
+                )
+            elif client is not None and client.shape_proven:
+                reasons.append(
+                    f"api-v2: action {action!r} client serializer has unresolved "
+                    f"option fields {client.unresolved_fields!r}."
+                )
+            else:
+                reasons.append(f"api-v2: unknown advertised action {action!r}.")
             continue
         field = CHOICE_COMMAND_FIELDS.get(action)
         if field and not _choice_wire_observed(requests, action, field):
