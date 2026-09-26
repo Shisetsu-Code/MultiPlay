@@ -234,6 +234,14 @@ def _validate_hyperhive(evidence: EvidenceBundle) -> list[str]:
         return reasons
 
     for exchange in plays:
+        if (
+            isinstance(exchange.response_body, dict)
+            and exchange.response_body.get("error") not in (None, {}, [])
+        ):
+            reasons.append(
+                f"hyperhive-jsonrpc: RPC error at {exchange.evidence_id}: "
+                f"{exchange.response_body.get('error')!r}."
+            )
         params = exchange.request_body.get("params")
         if not isinstance(params, dict):
             reasons.append(f"hyperhive-jsonrpc: {exchange.evidence_id} has no params object.")
