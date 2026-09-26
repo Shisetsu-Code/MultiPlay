@@ -120,3 +120,78 @@ jobs:
             artifacts/knowledge
           if-no-files-found: warn
           retention-days: 7
+
+
+  image-guided-feature-open:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - id: visual-left
+            x: 480
+            y: 170
+          - id: visual-center
+            x: 720
+            y: 170
+          - id: visual-right
+            x: 960
+            y: 170
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - run: python -m pip install --upgrade pip
+      - run: pip install -e ".[browser,dev]"
+      - run: python -m playwright install --with-deps chromium
+
+      - name: Open visually identified feature control
+        run: |
+          mkdir -p "artifacts/guided-\${{ matrix.id }}"
+          python - <<'PY'
+          from multiplay.browser.capture import BrowserAction, capture_browser_evidence
+
+          actions = [
+              BrowserAction(kind="wait", timeout_ms=4500),
+              BrowserAction(kind="click_xy", x=940, y=455),
+              BrowserAction(kind="wait", timeout_ms=500),
+              BrowserAction(kind="click_xy", x=720, y=690),
+              BrowserAction(kind="wait", timeout_ms=5000),
+              BrowserAction(
+                  kind="click_xy",
+                  x=float("\${{ matrix.x }}"),
+                  y=float("\${{ matrix.y }}"),
+              ),
+              BrowserAction(kind="wait", timeout_ms=1800),
+          ]
+          capture_browser_evidence(
+              url="https://demo.bgaming-network.com/play/BlingBlitzDiamondDrop/FUN",
+              har_path="artifacts/guided-\${{ matrix.id }}/session.har",
+              screenshot_path="artifacts/guided-\${{ matrix.id }}/after.jpg",
+              actions=actions,
+              viewport=(1440, 900),
+          )
+          PY
+
+      - name: Compress screenshot
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          from PIL import Image
+          p = Path("artifacts/guided-\${{ matrix.id }}/after.jpg")
+          img = Image.open(p).convert("RGB")
+          img.save(p, format="JPEG", quality=65, optimize=True)
+          PY
+
+      - name: Upload guided evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: bgaming-guided-\${{ matrix.id }}
+          path: artifacts/guided-\${{ matrix.id }}
+          if-no-files-found: error
+          retention-days: 7
