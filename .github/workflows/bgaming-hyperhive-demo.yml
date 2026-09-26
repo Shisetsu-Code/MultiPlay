@@ -1,0 +1,57 @@
+name: BGaming HyperHive demo wire
+
+on:
+  workflow_dispatch:
+  push:
+    branches: ["main"]
+    paths:
+      - ".github/workflows/bgaming-hyperhive-demo.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  demo:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - id: big-bucks-saloon
+            url: https://demo.bgaming-network.com/play/BigBucksSaloon/FUN
+          - id: bling-blitz-diamond-drop
+            url: https://demo.bgaming-network.com/play/BlingBlitzDiamondDrop/FUN
+
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install --upgrade pip
+      - run: pip install -e ".[dev]"
+
+      - name: Execute HyperHive demo init/play
+        run: |
+          mkdir -p artifacts/knowledge
+          multiplay bgaming-hyperhive-demo \
+            "${{ matrix.url }}" \
+            --timeout 30 \
+            --knowledge-root artifacts/knowledge \
+            --output "artifacts/${{ matrix.id }}.json"
+
+      - name: Show result
+        if: always()
+        run: |
+          if [ -f "artifacts/${{ matrix.id }}.json" ]; then
+            cat "artifacts/${{ matrix.id }}.json"
+          fi
+
+      - name: Upload evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: bgaming-hyperhive-${{ matrix.id }}
+          path: artifacts
+          if-no-files-found: error
+          retention-days: 7
