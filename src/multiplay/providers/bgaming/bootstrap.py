@@ -51,7 +51,7 @@ class _ScriptCollector(HTMLParser):
         self._in_script = False
 
 
-def extract_bootstrap_options(html: str) -> BootstrapOptions:
+def extract_window_options(html: str) -> dict[str, Any]:
     parser = _ScriptCollector()
     parser.feed(html or "")
     decoder = json.JSONDecoder()
@@ -69,26 +69,29 @@ def extract_bootstrap_options(html: str) -> BootstrapOptions:
             value, _ = decoder.raw_decode(payload)
         except json.JSONDecodeError:
             continue
-        if not isinstance(value, dict):
-            continue
-
-        api = str(value.get("api") or "").strip()
-        identifier = str(value.get("identifier") or "").strip()
-        csrf_name = str(value.get("csrfTokenHeaderName") or "").strip()
-        csrf_value = str(value.get("csrfTokenHeaderValue") or "").strip()
-        if not api or not identifier:
-            raise ValueError("BGaming bootstrap missing api/identifier.")
-        if not csrf_name or not csrf_value:
-            raise ValueError("BGaming bootstrap missing CSRF header data.")
-        return BootstrapOptions(
-            api=api,
-            identifier=identifier,
-            csrf_header_name=csrf_name,
-            csrf_header_value=csrf_value,
-            raw=value,
-        )
+        if isinstance(value, dict):
+            return value
 
     raise ValueError("BGaming window.__OPTIONS__ not found.")
+
+
+def extract_bootstrap_options(html: str) -> BootstrapOptions:
+    value = extract_window_options(html)
+    api = str(value.get("api") or "").strip()
+    identifier = str(value.get("identifier") or "").strip()
+    csrf_name = str(value.get("csrfTokenHeaderName") or "").strip()
+    csrf_value = str(value.get("csrfTokenHeaderValue") or "").strip()
+    if not api or not identifier:
+        raise ValueError("BGaming bootstrap missing api/identifier.")
+    if not csrf_name or not csrf_value:
+        raise ValueError("BGaming bootstrap missing CSRF header data.")
+    return BootstrapOptions(
+        api=api,
+        identifier=identifier,
+        csrf_header_name=csrf_name,
+        csrf_header_value=csrf_value,
+        raw=value,
+    )
 
 
 def sanitize_bootstrap_options(value: Any) -> Any:
