@@ -20,7 +20,7 @@ jobs:
           python-version: "3.12"
       - run: python -m pip install playwright
       - run: python -m playwright install --with-deps chromium
-      - name: Open Jackpot Spins
+      - name: Enter game and open Jackpot Spins
         run: |
           mkdir -p artifacts
           python - <<'PY'
@@ -37,18 +37,18 @@ jobs:
               page.wait_for_timeout(12000)
 
               page.mouse.click(940, 455)
-              page.wait_for_timeout(4000)
+              page.wait_for_timeout(5000)
 
-              page.mouse.click(720, 690)
-              page.wait_for_timeout(800)
-              page.mouse.click(720, 690)
-              page.wait_for_timeout(6000)
+              for _ in range(3):
+                  page.mouse.click(720, 690)
+                  page.wait_for_timeout(2000)
 
+              page.wait_for_timeout(5000)
               page.screenshot(path="artifacts/00-main.jpg", type="jpeg", quality=65)
 
               page.mouse.click(480, 240)
               page.wait_for_timeout(2500)
-              page.screenshot(path="artifacts/01-jackpot-menu.jpg", type="jpeg", quality=65)
+              page.screenshot(path="artifacts/01-after-jackpot.jpg", type="jpeg", quality=65)
 
               browser.close()
           PY
