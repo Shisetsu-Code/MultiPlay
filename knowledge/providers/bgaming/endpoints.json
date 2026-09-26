@@ -1,0 +1,397 @@
+[
+  {
+    "provider": "bgaming",
+    "protocol_family": "http-command",
+    "action": "init",
+    "transport": "HTTP",
+    "method": "POST",
+    "endpoint_template": "https://demo.bgaming-network.com/api/AlienFruits3/<id>/<session>",
+    "request_format": {
+      "command": "init",
+      "extra_data": {
+        "round_series_id": "<dynamic:round_series_id>"
+      }
+    },
+    "response_format": {
+      "api_version": "<string>",
+      "options": "<object>",
+      "balance": "<object>",
+      "flow": "<object>"
+    },
+    "dynamic_fields": [
+      "$.extra_data.round_series_id"
+    ],
+    "sensitive_fields": [],
+    "evidence": [
+      "workflow:36257415527:api-v2-alien-fruits-3:init"
+    ],
+    "demo_state": "OBSERVED",
+    "live_state": "UNKNOWN",
+    "notes": [
+      "provider_family=api-v2",
+      "live_replay=refresh session/CSRF and round_series_id",
+      "live_replay=preserve demonstrated command/options/extra_data shape"
+    ]
+  },
+  {
+    "provider": "bgaming",
+    "protocol_family": "http-command",
+    "action": "spin",
+    "transport": "HTTP",
+    "method": "POST",
+    "endpoint_template": "https://demo.bgaming-network.com/api/AlienFruits3/<id>/<session>",
+    "request_format": {
+      "command": "spin",
+      "options": {
+        "bet": "<dynamic:bet>"
+      },
+      "extra_data": {
+        "round_series_id": "<dynamic:round_series_id>"
+      }
+    },
+    "response_format": {
+      "api_version": "<string>",
+      "outcome": "<object>",
+      "balance": "<object>",
+      "flow": "<object>"
+    },
+    "dynamic_fields": [
+      "$.options.bet",
+      "$.extra_data.round_series_id"
+    ],
+    "sensitive_fields": [],
+    "evidence": [
+      "workflow:36257415527:api-v2-alien-fruits-3:spin"
+    ],
+    "demo_state": "OBSERVED",
+    "live_state": "UNKNOWN",
+    "notes": [
+      "provider_family=api-v2",
+      "live_replay=refresh session/CSRF and round_series_id",
+      "live_replay=preserve demonstrated command/options/extra_data shape"
+    ]
+  },
+  {
+    "provider": "bgaming",
+    "protocol_family": "http-command",
+    "action": "init",
+    "transport": "HTTP",
+    "method": "POST",
+    "endpoint_template": "https://demo.bgaming-network.com/api/Avalon/<id>/<session>",
+    "request_format": {
+      "command": "init",
+      "extra_data": {
+        "round_series_id": "<dynamic:round_series_id>"
+      }
+    },
+    "response_format": {
+      "options": {
+        "line_bets": [
+          "<number>"
+        ],
+        "lines": [
+          "<line-definition>"
+        ]
+      },
+      "game": "<object>",
+      "balance": "<number>",
+      "available_commands": [
+        "<string>"
+      ]
+    },
+    "dynamic_fields": [
+      "$.extra_data.round_series_id"
+    ],
+    "sensitive_fields": [],
+    "evidence": [
+      "workflow:36265110080:legacy-lines:init"
+    ],
+    "demo_state": "OBSERVED",
+    "live_state": "UNKNOWN",
+    "notes": [
+      "provider_family=legacy-lines",
+      "live_replay=refresh session/CSRF",
+      "live_replay=re-read current line count and preserve complete options.bets mapping"
+    ]
+  },
+  {
+    "provider": "bgaming",
+    "protocol_family": "http-command",
+    "action": "spin",
+    "transport": "HTTP",
+    "method": "POST",
+    "endpoint_template": "https://demo.bgaming-network.com/api/Avalon/<id>/<session>",
+    "request_format": {
+      "command": "spin",
+      "options": {
+        "bets": {
+          "<line-index>": "<dynamic:line_bet>"
+        }
+      },
+      "extra_data": {
+        "client_seed": "<dynamic:client_seed>",
+        "round_series_id": "<dynamic:round_series_id>"
+      }
+    },
+    "response_format": {
+      "bets": {
+        "lines": "<object>"
+      },
+      "game": "<object>",
+      "result": "<object>",
+      "balance": "<number>",
+      "available_commands": [
+        "<string>"
+      ]
+    },
+    "dynamic_fields": [
+      "$.options.bets.*",
+      "$.extra_data.client_seed",
+      "$.extra_data.round_series_id"
+    ],
+    "sensitive_fields": [],
+    "evidence": [
+      "workflow:36265110080:legacy-lines:causal-spin"
+    ],
+    "demo_state": "OBSERVED",
+    "live_state": "UNKNOWN",
+    "notes": [
+      "provider_family=legacy-lines",
+      "causal=Playwright click -> spin POST -> HTTP 200",
+      "live_replay=refresh session/CSRF",
+      "live_replay=re-read current line count and preserve complete per-line wager mapping"
+    ]
+  },
+  {
+    "provider": "bgaming",
+    "protocol_family": "jsonrpc-2.0",
+    "action": "rpc:init",
+    "transport": "HTTP",
+    "method": "POST",
+    "endpoint_template": "https://aztecs-claw-wild-dice.demo.bgaming-network.com/api/api",
+    "request_format": {
+      "jsonrpc": "2.0",
+      "method": "init",
+      "id": "<dynamic:id>",
+      "params": {
+        "token": "<redacted>",
+        "req": {
+          "action": "INIT"
+        }
+      }
+    },
+    "response_format": {
+      "id": "<dynamic>",
+      "jsonrpc": "<string>",
+      "result": "<object>"
+    },
+    "dynamic_fields": [
+      "$.id"
+    ],
+    "sensitive_fields": [
+      "$.params.token"
+    ],
+    "evidence": [
+      "workflow:36265110083:hyperhive-base:init"
+    ],
+    "demo_state": "OBSERVED",
+    "live_state": "UNKNOWN",
+    "notes": [
+      "provider_family=hyperhive-jsonrpc",
+      "live_replay=fresh token/state_lock only; never replay captured credentials",
+      "live_replay=preserve current-client RPC id policy"
+    ]
+  },
+  {
+    "provider": "bgaming",
+    "protocol_family": "hyperhive-jsonrpc",
+    "action": "rpc:play:base",
+    "transport": "HTTP",
+    "method": "POST",
+    "endpoint_template": "https://aztecs-claw-wild-dice.demo.bgaming-network.com/api/api",
+    "request_format": {
+      "jsonrpc": "2.0",
+      "method": "play",
+      "id": "<dynamic:id>",
+      "params": {
+        "token": "<redacted>",
+        "req": {
+          "bet": "<dynamic:bet>",
+          "bet_type": "bet"
+        }
+      }
+    },
+    "response_format": {
+      "id": "<dynamic>",
+      "jsonrpc": "<string>",
+      "result": "<object>"
+    },
+    "dynamic_fields": [
+      "$.id",
+      "$.params.req.bet"
+    ],
+    "sensitive_fields": [
+      "$.params.token"
+    ],
+    "evidence": [
+      "workflow:36265110083:hyperhive-base:click-27"
+    ],
+    "demo_state": "OBSERVED",
+    "live_state": "UNKNOWN",
+    "notes": [
+      "provider_family=hyperhive-jsonrpc",
+      "causal=Playwright click -> JSON-RPC play -> HTTP 200",
+      "variant=base",
+      "live_replay=preserve req.bet scalar type and literal bet_type"
+    ]
+  },
+  {
+    "provider": "bgaming",
+    "protocol_family": "hyperhive-jsonrpc",
+    "action": "rpc:play:base",
+    "transport": "HTTP",
+    "method": "POST",
+    "endpoint_template": "https://big-bucks-saloon.demo.bgaming-network.com/api",
+    "request_format": {
+      "id": "<dynamic:id>",
+      "jsonrpc": "2.0",
+      "method": "play",
+      "params": {
+        "req": {
+          "bet": "<dynamic:bet>"
+        },
+        "state_lock": "<dynamic:state_lock>",
+        "token": "<redacted>"
+      }
+    },
+    "response_format": {
+      "id": "<dynamic>",
+      "jsonrpc": "<string>",
+      "result": "<object>"
+    },
+    "dynamic_fields": [
+      "$.id",
+      "$.params.req.bet",
+      "$.params.state_lock"
+    ],
+    "sensitive_fields": [
+      "$.params.token"
+    ],
+    "evidence": [
+      "workflow:36265110083:hyperhive-purchases:base"
+    ],
+    "demo_state": "OBSERVED",
+    "live_state": "UNKNOWN",
+    "notes": [
+      "provider_family=hyperhive-jsonrpc",
+      "variant=base",
+      "live_replay=preserve state_lock presence and use fresh lock"
+    ]
+  },
+  {
+    "provider": "bgaming",
+    "protocol_family": "hyperhive-jsonrpc",
+    "action": "rpc:play:variant-buy_bonus",
+    "transport": "HTTP",
+    "method": "POST",
+    "endpoint_template": "https://big-bucks-saloon.demo.bgaming-network.com/api",
+    "request_format": {
+      "id": "<dynamic:id>",
+      "jsonrpc": "2.0",
+      "method": "play",
+      "params": {
+        "req": {
+          "bet": "<dynamic:bet>",
+          "purchased_feature": "buy_bonus"
+        },
+        "state_lock": "<dynamic:state_lock>",
+        "token": "<redacted>"
+      }
+    },
+    "response_format": {
+      "id": "<dynamic>",
+      "jsonrpc": "<string>",
+      "result": "<object>"
+    },
+    "dynamic_fields": [
+      "$.id",
+      "$.params.req.bet",
+      "$.params.state_lock"
+    ],
+    "sensitive_fields": [
+      "$.params.token"
+    ],
+    "evidence": [
+      "workflow:36265110083:hyperhive-purchases:click-28"
+    ],
+    "demo_state": "OBSERVED",
+    "live_state": "UNKNOWN",
+    "notes": [
+      "provider_family=hyperhive-jsonrpc",
+      "causal=Playwright click -> purchased_feature play -> HTTP 200",
+      "variant_discriminator={\"purchased_feature\":\"buy_bonus\"}",
+      "coverage=one observed variant; advertised domain not yet complete"
+    ]
+  },
+  {
+    "provider": "bgaming",
+    "protocol_family": "switchable-container",
+    "action": "switch_variant",
+    "transport": "HTTP",
+    "method": "GET",
+    "endpoint_template": "https://demo.bgaming-network.com/lobby/FUN/<dynamic>/launch",
+    "request_format": {
+      "query": {
+        "game": "<dynamic:game>",
+        "from": "<dynamic:from>"
+      }
+    },
+    "response_format": null,
+    "dynamic_fields": [
+      "$.query.game",
+      "$.query.from"
+    ],
+    "sensitive_fields": [],
+    "evidence": [
+      "workflow:36265110080:switchable-container:click-42"
+    ],
+    "demo_state": "OBSERVED",
+    "live_state": "UNKNOWN",
+    "notes": [
+      "provider_family=switchable-container",
+      "causal=Playwright click -> switch GET -> redirect -> selected child init",
+      "validation=successful switch GET followed by selected child init",
+      "live_replay=resolve child variant through current lobby endpoint"
+    ]
+  },
+  {
+    "provider": "bgaming",
+    "protocol_family": "http-command",
+    "action": "init",
+    "transport": "HTTP",
+    "method": "POST",
+    "endpoint_template": "https://demo.bgaming-network.com/api/AllLuckyClover100/<id>/<session>",
+    "request_format": {
+      "command": "init",
+      "extra_data": {
+        "round_series_id": "<dynamic:round_series_id>"
+      }
+    },
+    "response_format": "<object>",
+    "dynamic_fields": [
+      "$.extra_data.round_series_id"
+    ],
+    "sensitive_fields": [],
+    "evidence": [
+      "workflow:36265110080:switchable-container:child-init"
+    ],
+    "demo_state": "OBSERVED",
+    "live_state": "UNKNOWN",
+    "notes": [
+      "provider_family=api-v2",
+      "parent_family=switchable-container",
+      "causal=selected child init after switch",
+      "child_spin=pending"
+    ]
+  }
+]
