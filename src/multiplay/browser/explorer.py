@@ -118,7 +118,7 @@ def explore_browser(
         page.wait_for_timeout(settle_ms)
 
         state_epoch = 0
-        seen: set[tuple[int, int, int, str]] = set()
+        seen: set[tuple[int, int]] = set()
 
         baseline = page.screenshot(full_page=False, type="jpeg", quality=65)
         baseline_path = shots / "000-baseline.jpg"
@@ -131,11 +131,11 @@ def explore_browser(
 
             before = page.screenshot(full_page=False, type="jpeg", quality=65)
             candidates = discover_click_candidates(page, before)
-            candidate = _next_candidate(candidates, seen, state_epoch)
+            candidate = _next_candidate(candidates, seen)
             if candidate is None:
                 break
 
-            seen.add(_candidate_key(candidate, state_epoch))
+            seen.add(_candidate_key(candidate))
             start_event = len(events)
             before_url = page.url
             error = ""
