@@ -4,7 +4,7 @@ import hashlib
 import json
 import re
 from dataclasses import asdict
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from pathlib import Path
 from typing import Any
 
@@ -321,9 +321,9 @@ def _record_from_dict(item: dict[str, Any]) -> EndpointRecord:
 
 def _run_id(source_ref: str) -> str:
     digest = hashlib.sha256(source_ref.encode("utf-8")).hexdigest()[:10]
-    stamp = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ")
+    stamp = datetime.now(UTC).strftime("%Y%m%dT%H%M%SZ")
     return f"{stamp}-{digest}"
 
 
 def _now() -> str:
-    return datetime.now(timezone.utc).isoformat()
+    return datetime.now(UTC).isoformat()
