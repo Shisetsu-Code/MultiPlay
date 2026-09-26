@@ -191,3 +191,55 @@ def test_hyperhive_script_purchase_literal_is_not_executable_proof():
         [ProtocolContract("jsonrpc-2.0")],
     )
     assert any("purchase wire" in reason for reason in reasons)
+
+
+
+def test_switchable_accepts_causal_get_followed_by_child_init():
+    evidence = EvidenceBundle(
+        http=[
+            _http(
+                "parent-init",
+                {
+                    "command": "init",
+                    "extra_data": {"round_series_id": 1},
+                },
+                {"wallet": 1000, "game": 0},
+                url="https://demo.bgaming-network.com/api/Container/12345/session",
+            ),
+            HttpExchange(
+                evidence_id="switch",
+                method="GET",
+                url=(
+                    "https://demo.bgaming-network.com/lobby/FUN/session/launch"
+                    "?game=Child100&from=Container"
+                ),
+                response_status=200,
+                response_body=None,
+            ),
+            _http(
+                "child-init",
+                {
+                    "command": "init",
+                    "extra_data": {"round_series_id": 2},
+                },
+                {
+                    "options": {"bets": [1]},
+                    "flow": {"state": "closed", "available_actions": ["spin"]},
+                },
+                url="https://demo.bgaming-network.com/api/Child100/67890/child-session",
+            ),
+        ],
+        scripts=[
+            ScriptEvidence(
+                "bootstrap",
+                "launch",
+                '{"lobby_launch_url":"https://demo.bgaming-network.com/lobby"}',
+            )
+        ],
+    )
+
+    reasons = BGamingProviderAdapter().validate(
+        evidence,
+        [ProtocolContract("http-command")],
+    )
+    assert not any(reason.startswith("switchable-container:") for reason in reasons)
