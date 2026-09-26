@@ -14,7 +14,6 @@ from urllib.request import HTTPCookieProcessor, Request, build_opener
 from ...evidence import redact
 from ...models import EvidenceBundle, HttpExchange, ScriptEvidence
 from .bootstrap import (
-    BootstrapOptions,
     extract_bootstrap_options,
     sanitize_bootstrap_options,
     sanitize_session_url,
@@ -310,10 +309,8 @@ def _demo_candidates(html: str, base_url: str) -> list[str]:
 def _allowed_source(url: str) -> bool:
     host = (urlsplit(url).hostname or "").casefold()
     return (
-        host == "bgaming.com"
-        or host.endswith(".bgaming.com")
-        or host == "bgaming-network.com"
-        or host.endswith(".bgaming-network.com")
+        host in {"bgaming.com", "bgaming-network.com"}
+        or host.endswith((".bgaming.com", ".bgaming-network.com"))
     )
 
 
