@@ -158,8 +158,8 @@ jobs:
 
           actions = [
               BrowserAction(kind="wait", timeout_ms=4500),
-              BrowserAction(kind="click_xy", x=940, y=455),
-              BrowserAction(kind="wait", timeout_ms=500),
+              BrowserAction(kind="click_xy", x=505, y=455),
+              BrowserAction(kind="wait", timeout_ms=800),
               BrowserAction(kind="click_xy", x=720, y=690),
               BrowserAction(kind="wait", timeout_ms=5000),
               BrowserAction(
