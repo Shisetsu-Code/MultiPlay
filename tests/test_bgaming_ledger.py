@@ -273,3 +273,62 @@ def test_bgaming_ledger_excludes_telemetry_posts():
     assert any(item.action == "spin" for item in records)
     assert all("analytics.google.com" not in item.endpoint_template for item in records)
     assert all("/cdn-cgi/rum" not in item.endpoint_template for item in records)
+
+
+
+def test_switchable_ledger_accepts_causal_child_init_without_response_body():
+    evidence = EvidenceBundle(
+        http=[
+            _exchange(
+                "parent-init",
+                "POST",
+                "https://demo.bgaming-network.com/api/Container/12345/session",
+                {
+                    "command": "init",
+                    "extra_data": {"round_series_id": 1},
+                },
+                {"wallet": 1000, "game": 0},
+            ),
+            HttpExchange(
+                evidence_id="switch",
+                method="GET",
+                url=(
+                    "https://demo.bgaming-network.com/lobby/FUN/session/launch"
+                    "?game=Child100&from=Container"
+                ),
+                response_status=200,
+                response_body=None,
+            ),
+            _exchange(
+                "child-init",
+                "POST",
+                "https://demo.bgaming-network.com/api/Child100/67890/child-session",
+                {
+                    "command": "init",
+                    "extra_data": {"round_series_id": 2},
+                },
+                {
+                    "options": {"bets": [1]},
+                    "flow": {"state": "closed", "available_actions": ["spin"]},
+                },
+            ),
+        ]
+    )
+    analysis = MultiProtocolAnalyzer().analyze(evidence, provider="bgaming")
+    records = BGamingProviderAdapter().endpoint_records(
+        evidence,
+        analysis,
+        source_ref="fixture:switch-causal",
+        environment="demo",
+    )
+
+    switch = next(item for item in records if item.action == "switch_variant")
+    assert switch.protocol_family == "switchable-container"
+    assert switch.request_format == {
+        "query": {
+            "from": "<dynamic:from>",
+            "game": "<dynamic:game>",
+        }
+    }
+    assert switch.response_format is None
+    assert any("selected child init" in note for note in switch.notes)
