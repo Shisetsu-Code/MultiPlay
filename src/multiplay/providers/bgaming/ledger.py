@@ -19,7 +19,7 @@ from .classify import (
     SWITCHABLE_CONTAINER,
     classify_bgaming,
 )
-from .wire import is_api_v2_command, is_legacy_init
+from .wire import is_api_v2_command, is_bgaming_host, is_legacy_init
 
 
 def build_bgaming_endpoint_records(
@@ -39,15 +39,21 @@ def build_bgaming_endpoint_records(
     by_id = {item.evidence_id: item for item in evidence.http}
     families = {item.family for item in classify_bgaming(evidence)}
 
+    normalized: list[EndpointRecord] = []
     for record in records:
+        if not _provider_endpoint(record.endpoint_template):
+            continue
+
         sample = next(
             (by_id[item] for item in record.evidence if item in by_id),
             None,
         )
         family = _record_family(sample, record.protocol_family, families)
-        if family:
-            record.notes.append(f"provider_family={family}")
-            record.notes.extend(_replay_notes(family))
+        if not family:
+            continue
+
+        record.notes.append(f"provider_family={family}")
+        record.notes.extend(_replay_notes(family))
         record.endpoint_template = sanitize_session_url(record.endpoint_template)
 
         if sample is not None and isinstance(sample.request_body, dict):
@@ -67,7 +73,9 @@ def build_bgaming_endpoint_records(
         if family == LEGACY_LINES and record.action == "spin":
             _normalize_legacy_spin_record(record)
         record.notes = list(dict.fromkeys(record.notes))
+        normalized.append(record)
 
+    records = normalized
     records.extend(
         _hyperhive_variant_records(
             evidence=evidence,
@@ -104,9 +112,12 @@ def _record_family(
             if LEGACY_LINES in families and isinstance(options, dict) and "bets" in options:
                 return LEGACY_LINES
             return API_V2
-    if SWITCHABLE_CONTAINER in families:
-        return SWITCHABLE_CONTAINER
     return ""
+
+
+def _provider_endpoint(url: str) -> bool:
+    host = (urlsplit(str(url or "")).hostname or "").casefold()
+    return is_bgaming_host(host)
 
 
 def _replay_notes(family: str) -> list[str]:
