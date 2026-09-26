@@ -4,7 +4,6 @@ import json
 from pathlib import Path
 from urllib.parse import urlsplit
 
-
 LEDGER = Path("knowledge/providers/bgaming/endpoints.json")
 
 
