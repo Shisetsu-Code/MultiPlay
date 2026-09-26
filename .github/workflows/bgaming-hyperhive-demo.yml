@@ -6,6 +6,9 @@ on:
     branches: ["main"]
     paths:
       - ".github/workflows/bgaming-hyperhive-demo.yml"
+      - "src/multiplay/browser/**"
+      - "src/multiplay/providers/bgaming/browser_discovery.py"
+      - "src/multiplay/cli.py"
 
 permissions:
   contents: read
