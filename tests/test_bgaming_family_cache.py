@@ -1,6 +1,6 @@
-from pathlib import Path
 import hashlib
 import json
+from pathlib import Path
 
 from multiplay.providers.bgaming.browser_discovery import _prioritize_family_cache
 
@@ -11,7 +11,7 @@ def test_family_cache_prioritizes_only_when_catalog_hash_matches(tmp_path):
         {"slug": "b"},
         {"slug": "c"},
     ]
-    digest = hashlib.sha256("a\nb\nc".encode()).hexdigest()
+    digest = hashlib.sha256(b"a\nb\nc").hexdigest()
     path = Path(tmp_path) / "family-map.json"
     path.write_text(
         json.dumps(
