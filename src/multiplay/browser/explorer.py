@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import hashlib
 import io
 import json
 from dataclasses import asdict, dataclass
@@ -29,6 +30,7 @@ class ClickCandidate:
     score: float
     label: str = ""
     frame_url: str = ""
+    fingerprint: str = ""
 
     def to_dict(self) -> dict[str, Any]:
         data = asdict(self)
@@ -118,7 +120,7 @@ def explore_browser(
         page.wait_for_timeout(settle_ms)
 
         state_epoch = 0
-        seen: set[tuple[int, int]] = set()
+        seen: set[tuple[int, int, str, str]] = set()
 
         baseline = page.screenshot(full_page=False, type="jpeg", quality=65)
         baseline_path = shots / "000-baseline.jpg"
@@ -275,6 +277,8 @@ def visual_candidates_from_screenshot(
                 gray_std = float(
                     ImageStat.Stat(image.crop((cx0, cy0, cx1, cy1))).stddev[0]
                 )
+                patch = image.crop((cx0, cy0, cx1, cy1)).resize((8, 8))
+                fingerprint = hashlib.sha256(patch.tobytes()).hexdigest()[:16]
                 rows.append(
                     ClickCandidate(
                         source="visual",
@@ -282,6 +286,7 @@ def visual_candidates_from_screenshot(
                         y=(cy0 + cy1) / 2,
                         score=edge_mean + gray_std * 0.65,
                         label="visual-cell",
+                        fingerprint=fingerprint,
                     )
                 )
 
@@ -408,28 +413,26 @@ def _canvas_regions(page) -> list[tuple[float, float, float, float]]:
 
 def _next_candidate(
     candidates: list[ClickCandidate],
-    seen: set[tuple[int, int, int, str]],
-    state_epoch: int,
+    seen: set[tuple[int, int, str, str]],
 ) -> ClickCandidate | None:
     return next(
         (
             candidate
             for candidate in candidates
-            if _candidate_key(candidate, state_epoch) not in seen
+            if _candidate_key(candidate) not in seen
         ),
         None,
     )
 
 
-def _candidate_key(candidate: ClickCandidate, state_epoch: int) -> tuple[int, int, int, str]:
-    epoch = -1 if candidate.source == "dom" else int(state_epoch)
-    identity = candidate.source
-    if candidate.source == "dom" and candidate.label:
-        identity += ":" + candidate.label[:80]
+def _candidate_key(candidate: ClickCandidate) -> tuple[int, int, str, str]:
+    identity = candidate.fingerprint
+    if not identity:
+        identity = candidate.label[:80]
     return (
-        epoch,
-        round(candidate.x / 10.0),
-        round(candidate.y / 10.0),
+        round(candidate.x / 12.0),
+        round(candidate.y / 12.0),
+        candidate.source,
         identity,
     )
 
