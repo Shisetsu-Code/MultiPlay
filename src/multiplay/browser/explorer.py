@@ -1,6 +1,5 @@
 from __future__ import annotations
 
-import hashlib
 import io
 import json
 from dataclasses import asdict, dataclass
@@ -31,6 +30,7 @@ class ClickCandidate:
     label: str = ""
     frame_url: str = ""
     fingerprint: str = ""
+    motion: float = 0.0
 
     def to_dict(self) -> dict[str, Any]:
         data = asdict(self)
@@ -121,6 +121,7 @@ def explore_browser(
 
         state_epoch = 0
         seen: set[tuple[int, int, str, str]] = set()
+        region_attempts: dict[tuple[int, int], int] = {}
 
         baseline = page.screenshot(full_page=False, type="jpeg", quality=65)
         baseline_path = shots / "000-baseline.jpg"
@@ -133,11 +134,18 @@ def explore_browser(
 
             before = page.screenshot(full_page=False, type="jpeg", quality=65)
             candidates = discover_click_candidates(page, before)
-            candidate = _next_candidate(candidates, seen)
+            candidate = _next_candidate(
+                candidates,
+                seen,
+                region_attempts,
+                max_region_attempts=3,
+            )
             if candidate is None:
                 break
 
             seen.add(_candidate_key(candidate))
+            region = _candidate_region(candidate)
+            region_attempts[region] = region_attempts.get(region, 0) + 1
             start_event = len(events)
             before_url = page.url
             error = ""
@@ -217,10 +225,23 @@ def discover_click_candidates(page, screenshot_bytes: bytes) -> list[ClickCandid
     dom = _dom_candidates(page)
     canvas_regions = _canvas_regions(page)
     viewport = page.viewport_size or {"width": 1440, "height": 900}
+
+    comparison_bytes = screenshot_bytes
+    try:
+        page.wait_for_timeout(120)
+        comparison_bytes = page.screenshot(
+            full_page=False,
+            type="jpeg",
+            quality=65,
+        )
+    except Exception:  # noqa: BLE001
+        comparison_bytes = screenshot_bytes
+
     visual = visual_candidates_from_screenshot(
         screenshot_bytes,
         canvas_regions
         or [(0.0, 0.0, float(viewport["width"]), float(viewport["height"]))],
+        comparison_bytes=comparison_bytes,
         max_points=28,
     )
     combined = [*dom, *visual]
@@ -235,15 +256,22 @@ def visual_candidates_from_screenshot(
     image_bytes: bytes,
     regions: list[tuple[float, float, float, float]],
     *,
+    comparison_bytes: bytes | None = None,
     max_points: int = 28,
 ) -> list[ClickCandidate]:
     """Rank high-contrast cells from the current screenshot; no OCR or named controls."""
     try:
-        from PIL import Image, ImageFilter, ImageStat
+        from PIL import Image, ImageChops, ImageFilter, ImageStat
     except ImportError as exc:
         raise RuntimeError("Install MultiPlay with the 'browser' extra") from exc
 
     image = Image.open(io.BytesIO(image_bytes)).convert("L")
+    comparison = None
+    if comparison_bytes is not None:
+        candidate_comparison = Image.open(io.BytesIO(comparison_bytes)).convert("L")
+        if candidate_comparison.size == image.size:
+            comparison = candidate_comparison
+
     edges = image.filter(ImageFilter.FIND_EDGES)
     width, height = image.size
     rows: list[ClickCandidate] = []
@@ -277,16 +305,34 @@ def visual_candidates_from_screenshot(
                 gray_std = float(
                     ImageStat.Stat(image.crop((cx0, cy0, cx1, cy1))).stddev[0]
                 )
-                patch = image.crop((cx0, cy0, cx1, cy1)).resize((8, 8))
-                fingerprint = hashlib.sha256(patch.tobytes()).hexdigest()[:16]
+                patch = image.crop((cx0, cy0, cx1, cy1))
+                motion = 0.0
+                if comparison is not None:
+                    comparison_patch = comparison.crop((cx0, cy0, cx1, cy1))
+                    motion = float(
+                        ImageStat.Stat(
+                            ImageChops.difference(patch, comparison_patch)
+                        ).mean[0]
+                    )
+
+                small = patch.resize((8, 8))
+                pixels = list(small.getdata())
+                average = sum(int(value) for value in pixels) / max(1, len(pixels))
+                bits = "".join(
+                    "1" if int(value) >= average else "0"
+                    for value in pixels
+                )
+                fingerprint = f"{int(bits, 2):016x}"
+
                 rows.append(
                     ClickCandidate(
                         source="visual",
                         x=(cx0 + cx1) / 2,
                         y=(cy0 + cy1) / 2,
-                        score=edge_mean + gray_std * 0.65,
+                        score=edge_mean + gray_std * 0.65 - motion * 1.5,
                         label="visual-cell",
                         fingerprint=fingerprint,
+                        motion=motion,
                     )
                 )
 
@@ -424,14 +470,27 @@ def _canvas_regions(page) -> list[tuple[float, float, float, float]]:
 def _next_candidate(
     candidates: list[ClickCandidate],
     seen: set[tuple[int, int, str, str]],
+    region_attempts: dict[tuple[int, int], int] | None = None,
+    *,
+    max_region_attempts: int = 3,
 ) -> ClickCandidate | None:
+    attempts = region_attempts or {}
+    limit = max(1, int(max_region_attempts))
     return next(
         (
             candidate
             for candidate in candidates
             if _candidate_key(candidate) not in seen
+            and attempts.get(_candidate_region(candidate), 0) < limit
         ),
         None,
+    )
+
+
+def _candidate_region(candidate: ClickCandidate) -> tuple[int, int]:
+    return (
+        round(candidate.x / 24.0),
+        round(candidate.y / 24.0),
     )
 
 
