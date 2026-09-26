@@ -160,7 +160,7 @@ def build_har_map(path: str | Path) -> dict[str, Any]:
     raw = json.loads(source_path.read_text(encoding="utf-8"))
     entries = raw.get("log", {}).get("entries")
     if not isinstance(entries, list):
-        raise ValueError("Invalid HAR: missing log.entries")
+        raise TypeError("Invalid HAR: missing log.entries")
 
     endpoints = _endpoint_inventory(evidence)
     endpoint_markers = {
@@ -168,6 +168,7 @@ def build_har_map(path: str | Path) -> dict[str, Any]:
         for endpoint in endpoints
     }
 
+    action_hosts = _action_hosts(endpoints)
     actions: list[dict[str, Any]] = []
     for index, entry in enumerate(entries):
         request = entry.get("request") or {}
@@ -193,7 +194,9 @@ def build_har_map(path: str | Path) -> dict[str, Any]:
             or "ecmascript" in mime
             or urlsplit(url).path.casefold().endswith((".js", ".mjs"))
         ):
-            actions.extend(_javascript_controls(body, url))
+            host = (urlsplit(url).hostname or "").casefold()
+            if not action_hosts or host in action_hosts:
+                actions.extend(_javascript_controls(body, url))
 
     actions.extend(_observed_request_actions(endpoints))
     actions = _dedupe_actions(actions)
@@ -261,9 +264,10 @@ def render_har_map(report: dict[str, Any], *, action_id: str | None = None) -> s
         event = item.get("event") or "-"
         endpoints = ",".join(item.get("endpoint_ids") or []) or "-"
         markers = ", ".join(item.get("wire_markers") or []) or "-"
+        handler = item.get("handler") or "-"
         lines.append(
             f"{item['action_id']}  {item['kind']:<16} "
-            f"{event:<11} {label[:42]:<42} -> {endpoints}"
+            f"{event:<11} {label[:34]:<34} {handler[:28]:<28} -> {endpoints}"
         )
         if markers != "-":
             lines.append(f"      wire: {markers}")
@@ -335,6 +339,55 @@ def _endpoint_inventory(evidence) -> list[dict[str, Any]]:
     return rows
 
 
+def _action_hosts(endpoints: list[dict[str, Any]]) -> set[str]:
+    hosts: set[str] = set()
+    for endpoint in endpoints:
+        markers = endpoint.get("_wire_markers") or []
+        if not markers:
+            continue
+        host = (urlsplit(endpoint["endpoint_template"]).hostname or "").casefold()
+        if host:
+            hosts.add(host)
+    return hosts
+
+
+def _handler_name(window: str, center: int) -> str:
+    local = window[max(0, center - 220) : min(len(window), center + 700)]
+    patterns = (
+        re.compile(
+            r'(?:addEventListener|\.on)\([^,]+,\s*(?:this\.)?'
+            r'([A-Za-z_$][A-Za-z0-9_$]*)'
+        ),
+        re.compile(
+            r'this\.([A-Za-z_$][A-Za-z0-9_$]*'
+            r'(?:Click|Button|Spin|Bonus|Buy|Feature|Select|Pick|Close|Continue)'
+            r'[A-Za-z0-9_$]*)'
+        ),
+        re.compile(
+            r'\.onClick\(\s*(?:\(\)\s*=>\s*)?this\.'
+            r'([A-Za-z_$][A-Za-z0-9_$]*)'
+        ),
+    )
+    for pattern in patterns:
+        match = pattern.search(local)
+        if match:
+            return str(match.group(1))
+    return ""
+
+
+def _element_hint(window: str, center: int) -> str:
+    local = window[max(0, center - 320) : min(len(window), center + 520)]
+    patterns = (
+        re.compile(r'getElementById\(\s*["\']([^"\']+)["\']'),
+        re.compile(r'querySelector\(\s*["\']([^"\']+)["\']'),
+        re.compile(r'getElement\(\s*["\']([^"\']+)["\']'),
+    )
+    for pattern in patterns:
+        matches = list(pattern.finditer(local))
+        if matches:
+            return str(matches[-1].group(1))[:100]
+    return ""
+
 def _javascript_controls(text: str, source: str) -> list[dict[str, Any]]:
     rows: list[dict[str, Any]] = []
     for pattern in _EVENT_PATTERNS:
@@ -345,16 +398,28 @@ def _javascript_controls(text: str, source: str) -> list[dict[str, Any]]:
             event = match.group(1).casefold() if match.lastindex else "click"
             label = _best_label(window)
             markers = sorted(_wire_markers_text(window))
+            handler = _handler_name(window, match.start() - start)
+            element = _element_hint(window, match.start() - start)
+            if not label and not markers and not handler and not element:
+                continue
             rows.append(
                 {
                     "kind": "js_control",
                     "source": source,
                     "event": event,
-                    "label": label,
+                    "label": label or element,
+                    "handler": handler,
+                    "element": element,
                     "handler_hint": _compact_snippet(window, match.start() - start),
                     "wire_markers": markers,
                     "endpoint_ids": [],
-                    "confidence": "HIGH" if markers else "MEDIUM",
+                    "confidence": (
+                        "HIGH"
+                        if markers
+                        else "MEDIUM"
+                        if handler or element
+                        else "LOW"
+                    ),
                 }
             )
     return rows
@@ -484,9 +549,10 @@ def _plausible_label(value: str) -> bool:
         return False
     if not any(char.isalpha() for char in text):
         return False
-    if re.fullmatch(r"[A-Za-z_$][A-Za-z0-9_$]*", text) and text.islower():
-        return False
-    return True
+    return not (
+        re.fullmatch(r"[A-Za-z_$][A-Za-z0-9_$]*", text)
+        and text.islower()
+    )
 
 
 def _compact_snippet(window: str, center: int) -> str:
