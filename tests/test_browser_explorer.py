@@ -57,3 +57,24 @@ def test_persistent_dom_candidate_is_not_retried():
     candidate = ClickCandidate("dom", 100, 200, 1000, label="button volume")
     seen = {_candidate_key(candidate)}
     assert _next_candidate([candidate], seen) is None
+
+
+
+def test_click_triggered_fetch_get_is_stateful():
+    event = {
+        "kind": "http_request",
+        "method": "GET",
+        "url": "https://example.test/lobby?game=child",
+        "resource_type": "fetch",
+    }
+    assert event_is_stateful(event)
+
+
+def test_static_asset_get_is_not_stateful():
+    event = {
+        "kind": "http_request",
+        "method": "GET",
+        "url": "https://example.test/game.js",
+        "resource_type": "script",
+    }
+    assert not event_is_stateful(event)
