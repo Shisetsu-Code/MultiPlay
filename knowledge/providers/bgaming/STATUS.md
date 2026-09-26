@@ -28,8 +28,12 @@ Implemented and covered by CI:
 - API-v2 observed-wire templates
 - BGaming catalog HTML parser
 - ephemeral demo token protection
-- CLI command:
+- CLI commands:
   - multiplay bgaming-catalog
+  - multiplay capture-har
+  - multiplay analyze-dir
+- recursive batch HAR ingestion with consolidated endpoint knowledge
+- headed manual browser evidence capture without provider-control hardcoding
 
 ## Historical knowledge preserved
 
@@ -109,6 +113,11 @@ Generate the current target corpus:
     multiplay bgaming-catalog --output bgaming-catalog.json
 
 Then capture/analyze representative games per detected runtime family.
+
+Suggested local flow:
+
+    multiplay capture-har <demo-url> --output captures/bgaming/<game>.har
+    multiplay analyze-dir captures/bgaming --provider bgaming --output captures/bgaming/report.json
 
 Do not repeat every historical experiment blindly. Start by classifying current games,
 then sample each distinct family/shape and expand only where evidence reveals a new branch.

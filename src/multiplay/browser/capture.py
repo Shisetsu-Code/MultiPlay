@@ -68,3 +68,60 @@ def capture_browser_evidence(
 
         context.close()
         browser.close()
+
+
+
+def capture_interactive_har(
+    *,
+    url: str,
+    har_path: str | Path,
+    screenshot_path: str | Path | None = None,
+    viewport: tuple[int, int] = (1440, 900),
+) -> None:
+    """Record a full headed browser session until the operator presses Enter.
+
+    The operator may interact with canvas/WebGL/iframes normally. MultiPlay records
+    the browser context HAR but makes no assumptions about provider controls.
+    Raw HAR files may contain ephemeral credentials and therefore belong under
+    gitignored local capture directories until ingested/redacted.
+    """
+    try:
+        from playwright.sync_api import sync_playwright
+    except ImportError as exc:
+        raise RuntimeError("Install MultiPlay with the 'browser' extra") from exc
+
+    har_path = Path(har_path)
+    har_path.parent.mkdir(parents=True, exist_ok=True)
+    screenshot = Path(screenshot_path) if screenshot_path is not None else None
+    if screenshot is not None:
+        screenshot.parent.mkdir(parents=True, exist_ok=True)
+
+    with sync_playwright() as playwright:
+        browser = playwright.chromium.launch(headless=False)
+        context = browser.new_context(
+            viewport={"width": viewport[0], "height": viewport[1]},
+            device_scale_factor=1,
+            record_har_path=str(har_path),
+            record_har_content="embed",
+            record_har_mode="full",
+        )
+        page = context.new_page()
+        page.goto(url, wait_until="domcontentloaded")
+
+        try:
+            input(
+                "Interact with the game in the opened browser. "
+                "Press Enter here when the evidence capture is complete..."
+            )
+        except EOFError as exc:
+            context.close()
+            browser.close()
+            raise RuntimeError(
+                "Interactive capture requires an attached terminal."
+            ) from exc
+
+        if screenshot is not None and not page.is_closed():
+            page.screenshot(path=str(screenshot), full_page=False)
+
+        context.close()
+        browser.close()

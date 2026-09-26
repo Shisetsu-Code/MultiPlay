@@ -22,6 +22,14 @@ def main() -> int:
     analyze.add_argument("--knowledge-root", default="knowledge/providers")
     analyze.add_argument("--output")
 
+    capture = sub.add_parser(
+        "capture-har",
+        help="Open a headed browser and record an interactive HAR session",
+    )
+    capture.add_argument("url")
+    capture.add_argument("--output", required=True)
+    capture.add_argument("--screenshot")
+
     analyze_dir = sub.add_parser("analyze-dir", help="Analyze every HAR in a directory")
     analyze_dir.add_argument("directory")
     analyze_dir.add_argument("--provider")
@@ -45,6 +53,8 @@ def main() -> int:
     args = parser.parse_args()
     if args.command == "analyze-har":
         return _analyze(args)
+    if args.command == "capture-har":
+        return _capture_har(args)
     if args.command == "analyze-dir":
         return _analyze_dir(args)
     if args.command == "bgaming-catalog":
@@ -84,6 +94,18 @@ def _analyze(args: argparse.Namespace) -> int:
             environment=args.environment,
             records=records,
         )
+    return 0
+
+
+def _capture_har(args: argparse.Namespace) -> int:
+    from .browser import capture_interactive_har
+
+    capture_interactive_har(
+        url=args.url,
+        har_path=args.output,
+        screenshot_path=args.screenshot,
+    )
+    print(args.output)
     return 0
 
 

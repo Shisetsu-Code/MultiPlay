@@ -72,3 +72,37 @@ Actual token/session/credential values are always redacted.
 ## Status
 
 Initial architecture/migration baseline. Provider implementations are migrated and revalidated incrementally rather than copied blindly from legacy code.
+
+
+## BGaming evidence workflow
+
+Install the optional browser capture dependency:
+
+    pip install -e ".[browser]"
+    python -m playwright install chromium
+
+Generate the current BGaming catalog:
+
+    multiplay bgaming-catalog --output bgaming-catalog.json
+
+Record one real demo session without hardcoding controls:
+
+    multiplay capture-har "https://demo.bgaming-network.com/play/<Identifier>/FUN" \
+      --output captures/bgaming/<game>.har \
+      --screenshot captures/bgaming/<game>.png
+
+A headed Chromium window opens. Exercise the base spin and any visible purchase/choice or
+continuation paths that need evidence, then press Enter in the terminal. Raw HARs may
+contain ephemeral session material; `captures/` is gitignored.
+
+Analyze one capture:
+
+    multiplay analyze-har captures/bgaming/<game>.har --provider bgaming
+
+Or analyze the whole capture directory and consolidate provider knowledge:
+
+    multiplay analyze-dir captures/bgaming --provider bgaming \
+      --output captures/bgaming/report.json
+
+The provider endpoint ledger is updated under `knowledge/providers/bgaming/`. Current
+evidence always overrides historical migration notes.
