@@ -10,7 +10,7 @@ from ...models import EvidenceBundle, HttpExchange, ScriptEvidence
 from .bootstrap import extract_window_options, sanitize_bootstrap_options
 from .hyperhive_client import collect_hyperhive_contract_scripts
 from .hyperhive_wire_profile import HyperHiveWireProfile, analyze_current_wire
-from .probe import _HttpSession, _allowed_source, _is_hyperhive_url, _resolve_demo
+from .probe import _allowed_source, _HttpSession, _is_hyperhive_url, _resolve_demo
 
 
 @dataclass(frozen=True, slots=True)
