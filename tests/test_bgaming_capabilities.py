@@ -5,7 +5,7 @@ from multiplay.providers.bgaming.capabilities import (
 )
 
 
-def test_hyperhive_init_capabilities_detects_purchases():
+def test_hyperhive_init_capabilities_detects_protocol_domain():
     evidence = EvidenceBundle(
         http=[
             HttpExchange(
@@ -39,10 +39,10 @@ def test_hyperhive_init_capabilities_detects_purchases():
 
     result = hyperhive_init_capabilities(evidence)
     assert result["init_observed"] is True
-    assert result["has_purchases"] is True
-    assert result["purchase_count"] == 2
-    assert result["purchased_features_shape"] == "list"
-    assert result["purchased_features"] == [
+    assert result["purchased_feature_domain_present"] is True
+    assert result["purchased_feature_domain_count"] == 2
+    assert result["purchased_feature_domain_shape"] == "list"
+    assert result["purchased_feature_domain"] == [
         {"name": "buy_bonus"},
         {"name": "super_bonus"},
     ]
@@ -77,8 +77,8 @@ def test_hyperhive_init_capabilities_empty_purchase_domain():
     )
 
     result = hyperhive_init_capabilities(evidence)
-    assert result["has_purchases"] is False
-    assert result["purchase_count"] == 0
+    assert result["purchased_feature_domain_present"] is False
+    assert result["purchased_feature_domain_count"] == 0
 
 
 
@@ -113,7 +113,7 @@ def test_hyperhive_capabilities_redacts_sensitive_purchase_fields():
     )
 
     result = hyperhive_init_capabilities(evidence)
-    assert result["purchased_features"] == [
+    assert result["purchased_feature_domain"] == [
         {
             "name": "buy_bonus",
             "feature_token": "<redacted>",

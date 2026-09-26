@@ -119,7 +119,7 @@ Current base action now demonstrated through Playwright causal evidence:
 
 Additional current causal evidence:
 
-- one purchase-capable HyperHive init advertised 9 purchase entries;
+- one HyperHive init exposed 9 entries in the `purchased_features` protocol domain; this is not evidence of 9 clickable purchase controls;
 - Playwright demonstrated `purchased_feature="buy_bonus"`;
 - that purchase request used a dynamic non-empty `state_lock`;
 - the provider returned HTTP 200;

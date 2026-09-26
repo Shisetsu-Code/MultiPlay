@@ -6,11 +6,10 @@ import time
 from pathlib import Path
 from typing import Any
 
-from ...browser import BrowserAction, capture_browser_evidence, explore_browser
+from ...browser import explore_browser
 from ...endpoints import ProviderKnowledgeStore
 from ...evidence import load_har
 from ...pipeline import analyze_evidence
-from .capabilities import hyperhive_init_capabilities
 from .probe import probe_bgaming_demo
 
 
@@ -27,7 +26,6 @@ def discover_family_with_browser(
     headless: bool = True,
     knowledge_root: str | Path = "knowledge/providers",
     keep_har: bool = False,
-    require_purchases: bool = False,
     family_map_path: str | Path = "knowledge/providers/bgaming/family-map.json",
 ) -> dict[str, Any]:
     """Pick a current runtime representative, then discover actions through Playwright.
@@ -91,27 +89,11 @@ def discover_family_with_browser(
             )
             _write_selection(selection_path, selected, attempts)
             if wanted in families:
-                capabilities = {}
-                if require_purchases:
-                    capabilities = _observe_hyperhive_init_capabilities(
-                        probe.metadata.launch_url,
-                        root=root,
-                        slug=slug,
-                        settle_ms=settle_ms,
-                    )
-                    attempts[-1]["capabilities"] = capabilities
-                    _write_selection(selection_path, selected, attempts)
-                    if not capabilities.get("has_purchases"):
-                        if probe_delay_s > 0:
-                            time.sleep(float(probe_delay_s))
-                        continue
-
                 selected = {
                     "slug": slug,
                     "name": str(record.get("name") or slug),
                     "family": wanted,
                     "probe": probe.metadata.to_dict(),
-                    "capabilities": capabilities,
                 }
                 launch_url = probe.metadata.launch_url
                 _write_selection(selection_path, selected, attempts)
@@ -195,33 +177,6 @@ def _write_selection(
         + "\n",
         encoding="utf-8",
     )
-
-
-def _observe_hyperhive_init_capabilities(
-    launch_url: str,
-    *,
-    root: Path,
-    slug: str,
-    settle_ms: int,
-) -> dict[str, Any]:
-    probe_root = root / "capability-probes"
-    probe_root.mkdir(parents=True, exist_ok=True)
-    har_path = probe_root / f"{slug or 'candidate'}.har"
-    try:
-        capture_browser_evidence(
-            url=launch_url,
-            har_path=har_path,
-            actions=[
-                BrowserAction(
-                    kind="wait",
-                    timeout_ms=max(1000, int(settle_ms)),
-                )
-            ],
-        )
-        evidence = load_har(har_path)
-        return hyperhive_init_capabilities(evidence)
-    finally:
-        har_path.unlink(missing_ok=True)
 
 
 

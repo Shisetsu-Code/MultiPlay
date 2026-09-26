@@ -1,16 +1,7 @@
-name: BGaming browser causal discovery
+name: BGaming HyperHive causal discovery
 
 on:
   workflow_dispatch:
-  push:
-    branches: ["main"]
-    paths:
-      - ".github/workflows/bgaming-hyperhive-demo.yml"
-      - "src/multiplay/browser/**"
-      - "src/multiplay/providers/bgaming/browser_discovery.py"
-      - "src/multiplay/providers/bgaming/capabilities.py"
-      - "src/multiplay/providers/bgaming/ledger.py"
-      - "src/multiplay/cli.py"
 
 permissions:
   contents: read
@@ -18,17 +9,7 @@ permissions:
 jobs:
   discover:
     runs-on: ubuntu-latest
-    timeout-minutes: 90
-    strategy:
-      fail-fast: false
-      matrix:
-        include:
-          - id: base
-            require_purchases: false
-            max_clicks: 40
-          - id: purchases
-            require_purchases: true
-            max_clicks: 64
+    timeout-minutes: 60
 
     steps:
       - uses: actions/checkout@v4
@@ -46,152 +27,31 @@ jobs:
           mkdir -p artifacts/knowledge
           multiplay bgaming-catalog --output artifacts/catalog.json
 
-      - name: Discover HyperHive actions through Playwright
-        shell: bash
+      - name: Capture causal HyperHive browser evidence
         run: |
-          EXTRA=()
-          if [ "${{ matrix.require_purchases }}" = "true" ]; then
-            EXTRA+=(--require-purchases)
-          fi
-
           multiplay bgaming-browser-discover \
             --catalog artifacts/catalog.json \
             --family hyperhive-jsonrpc \
-            --output-dir "artifacts/browser-${{ matrix.id }}" \
-            --max-probes 160 \
+            --output-dir artifacts/browser \
+            --max-probes 120 \
             --probe-delay 1.0 \
             --timeout 30 \
-            --max-clicks "${{ matrix.max_clicks }}" \
+            --max-clicks 40 \
             --settle-ms 4500 \
             --knowledge-root artifacts/knowledge \
-            --output "artifacts/browser-result-${{ matrix.id }}.json" \
-            "${EXTRA[@]}"
+            --output artifacts/result.json
 
-      - name: Show causal summary
-        if: always()
-        run: |
-          python - <<'PY'
-          import json
-          from pathlib import Path
-
-          result = Path("artifacts/browser-result-${{ matrix.id }}.json")
-          if result.exists():
-              payload = json.loads(result.read_text())
-              print("selected:", payload.get("selected"))
-              browser = payload.get("browser") or {}
-              print("clicks_attempted:", browser.get("clicks_attempted"))
-              print("stateful_effects:", browser.get("stateful_effects"))
-
-          selection = Path("artifacts/browser-${{ matrix.id }}/selection.json")
-          if selection.exists():
-              payload = json.loads(selection.read_text())
-              print("selection:", payload.get("selected"))
-              attempts = payload.get("attempts") or []
-              capable = [
-                  item
-                  for item in attempts
-                  if (item.get("capabilities") or {}).get("has_purchases")
-              ]
-              print("purchase-capable candidates:", len(capable))
-
-          trace = Path("artifacts/browser-${{ matrix.id }}/trace.json")
-          if trace.exists():
-              payload = json.loads(trace.read_text())
-              for action in payload.get("actions", []):
-                  if action.get("stateful_event_count"):
-                      print(
-                          action.get("index"),
-                          action.get("candidate"),
-                          action.get("effect_signatures"),
-                      )
-          PY
-
-      - name: Upload sanitized browser evidence
+      - name: Upload sanitized evidence
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: bgaming-browser-causal-discovery-${{ matrix.id }}
+          name: bgaming-hyperhive-causal-discovery
           path: |
-            artifacts/browser-result-${{ matrix.id }}.json
-            artifacts/browser-${{ matrix.id }}/selection.json
-            artifacts/browser-${{ matrix.id }}/analysis.json
-            artifacts/browser-${{ matrix.id }}/trace.json
-            artifacts/browser-${{ matrix.id }}/screenshots
+            artifacts/result.json
+            artifacts/browser/selection.json
+            artifacts/browser/analysis.json
+            artifacts/browser/trace.json
+            artifacts/browser/screenshots
             artifacts/knowledge
           if-no-files-found: warn
-          retention-days: 7
-
-
-  image-guided-feature-open:
-    runs-on: ubuntu-latest
-    timeout-minutes: 30
-    strategy:
-      fail-fast: false
-      matrix:
-        include:
-          - id: visual-left
-            x: 480
-            y: 170
-          - id: visual-center
-            x: 720
-            y: 170
-          - id: visual-right
-            x: 960
-            y: 170
-
-    steps:
-      - uses: actions/checkout@v4
-
-      - uses: actions/setup-python@v5
-        with:
-          python-version: "3.12"
-
-      - run: python -m pip install --upgrade pip
-      - run: pip install -e ".[browser,dev]"
-      - run: python -m playwright install --with-deps chromium
-
-      - name: Open visually identified feature control
-        run: |
-          mkdir -p "artifacts/guided-${{ matrix.id }}"
-          python - <<'PY'
-          from multiplay.browser.capture import BrowserAction, capture_browser_evidence
-
-          actions = [
-              BrowserAction(kind="wait", timeout_ms=4500),
-              BrowserAction(kind="click_xy", x=505, y=455),
-              BrowserAction(kind="wait", timeout_ms=800),
-              BrowserAction(kind="click_xy", x=720, y=690),
-              BrowserAction(kind="wait", timeout_ms=5000),
-              BrowserAction(
-                  kind="click_xy",
-                  x=float("${{ matrix.x }}"),
-                  y=float("${{ matrix.y }}"),
-              ),
-              BrowserAction(kind="wait", timeout_ms=1800),
-          ]
-          capture_browser_evidence(
-              url="https://demo.bgaming-network.com/play/BlingBlitzDiamondDrop/FUN",
-              har_path="artifacts/guided-${{ matrix.id }}/session.har",
-              screenshot_path="artifacts/guided-${{ matrix.id }}/after.jpg",
-              actions=actions,
-              viewport=(1440, 900),
-          )
-          PY
-
-      - name: Compress screenshot
-        run: |
-          python - <<'PY'
-          from pathlib import Path
-          from PIL import Image
-          p = Path("artifacts/guided-${{ matrix.id }}/after.jpg")
-          img = Image.open(p).convert("RGB")
-          img.save(p, format="JPEG", quality=65, optimize=True)
-          PY
-
-      - name: Upload guided evidence
-        uses: actions/upload-artifact@v4
-        with:
-          name: bgaming-guided-${{ matrix.id }}
-          path: artifacts/guided-${{ matrix.id }}
-          if-no-files-found: error
           retention-days: 7

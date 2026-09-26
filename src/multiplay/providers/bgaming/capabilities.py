@@ -6,7 +6,7 @@ from ...models import EvidenceBundle
 
 
 def hyperhive_init_capabilities(evidence: EvidenceBundle) -> dict[str, Any]:
-    """Summarize capabilities advertised by a successful observed HyperHive init."""
+    """Summarize the HyperHive init protocol domain. This does not imply clickable UI controls."""
     for exchange in evidence.http:
         request = exchange.request_body
         response = exchange.response_body
@@ -41,20 +41,20 @@ def hyperhive_init_capabilities(evidence: EvidenceBundle) -> dict[str, Any]:
 
         return {
             "init_observed": True,
-            "has_purchases": count > 0,
-            "purchase_count": count,
-            "purchased_features_shape": shape,
-            "purchased_features": domain,
+            "purchased_feature_domain_present": count > 0,
+            "purchased_feature_domain_count": count,
+            "purchased_feature_domain_shape": shape,
+            "purchased_feature_domain": domain,
             "default_bet_present": config.get("default_bet") is not None,
             "bet_limits_present": isinstance(config.get("bet_limits"), list),
         }
 
     return {
         "init_observed": False,
-        "has_purchases": False,
-        "purchase_count": 0,
-        "purchased_features_shape": "unknown",
-        "purchased_features": [],
+        "purchased_feature_domain_present": False,
+        "purchased_feature_domain_count": 0,
+        "purchased_feature_domain_shape": "unknown",
+        "purchased_feature_domain": [],
         "default_bet_present": False,
         "bet_limits_present": False,
     }
@@ -93,7 +93,7 @@ def _safe_capability_value(value: Any) -> Any:
 
 def hyperhive_purchase_coverage(evidence: EvidenceBundle) -> dict[str, Any]:
     capabilities = hyperhive_init_capabilities(evidence)
-    raw = capabilities.get("purchased_features")
+    raw = capabilities.get("purchased_feature_domain")
     advertised, comparable = _purchase_names(raw)
     observed: set[str] = set()
 
