@@ -148,7 +148,7 @@ def explore_browser(
             causal = events[start_event:]
             productive = [event for event in causal if event_is_stateful(event)]
             changed = image_change_ratio(before, after)
-            if productive or page.url != before_url or changed >= 0.08:
+            if productive or page.url != before_url:
                 state_epoch += 1
 
             signatures = sorted(
@@ -170,7 +170,7 @@ def explore_browser(
                     "image_change_ratio": round(changed, 6),
                     "stateful_event_count": len(productive),
                     "effect_signatures": signatures,
-                    "events": productive,
+                    "events": _causal_events(causal, productive),
                     "error": error,
                 }
             )
@@ -412,11 +412,15 @@ def _next_candidate(
 
 
 def _candidate_key(candidate: ClickCandidate, state_epoch: int) -> tuple[int, int, int, str]:
+    epoch = -1 if candidate.source == "dom" else int(state_epoch)
+    identity = candidate.source
+    if candidate.source == "dom" and candidate.label:
+        identity += ":" + candidate.label[:80]
     return (
-        int(state_epoch),
+        epoch,
         round(candidate.x / 10.0),
         round(candidate.y / 10.0),
-        candidate.source,
+        identity,
     )
 
 
@@ -474,6 +478,39 @@ def _record_websocket(events: list[dict[str, Any]], websocket) -> None:
             }
         ),
     )
+
+
+
+def _causal_events(
+    causal: list[dict[str, Any]],
+    productive: list[dict[str, Any]],
+) -> list[dict[str, Any]]:
+    if not productive:
+        return []
+
+    http_urls = {
+        str(event.get("url") or "")
+        for event in productive
+        if event.get("kind") == "http_request"
+    }
+    websocket_urls = {
+        str(event.get("url") or "")
+        for event in productive
+        if event.get("kind") == "websocket_sent"
+    }
+    return [
+        event
+        for event in causal
+        if event_is_stateful(event)
+        or (
+            event.get("kind") == "http_response"
+            and str(event.get("url") or "") in http_urls
+        )
+        or (
+            event.get("kind") == "websocket_received"
+            and str(event.get("url") or "") in websocket_urls
+        )
+    ]
 
 
 def _safe_payload(value: Any) -> Any:
