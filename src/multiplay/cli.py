@@ -48,6 +48,10 @@ def main() -> int:
     browser_discover.add_argument("--keep-har", action="store_true")
     browser_discover.add_argument("--require-purchases", action="store_true")
     browser_discover.add_argument("--knowledge-root", default="knowledge/providers")
+    browser_discover.add_argument(
+        "--family-map",
+        default="knowledge/providers/bgaming/family-map.json",
+    )
     browser_discover.add_argument("--output")
 
     hyperhive = sub.add_parser(
@@ -205,6 +209,7 @@ def _bgaming_browser_discover(args: argparse.Namespace) -> int:
         knowledge_root=args.knowledge_root,
         keep_har=args.keep_har,
         require_purchases=args.require_purchases,
+        family_map_path=args.family_map,
     )
     rendered = json.dumps(result, indent=2, ensure_ascii=False) + "\n"
     if args.output:

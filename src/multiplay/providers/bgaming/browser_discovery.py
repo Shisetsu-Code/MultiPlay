@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import hashlib
 import json
 import time
 from pathlib import Path
@@ -27,6 +28,7 @@ def discover_family_with_browser(
     knowledge_root: str | Path = "knowledge/providers",
     keep_har: bool = False,
     require_purchases: bool = False,
+    family_map_path: str | Path = "knowledge/providers/bgaming/family-map.json",
 ) -> dict[str, Any]:
     """Pick a current runtime representative, then discover actions through Playwright.
 
@@ -38,6 +40,12 @@ def discover_family_with_browser(
     wanted = str(family or "").strip()
     if not wanted:
         raise ValueError("BGaming family is required.")
+
+    records = _prioritize_family_cache(
+        records,
+        family=wanted,
+        family_map_path=family_map_path,
+    )
 
     root = Path(output_dir)
     root.mkdir(parents=True, exist_ok=True)
@@ -214,6 +222,53 @@ def _observe_hyperhive_init_capabilities(
         return hyperhive_init_capabilities(evidence)
     finally:
         har_path.unlink(missing_ok=True)
+
+
+
+def _prioritize_family_cache(
+    records: list[dict[str, Any]],
+    *,
+    family: str,
+    family_map_path: str | Path,
+) -> list[dict[str, Any]]:
+    path = Path(family_map_path)
+    if not path.is_file():
+        return records
+
+    try:
+        payload = json.loads(path.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError, UnicodeError):
+        return records
+    if not isinstance(payload, dict):
+        return records
+    if payload.get("schema") != "multiplay/bgaming-family-map/v1":
+        return records
+    if str(payload.get("catalog_slugs_sha256") or "") != _catalog_slug_hash(records):
+        return records
+
+    entries = payload.get("entries")
+    if not isinstance(entries, dict):
+        return records
+
+    preferred = []
+    fallback = []
+    for record in records:
+        slug = str(record.get("slug") or "")
+        families = entries.get(slug)
+        if isinstance(families, list) and family in {str(item) for item in families}:
+            preferred.append(record)
+        else:
+            fallback.append(record)
+    return [*preferred, *fallback]
+
+
+def _catalog_slug_hash(records: list[dict[str, Any]]) -> str:
+    slugs = sorted(
+        str(record.get("slug") or "")
+        for record in records
+        if str(record.get("slug") or "")
+    )
+    return hashlib.sha256("\n".join(slugs).encode("utf-8")).hexdigest()
 
 
 def _catalog_records(payload: Any) -> list[dict[str, Any]]:
