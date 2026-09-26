@@ -25,7 +25,7 @@ jobs:
       - run: pip install -e ".[browser,dev]"
       - run: python -m playwright install --with-deps chromium
 
-      - name: Probe visually selected PLAY points
+      - name: Probe visually selected game controls
         run: |
           mkdir -p artifacts
           python - <<'PY'
@@ -36,12 +36,13 @@ jobs:
           from multiplay.browser.explorer import image_change_ratio
 
           out = Path("artifacts")
-          play_points = [
-              (600.0, 680.0),
-              (668.5, 675.0),
-              (720.0, 690.0),
-              (775.0, 680.0),
-              (840.0, 690.0),
+          controls = [
+              ("jackpot-spins-label", 480.0, 250.0),
+              ("colossal-spins-label", 720.0, 250.0),
+              ("hold-n-win-spins-label", 960.0, 250.0),
+              ("top-left-b", 35.0, 42.0),
+              ("info", 75.0, 835.0),
+              ("settings", 112.0, 835.0),
           ]
 
           with sync_playwright() as p:
@@ -58,51 +59,38 @@ jobs:
               )
 
               page.wait_for_timeout(25000)
-              page.screenshot(
-                  path=str(out / "00-audio.jpg"),
-                  type="jpeg",
-                  quality=65,
-              )
-
               page.mouse.click(504.0, 453.0)
               page.wait_for_timeout(10000)
-              baseline = page.screenshot(
-                  path=str(out / "01-play-screen.jpg"),
+
+              # Reproduce the visually verified PLAY sequence from the successful run.
+              page.mouse.click(600.0, 680.0)
+              page.wait_for_timeout(2500)
+              page.mouse.click(668.5, 675.0)
+              page.wait_for_timeout(5000)
+
+              game = page.screenshot(
+                  path=str(out / "00-game.jpg"),
                   type="jpeg",
                   quality=65,
               )
 
-              entered = False
-              for index, (x, y) in enumerate(play_points, start=1):
+              opened = False
+              for index, (name, x, y) in enumerate(controls, start=1):
                   page.mouse.click(x, y)
-                  page.wait_for_timeout(2500)
+                  page.wait_for_timeout(2200)
                   current = page.screenshot(
-                      path=str(out / f"play-{index:02d}-{int(x)}-{int(y)}.jpg"),
+                      path=str(out / f"{index:02d}-{name}.jpg"),
                       type="jpeg",
                       quality=65,
                   )
-                  ratio = image_change_ratio(baseline, current)
-                  print(f"PLAY point {index}: ({x}, {y}) change={ratio:.6f}")
-                  if ratio >= 0.12:
-                      entered = True
+                  ratio = image_change_ratio(game, current)
+                  print(f"CONTROL {name}: ({x}, {y}) change={ratio:.6f}")
+                  if ratio >= 0.08:
+                      opened = True
+                      print(f"OPENED {name}")
                       break
 
-              if entered:
-                  page.wait_for_timeout(3500)
-                  page.screenshot(
-                      path=str(out / "10-game.jpg"),
-                      type="jpeg",
-                      quality=65,
-                  )
-                  # Left feature chest, selected directly from the current game screenshot.
-                  page.mouse.click(480.0, 165.0)
-                  page.wait_for_timeout(2500)
-                  page.screenshot(
-                      path=str(out / "11-left-feature.jpg"),
-                      type="jpeg",
-                      quality=65,
-                  )
-
+              print(f"opened={opened}")
               context.close()
               browser.close()
           PY
@@ -111,7 +99,7 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: bgaming-guided-play
+          name: bgaming-guided-controls
           path: artifacts
           if-no-files-found: warn
           retention-days: 7
