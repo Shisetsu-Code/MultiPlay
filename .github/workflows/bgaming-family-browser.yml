@@ -1,0 +1,101 @@
+name: BGaming family browser discovery
+
+on:
+  workflow_dispatch:
+  push:
+    branches: ["main"]
+    paths:
+      - ".github/workflows/bgaming-family-browser.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  discover:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - id: api-v2
+            family: api-v2
+            max_clicks: 48
+          - id: legacy-lines
+            family: legacy-lines
+            max_clicks: 48
+          - id: switchable-container
+            family: switchable-container
+            max_clicks: 64
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - run: python -m pip install --upgrade pip
+      - run: pip install -e ".[browser,dev]"
+      - run: python -m playwright install --with-deps chromium
+
+      - name: Fetch current BGaming catalog
+        run: |
+          mkdir -p artifacts/knowledge
+          multiplay bgaming-catalog --output artifacts/catalog.json
+
+      - name: Discover family actions through Playwright
+        run: |
+          multiplay bgaming-browser-discover \
+            --catalog artifacts/catalog.json \
+            --family "${{ matrix.family }}" \
+            --output-dir "artifacts/browser-${{ matrix.id }}" \
+            --max-probes 120 \
+            --probe-delay 1.0 \
+            --timeout 30 \
+            --max-clicks "${{ matrix.max_clicks }}" \
+            --settle-ms 4500 \
+            --knowledge-root artifacts/knowledge \
+            --output "artifacts/browser-result-${{ matrix.id }}.json"
+
+      - name: Show causal summary
+        if: always()
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          result = Path("artifacts/browser-result-${{ matrix.id }}.json")
+          if result.exists():
+              payload = json.loads(result.read_text())
+              print("selected:", payload.get("selected"))
+              browser = payload.get("browser") or {}
+              print("clicks_attempted:", browser.get("clicks_attempted"))
+              print("stateful_effects:", browser.get("stateful_effects"))
+
+          trace = Path("artifacts/browser-${{ matrix.id }}/trace.json")
+          if trace.exists():
+              payload = json.loads(trace.read_text())
+              for action in payload.get("actions", []):
+                  if action.get("stateful_event_count"):
+                      print(
+                          action.get("index"),
+                          action.get("candidate"),
+                          action.get("effect_signatures"),
+                      )
+          PY
+
+      - name: Upload sanitized browser evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: bgaming-family-${{ matrix.id }}
+          path: |
+            artifacts/browser-result-${{ matrix.id }}.json
+            artifacts/browser-${{ matrix.id }}/selection.json
+            artifacts/browser-${{ matrix.id }}/analysis.json
+            artifacts/browser-${{ matrix.id }}/trace.json
+            artifacts/browser-${{ matrix.id }}/screenshots
+            artifacts/knowledge
+          if-no-files-found: warn
+          retention-days: 7
