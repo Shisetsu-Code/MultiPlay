@@ -24,6 +24,11 @@ def main() -> int:
     analyze.add_argument("--knowledge-root", default="knowledge/providers")
     analyze.add_argument("--output")
 
+    catalog = sub.add_parser("bgaming-catalog", help="Fetch/parse the BGaming slots catalog")
+    catalog.add_argument("--url", default="https://bgaming.com/game-type/slots")
+    catalog.add_argument("--html")
+    catalog.add_argument("--output")
+
     finalize = sub.add_parser("finalize-provider", help="Close a provider analysis snapshot")
     finalize.add_argument("provider")
     finalize.add_argument("--knowledge-root", default="knowledge/providers")
@@ -33,6 +38,8 @@ def main() -> int:
     args = parser.parse_args()
     if args.command == "analyze-har":
         return _analyze(args)
+    if args.command == "bgaming-catalog":
+        return _bgaming_catalog(args)
     if args.command == "finalize-provider":
         return _finalize(args)
     raise AssertionError(args.command)
@@ -113,6 +120,26 @@ def _analyze(args: argparse.Namespace) -> int:
             environment=args.environment,
             records=records,
         )
+    return 0
+
+
+def _bgaming_catalog(args: argparse.Namespace) -> int:
+    from .providers.bgaming.catalog import (
+        catalog_json,
+        fetch_catalog_html,
+        parse_catalog_html,
+    )
+
+    html = (
+        Path(args.html).read_text(encoding="utf-8")
+        if args.html
+        else fetch_catalog_html(args.url)
+    )
+    rendered = catalog_json(parse_catalog_html(html, base_url=args.url))
+    if args.output:
+        Path(args.output).write_text(rendered, encoding="utf-8")
+    else:
+        print(rendered, end="")
     return 0
 
 
