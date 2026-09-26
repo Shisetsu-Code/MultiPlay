@@ -109,12 +109,19 @@ Representative successful evidence is needed for each family encountered:
 
 ### hyperhive-jsonrpc
 
-- init
-- successful base play
-- exact state_lock behavior
-- exact bet scalar/type
-- custom_req when present
-- purchased_feature variants when advertised
+Current base action now demonstrated through Playwright causal evidence:
+
+- init: demonstrated
+- successful base play: demonstrated
+- observed current base request: bet=2500, bet_type="bet"
+- provider blockers: none
+- MultiPlay status: WIRE_COMPLETE
+
+Still pending where advertised/encountered:
+
+- exact state_lock behavior on games that use it
+- custom_req variants
+- purchased_feature variants
 - continuation actions
 
 ### legacy-lines
@@ -163,7 +170,9 @@ No game title, button text, endpoint, payload or coordinate is hardcoded.
 
 Use interactive HAR capture only if the causal explorer cannot expose a required branch.
 
-Then capture/analyze representative games per detected runtime family.
+Current HyperHive base evidence is documented in HYPERHIVE-BASE-2026-09-26.md.
+
+Then capture/analyze only distinct runtime shapes/branches that remain unresolved.
 
 Suggested local flow:
 
