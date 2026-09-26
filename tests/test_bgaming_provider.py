@@ -243,3 +243,57 @@ def test_switchable_accepts_causal_get_followed_by_child_init():
         [ProtocolContract("http-command")],
     )
     assert not any(reason.startswith("switchable-container:") for reason in reasons)
+
+
+
+def test_hyperhive_advertised_purchase_domain_blocks_incomplete_coverage():
+    evidence = EvidenceBundle(
+        http=[
+            _http(
+                "init",
+                {
+                    "id": 0,
+                    "jsonrpc": "2.0",
+                    "method": "init",
+                    "params": {"token": "fresh"},
+                },
+                {
+                    "jsonrpc": "2.0",
+                    "id": 0,
+                    "result": {
+                        "config": {
+                            "purchased_features": [
+                                "buy_bonus",
+                                "super_bonus",
+                            ]
+                        }
+                    },
+                },
+            ),
+            _http(
+                "buy",
+                {
+                    "id": 1,
+                    "jsonrpc": "2.0",
+                    "method": "play",
+                    "params": {
+                        "token": "fresh",
+                        "req": {
+                            "bet": 100,
+                            "purchased_feature": "buy_bonus",
+                        },
+                    },
+                },
+                {"jsonrpc": "2.0", "id": 1, "result": {"final": True}},
+            ),
+        ]
+    )
+
+    reasons = BGamingProviderAdapter().validate(
+        evidence,
+        [ProtocolContract("jsonrpc-2.0")],
+    )
+    assert any(
+        "advertised purchase variants not demonstrated: super_bonus" in reason
+        for reason in reasons
+    )
