@@ -17,7 +17,6 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
-
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
@@ -26,74 +25,85 @@ jobs:
       - run: pip install -e ".[browser,dev]"
       - run: python -m playwright install --with-deps chromium
 
-      - name: Run screenshot-guided feature branches
+      - name: Probe visually selected PLAY points
         run: |
           mkdir -p artifacts
           python - <<'PY'
           from pathlib import Path
+
           from playwright.sync_api import sync_playwright
 
-          branches = [
-              ("left", 480.0, 165.0),
-              ("center", 720.0, 165.0),
-              ("right", 960.0, 165.0),
+          from multiplay.browser.explorer import image_change_ratio
+
+          out = Path("artifacts")
+          play_points = [
+              (600.0, 680.0),
+              (668.5, 675.0),
+              (720.0, 690.0),
+              (775.0, 680.0),
+              (840.0, 690.0),
           ]
 
           with sync_playwright() as p:
               browser = p.chromium.launch(headless=True)
+              context = browser.new_context(
+                  viewport={"width": 1440, "height": 900},
+                  device_scale_factor=1,
+              )
+              page = context.new_page()
+              page.goto(
+                  "https://demo.bgaming-network.com/play/BlingBlitzDiamondDrop/FUN",
+                  wait_until="domcontentloaded",
+                  timeout=60000,
+              )
 
-              for name, feature_x, feature_y in branches:
-                  out = Path("artifacts") / name
-                  out.mkdir(parents=True, exist_ok=True)
+              page.wait_for_timeout(25000)
+              page.screenshot(
+                  path=str(out / "00-audio.jpg"),
+                  type="jpeg",
+                  quality=65,
+              )
 
-                  context = browser.new_context(
-                      viewport={"width": 1440, "height": 900},
-                      device_scale_factor=1,
-                  )
-                  page = context.new_page()
-                  page.goto(
-                      "https://demo.bgaming-network.com/play/BlingBlitzDiamondDrop/FUN",
-                      wait_until="domcontentloaded",
-                      timeout=60000,
-                  )
+              page.mouse.click(504.0, 453.0)
+              page.wait_for_timeout(10000)
+              baseline = page.screenshot(
+                  path=str(out / "01-play-screen.jpg"),
+                  type="jpeg",
+                  quality=65,
+              )
 
-                  # The right-hand run previously still showed the loading splash at 12 s.
-                  page.wait_for_timeout(25000)
-                  page.screenshot(
-                      path=str(out / "00-before-audio-click.jpg"),
+              entered = False
+              for index, (x, y) in enumerate(play_points, start=1):
+                  page.mouse.click(x, y)
+                  page.wait_for_timeout(2500)
+                  current = page.screenshot(
+                      path=str(out / f"play-{index:02d}-{int(x)}-{int(y)}.jpg"),
                       type="jpeg",
                       quality=65,
                   )
+                  ratio = image_change_ratio(baseline, current)
+                  print(f"PLAY point {index}: ({x}, {y}) change={ratio:.6f}")
+                  if ratio >= 0.12:
+                      entered = True
+                      break
 
-                  # Visual center of the red X in the audio prompt.
-                  page.mouse.click(504.0, 453.0)
-                  page.wait_for_timeout(1800)
+              if entered:
+                  page.wait_for_timeout(3500)
                   page.screenshot(
-                      path=str(out / "01-after-audio.jpg"),
+                      path=str(out / "10-game.jpg"),
                       type="jpeg",
                       quality=65,
                   )
-
-                  # Visual center of the PLAY button.
-                  page.mouse.click(720.0, 690.0)
-                  page.wait_for_timeout(8000)
-                  page.screenshot(
-                      path=str(out / "02-after-play.jpg"),
-                      type="jpeg",
-                      quality=65,
-                  )
-
-                  # One of the three feature chests visible on the current game screen.
-                  page.mouse.click(feature_x, feature_y)
+                  # Left feature chest, selected directly from the current game screenshot.
+                  page.mouse.click(480.0, 165.0)
                   page.wait_for_timeout(2500)
                   page.screenshot(
-                      path=str(out / "03-after-feature.jpg"),
+                      path=str(out / "11-left-feature.jpg"),
                       type="jpeg",
                       quality=65,
                   )
 
-                  context.close()
-
+              context.close()
               browser.close()
           PY
 
@@ -101,7 +111,7 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: bgaming-guided-visual
+          name: bgaming-guided-play
           path: artifacts
           if-no-files-found: warn
           retention-days: 7
