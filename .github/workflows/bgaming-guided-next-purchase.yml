@@ -1,0 +1,95 @@
+name: BGaming guided next purchase UI
+
+on:
+  workflow_dispatch:
+  push:
+    branches: ["main"]
+    paths:
+      - ".github/workflows/bgaming-guided-next-purchase.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  guided:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - id: cats-love-yummy
+            url: https://cats-love-yummy.demo.bgaming-network.com/hyperhive
+            x: 720
+            y: 830
+          - id: chicken-fire
+            url: https://chicken-fire.demo.bgaming-network.com/hyperhive
+            x: 720
+            y: 835
+
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - run: python -m pip install --upgrade pip
+      - run: pip install -e ".[browser,dev]"
+      - run: python -m playwright install --with-deps chromium
+
+      - name: Click visually identified intro control
+        env:
+          TARGET_URL: ${{ matrix.url }}
+          CLICK_X: ${{ matrix.x }}
+          CLICK_Y: ${{ matrix.y }}
+          OUT_ID: ${{ matrix.id }}
+        run: |
+          mkdir -p "artifacts/$OUT_ID"
+          python - <<'PY'
+          import os
+          from pathlib import Path
+
+          from playwright.sync_api import sync_playwright
+
+          out = Path("artifacts") / os.environ["OUT_ID"]
+
+          with sync_playwright() as p:
+              browser = p.chromium.launch(headless=True)
+              context = browser.new_context(
+                  viewport={"width": 1440, "height": 900},
+                  device_scale_factor=1,
+              )
+              page = context.new_page()
+              page.goto(
+                  os.environ["TARGET_URL"],
+                  wait_until="domcontentloaded",
+                  timeout=60000,
+              )
+              page.wait_for_timeout(18000)
+              page.screenshot(
+                  path=str(out / "00-before.jpg"),
+                  type="jpeg",
+                  quality=65,
+              )
+              page.mouse.click(
+                  float(os.environ["CLICK_X"]),
+                  float(os.environ["CLICK_Y"]),
+              )
+              page.wait_for_timeout(7000)
+              page.screenshot(
+                  path=str(out / "01-main.jpg"),
+                  type="jpeg",
+                  quality=65,
+              )
+              context.close()
+              browser.close()
+          PY
+
+      - name: Upload screenshots
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: bgaming-guided-${{ matrix.id }}
+          path: artifacts/${{ matrix.id }}
+          if-no-files-found: warn
+          retention-days: 7
