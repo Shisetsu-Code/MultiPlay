@@ -10,7 +10,7 @@ requires-python = ">=3.12"
 dependencies = []
 
 [project.optional-dependencies]
-browser = ["playwright>=1.55,<2"]
+browser = ["playwright>=1.55,<2", "pillow>=11,<13"]
 dev = ["pytest>=8.3,<9", "ruff>=0.12,<1"]
 
 [project.scripts]
