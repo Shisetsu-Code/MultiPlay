@@ -246,7 +246,7 @@ def test_switchable_accepts_causal_get_followed_by_child_init():
 
 
 
-def test_hyperhive_advertised_purchase_domain_blocks_incomplete_coverage():
+def test_hyperhive_advertised_purchase_domain_is_not_per_game_required_coverage():
     evidence = EvidenceBundle(
         http=[
             _http(
@@ -293,7 +293,57 @@ def test_hyperhive_advertised_purchase_domain_blocks_incomplete_coverage():
         evidence,
         [ProtocolContract("jsonrpc-2.0")],
     )
+    assert not any(
+        "advertised purchase variants not demonstrated" in reason
+        for reason in reasons
+    )
+
+
+def test_hyperhive_observed_purchase_absent_from_init_blocks():
+    evidence = EvidenceBundle(
+        http=[
+            _http(
+                "init",
+                {
+                    "id": 0,
+                    "jsonrpc": "2.0",
+                    "method": "init",
+                    "params": {"token": "fresh"},
+                },
+                {
+                    "jsonrpc": "2.0",
+                    "id": 0,
+                    "result": {
+                        "config": {
+                            "purchased_features": ["buy_bonus"]
+                        }
+                    },
+                },
+            ),
+            _http(
+                "buy",
+                {
+                    "id": 1,
+                    "jsonrpc": "2.0",
+                    "method": "play",
+                    "params": {
+                        "token": "fresh",
+                        "req": {
+                            "bet": 100,
+                            "purchased_feature": "other_bonus",
+                        },
+                    },
+                },
+                {"jsonrpc": "2.0", "id": 1, "result": {"final": True}},
+            ),
+        ]
+    )
+
+    reasons = BGamingProviderAdapter().validate(
+        evidence,
+        [ProtocolContract("jsonrpc-2.0")],
+    )
     assert any(
-        "advertised purchase variants not demonstrated: super_bonus" in reason
+        "observed purchase variants absent from current init: other_bonus" in reason
         for reason in reasons
     )

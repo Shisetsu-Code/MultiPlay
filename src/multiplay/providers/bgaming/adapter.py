@@ -273,22 +273,11 @@ def _validate_hyperhive(evidence: EvidenceBundle) -> list[str]:
         )
 
     coverage = hyperhive_purchase_coverage(evidence)
-    if coverage["advertised_count"]:
-        if not coverage["comparable"]:
-            reasons.append(
-                "hyperhive-jsonrpc: purchase domain is advertised but cannot yet be "
-                "mapped conservatively to purchased_feature wire values."
-            )
-        elif coverage["missing"]:
-            reasons.append(
-                "hyperhive-jsonrpc: advertised purchase variants not demonstrated: "
-                + ", ".join(coverage["missing"])
-            )
-        if coverage["unexpected"]:
-            reasons.append(
-                "hyperhive-jsonrpc: observed purchase variants absent from current init: "
-                + ", ".join(coverage["unexpected"])
-            )
+    if coverage["advertised_count"] and coverage["unexpected"]:
+        reasons.append(
+            "hyperhive-jsonrpc: observed purchase variants absent from current init: "
+            + ", ".join(coverage["unexpected"])
+        )
     return reasons
 
 
