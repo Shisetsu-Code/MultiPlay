@@ -6,7 +6,6 @@ from typing import Any
 
 from ...models import EvidenceBundle
 
-
 _SENSITIVE_KEYS = {
     "authorization",
     "cookie",
@@ -129,7 +128,9 @@ def apply_hyperhive_template(
     if template.state_lock_present:
         live_lock = fresh_params.get("state_lock")
         if live_lock is None:
-            out["state_lock"] = "" if template.state_lock_initially_empty else ""
+            if not template.state_lock_initially_empty:
+                raise ValueError("HyperHive replay requires a fresh state_lock.")
+            out["state_lock"] = ""
         else:
             out["state_lock"] = live_lock
     else:

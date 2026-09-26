@@ -146,3 +146,24 @@ def test_purchase_variant_is_selected_by_observed_discriminators():
     assert selected is not None
     assert selected.req_static["purchased_feature"] == "buy_bonus"
     assert selected.req_static["custom_req"]["isNormalBuy"] is True
+
+
+def test_nonempty_observed_lock_requires_fresh_lock():
+    evidence = EvidenceBundle(
+        http=[
+            _play(
+                {
+                    "token": "captured",
+                    "req": {"bet": 100, "bet_type": "bet"},
+                    "state_lock": "captured-lock",
+                }
+            )
+        ]
+    )
+    template = extract_hyperhive_templates(evidence)[0]
+
+    with pytest.raises(ValueError, match="fresh state_lock"):
+        apply_hyperhive_template(
+            {"token": "fresh", "req": {"bet": 200}},
+            template,
+        )
