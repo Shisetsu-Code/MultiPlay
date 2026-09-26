@@ -13,6 +13,7 @@ from .classify import (
     UNKNOWN,
     classify_bgaming,
 )
+from .capabilities import hyperhive_purchase_coverage
 from .client_contracts import discover_client_action_contracts
 from .contracts import CHOICE_COMMAND_FIELDS, KNOWN_API_V2_COMMANDS
 from .wire import (
@@ -270,6 +271,24 @@ def _validate_hyperhive(evidence: EvidenceBundle) -> list[str]:
             "hyperhive-jsonrpc: purchased_feature appears in current evidence but no "
             "play request demonstrates the purchase wire."
         )
+
+    coverage = hyperhive_purchase_coverage(evidence)
+    if coverage["advertised_count"]:
+        if not coverage["comparable"]:
+            reasons.append(
+                "hyperhive-jsonrpc: purchase domain is advertised but cannot yet be "
+                "mapped conservatively to purchased_feature wire values."
+            )
+        elif coverage["missing"]:
+            reasons.append(
+                "hyperhive-jsonrpc: advertised purchase variants not demonstrated: "
+                + ", ".join(coverage["missing"])
+            )
+        if coverage["unexpected"]:
+            reasons.append(
+                "hyperhive-jsonrpc: observed purchase variants absent from current init: "
+                + ", ".join(coverage["unexpected"])
+            )
     return reasons
 
 
