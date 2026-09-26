@@ -20,7 +20,7 @@ jobs:
           python-version: "3.12"
       - run: python -m pip install playwright
       - run: python -m playwright install --with-deps chromium
-      - name: Confirm audio then PLAY
+      - name: Focus iframe then PLAY
         run: |
           mkdir -p artifacts
           python - <<'PY'
@@ -35,15 +35,18 @@ jobs:
                   timeout=60000,
               )
               page.wait_for_timeout(12000)
-              page.screenshot(path="artifacts/00-audio.jpg", type="jpeg", quality=65)
 
               page.mouse.click(940, 455)
               page.wait_for_timeout(4000)
-              page.screenshot(path="artifacts/01-audio-confirmed.jpg", type="jpeg", quality=65)
+
+              page.screenshot(path="artifacts/00-before-play.jpg", type="jpeg", quality=65)
 
               page.mouse.click(720, 690)
+              page.wait_for_timeout(800)
+              page.mouse.click(720, 690)
+
               page.wait_for_timeout(6000)
-              page.screenshot(path="artifacts/02-after-play.jpg", type="jpeg", quality=65)
+              page.screenshot(path="artifacts/01-after-double-click.jpg", type="jpeg", quality=65)
 
               browser.close()
           PY
