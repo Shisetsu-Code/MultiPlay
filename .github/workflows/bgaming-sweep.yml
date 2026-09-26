@@ -20,7 +20,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 180
     env:
-      SWEEP_LIMIT: ${{ inputs.limit || '0' }}
+      SWEEP_LIMIT: ${{ inputs.limit || '30' }}
     steps:
       - uses: actions/checkout@v4
 
@@ -41,8 +41,8 @@ jobs:
           multiplay bgaming-sweep \
             --catalog artifacts/catalog.json \
             --limit "$SWEEP_LIMIT" \
-            --delay 0.25 \
-            --timeout 30 \
+            --delay 0.10 \
+            --timeout 15 \
             --knowledge-root artifacts/knowledge \
             --output artifacts/sweep.json
 

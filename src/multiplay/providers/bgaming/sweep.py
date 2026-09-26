@@ -70,6 +70,7 @@ def sweep_catalog_payload(
         availability_name = str(record.get("availability") or "UNKNOWN")
         availability[availability_name] += 1
 
+        print(f"[{index + 1}/{len(records)}] BGaming probe {slug or name}", flush=True)
         row: dict[str, Any] = {
             "slug": slug,
             "name": name,
@@ -87,6 +88,7 @@ def sweep_catalog_payload(
             )
             rows.append(row)
             failures["MissingTarget"] += 1
+            print("  -> ERROR MissingTarget", flush=True)
             continue
 
         try:
@@ -104,6 +106,7 @@ def sweep_catalog_payload(
                 }
             )
             rows.append(row)
+            print(f"  -> ERROR {error_type}: {exc}", flush=True)
         else:
             runtime_families = _runtime_families(result.provider_decision)
             for family in runtime_families:
@@ -122,6 +125,8 @@ def sweep_catalog_payload(
                 }
             )
             rows.append(row)
+            family_label = ",".join(runtime_families) if runtime_families else "unclassified"
+            print(f"  -> {status} [{family_label}]", flush=True)
 
             source_ref = f"probe:bgaming:{slug or index}"
             endpoint_records = (
