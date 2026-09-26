@@ -307,7 +307,17 @@ def event_is_stateful(event: dict[str, Any]) -> bool:
         return True
     if kind != "http_request":
         return False
-    return str(event.get("method") or "").upper() not in {"", "GET", "HEAD", "OPTIONS"}
+
+    method = str(event.get("method") or "").upper()
+    if method not in {"", "GET", "HEAD", "OPTIONS"}:
+        return True
+
+    # A click-triggered XHR/fetch GET can change provider state (for example,
+    # selecting a server-side variant). Static asset/document GETs stay excluded.
+    return (
+        method == "GET"
+        and str(event.get("resource_type") or "").casefold() in {"xhr", "fetch"}
+    )
 
 
 def event_signature(event: dict[str, Any]) -> str:
