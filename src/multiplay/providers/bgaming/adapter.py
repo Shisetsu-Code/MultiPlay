@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from typing import Any
-from urllib.parse import urlsplit
+from urllib.parse import parse_qs, urlsplit
 
 from ...models import AnalysisResult, EndpointRecord, EvidenceBundle, ProtocolContract
 from ..base import ProviderAdapter, ProviderDecision
@@ -278,25 +278,64 @@ def _validate_switchable(evidence: EvidenceBundle) -> list[str]:
     if not evidence_contains_key(evidence, "lobby_launch_url"):
         reasons.append("switchable-container: lobby_launch_url is not demonstrated.")
 
-    observed = False
-    for exchange in evidence.http:
-        body = exchange.response_body
-        if not isinstance(body, dict):
+    if not _switchable_wire_observed(evidence):
+        reasons.append(
+            "switchable-container: variant switch GET followed by child init is not demonstrated."
+        )
+    return reasons
+
+
+def _switchable_wire_observed(evidence: EvidenceBundle) -> bool:
+    for index, exchange in enumerate(evidence.http):
+        if exchange.method.upper() != "GET":
             continue
-        path = urlsplit(exchange.url).path.casefold()
+        parsed = urlsplit(exchange.url)
+        if not is_bgaming_host((parsed.hostname or "").casefold()):
+            continue
+        query = parse_qs(parsed.query, keep_blank_values=False)
+        game = str((query.get("game") or [""])[0]).strip()
+        source = str((query.get("from") or [""])[0]).strip()
+        if not game or not source:
+            continue
+        if exchange.response_status is None or not 200 <= exchange.response_status < 400:
+            continue
+
+        body = exchange.response_body
         if (
-            ("lobby" in path or "switch" in path)
+            isinstance(body, dict)
             and isinstance(body.get("identifier"), str)
             and body.get("api")
             and body.get("csrfTokenHeaderName")
         ):
-            observed = True
-            break
-    if not observed:
-        reasons.append(
-            "switchable-container: variant switch response (identifier/api/CSRF) is not demonstrated."
-        )
-    return reasons
+            return True
+
+        if _child_init_after(evidence, index, game):
+            return True
+    return False
+
+
+def _child_init_after(
+    evidence: EvidenceBundle,
+    switch_index: int,
+    target_identifier: str,
+) -> bool:
+    wanted = target_identifier.casefold()
+    for exchange in evidence.http[switch_index + 1 :]:
+        body = exchange.request_body
+        if (
+            exchange.method.upper() != "POST"
+            or not isinstance(body, dict)
+            or str(body.get("command") or "") != "init"
+        ):
+            continue
+        path_parts = {
+            part.casefold()
+            for part in urlsplit(exchange.url).path.split("/")
+            if part
+        }
+        if wanted in path_parts:
+            return True
+    return False
 
 
 def _choice_wire_observed(exchanges: list[Any], command: str, field: str) -> bool:
