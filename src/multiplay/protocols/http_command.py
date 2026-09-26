@@ -21,7 +21,11 @@ class HttpCommandProtocol(ProtocolAdapter):
     family = "http-command"
 
     def detect(self, evidence: EvidenceBundle) -> ProtocolDetection:
-        stateful = [x for x in evidence.http if x.method not in {"GET", "HEAD", "OPTIONS"}]
+        stateful = [
+            x
+            for x in evidence.http
+            if x.method not in {"GET", "HEAD", "OPTIONS"} and not _is_jsonrpc(x.request_body)
+        ]
         if not stateful:
             return ProtocolDetection(self.family, 0.0, ("no stateful HTTP exchange",))
 
@@ -36,7 +40,7 @@ class HttpCommandProtocol(ProtocolAdapter):
     def build(self, evidence: EvidenceBundle) -> ProtocolContract:
         groups: dict[tuple[str, str, str | None], list[Any]] = defaultdict(list)
         for exchange in evidence.http:
-            if exchange.method in {"GET", "HEAD", "OPTIONS"}:
+            if exchange.method in {"GET", "HEAD", "OPTIONS"} or _is_jsonrpc(exchange.request_body):
                 continue
             endpoint = _endpoint(exchange.url)
             groups[(exchange.method, endpoint, _action(exchange.request_body))].append(exchange)
@@ -73,6 +77,14 @@ class HttpCommandProtocol(ProtocolAdapter):
         if not contract.transitions:
             contract.unresolved.append("no stateful HTTP transitions")
         return contract
+
+
+def _is_jsonrpc(body: Any) -> bool:
+    return (
+        isinstance(body, dict)
+        and isinstance(body.get("method"), str)
+        and ("id" in body or body.get("jsonrpc") == "2.0")
+    )
 
 
 def _endpoint(url: str) -> str:
