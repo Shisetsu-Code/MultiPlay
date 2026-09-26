@@ -5,6 +5,7 @@ from urllib.parse import parse_qs, urlsplit
 
 from ...models import AnalysisResult, EndpointRecord, EvidenceBundle, ProtocolContract
 from ..base import ProviderAdapter, ProviderDecision
+from .capabilities import hyperhive_purchase_coverage
 from .classify import (
     API_V2,
     HYPERHIVE_JSONRPC,
@@ -13,7 +14,6 @@ from .classify import (
     UNKNOWN,
     classify_bgaming,
 )
-from .capabilities import hyperhive_purchase_coverage
 from .client_contracts import discover_client_action_contracts
 from .contracts import CHOICE_COMMAND_FIELDS, KNOWN_API_V2_COMMANDS
 from .wire import (
