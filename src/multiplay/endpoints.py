@@ -15,7 +15,7 @@ _SENSITIVE_RE = re.compile(
     re.IGNORECASE,
 )
 _DYNAMIC_RE = re.compile(
-    r"(?:^|_)(?:id|round_id|action_id|state_lock|nonce|timestamp|bet|stake|amount|wager)(?:$|_)",
+    r"(?:^|_)(?:id|round_id|action_id|state_lock|client_seed|nonce|timestamp|bet|stake|amount|wager)(?:$|_)",
     re.IGNORECASE,
 )
 

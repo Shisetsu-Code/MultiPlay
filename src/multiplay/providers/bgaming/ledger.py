@@ -60,6 +60,8 @@ def build_bgaming_endpoint_records(
             ):
                 record.action = f"rpc:{method}"
 
+        if family == LEGACY_LINES and record.action == "spin":
+            _normalize_legacy_spin_record(record)
         record.notes = list(dict.fromkeys(record.notes))
 
     records.extend(
@@ -88,7 +90,7 @@ def _record_family(
                 if isinstance(sample.request_body, dict)
                 else None
             )
-            if LEGACY_LINES in families and isinstance(options, dict) and "lines" in options:
+            if LEGACY_LINES in families and isinstance(options, dict) and "bets" in options:
                 return LEGACY_LINES
             return API_V2
     if SWITCHABLE_CONTAINER in families:
@@ -119,6 +121,28 @@ def _replay_notes(family: str) -> list[str]:
             "live_replay=use fresh identifier/api/CSRF returned by switch",
         ]
     return []
+
+
+def _normalize_legacy_spin_record(record: EndpointRecord) -> None:
+    request = record.request_format
+    if not isinstance(request, dict):
+        return
+    options = request.get("options")
+    if isinstance(options, dict):
+        bets = options.get("bets")
+        if isinstance(bets, dict):
+            options["bets"] = {
+                str(key): "<dynamic:line_bet>"
+                for key in bets
+            }
+            if "$.options.bets" not in record.dynamic_fields:
+                record.dynamic_fields.append("$.options.bets")
+    extra = request.get("extra_data")
+    if isinstance(extra, dict) and "client_seed" in extra:
+        extra["client_seed"] = "<dynamic:client_seed>"
+        if "$.extra_data.client_seed" not in record.dynamic_fields:
+            record.dynamic_fields.append("$.extra_data.client_seed")
+    record.dynamic_fields.sort()
 
 
 def _switch_records(

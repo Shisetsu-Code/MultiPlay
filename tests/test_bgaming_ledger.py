@@ -103,3 +103,54 @@ def test_hyperhive_ledger_keeps_replay_requirements():
     assert "provider_family=hyperhive-jsonrpc" in play.notes
     assert play.request_format["params"]["token"] == "<redacted>"
     assert play.request_format["params"]["req"]["bet"] == "<dynamic:bet>"
+
+
+def test_legacy_spin_ledger_keeps_family_and_dynamic_line_bets():
+    evidence = EvidenceBundle(
+        http=[
+            _exchange(
+                "init",
+                "POST",
+                "https://demo.bgaming-network.com/api/Catdiana/12345/session",
+                {"command": "init", "extra_data": {"round_series_id": 1}},
+                {
+                    "options": {"line_bets": [1, 2], "lines": [[0], [1], [2]]},
+                    "game": {"state": "closed"},
+                    "balance": 100,
+                    "available_commands": ["spin"],
+                },
+            ),
+            _exchange(
+                "spin",
+                "POST",
+                "https://demo.bgaming-network.com/api/Catdiana/12345/session",
+                {
+                    "command": "spin",
+                    "options": {"bets": {"0": 1, "1": 1, "2": 1}},
+                    "extra_data": {"round_series_id": 1, "client_seed": 42},
+                },
+                {
+                    "bets": {"lines": {"0": 1, "1": 1, "2": 1}},
+                    "game": {"state": "closed", "action": "spin"},
+                    "balance": 99,
+                    "available_commands": ["spin"],
+                },
+            ),
+        ]
+    )
+    analysis = MultiProtocolAnalyzer().analyze(evidence, provider="bgaming")
+    records = BGamingProviderAdapter().endpoint_records(
+        evidence,
+        analysis,
+        source_ref="fixture:legacy",
+        environment="demo",
+    )
+
+    spin = next(item for item in records if item.action == "spin")
+    assert "provider_family=legacy-lines" in spin.notes
+    assert spin.request_format["options"]["bets"] == {
+        "0": "<dynamic:line_bet>",
+        "1": "<dynamic:line_bet>",
+        "2": "<dynamic:line_bet>",
+    }
+    assert spin.request_format["extra_data"]["client_seed"] == "<dynamic:client_seed>"

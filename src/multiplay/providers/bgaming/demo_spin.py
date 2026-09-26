@@ -15,7 +15,7 @@ from .bootstrap import (
     sanitize_session_url,
 )
 from .classify import API_V2, LEGACY_LINES
-from .probe import _HttpSession, _allowed_source, _is_hyperhive_url, _resolve_demo
+from .probe import _allowed_source, _HttpSession, _is_hyperhive_url, _resolve_demo
 from .wire import is_legacy_init, is_switchable_init
 
 
@@ -170,7 +170,7 @@ def run_demo_base_spin(
 def resolve_base_bet(init_data: dict[str, Any]) -> int | float:
     options = init_data.get("options")
     if not isinstance(options, dict):
-        raise ValueError("BGaming init has no options object.")
+        raise TypeError("BGaming init has no options object.")
 
     default = options.get("default_bet")
     if _positive_number(default):
@@ -193,7 +193,7 @@ def legacy_spin_options(
 ) -> tuple[float, int, dict[str, dict[str, int | float]]]:
     options = init_data.get("options")
     if not isinstance(options, dict):
-        raise ValueError("BGaming legacy init has no options object.")
+        raise TypeError("BGaming legacy init has no options object.")
     line_bets = options.get("line_bets")
     lines = options.get("lines")
     if not isinstance(line_bets, list) or not isinstance(lines, list) or not lines:
