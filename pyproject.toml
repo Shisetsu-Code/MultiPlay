@@ -1,0 +1,28 @@
+[build-system]
+requires = ["hatchling>=1.27"]
+build-backend = "hatchling.build"
+
+[project]
+name = "multiplay"
+version = "0.1.0"
+description = "Provider-isolated, multi-protocol game analysis and validation engine"
+requires-python = ">=3.12"
+dependencies = []
+
+[project.optional-dependencies]
+browser = ["playwright>=1.55,<2"]
+dev = ["pytest>=8.3,<9", "ruff>=0.12,<1"]
+
+[project.scripts]
+multiplay = "multiplay.cli:main"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/multiplay"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src"]
+
+[tool.ruff]
+target-version = "py312"
+line-length = 100
