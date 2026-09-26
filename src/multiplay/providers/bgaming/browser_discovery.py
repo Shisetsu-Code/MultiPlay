@@ -44,6 +44,7 @@ def discover_family_with_browser(
     attempts: list[dict[str, Any]] = []
     selected: dict[str, Any] | None = None
     launch_url = ""
+    selection_path = root / "selection.json"
 
     for index, record in enumerate(records[: max(1, int(max_probes))], start=1):
         target = str(
@@ -69,6 +70,7 @@ def discover_family_with_browser(
                     "error": str(exc),
                 }
             )
+            _write_selection(selection_path, selected, attempts)
         else:
             families = _families(analysis.provider_decision)
             attempts.append(
@@ -79,6 +81,7 @@ def discover_family_with_browser(
                     "runtime_families": families,
                 }
             )
+            _write_selection(selection_path, selected, attempts)
             if wanted in families:
                 capabilities = {}
                 if require_purchases:
@@ -89,6 +92,7 @@ def discover_family_with_browser(
                         settle_ms=settle_ms,
                     )
                     attempts[-1]["capabilities"] = capabilities
+                    _write_selection(selection_path, selected, attempts)
                     if not capabilities.get("has_purchases"):
                         if probe_delay_s > 0:
                             time.sleep(float(probe_delay_s))
@@ -102,6 +106,7 @@ def discover_family_with_browser(
                     "capabilities": capabilities,
                 }
                 launch_url = probe.metadata.launch_url
+                _write_selection(selection_path, selected, attempts)
                 break
 
         if probe_delay_s > 0:
@@ -113,15 +118,7 @@ def discover_family_with_browser(
             f"in {min(len(records), max(1, int(max_probes)))} probes."
         )
 
-    (root / "selection.json").write_text(
-        json.dumps(
-            {"selected": selected, "attempts": attempts},
-            ensure_ascii=False,
-            indent=2,
-        )
-        + "\n",
-        encoding="utf-8",
-    )
+    _write_selection(selection_path, selected, attempts)
 
     browser = explore_browser(
         url=launch_url,
@@ -170,6 +167,26 @@ def discover_family_with_browser(
         result["browser"]["har_path"] = None
     return result
 
+
+
+
+def _write_selection(
+    path: Path,
+    selected: dict[str, Any] | None,
+    attempts: list[dict[str, Any]],
+) -> None:
+    path.write_text(
+        json.dumps(
+            {
+                "selected": selected,
+                "attempts": attempts,
+            },
+            ensure_ascii=False,
+            indent=2,
+        )
+        + "\n",
+        encoding="utf-8",
+    )
 
 
 def _observe_hyperhive_init_capabilities(
