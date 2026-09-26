@@ -20,7 +20,7 @@ jobs:
           python-version: "3.12"
       - run: python -m pip install playwright
       - run: python -m playwright install --with-deps chromium
-      - name: Click inner game element
+      - name: Human-like PLAY click
         run: |
           mkdir -p artifacts
           python - <<'PY'
@@ -36,41 +36,20 @@ jobs:
               )
               page.wait_for_timeout(10000)
 
-              page.mouse.click(505, 455)
+              page.mouse.move(505, 455)
+              page.wait_for_timeout(250)
+              page.mouse.down()
+              page.wait_for_timeout(150)
+              page.mouse.up()
               page.wait_for_timeout(3000)
-
-              inner = next(
-                  f for f in page.frames
-                  if "bling-blitz-diamond-drop.demo.bgaming-network.com/?token=" in f.url
-              )
-              print("inner:", inner.url)
-              print("elements:", inner.evaluate("""() => document.elementsFromPoint(720, 690).map((el, i) => ({
-                  i,
-                  tag: el.tagName,
-                  id: el.id || '',
-                  cls: el.className || '',
-                  pointer: getComputedStyle(el).pointerEvents,
-                  z: getComputedStyle(el).zIndex
-              }))"""))
 
               page.screenshot(path="artifacts/before.jpg", type="jpeg", quality=65)
 
-              inner.evaluate("""() => {
-                  const x = 720, y = 690;
-                  const el = document.elementFromPoint(x, y);
-                  if (!el) throw new Error('No inner element at PLAY');
-                  for (const type of ['pointermove','pointerdown','mousedown','pointerup','mouseup','click']) {
-                    const Ctor = type.startsWith('pointer') ? PointerEvent : MouseEvent;
-                    el.dispatchEvent(new Ctor(type, {
-                      bubbles: true,
-                      cancelable: true,
-                      clientX: x,
-                      clientY: y,
-                      button: 0,
-                      buttons: type.includes('down') ? 1 : 0
-                    }));
-                  }
-              }""")
+              page.mouse.move(720, 690, steps=12)
+              page.wait_for_timeout(500)
+              page.mouse.down()
+              page.wait_for_timeout(200)
+              page.mouse.up()
 
               page.wait_for_timeout(5000)
               page.screenshot(path="artifacts/after.jpg", type="jpeg", quality=65)
