@@ -30,6 +30,7 @@ Implemented and covered by CI:
 - ephemeral demo token protection
 - CLI commands:
   - multiplay bgaming-catalog
+  - multiplay bgaming-probe
   - multiplay capture-har
   - multiplay analyze-dir
 - recursive batch HAR ingestion with consolidated endpoint knowledge
@@ -112,6 +113,12 @@ Only when encountered:
 Generate the current target corpus:
 
     multiplay bgaming-catalog --output bgaming-catalog.json
+
+Then run the non-wagering bootstrap/init probe against public/detail or demo URLs where possible:
+
+    multiplay bgaming-probe <url> --output captures/bgaming/<game>-probe.json
+
+Use interactive HAR capture only for families/branches that still require runtime action evidence.
 
 Then capture/analyze representative games per detected runtime family.
 

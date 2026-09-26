@@ -22,6 +22,15 @@ def main() -> int:
     analyze.add_argument("--knowledge-root", default="knowledge/providers")
     analyze.add_argument("--output")
 
+    probe = sub.add_parser(
+        "bgaming-probe",
+        help="Resolve a BGaming demo and run a non-wagering bootstrap/init probe",
+    )
+    probe.add_argument("url")
+    probe.add_argument("--timeout", type=float, default=30.0)
+    probe.add_argument("--knowledge-root", default="knowledge/providers")
+    probe.add_argument("--output")
+
     capture = sub.add_parser(
         "capture-har",
         help="Open a headed browser and record an interactive HAR session",
@@ -53,6 +62,8 @@ def main() -> int:
     args = parser.parse_args()
     if args.command == "analyze-har":
         return _analyze(args)
+    if args.command == "bgaming-probe":
+        return _bgaming_probe(args)
     if args.command == "capture-har":
         return _capture_har(args)
     if args.command == "analyze-dir":
@@ -94,6 +105,42 @@ def _analyze(args: argparse.Namespace) -> int:
             environment=args.environment,
             records=records,
         )
+    return 0
+
+
+def _bgaming_probe(args: argparse.Namespace) -> int:
+    from .providers.bgaming.probe import probe_bgaming_demo
+
+    probe = probe_bgaming_demo(args.url, timeout_s=args.timeout)
+    result = analyze_evidence(probe.evidence, provider="bgaming")
+    source_ref = "probe:" + probe.metadata.to_dict()["launch_url"]
+    records = (
+        result.provider_adapter.endpoint_records(
+            probe.evidence,
+            result.analysis,
+            source_ref=source_ref,
+            environment="demo",
+        )
+        if result.provider_adapter is not None
+        else None
+    )
+    ProviderKnowledgeStore(args.knowledge_root).record_analysis(
+        provider="bgaming",
+        analysis=result.analysis,
+        evidence=probe.evidence,
+        source_ref=source_ref,
+        environment="demo",
+        records=records,
+    )
+    payload = {
+        "probe": probe.metadata.to_dict(),
+        "analysis": result.to_dict(),
+    }
+    rendered = json.dumps(payload, indent=2, ensure_ascii=False) + "\n"
+    if args.output:
+        Path(args.output).write_text(rendered, encoding="utf-8")
+    else:
+        print(rendered, end="")
     return 0
 
 
