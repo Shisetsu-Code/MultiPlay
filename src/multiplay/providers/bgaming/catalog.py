@@ -305,7 +305,7 @@ def _fetch_catalog_page(
     with urlopen(request, timeout=max(1.0, float(timeout_s))) as response:
         payload = json.loads(response.read().decode("utf-8", errors="replace"))
     if not isinstance(payload, dict):
-        raise ValueError("BGaming catalog REST response is not an object.")
+        raise TypeError("BGaming catalog REST response is not an object.")
     return payload
 
 
