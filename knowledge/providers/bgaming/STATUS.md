@@ -33,6 +33,7 @@ Implemented and covered by CI:
   - multiplay capture-har
   - multiplay analyze-dir
 - recursive batch HAR ingestion with consolidated endpoint knowledge
+- batch summaries grouped by runtime family and repeated semantic blockers
 - headed manual browser evidence capture without provider-control hardcoding
 
 ## Historical knowledge preserved

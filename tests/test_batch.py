@@ -69,6 +69,9 @@ def test_batch_analyzes_multiple_hars_and_builds_provider_knowledge(tmp_path):
     assert report["har_count"] == 2
     assert report["error_counts"] == {}
     assert sum(report["status_counts"].values()) == 2
+    assert report["runtime_family_counts"] == {"api-v2": 2}
+    assert report["blocker_counts"] == {}
+    assert all(item["runtime_families"] == ["api-v2"] for item in report["results"])
     assert (knowledge / "bgaming" / "endpoints.json").is_file()
     assert len(list((knowledge / "bgaming" / "runs").glob("*.json"))) == 2
 

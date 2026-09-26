@@ -31,6 +31,8 @@ def analyze_har_directory(
     rows: list[dict[str, Any]] = []
     statuses: Counter[str] = Counter()
     errors: Counter[str] = Counter()
+    runtime_families: Counter[str] = Counter()
+    blockers: Counter[str] = Counter()
 
     store = ProviderKnowledgeStore(knowledge_root)
 
@@ -56,9 +58,23 @@ def analyze_har_directory(
 
         payload = result.to_dict()
         statuses[result.analysis.status.value] += 1
+
+        decision = result.provider_decision
+        capture_families = sorted(
+            {
+                reason.removeprefix("runtime:")
+                for reason in (decision.reasons if decision is not None else ())
+                if reason.startswith("runtime:")
+            }
+        )
+        for family in capture_families:
+            runtime_families[family] += 1
+        for blocker in result.provider_blockers or []:
+            blockers[blocker] += 1
         row = {
             "path": relative,
             "source_ref": source_ref,
+            "runtime_families": capture_families,
             **payload,
         }
         rows.append(row)
@@ -91,6 +107,10 @@ def analyze_har_directory(
         "har_count": len(paths),
         "processed": len(rows),
         "status_counts": dict(sorted(statuses.items())),
+        "runtime_family_counts": dict(sorted(runtime_families.items())),
+        "blocker_counts": dict(
+            sorted(blockers.items(), key=lambda item: (-item[1], item[0]))
+        ),
         "error_counts": dict(sorted(errors.items())),
         "results": rows,
     }
