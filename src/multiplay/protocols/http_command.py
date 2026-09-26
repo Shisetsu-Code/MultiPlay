@@ -38,15 +38,25 @@ class HttpCommandProtocol(ProtocolAdapter):
         )
 
     def build(self, evidence: EvidenceBundle) -> ProtocolContract:
-        groups: dict[tuple[str, str, str | None], list[Any]] = defaultdict(list)
+        groups: dict[
+            tuple[str, str, str | None, tuple[Any, ...]],
+            list[Any],
+        ] = defaultdict(list)
         for exchange in evidence.http:
             if exchange.method in {"GET", "HEAD", "OPTIONS"} or _is_jsonrpc(exchange.request_body):
                 continue
             endpoint = _endpoint(exchange.url)
-            groups[(exchange.method, endpoint, _action(exchange.request_body))].append(exchange)
+            groups[
+                (
+                    exchange.method,
+                    endpoint,
+                    _action(exchange.request_body),
+                    _shape_signature(exchange.request_body),
+                )
+            ].append(exchange)
 
         contract = ProtocolContract(family=self.family)
-        for (method, endpoint, action), samples in sorted(groups.items()):
+        for (method, endpoint, action, _request_shape), samples in sorted(groups.items()):
             req_shapes = {_shape_keys(x.request_body) for x in samples}
             resp_shapes = {_shape_keys(x.response_body) for x in samples}
             deterministic = (
@@ -115,3 +125,35 @@ def _shape_keys(value: Any) -> tuple[str, ...] | str:
     if isinstance(value, list):
         return "list"
     return type(value).__name__
+
+
+
+def _shape_signature(value: Any) -> tuple[Any, ...]:
+    if isinstance(value, dict):
+        return (
+            "object",
+            tuple(
+                (
+                    str(key),
+                    _shape_signature(child),
+                )
+                for key, child in sorted(value.items(), key=lambda item: str(item[0]))
+            ),
+        )
+    if isinstance(value, list):
+        element_shapes = sorted(
+            {
+                repr(_shape_signature(item))
+                for item in value[:8]
+            }
+        )
+        return ("array", tuple(element_shapes))
+    if isinstance(value, bool):
+        return ("bool",)
+    if isinstance(value, (int, float)):
+        return ("number",)
+    if isinstance(value, str):
+        return ("string",)
+    if value is None:
+        return ("null",)
+    return (type(value).__name__,)
