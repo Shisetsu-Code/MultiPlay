@@ -26,18 +26,25 @@ def hyperhive_init_capabilities(evidence: EvidenceBundle) -> dict[str, Any]:
         if isinstance(raw, list):
             count = len(raw)
             shape = "list"
+            domain = [_safe_capability_value(item) for item in raw]
         elif isinstance(raw, dict):
             count = len(raw)
             shape = "object"
+            domain = {
+                str(key): _safe_capability_value(value)
+                for key, value in raw.items()
+            }
         else:
             count = 0
             shape = type(raw).__name__ if raw is not None else "null"
+            domain = []
 
         return {
             "init_observed": True,
             "has_purchases": count > 0,
             "purchase_count": count,
             "purchased_features_shape": shape,
+            "purchased_features": domain,
             "default_bet_present": config.get("default_bet") is not None,
             "bet_limits_present": isinstance(config.get("bet_limits"), list),
         }
@@ -47,6 +54,37 @@ def hyperhive_init_capabilities(evidence: EvidenceBundle) -> dict[str, Any]:
         "has_purchases": False,
         "purchase_count": 0,
         "purchased_features_shape": "unknown",
+        "purchased_features": [],
         "default_bet_present": False,
         "bet_limits_present": False,
     }
+
+
+
+_SENSITIVE_PARTS = {
+    "authorization",
+    "cookie",
+    "csrf",
+    "password",
+    "secret",
+    "session",
+    "token",
+}
+
+
+def _safe_capability_value(value: Any) -> Any:
+    if isinstance(value, dict):
+        out = {}
+        for key, child in value.items():
+            text = str(key)
+            lowered = text.casefold()
+            if any(marker in lowered for marker in _SENSITIVE_PARTS):
+                out[text] = "<redacted>"
+            else:
+                out[text] = _safe_capability_value(child)
+        return out
+    if isinstance(value, list):
+        return [_safe_capability_value(item) for item in value]
+    if isinstance(value, (str, int, float, bool)) or value is None:
+        return value
+    return f"<{type(value).__name__}>"
