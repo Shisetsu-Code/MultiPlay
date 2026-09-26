@@ -22,6 +22,15 @@ def main() -> int:
     analyze.add_argument("--knowledge-root", default="knowledge/providers")
     analyze.add_argument("--output")
 
+    har_map = sub.add_parser(
+        "har-map",
+        help="List observed endpoints and UI/action candidates extracted from HAR code",
+    )
+    har_map.add_argument("har")
+    har_map.add_argument("--action")
+    har_map.add_argument("--output")
+    har_map.add_argument("--json", action="store_true")
+
     browser_explore = sub.add_parser(
         "browser-explore",
         help="Discover visible controls with Playwright and correlate clicks to network effects",
@@ -122,6 +131,8 @@ def main() -> int:
     args = parser.parse_args()
     if args.command == "analyze-har":
         return _analyze(args)
+    if args.command == "har-map":
+        return _har_map(args)
     if args.command == "browser-explore":
         return _browser_explore(args)
     if args.command == "bgaming-browser-discover":
@@ -175,6 +186,23 @@ def _analyze(args: argparse.Namespace) -> int:
             environment=args.environment,
             records=records,
         )
+    return 0
+
+
+def _har_map(args: argparse.Namespace) -> int:
+    from .har_map import build_har_map, render_har_map
+
+    report = build_har_map(args.har)
+    if args.output:
+        Path(args.output).write_text(
+            json.dumps(report, indent=2, ensure_ascii=False) + "\n",
+            encoding="utf-8",
+        )
+
+    if args.json and not args.action:
+        print(json.dumps(report, indent=2, ensure_ascii=False))
+    else:
+        print(render_har_map(report, action_id=args.action), end="")
     return 0
 
 
