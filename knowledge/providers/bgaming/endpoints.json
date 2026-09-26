@@ -330,7 +330,7 @@
       "provider_family=hyperhive-jsonrpc",
       "causal=Playwright click -> purchased_feature play -> HTTP 200",
       "variant_discriminator={\"purchased_feature\":\"buy_bonus\"}",
-      "coverage=one observed variant; advertised domain not yet complete"
+      "coverage=buy_bonus causally demonstrated from visible UI; init purchase list is capability vocabulary, not per-game mandatory coverage"
     ]
   },
   {

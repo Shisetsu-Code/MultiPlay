@@ -65,12 +65,33 @@ Dynamic fields include:
 
 The literal `purchased_feature="buy_bonus"` remains part of the demonstrated wire.
 
+## Screenshot-guided causal path
+
+The current UI visibly exposed a `BUY BONUS` control on the left side of the reels.
+Opening it displayed a `BUY FREE SPINS` modal. The green confirmation control then caused
+the successful JSON-RPC request above.
+
+Observed causal sequence:
+
+    visible BUY BONUS
+      -> BUY FREE SPINS modal
+      -> green confirmation
+      -> POST /api
+      -> purchased_feature = "buy_bonus"
+      -> HTTP 200
+
+The click coordinates are evidence from that browser run only. They are not stored as
+provider semantics or replay rules.
+
 ## Coverage state
 
-The current init advertised 9 purchase entries, while this run causally demonstrated one
-purchase wire value.
+The current init advertised 9 purchase names. Current cross-game UI evidence shows that
+this list is runtime capability vocabulary, not nine mandatory UI branches for every game.
 
-Therefore purchase coverage is not considered complete yet.
+Therefore a missing advertised name is not a blocker by itself. A branch becomes required
+only when current UI/client evidence actually exposes it. MultiPlay still rejects an
+observed `purchased_feature` value that is absent from the current init domain.
 
-MultiPlay now persists the advertised purchase domain and compares it against successful
-Playwright-observed `purchased_feature` requests. Missing variants remain blockers.
+Current demonstrated purchase branch:
+
+- `buy_bonus`: causally demonstrated from visible UI through successful HTTP 200 response.
