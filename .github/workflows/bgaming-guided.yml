@@ -20,27 +20,54 @@ jobs:
           python-version: "3.12"
       - run: python -m pip install playwright
       - run: python -m playwright install --with-deps chromium
-      - name: Enter game
+      - name: Click game canvas
         run: |
           mkdir -p artifacts
           python - <<'PY'
           from playwright.sync_api import sync_playwright
 
+          VIEW_W, VIEW_H = 1440, 900
+
           with sync_playwright() as p:
               browser = p.chromium.launch(headless=True)
-              page = browser.new_page(viewport={"width": 1440, "height": 900})
+              page = browser.new_page(viewport={"width": VIEW_W, "height": VIEW_H})
               page.goto(
                   "https://demo.bgaming-network.com/play/BlingBlitzDiamondDrop/FUN",
                   wait_until="domcontentloaded",
                   timeout=60000,
               )
               page.wait_for_timeout(10000)
-              page.mouse.click(505, 455)
+              page.screenshot(path="artifacts/00-popup.jpg", type="jpeg", quality=65)
+
+              candidates = []
+              for frame in page.frames:
+                  for canvas in frame.locator("canvas").all():
+                      try:
+                          box = canvas.bounding_box()
+                      except Exception:
+                          box = None
+                      if box and box["width"] > 100 and box["height"] > 100:
+                          candidates.append((box["width"] * box["height"], frame, canvas, box))
+
+              if not candidates:
+                  raise RuntimeError("No visible game canvas found")
+
+              _, frame, canvas, box = max(candidates, key=lambda row: row[0])
+              print("frame:", frame.url)
+              print("canvas:", box)
+
+              def click_screen(x, y):
+                  local_x = (x / VIEW_W) * box["width"]
+                  local_y = (y / VIEW_H) * box["height"]
+                  canvas.click(position={"x": local_x, "y": local_y}, force=True)
+
+              click_screen(505, 455)
+              page.wait_for_timeout(2500)
+              page.screenshot(path="artifacts/01-audio-closed.jpg", type="jpeg", quality=65)
+
+              click_screen(720, 690)
               page.wait_for_timeout(5000)
-              page.screenshot(path="artifacts/before-play.jpg", type="jpeg", quality=65)
-              page.mouse.click(720, 690)
-              page.wait_for_timeout(5000)
-              page.screenshot(path="artifacts/after-play.jpg", type="jpeg", quality=65)
+              page.screenshot(path="artifacts/02-after-play.jpg", type="jpeg", quality=65)
               browser.close()
           PY
       - uses: actions/upload-artifact@v4
