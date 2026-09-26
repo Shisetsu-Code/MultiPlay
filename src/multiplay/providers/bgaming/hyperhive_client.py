@@ -6,7 +6,6 @@ from urllib.parse import urljoin, urlsplit
 
 from .probe import _HttpSession
 
-
 _ENGINE_ROLES = {
     "client.min.js",
     "common.min.js",
