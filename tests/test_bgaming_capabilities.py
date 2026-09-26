@@ -1,5 +1,8 @@
 from multiplay.models import EvidenceBundle, HttpExchange
-from multiplay.providers.bgaming.capabilities import hyperhive_init_capabilities
+from multiplay.providers.bgaming.capabilities import (
+    hyperhive_init_capabilities,
+    hyperhive_purchase_coverage,
+)
 
 
 def test_hyperhive_init_capabilities_detects_purchases():
@@ -116,3 +119,55 @@ def test_hyperhive_capabilities_redacts_sensitive_purchase_fields():
             "feature_token": "<redacted>",
         }
     ]
+
+
+
+def test_hyperhive_purchase_coverage_reports_missing_variants():
+    evidence = EvidenceBundle(
+        http=[
+            HttpExchange(
+                evidence_id="init",
+                method="POST",
+                url="https://example.test/api",
+                request_body={
+                    "jsonrpc": "2.0",
+                    "method": "init",
+                    "id": 0,
+                    "params": {"token": "<redacted>"},
+                },
+                response_status=200,
+                response_body={
+                    "result": {
+                        "config": {
+                            "purchased_features": ["buy_bonus", "super_bonus"],
+                        }
+                    }
+                },
+            ),
+            HttpExchange(
+                evidence_id="buy",
+                method="POST",
+                url="https://example.test/api",
+                request_body={
+                    "jsonrpc": "2.0",
+                    "method": "play",
+                    "id": 1,
+                    "params": {
+                        "token": "<redacted>",
+                        "req": {
+                            "bet": 100,
+                            "purchased_feature": "buy_bonus",
+                        },
+                    },
+                },
+                response_status=200,
+                response_body={"result": {"final": True}},
+            ),
+        ]
+    )
+
+    coverage = hyperhive_purchase_coverage(evidence)
+    assert coverage["advertised"] == ["buy_bonus", "super_bonus"]
+    assert coverage["observed"] == ["buy_bonus"]
+    assert coverage["missing"] == ["super_bonus"]
+    assert coverage["complete"] is False
