@@ -16,7 +16,17 @@ permissions:
 jobs:
   discover:
     runs-on: ubuntu-latest
-    timeout-minutes: 60
+    timeout-minutes: 90
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - id: base
+            extra_args: ""
+            max_clicks: "40"
+          - id: purchases
+            extra_args: "--require-purchases"
+            max_clicks: "64"
 
     steps:
       - uses: actions/checkout@v4
@@ -45,7 +55,7 @@ jobs:
           import json
           from pathlib import Path
 
-          result = Path("artifacts/browser-result.json")
+          result = Path("artifacts/browser-result-${{ matrix.id }}.json")
           if result.exists():
               payload = json.loads(result.read_text())
               print("selected:", payload.get("selected"))
@@ -53,7 +63,7 @@ jobs:
               print("clicks_attempted:", browser.get("clicks_attempted"))
               print("stateful_effects:", browser.get("stateful_effects"))
 
-          trace = Path("artifacts/browser/trace.json")
+          trace = Path("artifacts/browser-${{ matrix.id }}/trace.json")
           if trace.exists():
               payload = json.loads(trace.read_text())
               for action in payload.get("actions", []):
@@ -69,13 +79,13 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: bgaming-browser-causal-discovery
+          name: bgaming-browser-causal-discovery-${{ matrix.id }}
           path: |
-            artifacts/browser-result.json
-            artifacts/browser/selection.json
-            artifacts/browser/analysis.json
-            artifacts/browser/trace.json
-            artifacts/browser/screenshots
+            artifacts/browser-result-${{ matrix.id }}.json
+            artifacts/browser-${{ matrix.id }}/selection.json
+            artifacts/browser-${{ matrix.id }}/analysis.json
+            artifacts/browser-${{ matrix.id }}/trace.json
+            artifacts/browser-${{ matrix.id }}/screenshots
             artifacts/knowledge
           if-no-files-found: warn
           retention-days: 7
