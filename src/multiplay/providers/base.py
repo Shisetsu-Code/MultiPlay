@@ -45,6 +45,9 @@ class ProviderAdapter(ABC):
         self,
         evidence: EvidenceBundle,
         analysis: AnalysisResult,
+        *,
+        source_ref: str,
+        environment: str,
     ) -> list[EndpointRecord]:
         """Optional provider-specific endpoint normalization.
 

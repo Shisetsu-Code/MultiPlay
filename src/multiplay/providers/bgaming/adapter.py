@@ -3,7 +3,7 @@ from __future__ import annotations
 from typing import Any
 from urllib.parse import urlsplit
 
-from ...models import EvidenceBundle, ProtocolContract
+from ...models import AnalysisResult, EndpointRecord, EvidenceBundle, ProtocolContract
 from ..base import ProviderAdapter, ProviderDecision
 from .classify import (
     API_V2,
@@ -103,6 +103,23 @@ class BGamingProviderAdapter(ProviderAdapter):
         if SWITCHABLE_CONTAINER in families:
             reasons.extend(_validate_switchable(evidence))
         return list(dict.fromkeys(reasons))
+
+    def endpoint_records(
+        self,
+        evidence: EvidenceBundle,
+        analysis: AnalysisResult,
+        *,
+        source_ref: str,
+        environment: str,
+    ) -> list[EndpointRecord]:
+        from .ledger import build_bgaming_endpoint_records
+
+        return build_bgaming_endpoint_records(
+            evidence=evidence,
+            analysis=analysis,
+            source_ref=source_ref,
+            environment=environment,
+        )
 
 
 def _validate_api_v2(evidence: EvidenceBundle) -> list[str]:

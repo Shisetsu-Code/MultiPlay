@@ -34,11 +34,12 @@ class ProviderKnowledgeStore:
         evidence: EvidenceBundle,
         source_ref: str,
         environment: str = "demo",
+        records: list[EndpointRecord] | None = None,
     ) -> list[EndpointRecord]:
         if environment not in {"demo", "live"}:
             raise ValueError("environment must be demo or live")
 
-        generated = _records_from_analysis(
+        generated = list(records) if records is not None else records_from_analysis(
             provider=provider,
             analysis=analysis,
             evidence=evidence,
@@ -169,7 +170,7 @@ class ProviderKnowledgeStore:
         )
 
 
-def _records_from_analysis(
+def records_from_analysis(
     *,
     provider: str,
     analysis: AnalysisResult,
@@ -323,6 +324,18 @@ def _run_id(source_ref: str) -> str:
     digest = hashlib.sha256(source_ref.encode("utf-8")).hexdigest()[:10]
     stamp = datetime.now(UTC).strftime("%Y%m%dT%H%M%SZ")
     return f"{stamp}-{digest}"
+
+
+def classify_payload_fields(value: Any) -> tuple[list[str], list[str]]:
+    return _field_classes(value)
+
+
+def sanitize_endpoint_url(url: str) -> str:
+    return _sanitize_url(url)
+
+
+def template_payload(value: Any, *, request_side: bool) -> Any:
+    return _template(value, request_side=request_side)
 
 
 def _now() -> str:

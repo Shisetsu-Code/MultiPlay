@@ -44,10 +44,12 @@ def _analyze(args: argparse.Namespace) -> int:
 
     provider_decision = None
     provider_blockers: list[str] = []
+    provider_adapter = None
+    source_ref = args.source_ref or str(args.har)
     if args.provider:
         registry = default_provider_registry()
         try:
-            adapter = registry.get(args.provider)
+            provider_adapter = registry.get(args.provider)
         except KeyError:
             provider_blockers = [
                 f"No provider adapter is registered for {args.provider!r}."
@@ -55,8 +57,12 @@ def _analyze(args: argparse.Namespace) -> int:
             analysis.status = AnalysisStatus.PARTIAL_REQUIRES_REVIEW
             analysis.reasons = list(dict.fromkeys([*analysis.reasons, *provider_blockers]))
         else:
-            provider_decision = adapter.recognize(evidence, analysis.contracts)
-            provider_blockers = apply_provider_validation(analysis, evidence, adapter)
+            provider_decision = provider_adapter.recognize(evidence, analysis.contracts)
+            provider_blockers = apply_provider_validation(
+                analysis,
+                evidence,
+                provider_adapter,
+            )
 
     payload = {
         "status": analysis.status.value,
@@ -89,13 +95,23 @@ def _analyze(args: argparse.Namespace) -> int:
         print(rendered, end="")
 
     if args.provider:
-        source_ref = args.source_ref or str(args.har)
+        records = (
+            provider_adapter.endpoint_records(
+                evidence,
+                analysis,
+                source_ref=source_ref,
+                environment=args.environment,
+            )
+            if provider_adapter is not None
+            else None
+        )
         ProviderKnowledgeStore(args.knowledge_root).record_analysis(
             provider=args.provider,
             analysis=analysis,
             evidence=evidence,
             source_ref=source_ref,
             environment=args.environment,
+            records=records,
         )
     return 0
 
