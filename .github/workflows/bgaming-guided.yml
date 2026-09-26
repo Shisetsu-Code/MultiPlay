@@ -20,7 +20,7 @@ jobs:
           python-version: "3.12"
       - run: python -m pip install playwright
       - run: python -m playwright install --with-deps chromium
-      - name: Touch PLAY
+      - name: Verify PLAY input
         run: |
           mkdir -p artifacts
           python - <<'PY'
@@ -28,27 +28,55 @@ jobs:
 
           with sync_playwright() as p:
               browser = p.chromium.launch(headless=True)
-              context = browser.new_context(
-                  viewport={"width": 1440, "height": 900},
-                  has_touch=True,
-                  is_mobile=False,
-              )
-              page = context.new_page()
+              page = browser.new_page(viewport={"width": 1440, "height": 900})
               page.goto(
                   "https://demo.bgaming-network.com/play/BlingBlitzDiamondDrop/FUN",
                   wait_until="domcontentloaded",
                   timeout=60000,
               )
               page.wait_for_timeout(10000)
-
-              page.touchscreen.tap(505, 455)
+              page.mouse.click(505, 455)
               page.wait_for_timeout(3000)
-              page.screenshot(path="artifacts/before.jpg", type="jpeg", quality=65)
 
-              page.touchscreen.tap(720, 690)
-              page.wait_for_timeout(5000)
+              inner = next(
+                  f for f in page.frames
+                  if "bling-blitz-diamond-drop.demo.bgaming-network.com/?token=" in f.url
+              )
+              info = inner.evaluate("""() => {
+                  const c = document.elementFromPoint(720, 690);
+                  window.__guidedEvents = [];
+                  for (const type of ['pointermove','pointerdown','mousedown','pointerup','mouseup','click']) {
+                    c.addEventListener(type, e => {
+                      window.__guidedEvents.push({
+                        type,
+                        clientX: e.clientX,
+                        clientY: e.clientY,
+                        offsetX: e.offsetX,
+                        offsetY: e.offsetY,
+                        trusted: e.isTrusted
+                      });
+                    }, true);
+                  }
+                  const r = c.getBoundingClientRect();
+                  return {
+                    tag: c.tagName,
+                    width: c.width || null,
+                    height: c.height || null,
+                    rect: {x:r.x,y:r.y,width:r.width,height:r.height}
+                  };
+              }""")
+              print("canvas-info:", info)
+
+              page.mouse.move(720, 690, steps=6)
+              page.wait_for_timeout(200)
+              page.mouse.down()
+              page.wait_for_timeout(150)
+              page.mouse.up()
+              page.wait_for_timeout(1000)
+
+              events = inner.evaluate("() => window.__guidedEvents")
+              print("input-events:", events)
               page.screenshot(path="artifacts/after.jpg", type="jpeg", quality=65)
-
               browser.close()
           PY
       - uses: actions/upload-artifact@v4
