@@ -224,3 +224,52 @@ def test_hyperhive_ledger_keeps_observed_play_variants_separate():
     assert purchase.request_format["params"]["req"]["custom_req"]["action"] == "spin"
     assert purchase.request_format["params"]["req"]["custom_req"]["stake"] == "<dynamic:stake>"
     assert any("purchased_feature" in note for note in purchase.notes)
+
+
+
+def test_bgaming_ledger_excludes_telemetry_posts():
+    evidence = EvidenceBundle(
+        http=[
+            _exchange(
+                "spin",
+                "POST",
+                "https://demo.bgaming-network.com/api/Foo/12345/session",
+                {
+                    "command": "spin",
+                    "options": {"bet": 100},
+                    "extra_data": {"round_series_id": 1},
+                },
+                {
+                    "options": {"bets": [100]},
+                    "flow": {"state": "closed", "available_actions": ["spin"]},
+                    "balance": 900,
+                },
+            ),
+            _exchange(
+                "rum",
+                "POST",
+                "https://demo.bgaming-network.com/cdn-cgi/rum",
+                {"type": "rum"},
+                {"ok": True},
+            ),
+            _exchange(
+                "analytics",
+                "POST",
+                "https://analytics.google.com/g/collect",
+                {"event": "page"},
+                {"ok": True},
+            ),
+        ]
+    )
+
+    analysis = MultiProtocolAnalyzer().analyze(evidence, provider="bgaming")
+    records = BGamingProviderAdapter().endpoint_records(
+        evidence,
+        analysis,
+        source_ref="fixture:telemetry",
+        environment="demo",
+    )
+
+    assert any(item.action == "spin" for item in records)
+    assert all("analytics.google.com" not in item.endpoint_template for item in records)
+    assert all("/cdn-cgi/rum" not in item.endpoint_template for item in records)
