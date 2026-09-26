@@ -38,6 +38,8 @@ Implemented and covered by CI:
 - recursive batch HAR ingestion with consolidated endpoint knowledge
 - batch summaries grouped by runtime family and repeated semantic blockers
 - headed manual browser evidence capture without provider-control hardcoding
+- Playwright causal explorer: screenshot/DOM/canvas candidates -> real click -> HTTP/WS delta
+- discovered click coordinates are run evidence only and never provider contracts
 
 ## Historical knowledge preserved
 
@@ -148,7 +150,18 @@ Then run the non-wagering bootstrap/init sweep against the current catalog:
 
 Use `bgaming-probe` for individual follow-up targets.
 
-Use interactive HAR capture only for families/branches that still require runtime action evidence.
+For runtime action evidence, prefer the Playwright causal explorer:
+
+    multiplay bgaming-browser-discover \
+      --catalog bgaming-catalog.json \
+      --family hyperhive-jsonrpc \
+      --output-dir captures/bgaming/hyperhive-browser
+
+It chooses a representative by current runtime evidence, captures screenshots, discovers
+visible controls, performs real Playwright clicks and records the HTTP/WebSocket effects.
+No game title, button text, endpoint, payload or coordinate is hardcoded.
+
+Use interactive HAR capture only if the causal explorer cannot expose a required branch.
 
 Then capture/analyze representative games per detected runtime family.
 

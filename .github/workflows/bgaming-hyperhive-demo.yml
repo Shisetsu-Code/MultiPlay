@@ -1,4 +1,4 @@
-name: BGaming HyperHive demo wire
+name: BGaming browser causal discovery
 
 on:
   workflow_dispatch:
@@ -11,47 +11,68 @@ permissions:
   contents: read
 
 jobs:
-  demo:
+  discover:
     runs-on: ubuntu-latest
-    timeout-minutes: 30
-    strategy:
-      fail-fast: false
-      matrix:
-        include:
-          - id: big-bucks-saloon
-            url: https://demo.bgaming-network.com/play/BigBucksSaloon/FUN
-          - id: bling-blitz-diamond-drop
-            url: https://demo.bgaming-network.com/play/BlingBlitzDiamondDrop/FUN
+    timeout-minutes: 60
 
     steps:
       - uses: actions/checkout@v4
+
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
-      - run: python -m pip install --upgrade pip
-      - run: pip install -e ".[dev]"
 
-      - name: Execute HyperHive demo init/play
+      - run: python -m pip install --upgrade pip
+      - run: pip install -e ".[browser,dev]"
+      - run: python -m playwright install --with-deps chromium
+
+      - name: Fetch current BGaming catalog
         run: |
           mkdir -p artifacts/knowledge
-          multiplay bgaming-hyperhive-demo \
-            "${{ matrix.url }}" \
-            --timeout 30 \
-            --knowledge-root artifacts/knowledge \
-            --output "artifacts/${{ matrix.id }}.json"
+          multiplay bgaming-catalog --output artifacts/catalog.json
 
-      - name: Show result
+      - name: Discover HyperHive actions through Playwright
+        run: |
+          multiplay bgaming-browser-discover             --catalog artifacts/catalog.json             --family hyperhive-jsonrpc             --output-dir artifacts/browser             --max-probes 100             --probe-delay 1.0             --timeout 30             --max-clicks 32             --settle-ms 4500             --knowledge-root artifacts/knowledge             --output artifacts/browser-result.json
+
+      - name: Show causal summary
         if: always()
         run: |
-          if [ -f "artifacts/${{ matrix.id }}.json" ]; then
-            cat "artifacts/${{ matrix.id }}.json"
-          fi
+          python - <<'PY'
+          import json
+          from pathlib import Path
 
-      - name: Upload evidence
+          result = Path("artifacts/browser-result.json")
+          if result.exists():
+              payload = json.loads(result.read_text())
+              print("selected:", payload.get("selected"))
+              browser = payload.get("browser") or {}
+              print("clicks_attempted:", browser.get("clicks_attempted"))
+              print("stateful_effects:", browser.get("stateful_effects"))
+
+          trace = Path("artifacts/browser/trace.json")
+          if trace.exists():
+              payload = json.loads(trace.read_text())
+              for action in payload.get("actions", []):
+                  if action.get("stateful_event_count"):
+                      print(
+                          action.get("index"),
+                          action.get("candidate"),
+                          action.get("effect_signatures"),
+                      )
+          PY
+
+      - name: Upload sanitized browser evidence
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: bgaming-hyperhive-${{ matrix.id }}
-          path: artifacts
-          if-no-files-found: error
+          name: bgaming-browser-causal-discovery
+          path: |
+            artifacts/browser-result.json
+            artifacts/browser/selection.json
+            artifacts/browser/analysis.json
+            artifacts/browser/trace.json
+            artifacts/browser/screenshots
+            artifacts/knowledge
+          if-no-files-found: warn
           retention-days: 7

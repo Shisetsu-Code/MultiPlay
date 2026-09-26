@@ -22,6 +22,33 @@ def main() -> int:
     analyze.add_argument("--knowledge-root", default="knowledge/providers")
     analyze.add_argument("--output")
 
+    browser_explore = sub.add_parser(
+        "browser-explore",
+        help="Discover visible controls with Playwright and correlate clicks to network effects",
+    )
+    browser_explore.add_argument("url")
+    browser_explore.add_argument("--output-dir", required=True)
+    browser_explore.add_argument("--max-clicks", type=int, default=24)
+    browser_explore.add_argument("--settle-ms", type=int, default=3500)
+    browser_explore.add_argument("--headed", action="store_true")
+
+    browser_discover = sub.add_parser(
+        "bgaming-browser-discover",
+        help="Select a BGaming runtime family and discover its actions through Playwright",
+    )
+    browser_discover.add_argument("--catalog", required=True)
+    browser_discover.add_argument("--family", required=True)
+    browser_discover.add_argument("--output-dir", required=True)
+    browser_discover.add_argument("--max-probes", type=int, default=80)
+    browser_discover.add_argument("--probe-delay", type=float, default=1.0)
+    browser_discover.add_argument("--timeout", type=float, default=30.0)
+    browser_discover.add_argument("--max-clicks", type=int, default=28)
+    browser_discover.add_argument("--settle-ms", type=int, default=4000)
+    browser_discover.add_argument("--headed", action="store_true")
+    browser_discover.add_argument("--keep-har", action="store_true")
+    browser_discover.add_argument("--knowledge-root", default="knowledge/providers")
+    browser_discover.add_argument("--output")
+
     hyperhive = sub.add_parser(
         "bgaming-hyperhive-demo",
         help="Execute one HyperHive demo init/play using the current client wire",
@@ -91,6 +118,10 @@ def main() -> int:
     args = parser.parse_args()
     if args.command == "analyze-har":
         return _analyze(args)
+    if args.command == "browser-explore":
+        return _browser_explore(args)
+    if args.command == "bgaming-browser-discover":
+        return _bgaming_browser_discover(args)
     if args.command == "bgaming-hyperhive-demo":
         return _bgaming_hyperhive_demo(args)
     if args.command == "bgaming-demo-spin":
@@ -140,6 +171,44 @@ def _analyze(args: argparse.Namespace) -> int:
             environment=args.environment,
             records=records,
         )
+    return 0
+
+
+def _browser_explore(args: argparse.Namespace) -> int:
+    from .browser import explore_browser
+
+    result = explore_browser(
+        url=args.url,
+        output_dir=args.output_dir,
+        max_clicks=args.max_clicks,
+        settle_ms=args.settle_ms,
+        headless=not args.headed,
+    )
+    print(json.dumps(result.to_dict(), indent=2, ensure_ascii=False))
+    return 0
+
+
+def _bgaming_browser_discover(args: argparse.Namespace) -> int:
+    from .providers.bgaming.browser_discovery import discover_family_with_browser
+
+    result = discover_family_with_browser(
+        catalog_path=args.catalog,
+        family=args.family,
+        output_dir=args.output_dir,
+        max_probes=args.max_probes,
+        probe_delay_s=args.probe_delay,
+        timeout_s=args.timeout,
+        max_clicks=args.max_clicks,
+        settle_ms=args.settle_ms,
+        headless=not args.headed,
+        knowledge_root=args.knowledge_root,
+        keep_har=args.keep_har,
+    )
+    rendered = json.dumps(result, indent=2, ensure_ascii=False) + "\n"
+    if args.output:
+        Path(args.output).write_text(rendered, encoding="utf-8")
+    else:
+        print(rendered, end="")
     return 0
 
 
