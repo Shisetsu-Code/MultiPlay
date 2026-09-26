@@ -77,8 +77,14 @@ class _HttpSession:
         jar = http.cookiejar.CookieJar()
         self.opener = build_opener(HTTPCookieProcessor(jar))
 
-    def get(self, url: str, *, timeout_s: float) -> _HttpResult:
-        return self._request(url, timeout_s=timeout_s)
+    def get(
+        self,
+        url: str,
+        *,
+        timeout_s: float,
+        headers: dict[str, str] | None = None,
+    ) -> _HttpResult:
+        return self._request(url, timeout_s=timeout_s, headers=headers)
 
     def post_json(
         self,
