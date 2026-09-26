@@ -126,10 +126,10 @@ def line_bet_payload(body: Any, line_count: int) -> bool:
     options = body.get("options")
     if not isinstance(options, dict):
         return False
-    lines = options.get("lines")
-    if not isinstance(lines, dict) or line_count <= 0:
+    bets = options.get("bets")
+    if not isinstance(bets, dict) or line_count <= 0:
         return False
-    return {str(index) for index in range(line_count)} == {str(key) for key in lines}
+    return {str(index) for index in range(line_count)} == {str(key) for key in bets}
 
 
 def purchase_request(body: Any) -> bool:

@@ -97,7 +97,7 @@ def test_classifies_legacy_lines_and_requires_full_line_mapping():
                 "spin",
                 {
                     "command": "spin",
-                    "options": {"lines": {"0": 1, "1": 1, "2": 1}},
+                    "options": {"bets": {"0": 1, "1": 1, "2": 1}},
                     "extra_data": {"round_series_id": 1},
                 },
                 {"bets": {"lines": {"0": 1, "1": 1, "2": 1}}, "game": {"state": "closed"}},
