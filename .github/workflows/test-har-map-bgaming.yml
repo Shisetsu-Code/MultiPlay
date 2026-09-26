@@ -1,0 +1,66 @@
+name: Test BGaming HAR map
+
+on:
+  push:
+    branches: ["main"]
+    paths:
+      - ".github/workflows/test-har-map-bgaming.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  map:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - id: api-v2
+            url: https://demo.bgaming-network.com/play/AlienFruits3/FUN
+          - id: hyperhive
+            url: https://demo.bgaming-network.com/play/BigBucksSaloon/FUN
+          - id: legacy
+            url: https://demo.bgaming-network.com/play/Catdiana/FUN
+          - id: switchable
+            url: https://demo.bgaming-network.com/play/AllLuckyClover/FUN
+
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - run: python -m pip install --upgrade pip
+      - run: pip install -e ".[browser,dev]"
+      - run: python -m playwright install --with-deps chromium
+
+      - name: Capture HAR
+        run: |
+          mkdir -p "artifacts/${{ matrix.id }}"
+          python - <<'PY'
+          from multiplay.browser.capture import BrowserAction, capture_browser_evidence
+
+          capture_browser_evidence(
+              url="${{ matrix.url }}",
+              har_path="artifacts/${{ matrix.id }}/capture.har",
+              screenshot_path="artifacts/${{ matrix.id }}/screen.jpg",
+              actions=[BrowserAction(kind="wait", timeout_ms=10000)],
+              viewport=(1440, 900),
+          )
+          PY
+
+      - name: Build HAR map
+        run: |
+          multiplay har-map "artifacts/${{ matrix.id }}/capture.har" \
+            --output "artifacts/${{ matrix.id }}/map.json" \
+            > "artifacts/${{ matrix.id }}/map.txt"
+          cat "artifacts/${{ matrix.id }}/map.txt"
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: bgaming-har-map-${{ matrix.id }}
+          path: artifacts/${{ matrix.id }}
+          if-no-files-found: error
+          retention-days: 3
