@@ -9,6 +9,7 @@ from ...endpoints import (
     template_payload,
 )
 from ...models import AnalysisResult, EndpointRecord, EvidenceBundle, ValidationState
+from .bootstrap import sanitize_session_url
 from .classify import (
     API_V2,
     HYPERHIVE_JSONRPC,
@@ -16,7 +17,6 @@ from .classify import (
     SWITCHABLE_CONTAINER,
     classify_bgaming,
 )
-from .bootstrap import sanitize_session_url
 from .wire import is_api_v2_command, is_legacy_init
 
 
