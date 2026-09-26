@@ -1,0 +1,107 @@
+name: BGaming guided visual probe
+
+on:
+  workflow_dispatch:
+  push:
+    branches: ["main"]
+    paths:
+      - ".github/workflows/bgaming-guided-visual.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  guided:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - id: left
+            x: 480
+            y: 165
+          - id: center
+            x: 720
+            y: 165
+          - id: right
+            x: 960
+            y: 165
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - run: python -m pip install --upgrade pip
+      - run: pip install -e ".[browser,dev]"
+      - run: python -m playwright install --with-deps chromium
+
+      - name: Run image-guided clicks
+        run: |
+          mkdir -p "artifacts/\${{ matrix.id }}"
+          python - <<'PY'
+          from pathlib import Path
+          from playwright.sync_api import sync_playwright
+
+          out = Path("artifacts/\${{ matrix.id }}")
+          with sync_playwright() as p:
+              browser = p.chromium.launch(headless=True)
+              context = browser.new_context(
+                  viewport={"width": 1440, "height": 900},
+                  device_scale_factor=1,
+              )
+              page = context.new_page()
+              page.goto(
+                  "https://demo.bgaming-network.com/play/BlingBlitzDiamondDrop/FUN",
+                  wait_until="domcontentloaded",
+                  timeout=60000,
+              )
+
+              page.wait_for_timeout(12000)
+              page.screenshot(
+                  path=str(out / "00-audio.jpg"),
+                  type="jpeg",
+                  quality=65,
+              )
+
+              # Successful dismiss coordinate observed in the previous causal run.
+              page.mouse.click(462.5, 495)
+              page.wait_for_timeout(1500)
+              page.screenshot(
+                  path=str(out / "01-after-audio.jpg"),
+                  type="jpeg",
+                  quality=65,
+              )
+
+              # Successful PLAY coordinate observed in the previous causal run.
+              page.mouse.click(668.5, 675)
+              page.wait_for_timeout(7000)
+              page.screenshot(
+                  path=str(out / "02-game.jpg"),
+                  type="jpeg",
+                  quality=65,
+              )
+
+              # Feature control selected from the current game screenshot.
+              page.mouse.click(float("\${{ matrix.x }}"), float("\${{ matrix.y }}"))
+              page.wait_for_timeout(2200)
+              page.screenshot(
+                  path=str(out / "03-feature.jpg"),
+                  type="jpeg",
+                  quality=65,
+              )
+
+              context.close()
+              browser.close()
+          PY
+
+      - name: Upload visual evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: bgaming-guided-visual-\${{ matrix.id }}
+          path: artifacts/\${{ matrix.id }}
+          if-no-files-found: error
+          retention-days: 7
