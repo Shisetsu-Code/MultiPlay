@@ -40,13 +40,17 @@ jobs:
       - run: python -m playwright install --with-deps chromium
 
       - name: Run image-guided clicks
+        env:
+          CLICK_X: ${{ matrix.x }}
+          CLICK_Y: ${{ matrix.y }}
         run: |
-          mkdir -p "artifacts/\${{ matrix.id }}"
+          mkdir -p "artifacts/${{ matrix.id }}"
           python - <<'PY'
+          import os
           from pathlib import Path
           from playwright.sync_api import sync_playwright
 
-          out = Path("artifacts/\${{ matrix.id }}")
+          out = Path("artifacts/${{ matrix.id }}")
           with sync_playwright() as p:
               browser = p.chromium.launch(headless=True)
               context = browser.new_context(
@@ -86,7 +90,7 @@ jobs:
               )
 
               # Feature control selected from the current game screenshot.
-              page.mouse.click(float("\${{ matrix.x }}"), float("\${{ matrix.y }}"))
+              page.mouse.click(float(os.environ["CLICK_X"]), float(os.environ["CLICK_Y"]))
               page.wait_for_timeout(2200)
               page.screenshot(
                   path=str(out / "03-feature.jpg"),
@@ -99,9 +103,10 @@ jobs:
           PY
 
       - name: Upload visual evidence
+        if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: bgaming-guided-visual-\${{ matrix.id }}
-          path: artifacts/\${{ matrix.id }}
+          name: bgaming-guided-visual-${{ matrix.id }}
+          path: artifacts/${{ matrix.id }}
           if-no-files-found: error
           retention-days: 7
