@@ -137,7 +137,7 @@ def explore_browser(
             try:
                 page.mouse.click(candidate.x, candidate.y)
                 page.wait_for_timeout(after_click_ms)
-            except Exception as exc:
+            except Exception as exc:  # noqa: BLE001
                 error = f"{type(exc).__name__}: {exc}"
 
             after = before if page.is_closed() else page.screenshot(full_page=False)
@@ -327,9 +327,11 @@ def _dom_candidates(page) -> list[ClickCandidate]:
     for frame in page.frames:
         try:
             handles = frame.query_selector_all(selector)
-        except Exception:
-            continue
+        except Exception:  # noqa: BLE001
+            handles = []
         for handle in handles[:120]:
+            box = None
+            data = {}
             try:
                 box = handle.bounding_box()
                 if not box or box["width"] < 8 or box["height"] < 8:
@@ -342,7 +344,9 @@ def _dom_candidates(page) -> list[ClickCandidate]:
                         text: (el.innerText || el.value || '').trim().slice(0, 120)
                     })"""
                 )
-            except Exception:
+            except Exception:  # noqa: BLE001
+                box = None
+            if not box:
                 continue
             label = " ".join(
                 value
@@ -372,13 +376,13 @@ def _canvas_regions(page) -> list[tuple[float, float, float, float]]:
     for frame in page.frames:
         try:
             handles = frame.query_selector_all("canvas")
-        except Exception:
-            continue
+        except Exception:  # noqa: BLE001
+            handles = []
         for handle in handles:
             try:
                 box = handle.bounding_box()
-            except Exception:
-                continue
+            except Exception:  # noqa: BLE001
+                box = None
             if not box or box["width"] < 64 or box["height"] < 64:
                 continue
             rows.append(
@@ -410,8 +414,8 @@ def _next_candidate(
 def _candidate_key(candidate: ClickCandidate, state_epoch: int) -> tuple[int, int, int, str]:
     return (
         int(state_epoch),
-        int(round(candidate.x / 10.0)),
-        int(round(candidate.y / 10.0)),
+        round(candidate.x / 10.0),
+        round(candidate.y / 10.0),
         candidate.source,
     )
 
