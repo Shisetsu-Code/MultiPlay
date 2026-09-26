@@ -8,6 +8,8 @@ from pathlib import Path
 from .analyzer import MultiProtocolAnalyzer
 from .endpoints import ProviderKnowledgeStore
 from .evidence import load_har
+from .models import AnalysisStatus
+from .providers import apply_provider_validation, default_provider_registry
 
 
 def main() -> int:
@@ -39,9 +41,28 @@ def main() -> int:
 def _analyze(args: argparse.Namespace) -> int:
     evidence = load_har(args.har)
     analysis = MultiProtocolAnalyzer().analyze(evidence, provider=args.provider)
+
+    provider_decision = None
+    provider_blockers: list[str] = []
+    if args.provider:
+        registry = default_provider_registry()
+        try:
+            adapter = registry.get(args.provider)
+        except KeyError:
+            provider_blockers = [
+                f"No provider adapter is registered for {args.provider!r}."
+            ]
+            analysis.status = AnalysisStatus.PARTIAL_REQUIRES_REVIEW
+            analysis.reasons = list(dict.fromkeys([*analysis.reasons, *provider_blockers]))
+        else:
+            provider_decision = adapter.recognize(evidence, analysis.contracts)
+            provider_blockers = apply_provider_validation(analysis, evidence, adapter)
+
     payload = {
         "status": analysis.status.value,
         "provider": analysis.provider,
+        "provider_decision": asdict(provider_decision) if provider_decision is not None else None,
+        "provider_blockers": provider_blockers,
         "detections": [asdict(item) for item in analysis.detections],
         "contracts": [
             {
