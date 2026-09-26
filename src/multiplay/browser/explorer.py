@@ -120,8 +120,8 @@ def explore_browser(
         state_epoch = 0
         seen: set[tuple[int, int, int, str]] = set()
 
-        baseline = page.screenshot(full_page=False)
-        baseline_path = shots / "000-baseline.png"
+        baseline = page.screenshot(full_page=False, type="jpeg", quality=65)
+        baseline_path = shots / "000-baseline.jpg"
         baseline_path.write_bytes(baseline)
         screenshots.append(baseline_path)
 
@@ -129,7 +129,7 @@ def explore_browser(
             if page.is_closed():
                 break
 
-            before = page.screenshot(full_page=False)
+            before = page.screenshot(full_page=False, type="jpeg", quality=65)
             candidates = discover_click_candidates(page, before)
             candidate = _next_candidate(candidates, seen, state_epoch)
             if candidate is None:
@@ -146,8 +146,12 @@ def explore_browser(
             except Exception as exc:  # noqa: BLE001
                 error = f"{type(exc).__name__}: {exc}"
 
-            after = before if page.is_closed() else page.screenshot(full_page=False)
-            shot_path = shots / f"{click_index:03d}-after.png"
+            after = (
+                before
+                if page.is_closed()
+                else page.screenshot(full_page=False, type="jpeg", quality=65)
+            )
+            shot_path = shots / f"{click_index:03d}-after.jpg"
             shot_path.write_bytes(after)
             screenshots.append(shot_path)
 
