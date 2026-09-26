@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from collections.abc import Iterable
 
-from .models import AnalysisResult, AnalysisStatus, EvidenceBundle, ProtocolDetection
+from .models import AnalysisResult, AnalysisStatus, EvidenceBundle
 from .protocols import HttpCommandProtocol, JsonRpcProtocol, ProtocolAdapter, WebSocketProtocol
 
 
@@ -26,13 +26,17 @@ class MultiProtocolAnalyzer:
         self.detection_threshold = float(detection_threshold)
 
     def analyze(self, evidence: EvidenceBundle, *, provider: str | None = None) -> AnalysisResult:
-        detections = [adapter.detect(evidence) for adapter in self.protocols]
-        detections.sort(key=lambda item: item.score, reverse=True)
-
-        selected: list[tuple[ProtocolAdapter, ProtocolDetection]] = []
-        for adapter, detection in zip(self.protocols, [a.detect(evidence) for a in self.protocols]):
-            if detection.score >= self.detection_threshold:
-                selected.append((adapter, detection))
+        pairs = [(adapter, adapter.detect(evidence)) for adapter in self.protocols]
+        detections = sorted(
+            (detection for _, detection in pairs),
+            key=lambda item: item.score,
+            reverse=True,
+        )
+        selected = [
+            (adapter, detection)
+            for adapter, detection in pairs
+            if detection.score >= self.detection_threshold
+        ]
 
         if not selected:
             return AnalysisResult(
