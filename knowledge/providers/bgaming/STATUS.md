@@ -53,16 +53,42 @@ Important retained findings include:
 - dynamic picker domains require a proven rejection boundary.
 - switchable child identifiers must not be hardcoded.
 
-## Not yet revalidated in MultiPlay
+## Current live-catalog revalidation
 
-No current real BGaming HAR corpus has been ingested into this clean repository yet.
+A non-wagering sweep of the current public catalog completed successfully in GitHub Actions
+on 2026-09-26.
 
-Therefore:
+Observed catalog:
 
-- knowledge/providers/bgaming/endpoints.json has not been finalized from current evidence;
-- the historical ~215-game corpus has not been rerun;
-- no provider-wide completion claim is valid yet;
-- live_state must remain UNKNOWN until explicit live validation.
+- 233 Slots records
+- catalog crawl authoritative
+- 233 probe attempts
+- 107 successful bootstrap/init analyses
+- 126 unresolved probe failures
+
+Runtime-family observations from successful probes:
+
+- api-v2: 72
+- hyperhive-jsonrpc: 32
+- legacy-lines: 3
+- switchable-container: 1
+
+The dominant unresolved transport condition was provider HTTP 429 rate limiting:
+
+- HTTP 429: 110
+- unresolved demo resolution: 15
+- stale demo HTTP 404: 1
+
+These failures are not evidence that the games use an unsupported protocol.
+
+Current endpoint evidence includes API-v2/legacy init endpoints with sanitized shape:
+
+    POST https://demo.bgaming-network.com/api/<Identifier>/<id>/<session>
+
+The sweep still does not demonstrate base spin/purchase wire for those games, so no
+provider-wide completion claim is valid and live_state remains UNKNOWN.
+
+See SWEEP-2026-09-26.md.
 
 ## Evidence needed to close BGaming
 
