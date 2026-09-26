@@ -5,6 +5,7 @@ on:
     branches: ["main"]
     paths:
       - ".github/workflows/test-har-map-bgaming.yml"
+      - "src/multiplay/har_map.py"
 
 permissions:
   contents: read
