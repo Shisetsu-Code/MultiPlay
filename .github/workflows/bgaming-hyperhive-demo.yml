@@ -152,7 +152,7 @@ jobs:
 
       - name: Open visually identified feature control
         run: |
-          mkdir -p "artifacts/guided-\${{ matrix.id }}"
+          mkdir -p "artifacts/guided-${{ matrix.id }}"
           python - <<'PY'
           from multiplay.browser.capture import BrowserAction, capture_browser_evidence
 
@@ -164,15 +164,15 @@ jobs:
               BrowserAction(kind="wait", timeout_ms=5000),
               BrowserAction(
                   kind="click_xy",
-                  x=float("\${{ matrix.x }}"),
-                  y=float("\${{ matrix.y }}"),
+                  x=float("${{ matrix.x }}"),
+                  y=float("${{ matrix.y }}"),
               ),
               BrowserAction(kind="wait", timeout_ms=1800),
           ]
           capture_browser_evidence(
               url="https://demo.bgaming-network.com/play/BlingBlitzDiamondDrop/FUN",
-              har_path="artifacts/guided-\${{ matrix.id }}/session.har",
-              screenshot_path="artifacts/guided-\${{ matrix.id }}/after.jpg",
+              har_path="artifacts/guided-${{ matrix.id }}/session.har",
+              screenshot_path="artifacts/guided-${{ matrix.id }}/after.jpg",
               actions=actions,
               viewport=(1440, 900),
           )
@@ -183,7 +183,7 @@ jobs:
           python - <<'PY'
           from pathlib import Path
           from PIL import Image
-          p = Path("artifacts/guided-\${{ matrix.id }}/after.jpg")
+          p = Path("artifacts/guided-${{ matrix.id }}/after.jpg")
           img = Image.open(p).convert("RGB")
           img.save(p, format="JPEG", quality=65, optimize=True)
           PY
@@ -191,7 +191,7 @@ jobs:
       - name: Upload guided evidence
         uses: actions/upload-artifact@v4
         with:
-          name: bgaming-guided-\${{ matrix.id }}
-          path: artifacts/guided-\${{ matrix.id }}
+          name: bgaming-guided-${{ matrix.id }}
+          path: artifacts/guided-${{ matrix.id }}
           if-no-files-found: error
           retention-days: 7
