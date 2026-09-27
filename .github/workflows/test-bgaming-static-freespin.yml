@@ -11,11 +11,16 @@ on:
       - "src/multiplay/providers/bgaming/demo_spin.py"
       - "src/multiplay/providers/bgaming/auto_analyze.py"
       - "src/multiplay/providers/bgaming/handler_probe.py"
+      - "src/multiplay/providers/bgaming/hyperhive.py"
+      - "src/multiplay/providers/bgaming/hyperhive_demo.py"
+      - "src/multiplay/providers/bgaming/hyperhive_wire_profile.py"
       - "tests/test_action_graph.py"
       - "tests/test_har_map.py"
       - "tests/test_bgaming_direct_port.py"
       - "tests/test_bgaming_demo_spin.py"
       - "tests/test_bgaming_auto_analyze.py"
+      - "tests/test_bgaming_hyperhive.py"
+      - "tests/test_bgaming_hyperhive_demo.py"
 
 permissions:
   contents: write
@@ -39,6 +44,8 @@ jobs:
           tests/test_bgaming_direct_port.py
           tests/test_bgaming_auto_analyze.py
           tests/test_bgaming_demo_spin.py
+          tests/test_bgaming_hyperhive.py
+          tests/test_bgaming_hyperhive_demo.py
           tests/test_action_graph.py
           tests/test_har_map.py
 
