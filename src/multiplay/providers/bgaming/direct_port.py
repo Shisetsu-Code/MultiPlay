@@ -262,23 +262,33 @@ class BGamingDemoDirectSession:
             # Current BGaming API-v2 clients serialize purchase levels as strings.
             options["purchased_feature_level"] = level
 
-        result = self.http.post_json(
-            self.endpoint_url,
-            payload,
-            timeout_s=self.timeout_s,
-            headers=self.headers,
-            allow_http_error=True,
-        )
-        response = _json_value(result.text)
-        success = 200 <= result.status < 400 and not (
-            isinstance(response, dict)
-            and response.get("error") not in (None, {}, [])
-        )
+        attempts = [payload, *_api_v2_purchase_retry_payloads(payload)]
+        result = None
+        response: Any = None
+        success = False
+        sent_payload = payload
+        for sent_payload in attempts:
+            result = self.http.post_json(
+                self.endpoint_url,
+                sent_payload,
+                timeout_s=self.timeout_s,
+                headers=self.headers,
+                allow_http_error=True,
+            )
+            response = _json_value(result.text)
+            success = 200 <= result.status < 400 and not (
+                isinstance(response, dict)
+                and response.get("error") not in (None, {}, [])
+            )
+            if success:
+                break
+
+        assert result is not None
         return {
             "status": result.status,
             "success": success,
             "endpoint": sanitize_session_url(self.endpoint_url),
-            "request": redact(payload),
+            "request": redact(sent_payload),
             "response": redact(response),
         }
 
@@ -641,6 +651,28 @@ class BGamingDemoDirectSession:
             "request": redact(payload),
             "response": redact(response),
         }
+
+
+def _api_v2_purchase_retry_payloads(
+    payload: dict[str, Any],
+) -> list[dict[str, Any]]:
+    """Return narrow wire-type alternatives for demonstrated structural fields."""
+    options = payload.get("options")
+    if not isinstance(options, dict):
+        return []
+
+    rows = options.get("rows")
+    if (
+        not isinstance(rows, bool)
+        and isinstance(rows, (int, float))
+        and float(rows).is_integer()
+    ):
+        alternate = deepcopy(payload)
+        alternate_options = alternate.get("options")
+        assert isinstance(alternate_options, dict)
+        alternate_options["rows"] = str(int(rows))
+        return [alternate]
+    return []
 
 
 def serve_bgaming_demo_port(
