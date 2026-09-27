@@ -23,6 +23,8 @@ jobs:
             url: https://demo.bgaming-network.com/play/AlienFruits3/FUN
           - id: legacy
             url: https://demo.bgaming-network.com/play/Catdiana/FUN
+          - id: hyperhive
+            url: https://demo.bgaming-network.com/play/BigBucksSaloon/FUN
 
     steps:
       - uses: actions/checkout@v4
@@ -88,18 +90,23 @@ jobs:
           )
           state = session.open()
           actions = session.actions()
-          spin = next(
+          wanted = (
+              "purchased_feature=buy_bonus"
+              if case == "hyperhive"
+              else "command=spin"
+          )
+          selected = next(
               action
               for action in actions
-              if action.executable and "command=spin" in action.wire_markers
+              if action.executable and wanted in action.wire_markers
           )
-          result = session.execute(spin.action_id)
+          result = session.execute(selected.action_id)
 
           print(
               json.dumps(
                   {
                       "family": state["family"],
-                      "action": spin.to_dict(),
+                      "action": selected.to_dict(),
                       "result_status": result["status"],
                       "request": result["request"],
                   },
