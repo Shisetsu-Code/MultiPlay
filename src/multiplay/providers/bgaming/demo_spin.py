@@ -310,6 +310,19 @@ def api_v2_script_spin_option_hints(
         ):
             add(str(match.group(1)), str(match.group(2)))
 
+        # Runtime switches frequently map a persisted boolean/state to one of
+        # two literal wire values. Both literals are demonstrated by the same
+        # client contract, so test each without guessing which local state won.
+        for match in re.finditer(
+            r'additionalSpinOptions\.([A-Za-z_$][A-Za-z0-9_$]*)'
+            r'\s*=\s*[^;]{0,500}?\?\s*["\']([^"\']{1,80})["\']'
+            r'\s*:\s*["\']([^"\']{1,80})["\']',
+            source,
+        ):
+            key = str(match.group(1))
+            add(key, str(match.group(2)))
+            add(key, str(match.group(3)))
+
         # Resolve setters that stringify their first argument into a persistent
         # spin option, then collect only literal numeric defaults passed to
         # that setter elsewhere in the same client bundle.
