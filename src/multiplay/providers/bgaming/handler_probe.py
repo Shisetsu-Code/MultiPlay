@@ -141,7 +141,7 @@ def probe_bgaming_handlers(
                     try:
                         result = frame.evaluate(
                             _CALL_HANDLER_JS,
-                            {"paths": paths, "args": args},
+                            {"paths": paths, "args": args, "handler": handler},
                         )
                     except Exception as exc:  # noqa: BLE001
                         last_error = f"{type(exc).__name__}: {exc}"
@@ -322,7 +322,47 @@ _CALL_CONTROL_JS = """
 """
 
 _CALL_HANDLER_JS = """
-({paths, args}) => {
+({paths, args, handler}) => {
+  const errorText = (error) =>
+    String(error && (error.stack || error.message || error));
+
+  const webpackResolver = () => {
+    const chunks = globalThis.webpackChunk;
+    if (!chunks || typeof chunks.push !== "function") return null;
+
+    let req = null;
+    const chunkId =
+      "multiplay-probe-" + Date.now() + "-" + Math.floor(Math.random() * 1e9);
+    try {
+      chunks.push([[chunkId], {}, (webpackRequire) => {
+        req = webpackRequire;
+      }]);
+    } catch (_error) {
+      return null;
+    }
+    if (typeof req !== "function") return null;
+
+    try {
+      const module = req(2260);
+      const fn = module && (module.A || module.default);
+      return typeof fn === "function" ? fn : null;
+    } catch (_error) {
+      return null;
+    }
+  };
+
+  if (!String(handler || "").startsWith("this.")) {
+    const resolver = webpackResolver();
+    if (resolver) {
+      try {
+        resolver(handler, null);
+        return {called: true, path: "webpack:2260"};
+      } catch (error) {
+        // Fall through to direct-path probing.
+      }
+    }
+  }
+
   const resolvePath = (path) => {
     const parts = path.split(".");
     let owner = globalThis;
@@ -337,6 +377,7 @@ _CALL_HANDLER_JS = """
     return {owner, fn};
   };
 
+  let lastError = "";
   for (const path of paths) {
     try {
       const resolved = resolvePath(path);
@@ -344,13 +385,9 @@ _CALL_HANDLER_JS = """
       Reflect.apply(resolved.fn, resolved.owner, args);
       return {called: true, path};
     } catch (error) {
-      return {
-        called: false,
-        path,
-        error: String(error && (error.stack || error.message || error)),
-      };
+      lastError = errorText(error);
     }
   }
-  return {called: false, error: "not found"};
+  return {called: false, error: lastError || "not found"};
 }
 """
