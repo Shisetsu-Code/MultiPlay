@@ -103,35 +103,35 @@ def analyze_bgaming_demo(
     }
     handler_raw_har = root / "handler.raw.har"
 
-    if family == HYPERHIVE_JSONRPC and not enrichment["success"]:
-        candidate = _select_handler_probe_route(routes)
-        if candidate is not None:
-            handler_probe["attempted"] = True
-            handler_probe["route_id"] = str(candidate.get("route_id") or "")
-            try:
-                probe = probe_bgaming_handlers(
-                    url,
-                    [candidate],
-                    har_path=handler_raw_har,
-                    settle_ms=max(8000, int(settle_ms)),
-                    after_call_ms=2500,
-                )
-            except (OSError, RuntimeError, TypeError, ValueError) as exc:
-                handler_probe["error"] = f"{type(exc).__name__}: {exc}"
-            else:
-                handler_probe["outcomes"] = [
-                    item.to_dict()
-                    for item in probe.outcomes
-                ]
-                handler_probe["success"] = (
-                    any(item.called for item in probe.outcomes)
-                    and _probe_matches_route(probe.evidence, candidate)
-                )
-                if handler_probe["success"]:
-                    contract_bundle = _merge_evidence(contract_bundle, probe.evidence)
-                    _write_safe_har(contract_bundle, contract_har)
-                    graph = build_action_graph(contract_har)
-                    routes = [dict(item) for item in graph.get("routes", [])]
+    candidate = _select_handler_probe_route(routes)
+    if candidate is not None:
+        handler_probe["attempted"] = True
+        handler_probe["route_id"] = str(candidate.get("route_id") or "")
+        try:
+            probe = probe_bgaming_handlers(
+                url,
+                [candidate],
+                har_path=handler_raw_har,
+                settle_ms=max(8000, int(settle_ms)),
+                after_call_ms=2500,
+            )
+        except (OSError, RuntimeError, TypeError, ValueError) as exc:
+            handler_probe["error"] = f"{type(exc).__name__}: {exc}"
+        else:
+            handler_probe["outcomes"] = [
+                item.to_dict()
+                for item in probe.outcomes
+            ]
+            handler_probe["success"] = (
+                any(item.called for item in probe.outcomes)
+                and _probe_matches_route(probe.evidence, candidate)
+            )
+            if handler_probe["success"]:
+                contract_bundle = _merge_evidence(contract_bundle, probe.evidence)
+                _write_safe_har(contract_bundle, contract_har)
+                graph = build_action_graph(contract_har)
+                routes = [dict(item) for item in graph.get("routes", [])]
+                if family == HYPERHIVE_JSONRPC and not enrichment["success"]:
                     enrichment["success"] = True
                     enrichment["kind"] = "handler-probe"
                     enrichment["metadata"] = {
@@ -145,7 +145,7 @@ def analyze_bgaming_demo(
         blockers.append(hyperhive_base_error)
     if handler_probe.get("attempted") and not handler_probe.get("success"):
         blockers.append(
-            "HyperHive handler probe did not produce a matching successful request"
+            "handler probe did not produce a matching successful request"
         )
 
     direct_state: dict[str, Any] | None = None
@@ -265,9 +265,17 @@ def _select_handler_probe_route(
     candidates = [
         route
         for route in routes
-        if route.get("interface_role") == "network_action"
-        and route.get("status") == "NETWORK_INFERRED"
-        and str(route.get("handler") or "").strip()
+        if str(route.get("handler") or "").strip()
+        and (
+            (
+                route.get("interface_role") == "network_action"
+                and route.get("status") == "NETWORK_INFERRED"
+            )
+            or (
+                route.get("semantic") == "SPIN"
+                and route.get("status") != "NETWORK_OBSERVED"
+            )
+        )
     ]
     if not candidates:
         return None
@@ -299,9 +307,20 @@ def _probe_matches_route(
     route: dict[str, Any],
 ) -> bool:
     wanted = set(route.get("wire_markers") or [])
-    wanted.discard("method=play")
-    if not wanted and route.get("semantic") == "SPIN":
-        wanted = {"method=play"}
+    semantic = str(route.get("semantic") or "")
+    handler = str(route.get("handler") or "")
+    specific = {
+        marker
+        for marker in wanted
+        if str(marker).startswith(
+            (
+                "purchased_feature=",
+                "purchased_feature_level=",
+                "action=",
+                "bet_type=",
+            )
+        )
+    }
 
     for exchange in evidence.http:
         if (
@@ -309,7 +328,41 @@ def _probe_matches_route(
             or not 200 <= exchange.response_status < 400
         ):
             continue
+
         observed = _request_markers(exchange.request_body)
+        if specific and specific <= observed:
+            return True
+
+        if semantic == "SPIN" and (
+            "command=spin" in observed
+            or "method=play" in observed
+        ):
+            return True
+
+        if semantic == "BUY_BONUS":
+            purchased = [
+                marker
+                for marker in observed
+                if str(marker).startswith("purchased_feature=")
+            ]
+            if purchased:
+                if any(
+                    marker.split("=", 1)[1] in handler
+                    for marker in purchased
+                ):
+                    return True
+                if "buy" in handler.casefold() or "bonus" in handler.casefold():
+                    return True
+
+            if (
+                ("buy" in handler.casefold() or "bonus" in handler.casefold())
+                and (
+                    "command=spin" in observed
+                    or "method=play" in observed
+                )
+            ):
+                return True
+
         if wanted and wanted <= observed:
             return True
     return False
