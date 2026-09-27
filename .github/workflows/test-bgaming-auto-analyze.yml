@@ -10,6 +10,7 @@ on:
       - "src/multiplay/har_map.py"
       - "src/multiplay/providers/bgaming/direct_port.py"
       - "src/multiplay/providers/bgaming/handler_probe.py"
+      - "src/multiplay/providers/bgaming/switchable.py"
 
 permissions:
   contents: read
