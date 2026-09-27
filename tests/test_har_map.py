@@ -221,3 +221,44 @@ def test_har_map_extracts_svelte_spin_binding(tmp_path):
     assert control["label"] == "spin-button"
     assert control["handler"] == "v0"
     assert control["event"] == "pointer-down"
+
+
+
+def test_har_map_extracts_framework_spin_event(tmp_path):
+    har = {
+        "log": {
+            "entries": [
+                {
+                    "request": {
+                        "method": "GET",
+                        "url": "https://game.example/client.min.js",
+                        "headers": [],
+                    },
+                    "response": {
+                        "status": 200,
+                        "headers": [],
+                        "content": {
+                            "mimeType": "application/javascript",
+                            "text": (
+                                'case "GAME_CONTROLS_VL_ON_SPIN_CLICK":'
+                                'this.onSpinClicked(),'
+                                'this.sharedMainProxy.controlsStateVO.settingsOpened=!1;'
+                            ),
+                        },
+                    },
+                }
+            ]
+        }
+    }
+    path = tmp_path / "framework-spin.har"
+    path.write_text(json.dumps(har), encoding="utf-8")
+
+    report = build_har_map(path)
+    control = next(
+        item
+        for item in report["actions"]
+        if item["kind"] == "event_control"
+        and item["event"] == "GAME_CONTROLS_VL_ON_SPIN_CLICK"
+    )
+    assert control["label"] == "spin-button"
+    assert control["handler"] == "onSpinClicked"
