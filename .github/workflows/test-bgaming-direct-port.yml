@@ -45,37 +45,107 @@ jobs:
           from multiplay.providers.bgaming.direct_port import BGamingDemoDirectSession
 
           url = "${{ matrix.url }}"
-          seed = run_demo_base_spin(url, timeout_s=30)
+          case = "${{ matrix.id }}"
 
-          entries = []
-          for item in seed.evidence.http:
-              entries.append(
+          if case == "hyperhive":
+              entries = [
                   {
                       "request": {
-                          "method": item.method,
-                          "url": item.url,
-                          "headers": [
-                              {"name": key, "value": value}
-                              for key, value in item.request_headers.items()
-                          ],
+                          "method": "POST",
+                          "url": "https://big-bucks-saloon.demo.bgaming-network.com/api",
+                          "headers": [],
                           "postData": {
                               "mimeType": "application/json",
-                              "text": json.dumps(item.request_body),
+                              "text": json.dumps(
+                                  {
+                                      "id": 0,
+                                      "jsonrpc": "2.0",
+                                      "method": "init",
+                                      "params": {"token": "captured"},
+                                  }
+                              ),
                           },
                       },
                       "response": {
-                          "status": item.response_status or 0,
-                          "headers": [
-                              {"name": key, "value": value}
-                              for key, value in item.response_headers.items()
-                          ],
+                          "status": 200,
+                          "headers": [],
                           "content": {
                               "mimeType": "application/json",
-                              "text": json.dumps(item.response_body),
+                              "text": json.dumps({"id": 0, "jsonrpc": "2.0", "result": {}}),
                           },
                       },
-                  }
-              )
+                  },
+                  {
+                      "request": {
+                          "method": "POST",
+                          "url": "https://big-bucks-saloon.demo.bgaming-network.com/api",
+                          "headers": [],
+                          "postData": {
+                              "mimeType": "application/json",
+                              "text": json.dumps(
+                                  {
+                                      "id": 0,
+                                      "jsonrpc": "2.0",
+                                      "method": "play",
+                                      "params": {
+                                          "req": {
+                                              "bet": 40,
+                                              "purchased_feature": "buy_bonus",
+                                          },
+                                          "state_lock": "captured-lock",
+                                          "token": "captured",
+                                      },
+                                  }
+                              ),
+                          },
+                      },
+                      "response": {
+                          "status": 200,
+                          "headers": [],
+                          "content": {
+                              "mimeType": "application/json",
+                              "text": json.dumps(
+                                  {
+                                      "id": 0,
+                                      "jsonrpc": "2.0",
+                                      "result": {"final": True, "state_lock": "next"},
+                                  }
+                              ),
+                          },
+                      },
+                  },
+              ]
+          else:
+              seed = run_demo_base_spin(url, timeout_s=30)
+              entries = []
+              for item in seed.evidence.http:
+                  entries.append(
+                      {
+                          "request": {
+                              "method": item.method,
+                              "url": item.url,
+                              "headers": [
+                                  {"name": key, "value": value}
+                                  for key, value in item.request_headers.items()
+                              ],
+                              "postData": {
+                                  "mimeType": "application/json",
+                                  "text": json.dumps(item.request_body),
+                              },
+                          },
+                          "response": {
+                              "status": item.response_status or 0,
+                              "headers": [
+                                  {"name": key, "value": value}
+                                  for key, value in item.response_headers.items()
+                              ],
+                              "content": {
+                                  "mimeType": "application/json",
+                                  "text": json.dumps(item.response_body),
+                              },
+                          },
+                      }
+                  )
 
           har = Path("seed.har")
           har.write_text(
@@ -105,6 +175,7 @@ jobs:
           print(
               json.dumps(
                   {
+                      "case": case,
                       "family": state["family"],
                       "action": selected.to_dict(),
                       "result_status": result["status"],
