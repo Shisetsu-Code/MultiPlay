@@ -224,7 +224,31 @@ def analyze_bgaming_demo(
         if family == SWITCHABLE_CONTAINER
         else _select_handler_probe_routes(routes)
     )
-    for index, candidate in enumerate(candidates, start=1):
+    browser_candidates: list[dict[str, Any]] = []
+    for candidate in candidates:
+        markers = {
+            str(item)
+            for item in candidate.get("wire_markers") or []
+        }
+        direct_api_purchase = (
+            family == API_V2
+            and candidate.get("semantic") == "BUY_BONUS"
+            and any(
+                marker.startswith("purchased_feature=")
+                for marker in markers
+            )
+        )
+        direct_hyper_play = (
+            family == HYPERHIVE_JSONRPC
+            and "method=play" in markers
+        )
+        if direct_api_purchase or direct_hyper_play:
+            continue
+        browser_candidates.append(candidate)
+        if len(browser_candidates) >= 4:
+            break
+
+    for index, candidate in enumerate(browser_candidates, start=1):
         handler_probe["attempted"] = True
         route_id = str(candidate.get("route_id") or "")
         handler_probe["route_ids"].append(route_id)
@@ -657,14 +681,14 @@ def render_bgaming_analysis(report: dict[str, Any]) -> str:
 def _select_handler_probe_routes(
     routes: list[dict[str, Any]],
     *,
-    max_routes: int = 8,
+    max_routes: int = 32,
 ) -> list[dict[str, Any]]:
     candidates = [
         route
         for route in routes
         if str(route.get("handler") or "").strip()
         and str(route.get("control") or "").strip()
-        and route.get("interface_role") != "opener"
+        and route.get("interface_role") == "network_action"
         and route.get("status") != "NETWORK_OBSERVED"
         and route.get("semantic")
         in {
@@ -672,8 +696,6 @@ def _select_handler_probe_routes(
             "BUY_BONUS",
             "FREESPIN",
             "RESPIN",
-            "GAMBLE",
-            "COLLECT",
             "PICK",
             "GAME_VARIANT",
             "CONTINUE",
