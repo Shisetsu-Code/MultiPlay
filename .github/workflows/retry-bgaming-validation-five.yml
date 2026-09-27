@@ -9,7 +9,7 @@ on:
 permissions:
   contents: read
 
-# regression: inferred purchases + legacy controls
+# regression: inferred purchases + legacy controls\n# regression: strict legacy correlation v2
 
 jobs:
   analyze:
