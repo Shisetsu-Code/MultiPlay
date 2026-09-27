@@ -19,6 +19,8 @@ permissions:
 # pending rerun: purchase-level + api-version + math-mode
 # pending rerun: static freespin purchase handlers
 # plan from latest persisted worker state
+# 16-way catalog fanout
+# conflict-safe state persistence
 
 concurrency:
   group: bgaming-analyzer-worker
@@ -94,7 +96,7 @@ jobs:
               )
 
           eligible.sort(key=lambda r: (r["name"].casefold(), r["slug"]))
-          shard_count = min(8, max(1, len(eligible)))
+          shard_count = min(16, max(1, len(eligible)))
           shards = [[] for _ in range(shard_count)]
           for index, item in enumerate(eligible):
               shards[index % shard_count].append(item)
@@ -124,7 +126,7 @@ jobs:
     timeout-minutes: 120
     strategy:
       fail-fast: false
-      max-parallel: 8
+      max-parallel: 16
       matrix: ${{ fromJSON(needs.plan.outputs.matrix) }}
     env:
       GAMES_JSON: ${{ matrix.games_json }}
@@ -489,16 +491,19 @@ jobs:
 
       - name: Persist compact worker state
         run: |
+          mkdir -p /tmp/bgaming-worker-state
+          cp knowledge/providers/bgaming/worker-state.json /tmp/bgaming-worker-state/
+          cp knowledge/providers/bgaming/worker-last-summary.json /tmp/bgaming-worker-state/
+          cp knowledge/providers/bgaming/worker-last-review.json /tmp/bgaming-worker-state/
+          git fetch origin main
+          git reset --hard origin/main
+          cp /tmp/bgaming-worker-state/* knowledge/providers/bgaming/
           git config user.name "MultiPlay Worker"
           git config user.email "multiplay-worker@users.noreply.github.com"
-          git add \
-            knowledge/providers/bgaming/worker-state.json \
-            knowledge/providers/bgaming/worker-last-summary.json \
-            knowledge/providers/bgaming/worker-last-review.json
+          git add knowledge/providers/bgaming/worker-*.json
           if git diff --cached --quiet; then
             echo "No worker-state changes"
             exit 0
           fi
           git commit -m "Update BGaming worker results"
-          git pull --rebase origin main
           git push origin HEAD:main
