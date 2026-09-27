@@ -379,6 +379,7 @@ def _resolve_control(
     )
     if observed_match is not None:
         markers.update(str(item) for item in observed_match.get("wire_markers") or [])
+        markers = _relevant_markers(semantic, markers)
 
     status = _route_status(
         label=label,
@@ -587,7 +588,11 @@ def _called_symbols(body: str) -> list[str]:
 
 
 def _handler_wire_markers(semantic: str, handler: str) -> set[str]:
-    if semantic != "BUY_BONUS" or "`" not in handler:
+    if (
+        semantic != "BUY_BONUS"
+        or "`" not in handler
+        or not re.search(r"(buyBonus|buyFeature)", handler, re.IGNORECASE)
+    ):
         return set()
 
     raw = handler.split("`", 1)[1]
