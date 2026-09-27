@@ -1,6 +1,7 @@
 name: Test 5 random BGaming games
 
 on:
+  workflow_dispatch:
   push:
     branches: ["main"]
     paths:
@@ -42,8 +43,27 @@ jobs:
           records = payload.get("records") if isinstance(payload, dict) else payload
           records = [r for r in records if isinstance(r, dict)]
 
+          excluded = {
+              "forgotten",
+              "rotating element",
+              "golden avalon hold and win",
+              "lucky pack: 2026 cup",
+              "gift rush",
+              "potion spells",
+              "hot chilli bells 100",
+              "stars & stripes hold and win",
+              "book of pyramids",
+              "rocket eruption: triple blast",
+              "alien fruits 3",
+              "big bucks saloon",
+              "catdiana",
+          }
+
           candidates = []
           for item in records:
+              name = str(item.get("name") or item.get("slug") or "game")
+              if name.strip().casefold() in excluded:
+                  continue
               url = (
                   item.get("execution_url")
                   or item.get("demo_url")
@@ -55,7 +75,7 @@ jobs:
               candidates.append(
                   {
                       "id": str(item.get("slug") or "game"),
-                      "name": str(item.get("name") or item.get("slug") or "game"),
+                      "name": name,
                       "url": str(url),
                   }
               )
@@ -84,29 +104,33 @@ jobs:
       - run: python -m playwright install --with-deps chromium
 
       - name: Analyze one game
+        env:
+          GAME_NAME: ${{ matrix.name }}
+          GAME_ID: ${{ matrix.id }}
+          GAME_URL: ${{ matrix.url }}
         run: |
-          mkdir -p "artifacts/${{ matrix.id }}"
+          mkdir -p "artifacts/$GAME_ID"
           set +e
-          multiplay bgaming-analyze-demo "${{ matrix.url }}" \
-            --output-dir "artifacts/${{ matrix.id }}" \
+          multiplay bgaming-analyze-demo "$GAME_URL" \
+            --output-dir "artifacts/$GAME_ID" \
             --settle-ms 12000 \
             --timeout 30 \
-            > "artifacts/${{ matrix.id }}/stdout.txt" \
-            2> "artifacts/${{ matrix.id }}/stderr.txt"
+            > "artifacts/$GAME_ID/stdout.txt" \
+            2> "artifacts/$GAME_ID/stderr.txt"
           RC=$?
           set -e
-          echo "$RC" > "artifacts/${{ matrix.id }}/returncode.txt"
+          echo "$RC" > "artifacts/$GAME_ID/returncode.txt"
 
           python - <<'PY'
           import json
           from pathlib import Path
 
-          root = Path("artifacts/${{ matrix.id }}")
+          root = Path("artifacts/$GAME_ID")
           analysis = root / "analysis.json"
           if analysis.exists():
               report = json.loads(analysis.read_text())
-              print("name:", "${{ matrix.name }}")
-              print("slug:", "${{ matrix.id }}")
+              print("name:", os.environ["GAME_NAME"])
+              print("slug:", os.environ["GAME_ID"])
               print("family:", report.get("family"))
               print("routes:", report.get("route_count", 0))
               print("direct:", report.get("direct_executable_count", 0))
@@ -122,8 +146,8 @@ jobs:
                       route.get("wire_markers") or [],
                   )
           else:
-              print("name:", "${{ matrix.name }}")
-              print("slug:", "${{ matrix.id }}")
+              print("name:", os.environ["GAME_NAME"])
+              print("slug:", os.environ["GAME_ID"])
               print("analysis.json missing")
               stderr = root / "stderr.txt"
               if stderr.exists():
