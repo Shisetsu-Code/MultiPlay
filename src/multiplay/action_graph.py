@@ -371,6 +371,7 @@ def _resolve_control(
         handler=handler,
         markers=markers,
         observed=observed,
+        semantic=semantic,
         allow_semantic=(
             bool(markers or best.get("protocol_hint") or strong_spin)
             and not _ui_opener(handler, best.get("chain") or [])
@@ -776,6 +777,7 @@ def _match_observed(
     handler: str,
     markers: set[str],
     observed: list[dict[str, Any]],
+    semantic: str,
     allow_semantic: bool,
 ) -> dict[str, Any] | None:
     candidates: list[tuple[int, dict[str, Any]]] = []
@@ -785,6 +787,15 @@ def _match_observed(
         observed_markers = {str(value) for value in item.get("wire_markers") or []}
         shared = markers & observed_markers
         score = len(shared) * 100
+
+        has_purchase = any(
+            marker.startswith("purchased_feature=")
+            for marker in observed_markers
+        )
+        if semantic == "SPIN":
+            score += 80 if not has_purchase else -120
+        elif semantic == "BUY_BONUS":
+            score += 120 if has_purchase else -80
 
         if not shared and allow_semantic:
             for marker in observed_markers:
