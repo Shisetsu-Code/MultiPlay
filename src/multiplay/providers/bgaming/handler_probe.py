@@ -134,16 +134,18 @@ def probe_bgaming_handlers(
                     except Exception as exc:  # noqa: BLE001
                         last_error = f"{type(exc).__name__}: {exc}"
 
-                if not isinstance(result, dict) or not result.get("called"):
-                    if paths:
-                        try:
-                            result = frame.evaluate(
-                                _CALL_HANDLER_JS,
-                                {"paths": paths, "args": args},
-                            )
-                        except Exception as exc:  # noqa: BLE001
-                            last_error = f"{type(exc).__name__}: {exc}"
-                            continue
+                if (
+                    (not isinstance(result, dict) or not result.get("called"))
+                    and paths
+                ):
+                    try:
+                        result = frame.evaluate(
+                            _CALL_HANDLER_JS,
+                            {"paths": paths, "args": args},
+                        )
+                    except Exception as exc:  # noqa: BLE001
+                        last_error = f"{type(exc).__name__}: {exc}"
+                        continue
 
                 if not isinstance(result, dict):
                     continue
