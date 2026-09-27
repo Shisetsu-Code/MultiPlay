@@ -1,0 +1,74 @@
+name: Debug BGaming runtime
+
+on:
+  push:
+    branches: ["main"]
+    paths:
+      - ".github/workflows/debug-bgaming-runtime.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  debug:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install playwright
+      - run: python -m playwright install --with-deps chromium
+      - name: Inspect runtime
+        run: |
+          python - <<'PY'
+          import json
+          from playwright.sync_api import sync_playwright
+
+          with sync_playwright() as p:
+              browser = p.chromium.launch(headless=True)
+              page = browser.new_page(viewport={"width": 1440, "height": 900})
+              page.goto(
+                  "https://demo.bgaming-network.com/play/PotionSpells/FUN",
+                  wait_until="domcontentloaded",
+                  timeout=60000,
+              )
+              page.wait_for_timeout(14000)
+
+              rows = []
+              for frame in page.frames:
+                  try:
+                      data = frame.evaluate(
+                          """() => {
+                            const webpackKeys = Object.keys(globalThis)
+                              .filter((key) => key.toLowerCase().includes("webpack"));
+                            const own = {};
+                            for (const key of webpackKeys) {
+                              const value = globalThis[key];
+                              own[key] = {
+                                type: typeof value,
+                                isArray: Array.isArray(value),
+                                length: Array.isArray(value) ? value.length : null,
+                                pushType: value && typeof value.push,
+                              };
+                            }
+                            return {
+                              url: location.href,
+                              webpackKeys,
+                              webpack: own,
+                              globals: Object.keys(globalThis)
+                                .filter((key) => /currentScene|casinoOptions|^game$|^data$|^all$/.test(key))
+                                .slice(0, 100),
+                              canvases: document.querySelectorAll("canvas").length,
+                              iframes: document.querySelectorAll("iframe").length,
+                            };
+                          }"""
+                      )
+                  except Exception as exc:
+                      data = {"error": f"{type(exc).__name__}: {exc}"}
+                  rows.append(data)
+
+              print(json.dumps(rows, indent=2, ensure_ascii=False))
+              browser.close()
+          PY
