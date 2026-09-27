@@ -350,7 +350,9 @@ def _resolve_control(
         "score": 0,
     }
 
-    markers = {str(item) for item in control.get("wire_markers") or []}
+    markers: set[str] = set()
+    if control.get("kind") != "declared_button":
+        markers.update(str(item) for item in control.get("wire_markers") or [])
     markers.update(str(item) for item in best.get("wire_markers") or [])
     markers = _relevant_markers(semantic, markers)
 
