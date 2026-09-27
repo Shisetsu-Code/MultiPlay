@@ -36,6 +36,8 @@ jobs:
             url: https://bgaming.com/games/sweet-royale-megaways
           - id: clash
             url: https://demo.bgaming-network.com/play/ClashofGodsAnubisvsHades/FUN
+          - id: switchable
+            url: https://demo.bgaming-network.com/play/AllLuckyClover/FUN
 
     steps:
       - uses: actions/checkout@v4
