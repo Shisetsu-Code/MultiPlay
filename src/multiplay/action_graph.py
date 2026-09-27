@@ -380,8 +380,14 @@ def _resolve_control(
             ),
         )
     if observed_match is not None:
-        markers.update(str(item) for item in observed_match.get("wire_markers") or [])
-        markers = _relevant_markers(semantic, markers)
+        observed_markers = {
+            str(item)
+            for item in observed_match.get("wire_markers") or []
+        }
+        markers = _relevant_markers(
+            semantic,
+            observed_markers | _handler_wire_markers(semantic, handler),
+        )
 
     status = _route_status(
         label=label,
