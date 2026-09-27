@@ -1,0 +1,61 @@
+name: Test BGaming static freespin purchases
+
+on:
+  push:
+    branches: ["main"]
+    paths:
+      - ".github/workflows/test-bgaming-static-freespin.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  analyze:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - id: dragon-age
+            url: https://demo.bgaming-network.com/play/DragonAge/FUN?server=demo
+          - id: monster-hunt
+            url: https://demo.bgaming-network.com/play/MonsterHunt/FUN?server=demo
+          - id: god-of-wealth
+            url: https://demo.bgaming-network.com/play/GodOfWealthHoldAndWin/FUN?server=demo
+
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install --upgrade pip
+      - run: pip install -e ".[browser,dev]"
+      - run: python -m playwright install --with-deps chromium
+      - name: Analyze
+        run: |
+          mkdir -p "artifacts/${{ matrix.id }}"
+          multiplay bgaming-analyze-demo "${{ matrix.url }}" \
+            --output-dir "artifacts/${{ matrix.id }}" \
+            --settle-ms 7000 \
+            --timeout 25
+      - name: Summarize
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          d=json.loads(Path("artifacts/${{ matrix.id }}/analysis.json").read_text())
+          print("family:",d.get("family"))
+          print("routes:",d.get("route_count"))
+          print("direct:",d.get("direct_executable_count"))
+          for r in d.get("routes") or []:
+              if r.get("semantic") in {"SPIN","BUY_BONUS","FREESPIN","CHANCE"}:
+                  print(
+                      r.get("semantic"),
+                      r.get("status"),
+                      "DIRECT" if r.get("direct_executable") else "-",
+                      r.get("control"),
+                      r.get("handler"),
+                      r.get("wire_markers") or [],
+                  )
+          PY
