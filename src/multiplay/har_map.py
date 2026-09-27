@@ -366,14 +366,17 @@ _ONCLICK_RE = re.compile(
 def _javascript_declared_buttons(text: str, source: str) -> list[dict[str, Any]]:
     rows: list[dict[str, Any]] = []
     for match in _BUTTON_COMPONENT_RE.finditer(text):
-        window = text[match.start() : min(len(text), match.start() + 1800)]
-        name_match = _BUTTON_NAME_RE.search(window)
-        onclick_match = _ONCLICK_RE.search(window)
-        if name_match is None and onclick_match is None:
+        properties = _balanced_js_object(text, match.end() - 1, max_chars=6000)
+        if not properties:
+            continue
+
+        name_match = _BUTTON_NAME_RE.search(properties)
+        onclick_match = _ONCLICK_RE.search(properties)
+        if onclick_match is None:
             continue
 
         label = str(name_match.group(1)) if name_match else match.group(1)
-        onclick = str(onclick_match.group(1)) if onclick_match else ""
+        onclick = str(onclick_match.group(1))
         rows.append(
             {
                 "kind": "declared_button",
@@ -382,13 +385,46 @@ def _javascript_declared_buttons(text: str, source: str) -> list[dict[str, Any]]
                 "label": label,
                 "handler": onclick.strip("[]\"'")[:300],
                 "element": label,
-                "handler_hint": " ".join(window[:1000].split()),
-                "wire_markers": sorted(_wire_markers_text(window)),
+                "handler_hint": " ".join(properties[:1000].split()),
+                "wire_markers": sorted(_wire_markers_text(properties)),
                 "endpoint_ids": [],
-                "confidence": "HIGH" if onclick else "MEDIUM",
+                "confidence": "HIGH",
             }
         )
     return rows
+
+
+def _balanced_js_object(text: str, start: int, *, max_chars: int) -> str:
+    if start < 0 or start >= len(text) or text[start] != "{":
+        return ""
+
+    depth = 0
+    quote = ""
+    escaped = False
+    end = min(len(text), start + max_chars)
+
+    for index in range(start, end):
+        char = text[index]
+        if quote:
+            if escaped:
+                escaped = False
+            elif char == "\\":
+                escaped = True
+            elif char == quote:
+                quote = ""
+            continue
+
+        if char in {'"', "'", "`"}:
+            quote = char
+            continue
+        if char == "{":
+            depth += 1
+            continue
+        if char == "}":
+            depth -= 1
+            if depth == 0:
+                return text[start : index + 1]
+    return ""
 
 def _endpoint_inventory(evidence) -> list[dict[str, Any]]:
     grouped: dict[tuple[str, str], dict[str, Any]] = {}
