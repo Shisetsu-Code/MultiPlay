@@ -182,3 +182,60 @@ def test_api_v2_purchase_retry_converts_numeric_rows_to_wire_string():
     assert len(retries) == 1
     assert retries[0]["options"]["rows"] == "4"
     assert payload["options"]["rows"] == 4
+
+def test_infer_purchase_level_from_unique_client_state_wire_link():
+    evidence = EvidenceBundle(
+        scripts=[
+            ScriptEvidence(
+                evidence_id="s",
+                source="https://example.test/app.js",
+                text=(
+                    'buyBonusClick(){this.buyFeatures.buyBonusClick('
+                    'this.FREESPIN_BUY,this.goldSymbolsLevel)}'
+                    'setSpecialSymbolsLevel(t,e){'
+                    'this.goldSymbolsLevel=t;'
+                    'this.additionalSpinOptions.gold_symbols_count=""+t}'
+                ),
+            )
+        ]
+    )
+    base = ApiV2Template(
+        evidence_id="spin",
+        command="spin",
+        has_options=True,
+        option_static={"gold_symbols_count": "1"},
+        option_dynamic_shapes={"bet": {"type": "integer"}},
+        extra_static={},
+        extra_dynamic_shapes={"round_series_id": {"type": "integer"}},
+    )
+    assert _infer_api_v2_purchase_level(evidence, base) == "1"
+
+
+def test_infer_purchase_level_refuses_ambiguous_client_links():
+    evidence = EvidenceBundle(
+        scripts=[
+            ScriptEvidence(
+                evidence_id="s",
+                source="https://example.test/app.js",
+                text=(
+                    'buyBonusClick(){this.buyFeatures.buyBonusClick('
+                    'this.FREESPIN_BUY,this.level)}'
+                    'setOne(t){this.level=t;'
+                    'this.additionalSpinOptions.first_count=""+t}'
+                    'setTwo(t){this.level=t;'
+                    'this.additionalSpinOptions.second_count=""+t}'
+                ),
+            )
+        ]
+    )
+    base = ApiV2Template(
+        evidence_id="spin",
+        command="spin",
+        has_options=True,
+        option_static={"first_count": "1", "second_count": "2"},
+        option_dynamic_shapes={"bet": {"type": "integer"}},
+        extra_static={},
+        extra_dynamic_shapes={},
+    )
+    assert _infer_api_v2_purchase_level(evidence, base) == ""
+
