@@ -1,0 +1,96 @@
+name: Test BGaming handler block
+
+on:
+  push:
+    branches: ["main"]
+    paths:
+      - ".github/workflows/test-bgaming-handler-block.yml"
+      - "src/multiplay/providers/bgaming/handler_probe.py"
+
+permissions:
+  contents: read
+
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - id: spin
+            handler: "currentScene.spin\x601"
+          - id: buy
+            handler: "all.buy-features.buyBonusClick\x60bonus_buy"
+
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - run: python -m pip install --upgrade pip
+      - run: pip install -e ".[browser,dev]"
+      - run: python -m playwright install --with-deps chromium
+
+      - name: Invoke extracted handler
+        run: |
+          mkdir -p artifacts
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          from multiplay.providers.bgaming.handler_probe import probe_bgaming_handlers
+
+          route = {
+              "route_id": "probe-${{ matrix.id }}",
+              "handler": "${{ matrix.handler }}",
+          }
+          result = probe_bgaming_handlers(
+              "https://demo.bgaming-network.com/play/PotionSpells/FUN",
+              [route],
+              har_path="artifacts/probe.har",
+              settle_ms=12000,
+              after_call_ms=3500,
+          )
+
+          print("OUTCOMES")
+          print(json.dumps(result.to_dict(), indent=2, ensure_ascii=False))
+
+          print("PROTOCOL REQUESTS")
+          rows = []
+          for exchange in result.evidence.http:
+              if exchange.method not in {"POST", "PUT", "PATCH", "DELETE"}:
+                  continue
+              body = exchange.request_body
+              url = exchange.url
+              if "bgaming-network.com" not in url:
+                  continue
+              rows.append({
+                  "method": exchange.method,
+                  "url": url,
+                  "status": exchange.response_status,
+                  "body": body,
+              })
+          print(json.dumps(rows, indent=2, ensure_ascii=False))
+
+          Path("artifacts/result.json").write_text(
+              json.dumps(
+                  {
+                      "outcomes": result.to_dict()["outcomes"],
+                      "requests": rows,
+                  },
+                  indent=2,
+                  ensure_ascii=False,
+              ) + "\n"
+          )
+          PY
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: potion-handler-${{ matrix.id }}
+          path: |
+            artifacts/result.json
+            artifacts/probe.har
+          if-no-files-found: error
+          retention-days: 2
