@@ -321,6 +321,7 @@ def _resolve_control(
     handler = str(control.get("handler") or control.get("handler_hint") or "")
     roots = _handler_symbols(handler, definitions)
 
+    semantic = _semantic(label, handler, roots, set())
     paths: list[dict[str, Any]] = []
     for root in roots[:4]:
         paths.extend(
@@ -334,6 +335,7 @@ def _resolve_control(
 
     paths.sort(
         key=lambda item: (
+            _path_affinity(semantic, item),
             len(item.get("wire_markers") or []),
             1 if item.get("protocol_hint") else 0,
             item.get("score", 0),
@@ -350,12 +352,15 @@ def _resolve_control(
 
     markers = {str(item) for item in control.get("wire_markers") or []}
     markers.update(str(item) for item in best.get("wire_markers") or [])
+    markers = _relevant_markers(semantic, markers)
 
     observed_match = _match_observed(
         label=label,
         handler=handler,
         markers=markers,
         observed=observed,
+        allow_semantic=bool(markers or best.get("protocol_hint"))
+        and not _ui_opener(handler, best.get("chain") or []),
     )
     if observed_match is not None:
         markers.update(str(item) for item in observed_match.get("wire_markers") or [])
@@ -367,7 +372,8 @@ def _resolve_control(
         protocol_hint=bool(best.get("protocol_hint")),
         observed_match=observed_match,
     )
-    semantic = _semantic(label, handler, best.get("chain") or [], markers)
+    if semantic == "OTHER":
+        semantic = _semantic(label, handler, best.get("chain") or [], markers)
     endpoint_ids = (
         list(observed_match.get("endpoint_ids") or [])
         if observed_match is not None
@@ -591,12 +597,119 @@ def _protocol_hint(text: str) -> bool:
     )
 
 
+
+def _path_affinity(semantic: str, path: dict[str, Any]) -> int:
+    markers = set(path.get("wire_markers") or [])
+    chain = " ".join(path.get("chain") or [])
+    score = 0
+
+    if semantic == "SPIN":
+        score += 300 if "command=spin" in markers else 0
+        score += 180 if "method=play" in markers else 0
+        score -= 220 if "command=init" in markers and "command=spin" not in markers else 0
+        score += 70 if re.search(r"\bspin(Request|Click)?\b", chain, re.IGNORECASE) else 0
+    elif semantic == "BUY_BONUS":
+        score += 350 if any(
+            marker.startswith("purchased_feature=")
+            for marker in markers
+        ) else 0
+        score += 100 if re.search(r"(buyBonus|buyFeature)", chain, re.IGNORECASE) else 0
+        score += 40 if "command=spin" in markers or "method=play" in markers else 0
+        score -= 180 if "command=init" in markers else 0
+    elif semantic == "GAMBLE":
+        score += 300 if any(
+            marker in {"command=gamble", "command=close"}
+            for marker in markers
+        ) else 0
+        score += 80 if "gamble" in chain.casefold() else 0
+    elif semantic == "COLLECT":
+        score += 260 if "command=close" in markers else 0
+        score += 70 if "collect" in chain.casefold() else 0
+    elif semantic in {"FREESPIN", "RESPIN"}:
+        wanted = "freespin" if semantic == "FREESPIN" else "respin"
+        score += 300 if f"command={wanted}" in markers else 0
+        score += 180 if "method=play" in markers else 0
+    elif semantic == "PICK":
+        score += 220 if any(
+            marker.startswith("command=")
+            and any(word in marker.casefold() for word in ("pick", "select", "choose"))
+            for marker in markers
+        ) else 0
+
+    if path.get("protocol_hint"):
+        score += 25
+    return score
+
+
+def _relevant_markers(semantic: str, markers: set[str]) -> set[str]:
+    if semantic == "SPIN":
+        return {
+            marker
+            for marker in markers
+            if marker in {"command=spin", "method=play"}
+            or marker.startswith("bet_type=")
+        }
+    if semantic == "BUY_BONUS":
+        return {
+            marker
+            for marker in markers
+            if marker.startswith("purchased_feature")
+            or marker in {"command=spin", "command=play", "method=play"}
+        }
+    if semantic == "FREESPIN":
+        return {
+            marker
+            for marker in markers
+            if marker in {"command=freespin", "method=play"}
+            or marker.startswith("purchased_feature")
+        }
+    if semantic == "RESPIN":
+        return {
+            marker
+            for marker in markers
+            if marker in {"command=respin", "method=play"}
+        }
+    if semantic == "GAMBLE":
+        return {
+            marker
+            for marker in markers
+            if marker in {"command=gamble", "command=close", "method=play"}
+        }
+    if semantic == "COLLECT":
+        return {
+            marker
+            for marker in markers
+            if marker in {"command=close", "method=play"}
+        }
+    if semantic == "PICK":
+        return {
+            marker
+            for marker in markers
+            if marker.startswith(("command=pick", "command=select", "command=choose"))
+            or marker.startswith("action=")
+        }
+    if semantic in {"BET", "AUTOSPIN", "GAME_VARIANT"}:
+        return set()
+    return markers
+
+
+def _ui_opener(handler: str, chain: list[str]) -> bool:
+    text = " ".join([handler, *chain]).casefold()
+    return bool(
+        re.search(
+            r"(open|show|toggle|hide).*(popup|modal|panel)|"
+            r"(popup|modal|panel).*(open|show|toggle|hide)",
+            text,
+        )
+    )
+
 def _match_observed(
     *,
     label: str,
     handler: str,
     markers: set[str],
     observed: list[dict[str, Any]],
+    allow_semantic: bool,
 ) -> dict[str, Any] | None:
     candidates: list[tuple[int, dict[str, Any]]] = []
     semantic_tokens = _semantic_tokens(f"{label} {handler}")
@@ -606,7 +719,7 @@ def _match_observed(
         shared = markers & observed_markers
         score = len(shared) * 100
 
-        if not shared:
+        if not shared and allow_semantic:
             for marker in observed_markers:
                 if "=" not in marker:
                     continue
@@ -642,8 +755,19 @@ def _route_status(
 ) -> str:
     if observed_match is not None:
         return "NETWORK_OBSERVED"
-    if markers or protocol_hint:
+    if markers:
         return "NETWORK_INFERRED"
+    if protocol_hint and not _ui_opener(handler, []):
+        if _semantic(label, handler, [], set()) in {
+            "SPIN",
+            "BUY_BONUS",
+            "FREESPIN",
+            "RESPIN",
+            "GAMBLE",
+            "COLLECT",
+            "PICK",
+        }:
+            return "NETWORK_INFERRED"
     if _UI_ONLY_RE.search(f"{label} {handler}"):
         return "UI_ONLY"
     return "CLIENT_OR_UNKNOWN"
