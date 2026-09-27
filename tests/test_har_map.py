@@ -262,3 +262,42 @@ def test_har_map_extracts_framework_spin_event(tmp_path):
     )
     assert control["label"] == "spin-button"
     assert control["handler"] == "onSpinClicked"
+
+
+
+def test_har_map_resolves_feature_literal_passed_to_spin_handler(tmp_path):
+    har = {
+        "log": {
+            "entries": [
+                {
+                    "request": {
+                        "method": "GET",
+                        "url": "https://game.example/bundle.js",
+                        "headers": [],
+                    },
+                    "response": {
+                        "status": 200,
+                        "headers": [],
+                        "content": {
+                            "mimeType": "application/javascript",
+                            "text": (
+                                'this.eventManager.addListener("buy-bonus",()=>{'
+                                'this.onSpinClick(!1,"buy_bonus")});'
+                            ),
+                        },
+                    },
+                }
+            ]
+        }
+    }
+    path = tmp_path / "handler-feature.har"
+    path.write_text(json.dumps(har), encoding="utf-8")
+
+    report = build_har_map(path)
+    control = next(
+        item
+        for item in report["actions"]
+        if item["kind"] == "event_control"
+        and item["label"] == "buy-bonus"
+    )
+    assert "purchased_feature=buy_bonus" in control["wire_markers"]
