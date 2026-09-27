@@ -1,6 +1,11 @@
 import json
 
-from multiplay.action_graph import build_action_graph, render_action_graph
+from multiplay.action_graph import (
+    _feature_markers_from_body,
+    _handler_wire_markers,
+    build_action_graph,
+    render_action_graph,
+)
 
 
 def test_action_graph_traces_button_to_observed_spin(tmp_path):
@@ -768,3 +773,24 @@ def test_action_graph_links_svelte_spin_to_hyperhive_play(tmp_path):
     assert route["handler"] == "v0"
     assert "method=play" in route["wire_markers"]
     assert route["replay_action_id"]
+
+
+
+def test_scene_buy_bonus_wrapper_resolves_feature_and_level_separately():
+    constants = {"FREESPIN_BUY": {"freespin_buy"}}
+    body = "this.buyFeatures.buyBonusClick(this.FREESPIN_BUY,t)"
+
+    assert _feature_markers_from_body(body, constants) == {
+        "purchased_feature=freespin_buy"
+    }
+    assert _handler_wire_markers(
+        "BUY_BONUS",
+        "currentScene.buyBonusClick\u00602",
+    ) == {"purchased_feature_level=2"}
+    assert _handler_wire_markers(
+        "BUY_BONUS",
+        "all.buy-features.buyBonusClick\u0060freespin_buy,4",
+    ) == {
+        "purchased_feature=freespin_buy",
+        "purchased_feature_level=4",
+    }
