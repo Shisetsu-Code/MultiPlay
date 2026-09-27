@@ -563,3 +563,54 @@ def test_action_graph_does_not_promote_event_buy_without_feature(tmp_path):
     assert route["semantic"] == "BUY_BONUS"
     assert route["status"] != "NETWORK_OBSERVED"
     assert route["replay_action_id"] == ""
+
+
+
+def test_action_graph_keeps_protocol_play_without_ui_control(tmp_path):
+    har = {
+        "log": {
+            "entries": [
+                {
+                    "request": {
+                        "method": "POST",
+                        "url": "https://game.example/api",
+                        "headers": [],
+                        "postData": {
+                            "mimeType": "application/json",
+                            "text": json.dumps(
+                                {
+                                    "id": 1,
+                                    "jsonrpc": "2.0",
+                                    "method": "play",
+                                    "params": {
+                                        "token": "secret",
+                                        "req": {"bet": 100},
+                                        "state_lock": "lock",
+                                    },
+                                }
+                            ),
+                        },
+                    },
+                    "response": {
+                        "status": 200,
+                        "headers": [],
+                        "content": {
+                            "mimeType": "application/json",
+                            "text": '{"result":{"state_lock":"next"}}',
+                        },
+                    },
+                }
+            ]
+        }
+    }
+    path = tmp_path / "protocol-only.har"
+    path.write_text(json.dumps(har), encoding="utf-8")
+
+    graph = build_action_graph(path)
+    route = next(item for item in graph["routes"] if item["semantic"] == "SPIN")
+
+    assert route["status"] == "NETWORK_OBSERVED"
+    assert route["interface_role"] == "protocol_action"
+    assert route["control"].startswith("protocol:")
+    assert route["replay_action_id"]
+    assert "method=play" in route["wire_markers"]
