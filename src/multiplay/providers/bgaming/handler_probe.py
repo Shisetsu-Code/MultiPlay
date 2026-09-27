@@ -126,13 +126,19 @@ def probe_bgaming_handlers(
             for frame in page.frames:
                 result = None
                 if control:
-                    try:
-                        result = frame.evaluate(
-                            _CALL_CONTROL_JS,
-                            {"control": control},
-                        )
-                    except Exception as exc:  # noqa: BLE001
-                        last_error = f"{type(exc).__name__}: {exc}"
+                    for _attempt in range(3):
+                        try:
+                            result = frame.evaluate(
+                                _CALL_CONTROL_JS,
+                                {"control": control},
+                            )
+                        except Exception as exc:  # noqa: BLE001
+                            last_error = f"{type(exc).__name__}: {exc}"
+                            break
+                        if isinstance(result, dict) and result.get("advanced"):
+                            page.wait_for_timeout(1200)
+                            continue
+                        break
 
                 if (
                     (not isinstance(result, dict) or not result.get("called"))
@@ -277,10 +283,49 @@ _CALL_CONTROL_JS = """
     .sort((a, b) => b.score - a.score)
     .slice(0, 40);
 
+  const clickable = (node, depth = 0) => {
+    if (!node || depth > 4) return null;
+    try {
+      if (typeof node._executeOnClick === "function") return node;
+      if (typeof node.callClick === "function") return node;
+      const children = Array.isArray(node.children) ? node.children : [];
+      for (const child of children) {
+        const found = clickable(child, depth + 1);
+        if (found) return found;
+      }
+    } catch (_error) {}
+    return null;
+  };
+
+  const execute = (game, name, moduleId) => {
+    let all;
+    try { all = game.all; } catch (_error) { return null; }
+    if (!all || !all[name]) return null;
+    const node = clickable(all[name]);
+    if (!node) return null;
+    const basePath = "webpack:" + moduleId + ".all[" + JSON.stringify(name) + "]";
+    try {
+      if (typeof node._executeOnClick === "function") {
+        node._executeOnClick("invoke");
+        return {called: true, path: basePath + "._executeOnClick"};
+      }
+      if (typeof node.callClick === "function") {
+        node.callClick();
+        return {called: true, path: basePath + ".callClick"};
+      }
+    } catch (error) {
+      return {
+        called: false,
+        path: basePath,
+        error: String(error && (error.stack || error.message || error)),
+      };
+    }
+    return null;
+  };
+
   for (const item of ids) {
     let exports;
     try { exports = runtime(item.id); } catch (_error) { continue; }
-
     const values = [exports];
     if (exports && (typeof exports === "object" || typeof exports === "function")) {
       for (const key of ["A", "default"]) {
@@ -292,27 +337,20 @@ _CALL_CONTROL_JS = """
     for (const value of values) {
       if (value == null) continue;
       if (typeof value !== "object" && typeof value !== "function") continue;
-      let all;
-      try { all = value.all; } catch (_error) { continue; }
-      if (!all || !all[control]) continue;
 
-      const button = all[control];
-      const basePath = "webpack:" + item.id + ".all[" + JSON.stringify(control) + "]";
-      try {
-        if (button && typeof button._executeOnClick === "function") {
-          button._executeOnClick("invoke");
-          return {called: true, path: basePath + "._executeOnClick"};
+      const target = execute(value, control, item.id);
+      if (target) return target;
+
+      for (const starter of ["continue", "start-button", "start-btn", "play-button"]) {
+        if (starter === control) continue;
+        const advanced = execute(value, starter, item.id);
+        if (advanced && advanced.called) {
+          return {
+            called: false,
+            advanced: true,
+            path: advanced.path,
+          };
         }
-        if (button && typeof button.callClick === "function") {
-          button.callClick();
-          return {called: true, path: basePath + ".callClick"};
-        }
-      } catch (error) {
-        return {
-          called: false,
-          path: basePath,
-          error: String(error && (error.stack || error.message || error)),
-        };
       }
     }
   }
