@@ -227,10 +227,14 @@ class BGamingDemoDirectSession:
         if self.family != API_V2:
             raise ValueError("inferred API-v2 purchase requires an API-v2 session")
 
-        marker_map = _marker_map(tuple(str(item) for item in markers))
-        purchased_feature = str(marker_map.get("purchased_feature") or "").strip()
-        if not purchased_feature:
-            raise ValueError("inferred API-v2 purchase requires purchased_feature")
+        normalized = tuple(str(item) for item in markers)
+        marker_map = _marker_map(normalized)
+        features = _marker_values(normalized, "purchased_feature")
+        if len(features) != 1:
+            raise ValueError(
+                "inferred API-v2 purchase requires exactly one purchased_feature"
+            )
+        purchased_feature = features[0]
 
         base = choose_api_v2_template(
             self.api_templates,
@@ -289,9 +293,15 @@ class BGamingDemoDirectSession:
         if self.family != HYPERHIVE_JSONRPC:
             raise ValueError("inferred HyperHive execution requires a HyperHive session")
 
-        marker_map = _marker_map(tuple(str(item) for item in markers))
+        normalized = tuple(str(item) for item in markers)
+        marker_map = _marker_map(normalized)
         if marker_map.get("method") != "play":
             raise ValueError("inferred HyperHive route must resolve to method=play")
+        features = _marker_values(normalized, "purchased_feature")
+        if len(features) > 1:
+            raise ValueError(
+                "inferred HyperHive route has ambiguous purchased_feature values"
+            )
 
         values = dict(overrides or {})
         req: dict[str, Any] = {
@@ -722,6 +732,17 @@ def _observed_template_bet(evidence, evidence_id: str) -> Any:
         req = params.get("req") if isinstance(params, dict) else None
         return req.get("bet") if isinstance(req, dict) else None
     return None
+
+
+def _marker_values(markers: tuple[str, ...], key: str) -> list[str]:
+    prefix = f"{key}="
+    return list(
+        dict.fromkeys(
+            marker[len(prefix) :]
+            for marker in markers
+            if marker.startswith(prefix) and marker[len(prefix) :]
+        )
+    )
 
 
 def _marker_map(markers: tuple[str, ...]) -> dict[str, str]:
