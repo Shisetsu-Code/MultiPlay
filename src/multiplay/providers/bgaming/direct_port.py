@@ -217,6 +217,63 @@ class BGamingDemoDirectSession:
             return self._execute_hyperhive(markers, values)
         return self._execute_classic(markers, values)
 
+    def execute_inferred_api_v2_purchase(
+        self,
+        markers: tuple[str, ...] | list[str],
+        *,
+        overrides: dict[str, Any] | None = None,
+    ) -> dict[str, Any]:
+        """Validate one statically resolved API-v2 purchase on a fresh demo session."""
+        if self.family != API_V2:
+            raise ValueError("inferred API-v2 purchase requires an API-v2 session")
+
+        marker_map = _marker_map(tuple(str(item) for item in markers))
+        purchased_feature = str(marker_map.get("purchased_feature") or "").strip()
+        if not purchased_feature:
+            raise ValueError("inferred API-v2 purchase requires purchased_feature")
+
+        base = choose_api_v2_template(
+            self.api_templates,
+            command="spin",
+        )
+        if base is None:
+            raise ValueError("no unique successful base spin template")
+
+        values = dict(overrides or {})
+        payload = apply_api_v2_template(
+            base,
+            fresh_options=self._fresh_api_options(base, values),
+            fresh_extra_data=self._fresh_api_extra(base, values),
+        )
+        options = payload.get("options")
+        if not isinstance(options, dict):
+            raise TypeError("base spin template has no options object")
+
+        options["purchased_feature"] = purchased_feature
+        level = str(marker_map.get("purchased_feature_level") or "").strip()
+        if level:
+            options["purchased_feature_level"] = _marker_scalar(level)
+
+        result = self.http.post_json(
+            self.endpoint_url,
+            payload,
+            timeout_s=self.timeout_s,
+            headers=self.headers,
+            allow_http_error=True,
+        )
+        response = _json_value(result.text)
+        success = 200 <= result.status < 400 and not (
+            isinstance(response, dict)
+            and response.get("error") not in (None, {}, [])
+        )
+        return {
+            "status": result.status,
+            "success": success,
+            "endpoint": sanitize_session_url(self.endpoint_url),
+            "request": redact(payload),
+            "response": redact(response),
+        }
+
     def execute_inferred_hyperhive(
         self,
         markers: tuple[str, ...] | list[str],
