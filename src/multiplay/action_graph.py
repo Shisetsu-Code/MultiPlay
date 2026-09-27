@@ -82,6 +82,7 @@ _UI_ONLY_RE = re.compile(
 )
 
 _SEMANTICS = (
+    ("CHANCE", re.compile(r"(double.?chance|switchChance|freespin_chance)", re.IGNORECASE)),
     ("BUY_BONUS", re.compile(r"(buy.*bonus|bonus.*buy|buy.?feature)", re.IGNORECASE)),
     ("FREESPIN", re.compile(r"(free.?spin|freespin)", re.IGNORECASE)),
     ("RESPIN", re.compile(r"respin", re.IGNORECASE)),
@@ -909,7 +910,7 @@ def _interface_role(
         return "opener"
     if status in {"NETWORK_OBSERVED", "NETWORK_INFERRED"}:
         return "network_action"
-    if semantic in {"BET", "AUTOSPIN"}:
+    if semantic in {"BET", "AUTOSPIN", "CHANCE"}:
         return "client_state"
     return "client_control"
 
@@ -970,6 +971,13 @@ def _keep_route(route: dict[str, Any]) -> bool:
         return bool(pattern and re.search(pattern, direct, re.IGNORECASE))
 
     if semantic == "BUY_BONUS" and role == "opener":
+        return True
+
+    if semantic == "CHANCE" and re.search(
+        r"(chance|switchChance)",
+        f"{label} {handler}",
+        re.IGNORECASE,
+    ):
         return True
 
     if status == "CLIENT_OR_UNKNOWN" and semantic in {
