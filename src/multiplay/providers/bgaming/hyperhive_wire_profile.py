@@ -130,6 +130,16 @@ def build_profile_request(
         )
         if multiplier is not None:
             request["buyBonusModeMultiplier"] = multiplier
+
+    if profile.custom_req:
+        custom: dict[str, Any] = dict(profile.custom_literals)
+        if profile.custom_action:
+            custom["action"] = "spin"
+        if profile.custom_exponent:
+            custom["exponent"] = resolve_hyperhive_fe_exponent(init_result)
+        if profile.custom_stake:
+            custom["stake"] = bet
+        request["custom_req"] = custom
     return request
 
 
