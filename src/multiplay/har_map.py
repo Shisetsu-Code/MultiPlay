@@ -400,6 +400,13 @@ _VUE_ACTION_CONTROL_RE = re.compile(
     r'this\.([A-Za-z_$][A-Za-z0-9_$]*ActionButtonClick)\s*\(',
     re.IGNORECASE,
 )
+_SVELTE_SPIN_CONTROL_RE = re.compile(
+    r'function\s+(?P<handler>[A-Za-z_$][A-Za-z0-9_$]*)\s*\([^)]*\)\s*\{'
+    r'[^{}]{0,900}?\.spin\.startSpin\s*\([^)]*\)[^{}]{0,900}?\}'
+    r'[\s\S]{0,4200}?__(?:pointerdown|mousedown)\s*=\s*\['
+    r'\s*(?P=handler)\s*,',
+    re.IGNORECASE,
+)
 
 
 
@@ -547,6 +554,26 @@ def _javascript_declared_buttons(text: str, source: str) -> list[dict[str, Any]]
                 "label": "spin-button",
                 "handler": handler,
                 "element": "ActionButton",
+                "handler_hint": " ".join(window.split())[:1000],
+                "wire_markers": sorted(_wire_markers_text(window)),
+                "endpoint_ids": [],
+                "confidence": "HIGH",
+            }
+        )
+
+    for match in _SVELTE_SPIN_CONTROL_RE.finditer(text):
+        handler = str(match.group("handler"))
+        start = max(0, match.start() - 220)
+        end = min(len(text), match.end() + 420)
+        window = text[start:end]
+        rows.append(
+            {
+                "kind": "svelte_control",
+                "source": source,
+                "event": "pointer-down",
+                "label": "spin-button",
+                "handler": handler,
+                "element": "button",
                 "handler_hint": " ".join(window.split())[:1000],
                 "wire_markers": sorted(_wire_markers_text(window)),
                 "endpoint_ids": [],
