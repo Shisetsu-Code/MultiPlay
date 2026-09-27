@@ -206,3 +206,128 @@ def test_action_graph_links_legacy_spin_desktop(tmp_path):
     assert route["control"] == "spinDesktop"
     assert route["status"] == "NETWORK_OBSERVED"
     assert route["wire_markers"] == ["command=spin"]
+
+
+
+def test_action_graph_does_not_promote_legacy_freespin_from_base_spin(tmp_path):
+    har = {
+        "log": {
+            "entries": [
+                {
+                    "request": {
+                        "method": "POST",
+                        "url": "https://game.example/api",
+                        "headers": [],
+                        "postData": {
+                            "mimeType": "application/json",
+                            "text": json.dumps(
+                                {
+                                    "command": "spin",
+                                    "options": {"bets": {"0": 1}},
+                                    "extra_data": {"round_series_id": 1},
+                                }
+                            ),
+                        },
+                    },
+                    "response": {
+                        "status": 200,
+                        "headers": [],
+                        "content": {
+                            "mimeType": "application/json",
+                            "text": '{"ok":true}',
+                        },
+                    },
+                },
+                {
+                    "request": {
+                        "method": "GET",
+                        "url": "https://game.example/casino.min.js",
+                        "headers": [],
+                    },
+                    "response": {
+                        "status": 200,
+                        "headers": [],
+                        "content": {
+                            "mimeType": "application/javascript",
+                            "text": (
+                                'u.a.addListener(r.createButton("freespinDesktop",'
+                                'i.DESKTOP_CENTER_ALT),this.spin);'
+                            ),
+                        },
+                    },
+                },
+            ]
+        }
+    }
+    path = tmp_path / "legacy-freespin.har"
+    path.write_text(json.dumps(har), encoding="utf-8")
+
+    graph = build_action_graph(path, include_all=True)
+    route = next(item for item in graph["routes"] if item["control"] == "freespinDesktop")
+    assert route["semantic"] == "FREESPIN"
+    assert route["status"] != "NETWORK_OBSERVED"
+    assert route["replay_action_id"] == ""
+
+
+def test_action_graph_keeps_chance_separate_from_bonus_purchase(tmp_path):
+    har = {
+        "log": {
+            "entries": [
+                {
+                    "request": {
+                        "method": "POST",
+                        "url": "https://game.example/api",
+                        "headers": [],
+                        "postData": {
+                            "mimeType": "application/json",
+                            "text": json.dumps(
+                                {
+                                    "command": "spin",
+                                    "options": {
+                                        "bet": 20,
+                                        "purchased_feature": "freespin_buy",
+                                    },
+                                    "extra_data": {"round_series_id": 1},
+                                }
+                            ),
+                        },
+                    },
+                    "response": {
+                        "status": 200,
+                        "headers": [],
+                        "content": {
+                            "mimeType": "application/json",
+                            "text": '{"ok":true}',
+                        },
+                    },
+                },
+                {
+                    "request": {
+                        "method": "GET",
+                        "url": "https://game.example/app.js",
+                        "headers": [],
+                    },
+                    "response": {
+                        "status": 200,
+                        "headers": [],
+                        "content": {
+                            "mimeType": "application/javascript",
+                            "text": (
+                                'const ui={c:"Button",p:{name:"double-chance-btn",'
+                                'onClick:"all.buy-features.switchChance'
+                                '`freespin_chance"}};'
+                            ),
+                        },
+                    },
+                },
+            ]
+        }
+    }
+    path = tmp_path / "chance.har"
+    path.write_text(json.dumps(har), encoding="utf-8")
+
+    graph = build_action_graph(path, include_all=True)
+    route = next(item for item in graph["routes"] if item["control"] == "double-chance-btn")
+    assert route["semantic"] == "CHANCE"
+    assert route["status"] != "NETWORK_OBSERVED"
+    assert route["replay_action_id"] == ""
