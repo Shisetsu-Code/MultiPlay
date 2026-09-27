@@ -87,3 +87,16 @@ def test_api_v2_script_spin_option_hints_extracts_persistent_literal_levels():
         {"gold_symbols_count": "1"},
         {"gold_symbols_count": "3"},
     ]
+
+
+def test_api_v2_script_spin_option_hints_extracts_literal_mode_switches():
+    script = (
+        'setCurrentVolatility(t){'
+        'this.additionalSpinOptions.volatility='
+        '1==this.getCurrentVolatility()?"low":"medium";'
+        '}'
+    )
+    assert api_v2_script_spin_option_hints([script]) == [
+        {"volatility": "low"},
+        {"volatility": "medium"},
+    ]
