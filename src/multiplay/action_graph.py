@@ -11,6 +11,10 @@ from urllib.parse import urlsplit
 from .har_map import build_har_map
 
 _FUNC_PATTERNS = (
+    re.compile(
+        r"\bthis\.([A-Za-z_$][A-Za-z0-9_$]{1,80})\s*=\s*"
+        r"(?:async\s*)?\([^)]{0,250}\)\s*=>\s*\{"
+    ),
     re.compile(r"\b([A-Za-z_$][A-Za-z0-9_$]{1,80})\s*\([^()]{0,250}\)\s*\{"),
     re.compile(
         r"\b([A-Za-z_$][A-Za-z0-9_$]{1,80})\s*:\s*function\s*"
