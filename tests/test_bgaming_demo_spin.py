@@ -100,3 +100,19 @@ def test_api_v2_script_spin_option_hints_extracts_literal_mode_switches():
         {"volatility": "low"},
         {"volatility": "medium"},
     ]
+
+def test_api_v2_script_spin_option_hints_extracts_prefab_backtick_levels():
+    script = (
+        'setSpecialSymbolsLevel(t,e){'
+        'this.additionalSpinOptions.gold_symbols_count=""+t;'
+        '}'
+        'onClick:"currentScene.setSpecialSymbolsLevel\x601",'
+        'onClick:"currentScene.setSpecialSymbolsLevel\x603",'
+        'onClick:"currentScene.setSpecialSymbolsLevel\x605"'
+    )
+    assert api_v2_script_spin_option_hints([script]) == [
+        {"gold_symbols_count": "1"},
+        {"gold_symbols_count": "3"},
+        {"gold_symbols_count": "5"},
+    ]
+
