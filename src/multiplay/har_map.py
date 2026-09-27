@@ -164,7 +164,7 @@ def build_har_map(path: str | Path) -> dict[str, Any]:
 
     endpoints = _endpoint_inventory(evidence)
     endpoint_markers = {
-        endpoint["endpoint_id"]: set(endpoint.pop("_wire_markers", []))
+        endpoint["endpoint_id"]: set(endpoint.get("_wire_markers", []))
         for endpoint in endpoints
     }
 
@@ -213,6 +213,8 @@ def build_har_map(path: str | Path) -> dict[str, Any]:
             item["action_id"],
         )
     )
+    for endpoint in endpoints:
+        endpoint.pop("_wire_markers", None)
 
     return {
         "schema": "multiplay/har-map/v1",
