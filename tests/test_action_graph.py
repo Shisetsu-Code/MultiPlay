@@ -694,3 +694,77 @@ def test_action_graph_resolves_static_buy_freespins_feature(tmp_path):
         "command=spin",
         "purchased_feature=freespin_buy",
     ]
+
+
+
+def test_action_graph_links_svelte_spin_to_hyperhive_play(tmp_path):
+    har = {
+        "log": {
+            "entries": [
+                {
+                    "request": {
+                        "method": "POST",
+                        "url": "https://game.example/api",
+                        "headers": [],
+                        "postData": {
+                            "mimeType": "application/json",
+                            "text": json.dumps(
+                                {
+                                    "jsonrpc": "2.0",
+                                    "method": "play",
+                                    "params": {
+                                        "token": "secret",
+                                        "req": {"bet": 200},
+                                    },
+                                }
+                            ),
+                        },
+                    },
+                    "response": {
+                        "status": 200,
+                        "headers": [],
+                        "content": {
+                            "mimeType": "application/json",
+                            "text": '{"result":{"final":true}}',
+                        },
+                    },
+                },
+                {
+                    "request": {
+                        "method": "GET",
+                        "url": "https://game.example/index.js",
+                        "headers": [],
+                    },
+                    "response": {
+                        "status": 200,
+                        "headers": [],
+                        "content": {
+                            "mimeType": "application/javascript",
+                            "text": (
+                                'function v0(r,t){t.game.onPlaySound("play"),'
+                                't.spin.startSpin()}'
+                                'function Xb(r,t){var g={};'
+                                'g.__pointerdown=[v0,t]}'
+                            ),
+                        },
+                    },
+                },
+            ]
+        }
+    }
+    path = tmp_path / "svelte-hyperhive.har"
+    path.write_text(json.dumps(har), encoding="utf-8")
+
+    graph = build_action_graph(path)
+    route = next(
+        item
+        for item in graph["routes"]
+        if item["control"] == "spin-button"
+    )
+
+    assert route["semantic"] == "SPIN"
+    assert route["status"] == "NETWORK_OBSERVED"
+    assert route["interface_role"] == "network_action"
+    assert route["handler"] == "v0"
+    assert "method=play" in route["wire_markers"]
+    assert route["replay_action_id"]
