@@ -1,0 +1,96 @@
+name: Retry BGaming validation five
+
+on:
+  push:
+    branches: ["main"]
+    paths:
+      - ".github/workflows/retry-bgaming-validation-five.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  analyze:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - id: wild-moon-thieves
+            name: Wild Moon Thieves
+            url: https://demo.bgaming-network.com/play/WildMoonThieves/FUN?server=demo
+          - id: bone-bonanza
+            name: Bone Bonanza
+            url: https://demo.bgaming-network.com/play/BoneBonanza/FUN?server=demo
+          - id: yokai
+            name: Yokai
+            url: https://demo.bgaming-network.com/play/Yokai/FUN?server=demo
+          - id: clover-bonanza
+            name: Clover Bonanza
+            url: https://demo.bgaming-network.com/play/CloverBonanza/FUN?server=demo
+          - id: platinum-lightning-deluxe
+            name: Platinum Lightning Deluxe
+            url: https://demo.bgaming-network.com/play/PlatinumLightningDeluxe/FUN?server=demo
+
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install --upgrade pip
+      - run: pip install -e ".[browser,dev]"
+      - run: python -m playwright install --with-deps chromium
+
+      - name: Analyze
+        env:
+          GAME_NAME: ${{ matrix.name }}
+          GAME_ID: ${{ matrix.id }}
+          GAME_URL: ${{ matrix.url }}
+        run: |
+          mkdir -p "artifacts/$GAME_ID"
+          set +e
+          multiplay bgaming-analyze-demo "$GAME_URL"             --output-dir "artifacts/$GAME_ID"             --settle-ms 12000             --timeout 30             > "artifacts/$GAME_ID/stdout.txt"             2> "artifacts/$GAME_ID/stderr.txt"
+          RC=$?
+          set -e
+          echo "$RC" > "artifacts/$GAME_ID/returncode.txt"
+
+          python - <<'PY'
+          import json
+          import os
+          from pathlib import Path
+
+          root = Path("artifacts") / os.environ["GAME_ID"]
+          p = root / "analysis.json"
+          print("name:", os.environ["GAME_NAME"])
+          print("slug:", os.environ["GAME_ID"])
+          if p.exists():
+              d = json.loads(p.read_text())
+              print("family:", d.get("family"))
+              print("routes:", d.get("route_count", 0))
+              print("direct:", d.get("direct_executable_count", 0))
+              for blocker in d.get("blockers") or []:
+                  print("blocker:", blocker)
+              for r in d.get("routes") or []:
+                  print(
+                      r.get("semantic"),
+                      r.get("interface_role"),
+                      r.get("status"),
+                      "DIRECT" if r.get("direct_executable") else "-",
+                      r.get("control"),
+                      r.get("wire_markers") or [],
+                  )
+          else:
+              print("analysis.json missing")
+              stderr = root / "stderr.txt"
+              if stderr.exists():
+                  print(stderr.read_text()[-4000:])
+          PY
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: bgaming-validation-${{ matrix.id }}
+          path: artifacts/${{ matrix.id }}
+          if-no-files-found: warn
+          retention-days: 3
