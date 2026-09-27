@@ -281,7 +281,7 @@ def _play_req_action_present(text: str) -> bool:
         window = source[match.start() : min(len(source), match.start() + 2800)]
         if re.search(r'\breq\s*:', window) or ".req." in window:
             candidates.append(window)
-    return any(_request_literals(window, "action") for window in candidates)
+    return any(_req_field_present(window, "action") for window in candidates)
 
 
 def _req_field_is_conditional_spread(window: str, key: str) -> bool:
@@ -314,10 +314,20 @@ def _req_numeric_literal(window: str, key: str) -> int | float | None:
 
 
 def _req_literal_field_present(window: str, key: str) -> bool:
+    """Return true only when the request field has a concrete JSON scalar literal."""
     if not window:
         return False
     escaped = re.escape(key)
-    return bool(re.search(rf'\b{escaped}\s*:', window))
+    scalar = (
+        r'(?:["\'][^"\']{0,160}["\']|'
+        r'!0|!1|true|false|null|-?\d+(?:\.\d+)?)'
+    )
+    return bool(
+        re.search(
+            rf'\b{escaped}\s*:\s*{scalar}(?=,|\}})',
+            window,
+        )
+    )
 
 
 def _req_field_uses_void_zero(window: str, key: str) -> bool:
