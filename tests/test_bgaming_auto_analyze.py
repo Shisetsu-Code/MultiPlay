@@ -39,7 +39,10 @@ def test_safe_contract_har_strips_query_and_redacts_loaded_shapes(tmp_path):
 
     assert "?token=secret" not in raw
     assert "opaque-session" not in raw
-    assert '"token":"<redacted>"' in raw
+    request_entry = payload["log"]["entries"][0]["request"]
+    request_body = json.loads(request_entry["postData"]["text"])
+    assert request_body["token"] == "<redacted>"
+    assert request_entry["headers"][0]["value"] == "<redacted>"
     assert payload["log"]["entries"]
 
 
