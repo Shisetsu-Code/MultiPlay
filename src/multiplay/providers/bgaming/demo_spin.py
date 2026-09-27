@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import re
 import secrets
 import time
 from dataclasses import asdict, dataclass
@@ -47,6 +48,7 @@ def run_demo_base_spin(
     url: str,
     *,
     timeout_s: float = 30.0,
+    client_scripts: list[str] | None = None,
 ) -> DemoBaseSpinResult:
     source = str(url or "").strip()
     if not source:
@@ -166,17 +168,51 @@ def run_demo_base_spin(
 
     # Provably-fair API-v2 clients add a fresh client_seed on the real
     # playGame path. Only retry this shape after ordinary API-v2 probes fail.
+    fair_extra = api_v2_provable_fair_extra_data(
+        getattr(bootstrap, "raw", None),
+        spin_extra,
+    )
+    if (
+        family == API_V2
+        and not 200 <= spin.status < 400
+        and fair_extra is not None
+    ):
+        for retry_options in [spin_options, *retry_option_sets]:
+            retry_payload = {
+                "command": "spin",
+                "options": retry_options,
+                "extra_data": dict(fair_extra),
+            }
+            retry_spin = session.post_json(
+                bootstrap.api,
+                retry_payload,
+                timeout_s=timeout_s,
+                headers=common_headers,
+                allow_http_error=True,
+            )
+            retry_data = _json_value(retry_spin.text)
+            if 200 <= retry_spin.status < 400:
+                spin_payload = retry_payload
+                spin = retry_spin
+                spin_data = retry_data
+                break
+
+    # Some API-v2 clients keep game-specific normal-spin switches inside
+    # additionalSpinOptions. Resolve only literal values demonstrated by the
+    # downloaded client, and try them only after the generic contract failed.
     if family == API_V2 and not 200 <= spin.status < 400:
-        fair_extra = api_v2_provable_fair_extra_data(
-            getattr(bootstrap, "raw", None),
-            spin_extra,
-        )
-        if fair_extra is not None:
-            for retry_options in [spin_options, *retry_option_sets]:
+        hints = api_v2_script_spin_option_hints(client_scripts or [])
+        retry_extra = fair_extra if fair_extra is not None else spin_extra
+        for base_retry in [spin_options, *retry_option_sets]:
+            if 200 <= spin.status < 400:
+                break
+            for hint in hints:
+                retry_options = dict(base_retry)
+                retry_options.update(hint)
                 retry_payload = {
                     "command": "spin",
                     "options": retry_options,
-                    "extra_data": dict(fair_extra),
+                    "extra_data": dict(retry_extra),
                 }
                 retry_spin = session.post_json(
                     bootstrap.api,
@@ -246,6 +282,80 @@ def run_demo_base_spin(
             spin_status=spin.status,
         ),
     )
+
+
+def api_v2_script_spin_option_hints(
+    scripts: list[str],
+) -> list[dict[str, Any]]:
+    """Extract conservative normal-spin option literals from client code."""
+    hints: list[dict[str, Any]] = []
+
+    def add(key: str, value: Any) -> None:
+        if not re.fullmatch(r"[A-Za-z_$][A-Za-z0-9_$]*", key):
+            return
+        row = {key: value}
+        if row not in hints:
+            hints.append(row)
+
+    for text in scripts:
+        source = str(text or "")
+        if "additionalSpinOptions" not in source:
+            continue
+
+        # Direct static assignments are safe to replay as demonstrated.
+        for match in re.finditer(
+            r'additionalSpinOptions\.([A-Za-z_$][A-Za-z0-9_$]*)'
+            r'\s*=\s*["\']([^"\']{1,80})["\']',
+            source,
+        ):
+            add(str(match.group(1)), str(match.group(2)))
+
+        # Resolve setters that stringify their first argument into a persistent
+        # spin option, then collect only literal numeric defaults passed to
+        # that setter elsewhere in the same client bundle.
+        for assignment in re.finditer(
+            r'additionalSpinOptions\.([A-Za-z_$][A-Za-z0-9_$]*)'
+            r'\s*=\s*["\']["\']\s*\+\s*([A-Za-z_$][A-Za-z0-9_$]*)',
+            source,
+        ):
+            key = str(assignment.group(1))
+            variable = str(assignment.group(2))
+            before = source[max(0, assignment.start() - 3200) : assignment.start()]
+            declarations: list[tuple[int, str]] = []
+            for decl in re.finditer(
+                r'([A-Za-z_$][A-Za-z0-9_$]*)\(([^)]*)\)\{',
+                before,
+            ):
+                args = [
+                    item.strip()
+                    for item in str(decl.group(2) or "").split(",")
+                    if item.strip()
+                ]
+                if args and args[0] == variable:
+                    declarations.append((decl.start(), str(decl.group(1))))
+            if not declarations:
+                continue
+            setter = declarations[-1][1]
+
+            values: list[str] = []
+            for call in re.finditer(
+                re.escape(setter)
+                + r'\([^;]{0,2200}?\?(-?\d+(?:\.\d+)?)'
+                + r':(-?\d+(?:\.\d+)?)\)',
+                source,
+            ):
+                values.extend([str(call.group(1)), str(call.group(2))])
+            for call in re.finditer(
+                re.escape(setter)
+                + r'\(\s*(-?\d+(?:\.\d+)?)\s*(?:,|\))',
+                source,
+            ):
+                values.append(str(call.group(1)))
+
+            for value in values:
+                add(key, value)
+
+    return hints
 
 
 def api_v2_provable_fair_extra_data(
