@@ -1,0 +1,57 @@
+name: Test BGaming API version
+
+on:
+  push:
+    branches: ["main"]
+    paths:
+      - ".github/workflows/test-bgaming-api-version.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  analyze:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - id: hot-chilli-bells
+            url: https://demo.bgaming-network.com/play/HotChilliBells/FUN?server=demo
+          - id: maneki-88-gold
+            url: https://demo.bgaming-network.com/play/Maneki88Gold/FUN?server=demo
+          - id: book-of-pyramids
+            url: https://demo.bgaming-network.com/play/BookOfPyramids/FUN?server=demo
+
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install --upgrade pip
+      - run: pip install -e ".[browser,dev]"
+      - run: python -m playwright install --with-deps chromium
+      - name: Analyze
+        run: |
+          mkdir -p "artifacts/${{ matrix.id }}"
+          multiplay bgaming-analyze-demo "${{ matrix.url }}" \
+            --output-dir "artifacts/${{ matrix.id }}" \
+            --settle-ms 7000 \
+            --timeout 25
+      - name: Summarize
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          d=json.loads(Path("artifacts/${{ matrix.id }}/analysis.json").read_text())
+          print("family:",d.get("family"))
+          print("routes:",d.get("route_count"))
+          print("direct:",d.get("direct_executable_count"))
+          print("enrichment:",d.get("enrichment"))
+          for r in d.get("routes") or []:
+              if r.get("semantic") in {"SPIN","BUY_BONUS"}:
+                  print(r.get("semantic"),r.get("status"),
+                        "DIRECT" if r.get("direct_executable") else "-",
+                        r.get("control"),r.get("wire_markers"))
+          PY
