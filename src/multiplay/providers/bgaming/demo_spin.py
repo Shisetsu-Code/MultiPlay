@@ -323,6 +323,30 @@ def api_v2_script_spin_option_hints(
             add(key, str(match.group(2)))
             add(key, str(match.group(3)))
 
+        # Resolve persistent instance state copied directly into spin options,
+        # e.g. this.linesCount=this.linesCount||"60" followed by
+        # additionalSpinOptions.mode=this.linesCount.
+        for assignment in re.finditer(
+            r'additionalSpinOptions\.([A-Za-z_$][A-Za-z0-9_$]*)'
+            r'\s*=\s*this\.([A-Za-z_$][A-Za-z0-9_$]*)',
+            source,
+        ):
+            key = str(assignment.group(1))
+            prop = str(assignment.group(2))
+            values: list[str] = []
+            for pattern in (
+                re.compile(
+                    rf'this\.{re.escape(prop)}\s*=\s*this\.{re.escape(prop)}'
+                    r'\s*\|\|\s*["\']([^"\']{1,80})["\']'
+                ),
+                re.compile(
+                    rf'this\.{re.escape(prop)}\s*=\s*["\']([^"\']{1,80})["\']'
+                ),
+            ):
+                values.extend(str(item) for item in pattern.findall(source))
+            for value in dict.fromkeys(values):
+                add(key, value)
+
         # Resolve setters that stringify their first argument into a persistent
         # spin option, then collect only literal numeric defaults passed to
         # that setter elsewhere in the same client bundle.
