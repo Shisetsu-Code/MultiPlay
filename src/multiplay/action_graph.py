@@ -234,11 +234,13 @@ def _control_roots(report: dict[str, Any]) -> list[dict[str, Any]]:
     controls = []
     for item in report.get("actions", []):
         if item.get("kind") not in {
+            "cocos_control",
             "declared_button",
             "event_control",
             "html_control",
             "react_control",
             "signal_control",
+            "vue_control",
         }:
             continue
         label = str(item.get("label") or "").strip()
