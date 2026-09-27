@@ -273,6 +273,14 @@ def analyze_bgaming_demo(
             )
             if route_id in succeeded or "method=play" not in markers:
                 continue
+            if (
+                candidate.get("semantic") == "BUY_BONUS"
+                and not any(
+                    marker.startswith("purchased_feature=")
+                    for marker in markers
+                )
+            ):
+                continue
 
             row: dict[str, Any] = {
                 "route_id": route_id,
@@ -643,28 +651,16 @@ def _probe_matches_route(
             return True
 
         if semantic == "BUY_BONUS":
+            if not specific:
+                continue
             purchased = [
                 marker
                 for marker in observed
                 if str(marker).startswith("purchased_feature=")
             ]
-            if purchased:
-                if any(
-                    marker.split("=", 1)[1] in handler
-                    for marker in purchased
-                ):
-                    return True
-                if "buy" in handler.casefold() or "bonus" in handler.casefold():
-                    return True
-
-            if (
-                ("buy" in handler.casefold() or "bonus" in handler.casefold())
-                and (
-                    "command=spin" in observed
-                    or "method=play" in observed
-                )
-            ):
+            if purchased and specific <= observed:
                 return True
+            continue
 
         if wanted and wanted <= observed:
             return True
