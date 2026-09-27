@@ -205,6 +205,8 @@ def analyze_bgaming_demo(
     routes = [dict(item) for item in graph.get("routes", [])]
     if family == HYPERHIVE_JSONRPC:
         _seed_hyperhive_spin_routes(routes)
+    elif family == API_V2:
+        _seed_api_v2_buy_feature_routes(routes, browser_evidence)
 
     if switchable_variants:
         by_identifier = {
@@ -485,6 +487,8 @@ def analyze_bgaming_demo(
         routes = [dict(item) for item in graph.get("routes", [])]
         if family == HYPERHIVE_JSONRPC:
             _seed_hyperhive_spin_routes(routes)
+        elif family == API_V2:
+            _seed_api_v2_buy_feature_routes(routes, contract_bundle)
         if family == HYPERHIVE_JSONRPC and not enrichment["success"]:
             enrichment["success"] = True
             enrichment["kind"] = "handler-probe"
@@ -711,6 +715,149 @@ def render_bgaming_analysis(report: dict[str, Any]) -> str:
             )
     return "\n".join(lines) + "\n"
 
+
+
+def _seed_api_v2_buy_feature_routes(
+    routes: list[dict[str, Any]],
+    evidence: EvidenceBundle,
+) -> None:
+    """Link generic BuyFeaturePopupItem controls to client-declared feature rows."""
+    features = _api_v2_static_buy_features(evidence)
+    if not features:
+        return
+
+    for route in routes:
+        if route.get("semantic") != "BUY_BONUS":
+            continue
+        markers = {str(item) for item in route.get("wire_markers") or []}
+        if any(item.startswith("purchased_feature=") for item in markers):
+            continue
+
+        control_key = _feature_key(str(route.get("control") or ""))
+        if not control_key:
+            continue
+
+        matches = [
+            row
+            for row in features
+            if control_key.endswith(_feature_key(str(row.get("name") or "")))
+            and str(row.get("request_name") or "").strip()
+        ]
+        signatures = {
+            (
+                str(row.get("request_name") or ""),
+                str(row.get("level") or ""),
+            )
+            for row in matches
+        }
+        if len(signatures) != 1:
+            continue
+
+        request_name, level = next(iter(signatures))
+        markers.add("command=spin")
+        markers.add(f"purchased_feature={request_name}")
+        if level:
+            markers.add(f"purchased_feature_level={level}")
+        route["wire_markers"] = sorted(markers)
+        route["status"] = "NETWORK_INFERRED"
+        route["interface_role"] = "network_action"
+        route["confidence"] = "HIGH"
+
+
+def _api_v2_static_buy_features(
+    evidence: EvidenceBundle,
+) -> list[dict[str, str]]:
+    rows: list[dict[str, str]] = []
+    seen: set[tuple[str, str, str]] = set()
+
+    for script in evidence.scripts:
+        source = str(script.text or "")
+        start = 0
+        while True:
+            match = re.search(
+                r'buy_features\s*:\s*\{\s*features\s*:\s*\[',
+                source[start:],
+            )
+            if match is None:
+                break
+            array_start = start + match.end() - 1
+            body = _balanced_js_array(source, array_start, max_chars=12000)
+            start = array_start + max(1, len(body))
+            if not body:
+                continue
+
+            for obj in re.finditer(r'\{([^{}]{1,900})\}', body):
+                text = obj.group(1)
+                request = re.search(
+                    r'\brequestName\s*:\s*["\']([^"\']+)["\']',
+                    text,
+                )
+                name = re.search(
+                    r'\bname\s*:\s*["\']([^"\']+)["\']',
+                    text,
+                )
+                level = re.search(
+                    r'\blevel\s*:\s*["\']?([A-Za-z0-9_.-]+)["\']?',
+                    text,
+                )
+                variant = re.search(r'\bvariantShift\s*:', text)
+                if request is None or name is None or variant is not None:
+                    continue
+                row = (
+                    str(name.group(1)),
+                    str(request.group(1)),
+                    str(level.group(1)) if level else "",
+                )
+                if row in seen:
+                    continue
+                seen.add(row)
+                rows.append(
+                    {
+                        "name": row[0],
+                        "request_name": row[1],
+                        "level": row[2],
+                    }
+                )
+    return rows
+
+
+def _balanced_js_array(
+    text: str,
+    start: int,
+    *,
+    max_chars: int,
+) -> str:
+    if start < 0 or start >= len(text) or text[start] != "[":
+        return ""
+
+    depth = 0
+    quote = ""
+    escaped = False
+    end = min(len(text), start + max_chars)
+    for index in range(start, end):
+        char = text[index]
+        if quote:
+            if escaped:
+                escaped = False
+            elif char == "\\":
+                escaped = True
+            elif char == quote:
+                quote = ""
+            continue
+        if char in {'"', "'", "`"}:
+            quote = char
+            continue
+        if char == "[":
+            depth += 1
+        elif char == "]":
+            depth -= 1
+            if depth == 0:
+                return text[start : index + 1]
+    return ""
+
+
+def _feature_key(value: str) -> str:
+    return re.sub(r"[^a-z0-9]+", "", str(value or "").casefold())
 
 
 def _seed_hyperhive_spin_routes(
