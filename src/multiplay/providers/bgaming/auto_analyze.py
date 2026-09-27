@@ -20,6 +20,7 @@ from .classify import (
 )
 from .demo_spin import run_demo_base_spin
 from .direct_port import BGamingDemoDirectSession
+from .handler_probe import probe_bgaming_handlers
 from .hyperhive_demo import run_demo_hyperhive
 from .probe import probe_bgaming_demo
 
@@ -49,6 +50,7 @@ def analyze_bgaming_demo(
     family = _detect_family(browser_evidence, url=url, timeout_s=timeout_s)
 
     blockers: list[str] = []
+    hyperhive_base_error = ""
     enrichment: dict[str, Any] = {
         "attempted": False,
         "success": False,
@@ -73,8 +75,9 @@ def analyze_bgaming_demo(
         try:
             base = run_demo_hyperhive(url, timeout_s=timeout_s)
         except (OSError, RuntimeError, TypeError, ValueError) as exc:
-            blockers.append(
-                f"HyperHive base-play enrichment failed: {type(exc).__name__}: {exc}"
+            hyperhive_base_error = (
+                f"HyperHive base-play enrichment failed: "
+                f"{type(exc).__name__}: {exc}"
             )
         else:
             enrichment["success"] = 200 <= base.metadata.play_status < 400
@@ -91,6 +94,59 @@ def analyze_bgaming_demo(
 
     graph = build_action_graph(contract_har)
     routes = [dict(item) for item in graph.get("routes", [])]
+
+    handler_probe: dict[str, Any] = {
+        "attempted": False,
+        "success": False,
+        "route_id": "",
+        "outcomes": [],
+    }
+    handler_raw_har = root / "handler.raw.har"
+
+    if family == HYPERHIVE_JSONRPC and not enrichment["success"]:
+        candidate = _select_handler_probe_route(routes)
+        if candidate is not None:
+            handler_probe["attempted"] = True
+            handler_probe["route_id"] = str(candidate.get("route_id") or "")
+            try:
+                probe = probe_bgaming_handlers(
+                    url,
+                    [candidate],
+                    har_path=handler_raw_har,
+                    settle_ms=max(8000, int(settle_ms)),
+                    after_call_ms=2500,
+                )
+            except (OSError, RuntimeError, TypeError, ValueError) as exc:
+                handler_probe["error"] = f"{type(exc).__name__}: {exc}"
+            else:
+                handler_probe["outcomes"] = [
+                    item.to_dict()
+                    for item in probe.outcomes
+                ]
+                handler_probe["success"] = (
+                    any(item.called for item in probe.outcomes)
+                    and _probe_matches_route(probe.evidence, candidate)
+                )
+                if handler_probe["success"]:
+                    contract_bundle = _merge_evidence(contract_bundle, probe.evidence)
+                    _write_safe_har(contract_bundle, contract_har)
+                    graph = build_action_graph(contract_har)
+                    routes = [dict(item) for item in graph.get("routes", [])]
+                    enrichment["success"] = True
+                    enrichment["kind"] = "handler-probe"
+                    enrichment["metadata"] = {
+                        "route_id": handler_probe["route_id"],
+                        "handler": candidate.get("handler"),
+                        "semantic": candidate.get("semantic"),
+                    }
+                    hyperhive_base_error = ""
+
+    if hyperhive_base_error:
+        blockers.append(hyperhive_base_error)
+    if handler_probe.get("attempted") and not handler_probe.get("success"):
+        blockers.append(
+            "HyperHive handler probe did not produce a matching successful request"
+        )
 
     direct_state: dict[str, Any] | None = None
     direct_error = ""
@@ -123,6 +179,7 @@ def analyze_bgaming_demo(
         "url": _strip_query(url),
         "family": family,
         "enrichment": enrichment,
+        "handler_probe": handler_probe,
         "blockers": blockers,
         "contract_har": str(contract_har),
         "screenshot": str(shot) if shot is not None else None,
@@ -156,6 +213,7 @@ def analyze_bgaming_demo(
 
     if not keep_raw_har:
         raw_har.unlink(missing_ok=True)
+        handler_raw_har.unlink(missing_ok=True)
 
     return report
 
@@ -199,6 +257,83 @@ def render_bgaming_analysis(report: dict[str, Any]) -> str:
         lines.append(f"    wire:    {wire}")
     return "\n".join(lines) + "\n"
 
+
+
+def _select_handler_probe_route(
+    routes: list[dict[str, Any]],
+) -> dict[str, Any] | None:
+    candidates = [
+        route
+        for route in routes
+        if route.get("interface_role") == "network_action"
+        and route.get("status") == "NETWORK_INFERRED"
+        and str(route.get("handler") or "").strip()
+    ]
+    if not candidates:
+        return None
+
+    def rank(route: dict[str, Any]) -> tuple[int, int, str]:
+        markers = set(route.get("wire_markers") or [])
+        specificity = 0
+        if any(
+            str(marker).startswith("purchased_feature=")
+            for marker in markers
+        ):
+            specificity += 100
+        if route.get("semantic") == "BUY_BONUS":
+            specificity += 50
+        if route.get("semantic") == "SPIN":
+            specificity += 20
+        specificity += len(markers) * 5
+        return (
+            specificity,
+            len(str(route.get("handler") or "")),
+            str(route.get("route_id") or ""),
+        )
+
+    return max(candidates, key=rank)
+
+
+def _probe_matches_route(
+    evidence: EvidenceBundle,
+    route: dict[str, Any],
+) -> bool:
+    wanted = set(route.get("wire_markers") or [])
+    wanted.discard("method=play")
+    if not wanted and route.get("semantic") == "SPIN":
+        wanted = {"method=play"}
+
+    for exchange in evidence.http:
+        if (
+            exchange.response_status is None
+            or not 200 <= exchange.response_status < 400
+        ):
+            continue
+        observed = _request_markers(exchange.request_body)
+        if wanted and wanted <= observed:
+            return True
+    return False
+
+
+def _request_markers(value: Any) -> set[str]:
+    out: set[str] = set()
+    if isinstance(value, dict):
+        for key, child in value.items():
+            name = str(key)
+            if name in {
+                "command",
+                "purchased_feature",
+                "purchased_feature_level",
+                "action",
+                "method",
+                "bet_type",
+            } and isinstance(child, (str, int, float)) and not isinstance(child, bool):
+                out.add(f"{name}={child}")
+            out.update(_request_markers(child))
+    elif isinstance(value, list):
+        for child in value:
+            out.update(_request_markers(child))
+    return out
 
 def _detect_family(
     evidence: EvidenceBundle,
