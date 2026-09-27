@@ -107,3 +107,20 @@ def test_direct_session_maps_executable_spin_route(tmp_path):
     assert route["replay_action_id"]
     assert route["executable"] is False
     assert "not executable in this session" in route["execution_reason"]
+
+
+
+def test_inferred_api_purchase_rejects_ambiguous_features(tmp_path):
+    path = tmp_path / "game.har"
+    _write_har(path)
+    session = BGamingDemoDirectSession(
+        har_path=path,
+        url="https://demo.bgaming-network.com/play/Foo/FUN",
+    )
+    with pytest.raises(ValueError, match="exactly one purchased_feature"):
+        session.execute_inferred_api_v2_purchase(
+            [
+                "purchased_feature=freespin_buy",
+                "purchased_feature=high_freespin_buy",
+            ]
+        )
