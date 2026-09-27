@@ -584,7 +584,7 @@ def _safe_params_object(body: str) -> dict[str, Any]:
         r'Array\.from\(\{length:(\d+)\},'
         r'\(\(([A-Za-z_$][A-Za-z0-9_$]*),'
         r'([A-Za-z_$][A-Za-z0-9_$]*)\)=>'
-        r'([A-Za-z_$][A-Za-z0-9_$]*)\)\)\)'
+        r'([A-Za-z_$][A-Za-z0-9_$]*)\)\)'
     )
     for match in array_from_re.finditer(body or ""):
         key = str(match.group(1))
