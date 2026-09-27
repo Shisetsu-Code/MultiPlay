@@ -314,7 +314,11 @@ def analyze_bgaming_demo(
 
     if hyperhive_base_error:
         blockers.append(hyperhive_base_error)
-    if handler_probe.get("attempted") and not handler_probe.get("success"):
+    if (
+        handler_probe.get("attempted")
+        and not handler_probe.get("success")
+        and not enrichment.get("success")
+    ):
         blockers.append(
             "handler probe did not produce a matching successful request"
         )
