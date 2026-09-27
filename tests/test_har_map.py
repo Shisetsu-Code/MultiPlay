@@ -178,3 +178,46 @@ def test_har_map_extracts_legacy_create_button_binding(tmp_path):
     )
     assert button["handler"] == "this.spin"
     assert button["event"] == "click"
+
+
+
+def test_har_map_extracts_svelte_spin_binding(tmp_path):
+    har = {
+        "log": {
+            "entries": [
+                {
+                    "request": {
+                        "method": "GET",
+                        "url": "https://game.example/index.js",
+                        "headers": [],
+                    },
+                    "response": {
+                        "status": 200,
+                        "headers": [],
+                        "content": {
+                            "mimeType": "application/javascript",
+                            "text": (
+                                'function v0(r,t){t.game.onPlaySound("play"),'
+                                't.spin.startSpin()}'
+                                'function Xb(r,t){var g={};'
+                                'g.__pointerdown=[v0,t]}'
+                            ),
+                        },
+                    },
+                }
+            ]
+        }
+    }
+    path = tmp_path / "svelte-spin.har"
+    path.write_text(json.dumps(har), encoding="utf-8")
+
+    report = build_har_map(path)
+
+    control = next(
+        item
+        for item in report["actions"]
+        if item["kind"] == "svelte_control"
+    )
+    assert control["label"] == "spin-button"
+    assert control["handler"] == "v0"
+    assert control["event"] == "pointer-down"
