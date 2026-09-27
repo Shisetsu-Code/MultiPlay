@@ -44,7 +44,7 @@ jobs:
         run: |
           multiplay bgaming-analyze-demo "${{ matrix.url }}" \
             --output-dir "artifacts/${{ matrix.id }}" \
-            --settle-ms 8000 \
+            --settle-ms 12000 \
             --timeout 30 \
             > "artifacts-${{ matrix.id }}.txt"
           cat "artifacts-${{ matrix.id }}.txt"
