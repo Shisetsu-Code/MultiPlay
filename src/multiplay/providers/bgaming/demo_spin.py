@@ -80,6 +80,31 @@ def run_demo_base_spin(
     )
     init_data = _json_object(init.text, "init")
 
+    # Some current API-v2 games require api_version=2 even on init.
+    # Retry once only when the first response does not expose a usable game contract.
+    if not is_legacy_init(init_data) and not is_switchable_init(init_data):
+        options = init_data.get("options")
+        if not isinstance(options, dict):
+            retry_payload = {
+                "command": "init",
+                "extra_data": {
+                    "round_series_id": round_series_id,
+                    "api_version": 2,
+                },
+            }
+            retry = session.post_json(
+                bootstrap.api,
+                retry_payload,
+                timeout_s=timeout_s,
+                headers=common_headers,
+                allow_http_error=True,
+            )
+            retry_data = _json_object(retry.text, "init")
+            if isinstance(retry_data.get("options"), dict):
+                init_payload = retry_payload
+                init = retry
+                init_data = retry_data
+
     if is_switchable_init(init_data):
         raise ValueError("Switchable container requires variant selection before spin.")
 
@@ -96,6 +121,9 @@ def run_demo_base_spin(
         line_count = 0
         spin_options = {"bet": _preserve_numeric_type(init_data, wager)}
         spin_extra = {"round_series_id": round_series_id}
+        api_version = _api_version(init_data)
+        if api_version is not None:
+            spin_extra["api_version"] = api_version
 
     spin_payload = {
         "command": "spin",
@@ -256,6 +284,20 @@ def _preserve_numeric_type(init_data: dict[str, Any], wager: float) -> int | flo
                 if _positive_number(item) and float(item) == wager:
                     return item
     return wager
+
+
+def _api_version(init_data: dict[str, Any]) -> int | str | None:
+    value = init_data.get("api_version")
+    if isinstance(value, bool) or value is None:
+        return None
+    if isinstance(value, int):
+        return value
+    if isinstance(value, str):
+        text = value.strip()
+        if text.isdigit():
+            return int(text)
+        return text or None
+    return None
 
 
 def _safe_source(url: str) -> str:
