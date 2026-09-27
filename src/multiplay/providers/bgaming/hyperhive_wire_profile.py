@@ -123,7 +123,7 @@ def build_profile_request(
     profile: HyperHiveWireProfile,
     init_result: dict[str, Any],
     *,
-    bet: int | float,
+    bet: float,
     purchased_feature: str | None = None,
 ) -> dict[str, Any]:
     """Build the client-demonstrated flat HyperHive req shape."""
@@ -277,7 +277,8 @@ def _req_field_present(window: str, key: str) -> bool:
 
 def _normal_bet_type_from_play_window(window: str) -> str:
     direct = re.search(
-        r'\bbet_type\s*:\s*[^,:{}]{0,120}\?["\']freebet["\']\s*:\s*["\']([^"\']+)["\']',
+        r'\bbet_type\s*:\s*[^,{}?]{0,120}\?\s*["\']freebet["\']'
+        r'\s*:\s*["\']([^"\']+)["\']',
         window or "",
     )
     if direct:
