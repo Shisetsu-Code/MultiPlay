@@ -348,7 +348,7 @@ def _resolve_control(
         "score": 0,
     }
 
-    markers = set(str(item) for item in control.get("wire_markers") or [])
+    markers = {str(item) for item in control.get("wire_markers") or []}
     markers.update(str(item) for item in best.get("wire_markers") or [])
 
     observed_match = _match_observed(
@@ -599,10 +599,10 @@ def _match_observed(
     observed: list[dict[str, Any]],
 ) -> dict[str, Any] | None:
     candidates: list[tuple[int, dict[str, Any]]] = []
-    semantic_tokens = _semantic_tokens(" ".join([label, handler]))
+    semantic_tokens = _semantic_tokens(f"{label} {handler}")
 
     for item in observed:
-        observed_markers = set(str(value) for value in item.get("wire_markers") or [])
+        observed_markers = {str(value) for value in item.get("wire_markers") or []}
         shared = markers & observed_markers
         score = len(shared) * 100
 
@@ -644,7 +644,7 @@ def _route_status(
         return "NETWORK_OBSERVED"
     if markers or protocol_hint:
         return "NETWORK_INFERRED"
-    if _UI_ONLY_RE.search(" ".join([label, handler])):
+    if _UI_ONLY_RE.search(f"{label} {handler}"):
         return "UI_ONLY"
     return "CLIENT_OR_UNKNOWN"
 
