@@ -389,6 +389,19 @@ _REACT_TYPED_CONTROL_RE = re.compile(
 )
 
 
+_COCOS_SPIN_COMPONENT_RE = re.compile(
+    r'["\'](?:BG_)?SpinButton["\'][\s\S]{0,8000}?'
+    r'\.node\.on\([^,]{0,160}TOUCH_START[^,]{0,160},\s*'
+    r'this\.([A-Za-z_$][A-Za-z0-9_$]*)',
+    re.IGNORECASE,
+)
+_VUE_ACTION_CONTROL_RE = re.compile(
+    r'ACTION_BUTTON_EVENT\.CLICK[\s\S]{0,220}?'
+    r'this\.([A-Za-z_$][A-Za-z0-9_$]*ActionButtonClick)\s*\(',
+    re.IGNORECASE,
+)
+
+
 
 def _javascript_declared_buttons(text: str, source: str) -> list[dict[str, Any]]:
     rows: list[dict[str, Any]] = []
@@ -494,6 +507,46 @@ def _javascript_declared_buttons(text: str, source: str) -> list[dict[str, Any]]
                 "label": label,
                 "handler": handler,
                 "element": label,
+                "handler_hint": " ".join(window.split())[:1000],
+                "wire_markers": sorted(_wire_markers_text(window)),
+                "endpoint_ids": [],
+                "confidence": "HIGH",
+            }
+        )
+
+    for match in _COCOS_SPIN_COMPONENT_RE.finditer(text):
+        handler = str(match.group(1))
+        start = max(0, match.start() - 220)
+        end = min(len(text), match.end() + 600)
+        window = text[start:end]
+        rows.append(
+            {
+                "kind": "cocos_control",
+                "source": source,
+                "event": "touch-start",
+                "label": "spin-button",
+                "handler": handler,
+                "element": "BG_SpinButton",
+                "handler_hint": " ".join(window.split())[:1000],
+                "wire_markers": sorted(_wire_markers_text(window)),
+                "endpoint_ids": [],
+                "confidence": "HIGH",
+            }
+        )
+
+    for match in _VUE_ACTION_CONTROL_RE.finditer(text):
+        handler = str(match.group(1))
+        start = max(0, match.start() - 220)
+        end = min(len(text), match.end() + 420)
+        window = text[start:end]
+        rows.append(
+            {
+                "kind": "vue_control",
+                "source": source,
+                "event": "action-click",
+                "label": "spin-button",
+                "handler": handler,
+                "element": "ActionButton",
                 "handler_hint": " ".join(window.split())[:1000],
                 "wire_markers": sorted(_wire_markers_text(window)),
                 "endpoint_ids": [],
