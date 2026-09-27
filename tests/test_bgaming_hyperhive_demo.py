@@ -299,3 +299,33 @@ def test_variable_purchased_feature_is_optional_for_normal_spin():
     )
     assert "purchased_feature" not in req
 
+def test_custom_request_recovers_generated_line_indexes():
+    profile = analyze_current_wire(
+        'setRequestConfig(){this._requestMap[F.Regular]={'
+        'ActionType:T.SPIN,AdditionalData:{request:T.SPIN,rel:R.NEW_SPIN,'
+        'params:{selectedWinLines:Array.from({length:20},((t,e)=>e)),'
+        'perLine:!0,isNormalBuy:!1,isSuperBuy:!1}}}}'
+        'formattedRequest.params.action=t;'
+        'formattedRequest.params.exponent=2;'
+        'x.req.custom_req=formattedRequest.params;'
+        'x={method:"play",params:{token:q,req:{bet:a,bet_type:"bet"},state_lock:""}}'
+    )
+    assert profile.custom_literals == {
+        "selectedWinLines": list(range(20)),
+        "perLine": True,
+        "isNormalBuy": False,
+        "isSuperBuy": False,
+    }
+
+    req = build_profile_request(
+        profile,
+        {
+            "config": {"default_bet": 200, "bet_limits": [20, 200]},
+            "currency_attributes": {"subunits": 100, "exponent": 2},
+        },
+        bet=200,
+    )
+    assert req["custom_req"]["selectedWinLines"] == list(range(20))
+    assert req["custom_req"]["isNormalBuy"] is False
+    assert req["custom_req"]["isSuperBuy"] is False
+
