@@ -678,6 +678,13 @@ def _select_handler_probe_routes(
             "GAME_VARIANT",
             "CONTINUE",
         }
+        and (
+            route.get("semantic") != "BUY_BONUS"
+            or any(
+                str(marker).startswith("purchased_feature=")
+                for marker in route.get("wire_markers") or []
+            )
+        )
     ]
 
     priority = {
