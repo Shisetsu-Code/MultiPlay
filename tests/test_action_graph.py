@@ -476,8 +476,9 @@ def test_action_graph_traces_event_manager_spin_to_hyperhive_play(tmp_path):
                             "text": (
                                 'class UI{init(){this.eventManager.addListener('
                                 '"start-btn-start",t=>{this.onSpinClick(t)})}'
-                                'onSpinClick(t){this.network.invoke("play",'
-                                '{token:this.network.token,req:{bet:200}})}}'
+                                'this.onSpinClick=async(t,e)=>{'
+                                'this.network.invoke("play",'
+                                '{token:this.network.token,req:{bet:200}}}}'
                             ),
                         },
                     },
@@ -543,8 +544,9 @@ def test_action_graph_does_not_promote_event_buy_without_feature(tmp_path):
                             "text": (
                                 'class UI{init(){this.eventManager.addListener('
                                 '"buy-bonus",t=>{this.onSpinClick(false,t)})}'
-                                'onSpinClick(t,e){this.network.invoke("play",'
-                                '{token:this.network.token,req:{bet:200}})}}'
+                                'this.onSpinClick=async(t,e)=>{'
+                                'this.network.invoke("play",'
+                                '{token:this.network.token,req:{bet:200}}}}'
                             ),
                         },
                     },
