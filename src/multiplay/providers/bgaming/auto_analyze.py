@@ -22,7 +22,7 @@ from .demo_spin import run_demo_base_spin
 from .direct_port import BGamingDemoDirectSession
 from .handler_probe import probe_bgaming_handlers
 from .hyperhive_demo import run_demo_hyperhive
-from .probe import probe_bgaming_demo
+from .probe import _identity_key, _public_game_slug, probe_bgaming_demo
 
 
 def analyze_bgaming_demo(
@@ -47,6 +47,7 @@ def analyze_bgaming_demo(
     )
 
     browser_evidence = load_har(raw_har)
+    _require_runtime_identity(url, browser_evidence)
     family = _detect_family(browser_evidence, url=url, timeout_s=timeout_s)
 
     blockers: list[str] = []
@@ -599,6 +600,45 @@ def _request_markers(value: Any) -> set[str]:
         for child in value:
             out.update(_request_markers(child))
     return out
+
+def _require_runtime_identity(
+    requested_url: str,
+    evidence: EvidenceBundle,
+) -> None:
+    expected_slug = _public_game_slug(requested_url)
+    expected = _identity_key(expected_slug)
+    if not expected:
+        return
+
+    observed: set[str] = set()
+    for exchange in evidence.http:
+        parsed = urlsplit(str(exchange.url or ""))
+        host = (parsed.hostname or "").casefold()
+        parts = [part for part in parsed.path.split("/") if part]
+        lowered = [part.casefold() for part in parts]
+
+        if "api" in lowered:
+            index = lowered.index("api")
+            if index + 1 < len(parts):
+                candidate = _identity_key(parts[index + 1])
+                if candidate and candidate not in {"api", "v1", "v2"}:
+                    observed.add(candidate)
+
+        if (
+            host.endswith(".demo.bgaming-network.com")
+            and host != "demo.bgaming-network.com"
+        ):
+            label = host.removesuffix(".demo.bgaming-network.com")
+            candidate = _identity_key(label)
+            if candidate:
+                observed.add(candidate)
+
+    if observed and expected not in observed:
+        raise ValueError(
+            "BGaming runtime does not match requested public game: "
+            f"expected={expected_slug}, observed={','.join(sorted(observed))}"
+        )
+
 
 def _detect_family(
     evidence: EvidenceBundle,
