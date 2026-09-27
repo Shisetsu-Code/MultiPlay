@@ -42,7 +42,27 @@ def _write_har(path):
                             ),
                         },
                     },
-                }
+                },
+                {
+                    "request": {
+                        "method": "GET",
+                        "url": "https://demo.bgaming-network.com/app.js",
+                        "headers": [],
+                    },
+                    "response": {
+                        "status": 200,
+                        "headers": [],
+                        "content": {
+                            "mimeType": "application/javascript",
+                            "text": (
+                                'const ui={c:"Button",p:{name:"spin-button",'
+                                'onClick:"game.spinClick"}};'
+                                'class Game{spinClick(){this.spin()}'
+                                'spin(){this.requestCommand("spin")}}'
+                            ),
+                        },
+                    },
+                },
             ]
         }
     }
@@ -73,3 +93,16 @@ def test_marker_map():
 def test_direct_port_rejects_non_demo_direct_url():
     with pytest.raises(ValueError, match="demo/FUN"):
         _require_demo_intent("https://example.bgaming-network.com/play/Foo/REAL")
+
+
+
+def test_direct_session_maps_executable_spin_route(tmp_path):
+    path = tmp_path / "game.har"
+    _write_har(path)
+    session = BGamingDemoDirectSession(
+        har_path=path,
+        url="https://demo.bgaming-network.com/play/Foo/FUN",
+    )
+    route = next(item for item in session.routes() if item["semantic"] == "SPIN")
+    assert route["executable"] is True
+    assert route["replay_action_id"]
