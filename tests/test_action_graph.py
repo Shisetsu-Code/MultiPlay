@@ -145,3 +145,64 @@ def test_action_graph_keeps_popup_opener_separate_from_purchase(tmp_path):
     assert opener["status"] != "NETWORK_OBSERVED"
     assert confirm["status"] == "NETWORK_OBSERVED"
     assert "purchased_feature=buy_bonus" in confirm["wire_markers"]
+
+
+
+def test_action_graph_links_legacy_spin_desktop(tmp_path):
+    har = {
+        "log": {
+            "entries": [
+                {
+                    "request": {
+                        "method": "POST",
+                        "url": "https://game.example/api",
+                        "headers": [],
+                        "postData": {
+                            "mimeType": "application/json",
+                            "text": json.dumps(
+                                {
+                                    "command": "spin",
+                                    "options": {"bets": {"0": 1}},
+                                    "extra_data": {"round_series_id": 1},
+                                }
+                            ),
+                        },
+                    },
+                    "response": {
+                        "status": 200,
+                        "headers": [],
+                        "content": {
+                            "mimeType": "application/json",
+                            "text": '{"ok":true}',
+                        },
+                    },
+                },
+                {
+                    "request": {
+                        "method": "GET",
+                        "url": "https://game.example/casino.min.js",
+                        "headers": [],
+                    },
+                    "response": {
+                        "status": 200,
+                        "headers": [],
+                        "content": {
+                            "mimeType": "application/javascript",
+                            "text": (
+                                'u.a.addListener(r.createButton("spinDesktop",'
+                                'i.DESKTOP_CENTER),this.spin);'
+                            ),
+                        },
+                    },
+                },
+            ]
+        }
+    }
+    path = tmp_path / "legacy-spin.har"
+    path.write_text(json.dumps(har), encoding="utf-8")
+
+    graph = build_action_graph(path)
+    route = next(item for item in graph["routes"] if item["semantic"] == "SPIN")
+    assert route["control"] == "spinDesktop"
+    assert route["status"] == "NETWORK_OBSERVED"
+    assert route["wire_markers"] == ["command=spin"]
