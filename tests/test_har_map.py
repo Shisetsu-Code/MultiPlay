@@ -301,3 +301,89 @@ def test_har_map_resolves_feature_literal_passed_to_spin_handler(tmp_path):
         and item["label"] == "buy-bonus"
     )
     assert "purchased_feature=buy_bonus" in control["wire_markers"]
+
+def test_har_map_extracts_direct_event_manager_listener(tmp_path):
+    har = {
+        "log": {
+            "entries": [
+                {
+                    "request": {
+                        "method": "GET",
+                        "url": "https://game.example/bundle.js",
+                        "headers": [],
+                    },
+                    "response": {
+                        "status": 200,
+                        "headers": [],
+                        "content": {
+                            "mimeType": "application/javascript",
+                            "text": (
+                                'this.eventManager.addListener('
+                                '"start-btn-start",this.onSpinClick);'
+                            ),
+                        },
+                    },
+                }
+            ]
+        }
+    }
+    path = tmp_path / "direct-event-listener.har"
+    path.write_text(json.dumps(har), encoding="utf-8")
+
+    report = build_har_map(path)
+    control = next(
+        item
+        for item in report["actions"]
+        if item["kind"] == "event_control"
+        and item["event"] == "start-btn-start"
+    )
+    assert control["label"] == "start-btn-start"
+    assert control["handler"] == "onSpinClick"
+
+
+def test_har_map_extracts_named_spin_event_bus_binding(tmp_path):
+    har = {
+        "log": {
+            "entries": [
+                {
+                    "request": {
+                        "method": "GET",
+                        "url": "https://game.example/game.js",
+                        "headers": [],
+                    },
+                    "response": {
+                        "status": 200,
+                        "headers": [],
+                        "content": {
+                            "mimeType": "application/javascript",
+                            "text": (
+                                'function BQ(){'
+                                'it.on("spin-clicked",RQ),'
+                                'it.on("buy-bonus",jQ)}'
+                                'function RQ(){it.emit("play")}'
+                            ),
+                        },
+                    },
+                }
+            ]
+        }
+    }
+    path = tmp_path / "named-event-bus.har"
+    path.write_text(json.dumps(har), encoding="utf-8")
+
+    report = build_har_map(path)
+    spin = next(
+        item
+        for item in report["actions"]
+        if item["kind"] == "event_control"
+        and item["event"] == "spin-clicked"
+    )
+    bonus = next(
+        item
+        for item in report["actions"]
+        if item["kind"] == "event_control"
+        and item["event"] == "buy-bonus"
+    )
+    assert spin["handler"] == "RQ"
+    assert bonus["handler"] == "jQ"
+
