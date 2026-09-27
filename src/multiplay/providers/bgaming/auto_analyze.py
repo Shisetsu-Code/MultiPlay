@@ -11,6 +11,7 @@ from ...endpoints import sanitize_endpoint_url
 from ...evidence import load_har, redact
 from ...models import EvidenceBundle, HttpExchange, ScriptEvidence
 from .bootstrap import sanitize_session_url
+from .catalog import resolve_catalog_execution_url
 from .classify import (
     API_V2,
     HYPERHIVE_JSONRPC,
@@ -37,10 +38,19 @@ def analyze_bgaming_demo(
     root = Path(output_dir)
     root.mkdir(parents=True, exist_ok=True)
 
+    requested_url = str(url or "").strip()
+    execution_url = requested_url
+    source_host = (urlsplit(requested_url).hostname or "").casefold()
+    if source_host == "bgaming.com" or source_host.endswith(".bgaming.com"):
+        execution_url = resolve_catalog_execution_url(
+            requested_url,
+            timeout_s=timeout_s,
+        )
+
     raw_har = root / "browser.raw.har"
     shot = root / "initial.jpg" if screenshot else None
     capture_browser_evidence(
-        url=url,
+        url=execution_url,
         har_path=raw_har,
         screenshot_path=shot,
         actions=[BrowserAction(kind="wait", timeout_ms=max(1000, int(settle_ms)))],
@@ -48,7 +58,7 @@ def analyze_bgaming_demo(
 
     browser_evidence = load_har(raw_har)
     _require_runtime_identity(url, browser_evidence)
-    family = _detect_family(browser_evidence, url=url, timeout_s=timeout_s)
+    family = _detect_family(browser_evidence, url=execution_url, timeout_s=timeout_s)
 
     blockers: list[str] = []
     hyperhive_base_error = ""
@@ -63,7 +73,7 @@ def analyze_bgaming_demo(
         enrichment["attempted"] = True
         enrichment["kind"] = "base-spin"
         try:
-            base = run_demo_base_spin(url, timeout_s=timeout_s)
+            base = run_demo_base_spin(execution_url, timeout_s=timeout_s)
         except (OSError, RuntimeError, TypeError, ValueError) as exc:
             blockers.append(f"base-spin enrichment failed: {type(exc).__name__}: {exc}")
         else:
@@ -74,7 +84,7 @@ def analyze_bgaming_demo(
         enrichment["attempted"] = True
         enrichment["kind"] = "hyperhive-base-play"
         try:
-            base = run_demo_hyperhive(url, timeout_s=timeout_s)
+            base = run_demo_hyperhive(execution_url, timeout_s=timeout_s)
         except (OSError, RuntimeError, TypeError, ValueError) as exc:
             hyperhive_base_error = (
                 f"HyperHive base-play enrichment failed: "
@@ -127,7 +137,7 @@ def analyze_bgaming_demo(
 
         try:
             probe = probe_bgaming_handlers(
-                url,
+                execution_url,
                 [candidate],
                 har_path=handler_raw_har,
                 settle_ms=max(8000, int(settle_ms)),
@@ -190,7 +200,7 @@ def analyze_bgaming_demo(
             try:
                 direct_probe = BGamingDemoDirectSession(
                     har_path=contract_har,
-                    url=url,
+                    url=execution_url,
                     timeout_s=timeout_s,
                 )
                 direct_probe.open()
@@ -257,7 +267,7 @@ def analyze_bgaming_demo(
             try:
                 direct_probe = BGamingDemoDirectSession(
                     har_path=contract_har,
-                    url=url,
+                    url=execution_url,
                     timeout_s=timeout_s,
                 )
                 direct_probe.open()
@@ -352,7 +362,8 @@ def analyze_bgaming_demo(
 
     report = {
         "schema": "multiplay/bgaming-auto-analysis/v1",
-        "url": _strip_query(url),
+        "url": _strip_query(requested_url),
+        "execution_url": _strip_query(execution_url),
         "family": family,
         "enrichment": enrichment,
         "handler_probe": handler_probe,
