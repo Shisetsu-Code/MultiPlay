@@ -17,6 +17,7 @@ permissions:
   contents: write
 
 # pending rerun: purchase-level + api-version + math-mode
+# pending rerun: static freespin purchase handlers
 
 concurrency:
   group: bgaming-analyzer-worker
