@@ -3,8 +3,10 @@ import json
 import multiplay.providers.bgaming.auto_analyze as auto_module
 from multiplay.models import EvidenceBundle, HttpExchange, ScriptEvidence
 from multiplay.providers.bgaming.auto_analyze import (
+    _api_v2_static_buy_features,
     _merge_evidence,
     _require_runtime_identity,
+    _seed_api_v2_buy_feature_routes,
     _select_base_spin_browser_fallback,
     _write_safe_har,
 )
