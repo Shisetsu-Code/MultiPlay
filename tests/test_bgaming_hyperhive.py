@@ -167,3 +167,27 @@ def test_nonempty_observed_lock_requires_fresh_lock():
             {"token": "fresh", "req": {"bet": 200}},
             template,
         )
+
+
+def test_failed_rpc_play_is_not_a_replay_template():
+    exchange = HttpExchange(
+        evidence_id="failed-play",
+        method="POST",
+        url="https://demo.bgaming-network.com/api",
+        request_body={
+            "id": 0,
+            "jsonrpc": "2.0",
+            "method": "play",
+            "params": {
+                "token": "captured",
+                "req": {"bet": 30},
+            },
+        },
+        response_status=200,
+        response_body={
+            "id": 0,
+            "jsonrpc": "2.0",
+            "error": {"code": 51100, "message": "failed"},
+        },
+    )
+    assert extract_hyperhive_templates(EvidenceBundle(http=[exchange])) == []
