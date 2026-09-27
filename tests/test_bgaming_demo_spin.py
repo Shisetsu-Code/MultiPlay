@@ -116,3 +116,14 @@ def test_api_v2_script_spin_option_hints_extracts_prefab_backtick_levels():
         {"gold_symbols_count": "5"},
     ]
 
+def test_api_v2_script_spin_option_hints_extracts_persistent_instance_default():
+    script = (
+        'init(){'
+        'this.linesCount=this.linesCount||"60";'
+        'this.additionalSpinOptions.mode=this.linesCount;'
+        '}'
+    )
+    assert api_v2_script_spin_option_hints([script]) == [
+        {"mode": "60"},
+    ]
+
