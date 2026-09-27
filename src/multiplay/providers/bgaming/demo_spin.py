@@ -79,6 +79,7 @@ def run_demo_base_spin(
         headers=common_headers,
     )
     init_data = _json_object(init.text, "init")
+    api_version_required = False
 
     # Some current API-v2 games require api_version=2 even on init.
     # Retry once only when the first response does not expose a usable game contract.
@@ -104,6 +105,7 @@ def run_demo_base_spin(
                 init_payload = retry_payload
                 init = retry
                 init_data = retry_data
+                api_version_required = True
 
     if is_switchable_init(init_data):
         raise ValueError("Switchable container requires variant selection before spin.")
@@ -121,9 +123,8 @@ def run_demo_base_spin(
         line_count = 0
         spin_options = {"bet": _preserve_numeric_type(init_data, wager)}
         spin_extra = {"round_series_id": round_series_id}
-        api_version = _api_version(init_data)
-        if api_version is not None:
-            spin_extra["api_version"] = api_version
+        if api_version_required:
+            spin_extra["api_version"] = 2
 
     spin_payload = {
         "command": "spin",
