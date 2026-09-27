@@ -11,6 +11,7 @@ from pathlib import Path
 from typing import Any
 from urllib.parse import quote, urlsplit
 
+from ...action_graph import build_action_graph
 from ...evidence import load_har, redact
 from ...har_map import build_har_map
 from .api_v2 import (
@@ -83,6 +84,7 @@ class BGamingDemoDirectSession:
             )
 
         self.report = build_har_map(self.har_path)
+        self.graph = build_action_graph(self.har_path, include_all=True)
         self.http = _HttpSession()
         self.launch_url = ""
         self.endpoint_url = ""
@@ -138,6 +140,55 @@ class BGamingDemoDirectSession:
                 )
             )
         return rows
+
+    def routes(self) -> list[dict[str, Any]]:
+        executable_actions = {
+            item.action_id: item
+            for item in self.actions()
+            if item.executable
+        }
+        out: list[dict[str, Any]] = []
+        for route in self.graph.get("routes", []):
+            item = dict(route)
+            replay = str(item.get("replay_action_id") or "")
+            item["executable"] = replay in executable_actions
+            if replay and replay not in executable_actions:
+                item["execution_reason"] = (
+                    "matched replay shape is not executable in this session"
+                )
+            elif replay:
+                item["execution_reason"] = ""
+            else:
+                item["execution_reason"] = (
+                    "no demonstrated replay action linked to route"
+                )
+            out.append(item)
+        return out
+
+    def execute_route(
+        self,
+        route_id: str,
+        *,
+        overrides: dict[str, Any] | None = None,
+    ) -> dict[str, Any]:
+        route = next(
+            (
+                item
+                for item in self.routes()
+                if str(item.get("route_id") or "") == str(route_id)
+            ),
+            None,
+        )
+        if route is None:
+            raise KeyError(f"unknown route_id: {route_id}")
+        if not route.get("executable"):
+            raise ValueError(
+                str(route.get("execution_reason") or "route is not executable")
+            )
+        return self.execute(
+            str(route.get("replay_action_id") or ""),
+            overrides=overrides,
+        )
 
     def execute(
         self,
@@ -452,17 +503,26 @@ def serve_bgaming_demo_port(
             if self.path == "/actions":
                 self._json(200, {"actions": [item.to_dict() for item in session.actions()]})
                 return
+            if self.path == "/routes":
+                self._json(200, {"routes": session.routes()})
+                return
             self._json(404, {"error": "not found"})
 
         def do_POST(self) -> None:
-            prefix = "/actions/"
-            if not self.path.startswith(prefix):
+            action_prefix = "/actions/"
+            route_prefix = "/routes/"
+            if self.path.startswith(action_prefix):
+                target = self.path[len(action_prefix) :].strip("/")
+                executor = session.execute
+            elif self.path.startswith(route_prefix):
+                target = self.path[len(route_prefix) :].strip("/")
+                executor = session.execute_route
+            else:
                 self._json(404, {"error": "not found"})
                 return
-            action_id = self.path[len(prefix) :].strip("/")
             try:
                 body = self._read_json()
-                result = session.execute(action_id, overrides=body)
+                result = executor(target, overrides=body)
             except KeyError as exc:
                 self._json(404, {"error": str(exc)})
                 return
