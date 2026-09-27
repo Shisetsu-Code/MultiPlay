@@ -150,7 +150,10 @@ def probe_bgaming_handlers(
                 attempt_called = False
                 for frame in page.frames:
                     result = None
-                    if control and not paths:
+                    # Prefer the discovered control object. It is the closest
+                    # executable representation of the user's actual UI action.
+                    # Handler paths remain a fallback when the control is not exposed.
+                    if control:
                         for _advance in range(3):
                             try:
                                 result = frame.evaluate(
