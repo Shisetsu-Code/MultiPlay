@@ -189,7 +189,8 @@ def render_action_graph(
         replay = item.get("replay_action_id") or "-"
         lines.append(
             f"{item['route_id']}  {item['semantic']:<12} "
-            f"{item['status']:<18} {item['control'][:32]:<32}"
+            f"{item['status']:<18} {item.get('interface_role', '-'):<14} "
+            f"{item['control'][:32]:<32}"
         )
         lines.append(f"      handler: {item.get('handler') or '-'}")
         lines.append(f"      chain:   {chain}")
@@ -869,11 +870,23 @@ def _keep_route(route: dict[str, Any]) -> bool:
         "PICK",
         "GAME_VARIANT",
     }
-    if (
-        status in {"NETWORK_OBSERVED", "NETWORK_INFERRED"}
-        and semantic in network_semantics
-    ):
+    if status == "NETWORK_OBSERVED" and semantic in network_semantics:
         return True
+
+    if status == "NETWORK_INFERRED" and semantic in network_semantics:
+        direct = f"{label} {handler}"
+        required = {
+            "SPIN": r"spin",
+            "BUY_BONUS": r"(buy|bonus)",
+            "FREESPIN": r"(free.?spin|freespin)",
+            "RESPIN": r"respin",
+            "GAMBLE": r"gamble",
+            "COLLECT": r"collect",
+            "PICK": r"(pick|choose|select)",
+            "GAME_VARIANT": r"(setCurrentGame|game[1-9])",
+        }
+        pattern = required.get(semantic)
+        return bool(pattern and re.search(pattern, direct, re.IGNORECASE))
 
     if semantic == "BUY_BONUS" and role == "opener":
         return True
