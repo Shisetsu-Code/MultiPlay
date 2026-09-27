@@ -214,7 +214,11 @@ def render_action_graph(
 def _control_roots(report: dict[str, Any]) -> list[dict[str, Any]]:
     controls = []
     for item in report.get("actions", []):
-        if item.get("kind") not in {"declared_button", "html_control"}:
+        if item.get("kind") not in {
+            "declared_button",
+            "event_control",
+            "html_control",
+        }:
             continue
         label = str(item.get("label") or "").strip()
         handler = str(item.get("handler") or item.get("handler_hint") or "").strip()
@@ -659,6 +663,13 @@ def _protocol_markers(text: str) -> set[str]:
         out.add("method=play")
 
     for match in re.finditer(
+        r'(?:this\.)?network\.invoke\(\s*["\']([^"\']+)["\']',
+        text,
+        flags=re.IGNORECASE,
+    ):
+        out.add(f"method={match.group(1).casefold()}")
+
+    for match in re.finditer(
         r'["\']?method["\']?\s*:\s*["\'](init|play)["\']',
         text,
         flags=re.IGNORECASE,
@@ -672,7 +683,8 @@ def _protocol_hint(text: str) -> bool:
     return bool(
         re.search(
             r"(requestCommand\(|requestURL\(|(?:\.|\b)api\.play\(|"
-            r"\bfetch\(|XMLHttpRequest|jsonrpc|window\.__OPTIONS__\.api)",
+            r"(?:this\.)?network\.invoke\(|\bfetch\(|XMLHttpRequest|"
+            r"jsonrpc|window\.__OPTIONS__\.api)",
             text,
             flags=re.IGNORECASE,
         )
