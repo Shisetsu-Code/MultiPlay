@@ -1,0 +1,141 @@
+name: Validate selected 5 BGaming games
+
+on:
+  push:
+    branches: ["main"]
+    paths:
+      - ".github/workflows/test-bgaming-selected-five.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  resolve:
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.resolve.outputs.matrix }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install --upgrade pip
+      - run: pip install -e .
+      - id: resolve
+        run: |
+          multiplay bgaming-catalog --output catalog.json
+          python - <<'PY' >> "$GITHUB_OUTPUT"
+          import json
+          from pathlib import Path
+
+          wanted = {
+              "wild-moon-thieves",
+              "bone-bonanza",
+              "yokai",
+              "clover-bonanza",
+              "platinum-lightning-deluxe",
+          }
+          payload = json.loads(Path("catalog.json").read_text())
+          records = payload.get("records") if isinstance(payload, dict) else payload
+          found = []
+          for item in records:
+              if not isinstance(item, dict):
+                  continue
+              slug = str(item.get("slug") or "")
+              if slug not in wanted:
+                  continue
+              url = (
+                  item.get("execution_url")
+                  or item.get("demo_url")
+                  or item.get("public_url")
+                  or ""
+              )
+              found.append({
+                  "id": slug,
+                  "name": str(item.get("name") or slug),
+                  "url": str(url),
+              })
+
+          if {x["id"] for x in found} != wanted:
+              raise SystemExit(
+                  "missing slugs: "
+                  + repr(sorted(wanted - {x["id"] for x in found}))
+              )
+          print("matrix=" + json.dumps({"include": found}, separators=(",", ":")))
+          PY
+
+  analyze:
+    needs: resolve
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    strategy:
+      fail-fast: false
+      matrix: ${{ fromJSON(needs.resolve.outputs.matrix) }}
+
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install --upgrade pip
+      - run: pip install -e ".[browser,dev]"
+      - run: python -m playwright install --with-deps chromium
+
+      - name: Analyze one game
+        env:
+          GAME_NAME: ${{ matrix.name }}
+          GAME_ID: ${{ matrix.id }}
+          GAME_URL: ${{ matrix.url }}
+        run: |
+          mkdir -p "artifacts/$GAME_ID"
+          set +e
+          multiplay bgaming-analyze-demo "$GAME_URL" \
+            --output-dir "artifacts/$GAME_ID" \
+            --settle-ms 12000 \
+            --timeout 30 \
+            > "artifacts/$GAME_ID/stdout.txt" \
+            2> "artifacts/$GAME_ID/stderr.txt"
+          RC=$?
+          set -e
+          echo "$RC" > "artifacts/$GAME_ID/returncode.txt"
+
+          python - <<'PY'
+          import json
+          import os
+          from pathlib import Path
+
+          root = Path("artifacts") / os.environ["GAME_ID"]
+          analysis = root / "analysis.json"
+          print("name:", os.environ["GAME_NAME"])
+          print("slug:", os.environ["GAME_ID"])
+          if analysis.exists():
+              report = json.loads(analysis.read_text())
+              print("family:", report.get("family"))
+              print("routes:", report.get("route_count", 0))
+              print("direct:", report.get("direct_executable_count", 0))
+              print("handler_success:", bool((report.get("handler_probe") or {}).get("success")))
+              for blocker in report.get("blockers") or []:
+                  print("blocker:", blocker)
+              for route in report.get("routes") or []:
+                  print(
+                      route.get("semantic"),
+                      route.get("interface_role"),
+                      route.get("status"),
+                      "DIRECT" if route.get("direct_executable") else "-",
+                      route.get("control"),
+                      route.get("wire_markers") or [],
+                  )
+          else:
+              print("analysis.json missing")
+              stderr = root / "stderr.txt"
+              if stderr.exists():
+                  print(stderr.read_text()[-5000:])
+          PY
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: bgaming-selected-${{ matrix.id }}
+          path: artifacts/${{ matrix.id }}
+          if-no-files-found: warn
+          retention-days: 3
