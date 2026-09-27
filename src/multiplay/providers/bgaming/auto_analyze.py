@@ -451,29 +451,42 @@ def analyze_bgaming_demo(
 
     direct_state: dict[str, Any] | None = None
     direct_error = ""
-    try:
-        direct = BGamingDemoDirectSession(
-            har_path=contract_har,
-            url=execution_url,
-            timeout_s=timeout_s,
-        )
-        direct_state = direct.open()
-        route_state = {item["route_id"]: item for item in direct.routes()}
-        for route in routes:
-            resolved = route_state.get(str(route.get("route_id") or ""))
-            route["direct_executable"] = bool(
-                resolved is not None and resolved.get("executable")
-            )
-            route["direct_reason"] = (
-                str(resolved.get("execution_reason") or "")
-                if resolved is not None
-                else "route not present in direct session"
-            )
-    except (OSError, RuntimeError, TypeError, ValueError) as exc:
-        direct_error = f"{type(exc).__name__}: {exc}"
+    if family == SWITCHABLE_CONTAINER:
+        direct_state = {
+            "provider": "bgaming",
+            "environment": "demo",
+            "family": family,
+            "children": switchable_children,
+        }
         for route in routes:
             route["direct_executable"] = False
-            route["direct_reason"] = direct_error
+            route["direct_reason"] = (
+                "switchable route requires a validated child selection"
+            )
+    else:
+        try:
+            direct = BGamingDemoDirectSession(
+                har_path=contract_har,
+                url=execution_url,
+                timeout_s=timeout_s,
+            )
+            direct_state = direct.open()
+            route_state = {item["route_id"]: item for item in direct.routes()}
+            for route in routes:
+                resolved = route_state.get(str(route.get("route_id") or ""))
+                route["direct_executable"] = bool(
+                    resolved is not None and resolved.get("executable")
+                )
+                route["direct_reason"] = (
+                    str(resolved.get("execution_reason") or "")
+                    if resolved is not None
+                    else "route not present in direct session"
+                )
+        except (OSError, RuntimeError, TypeError, ValueError) as exc:
+            direct_error = f"{type(exc).__name__}: {exc}"
+            for route in routes:
+                route["direct_executable"] = False
+                route["direct_reason"] = direct_error
 
     report = {
         "schema": "multiplay/bgaming-auto-analysis/v1",
@@ -492,6 +505,7 @@ def analyze_bgaming_demo(
         "routes": routes,
         "direct_session": direct_state,
         "direct_session_error": direct_error,
+        "switchable_children": switchable_children,
     }
 
     (root / "actions.json").write_text(
