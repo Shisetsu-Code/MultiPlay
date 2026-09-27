@@ -339,7 +339,7 @@ def analyze_bgaming_demo(
     try:
         direct = BGamingDemoDirectSession(
             har_path=contract_har,
-            url=url,
+            url=execution_url,
             timeout_s=timeout_s,
         )
         direct_state = direct.open()
