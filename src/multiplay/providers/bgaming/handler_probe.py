@@ -6,11 +6,10 @@ from dataclasses import asdict, dataclass
 from pathlib import Path
 from typing import Any
 
-from ...evidence import load_har
-from ...models import EvidenceBundle
+from ...models import EvidenceBundle, HttpExchange
 
 _HANDLER_RE = re.compile(
-    r"^\s*([A-Za-z_$][A-Za-z0-9_$]*(?:\.[A-Za-z_$][A-Za-z0-9_$]*)*)"
+    r"^\s*([A-Za-z_$][A-Za-z0-9_$-]*(?:\.[A-Za-z_$][A-Za-z0-9_$-]*)*)"
     r"(?:\x60(.*))?\s*$"
 )
 
@@ -60,6 +59,7 @@ def probe_bgaming_handlers(
     har = Path(har_path)
     har.parent.mkdir(parents=True, exist_ok=True)
     outcomes: list[HandlerProbeOutcome] = []
+    captured_http: list[HttpExchange] = []
 
     with sync_playwright() as playwright:
         browser = playwright.chromium.launch(headless=True)
@@ -71,6 +71,35 @@ def probe_bgaming_handlers(
             record_har_mode="full",
         )
         page = context.new_page()
+        capture_state = {"active": False}
+
+        def capture_response(response: Any) -> None:
+            if not capture_state["active"]:
+                return
+            request = response.request
+            method = str(request.method or "").upper()
+            if method in {"GET", "HEAD", "OPTIONS"}:
+                return
+
+            body: Any = None
+            raw = request.post_data
+            if raw:
+                try:
+                    body = json.loads(raw)
+                except (json.JSONDecodeError, TypeError):
+                    body = raw
+
+            captured_http.append(
+                HttpExchange(
+                    evidence_id=f"handler:{len(captured_http)}",
+                    method=method,
+                    url=str(request.url),
+                    request_body=body,
+                    response_status=int(response.status),
+                )
+            )
+
+        page.on("response", capture_response)
         page.goto(target, wait_until="domcontentloaded", timeout=60_000)
         page.wait_for_timeout(max(1000, int(settle_ms)))
 
@@ -92,6 +121,7 @@ def probe_bgaming_handlers(
             paths, args = spec
             called = False
             last_error = ""
+            capture_state["active"] = True
             for frame in page.frames:
                 try:
                     result = frame.evaluate(
@@ -116,11 +146,13 @@ def probe_bgaming_handlers(
                     )
                     called = True
                     page.wait_for_timeout(max(250, int(after_call_ms)))
+                    capture_state["active"] = False
                     break
                 if result.get("error"):
                     last_error = str(result["error"])
 
             if not called:
+                capture_state["active"] = False
                 outcomes.append(
                     HandlerProbeOutcome(
                         route_id=route_id,
@@ -133,9 +165,11 @@ def probe_bgaming_handlers(
         context.close()
         browser.close()
 
-    evidence = load_har(har)
     return HandlerProbeResult(
-        evidence=evidence,
+        evidence=EvidenceBundle(
+            http=captured_http,
+            metadata={"source": "bgaming-handler-probe"},
+        ),
         outcomes=tuple(outcomes),
     )
 
