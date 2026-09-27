@@ -2,6 +2,7 @@ import json
 
 import pytest
 
+from multiplay.providers.bgaming.api_v2 import extract_api_v2_templates
 from multiplay.providers.bgaming.direct_port import (
     BGamingDemoDirectSession,
     _marker_map,
@@ -124,3 +125,39 @@ def test_inferred_api_purchase_rejects_ambiguous_features(tmp_path):
                 "purchased_feature=high_freespin_buy",
             ]
         )
+
+
+
+def test_inferred_api_purchase_preserves_static_play_command(tmp_path):
+    path = tmp_path / "game.har"
+    _write_har(path)
+    session = BGamingDemoDirectSession(
+        har_path=path,
+        url="https://demo.bgaming-network.com/play/Foo/FUN",
+    )
+    session.api_templates = extract_api_v2_templates(session.evidence)
+    session.default_bet = 100
+    session.endpoint_url = "https://demo.bgaming-network.com/api/Foo/session"
+    session.headers = {}
+
+    captured = {}
+
+    class FakeResult:
+        status = 200
+        text = "{}"
+
+    class FakeHttp:
+        def post_json(self, url, payload, **kwargs):
+            captured["url"] = url
+            captured["payload"] = payload
+            return FakeResult()
+
+    session.http = FakeHttp()
+    result = session.execute_inferred_api_v2_purchase(
+        ["command=play", "purchased_feature=freespin_buy"]
+    )
+
+    assert result["success"] is True
+    assert captured["payload"]["command"] == "play"
+    assert captured["payload"]["options"]["bet"] == 100
+    assert captured["payload"]["options"]["purchased_feature"] == "freespin_buy"
