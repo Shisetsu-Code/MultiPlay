@@ -25,6 +25,9 @@ class HyperHiveWireProfile:
     req_buy_bonus_multiplier: bool = False
     base_buy_bonus_multiplier: int | float | None = None
     buy_bonus_multiplier: int | float | None = None
+    req_model_rev: int | float | None = None
+    req_min_exponent: bool = False
+    req_integration_id: bool = False
 
     def to_dict(self) -> dict[str, Any]:
         return asdict(self)
@@ -110,6 +113,9 @@ def analyze_current_wire(
         ),
         base_buy_bonus_multiplier=base_multiplier,
         buy_bonus_multiplier=purchase_multiplier,
+        req_model_rev=_req_numeric_literal(play_window, "modelRev"),
+        req_min_exponent=_req_field_present(play_window, "minExponent"),
+        req_integration_id=_req_field_present(play_window, "integrationId"),
     )
 
 
@@ -138,6 +144,10 @@ def build_profile_request(
         balance = init_result.get("balance")
         if isinstance(balance, (int, float)) and not isinstance(balance, bool):
             request["balance"] = balance
+    if profile.req_model_rev is not None:
+        request["modelRev"] = profile.req_model_rev
+    if profile.req_min_exponent:
+        request["minExponent"] = resolve_hyperhive_fe_exponent(init_result)
     if profile.req_buy_bonus_multiplier:
         multiplier = (
             profile.buy_bonus_multiplier
@@ -195,7 +205,8 @@ def _play_request_window(text: str) -> str:
     source = text or ""
     candidates: list[str] = []
     for match in re.finditer(
-        r'(?:\.invoke\(["\']play["\']|\bmethod:["\']play["\'])',
+        r'(?:\.invoke\(["\']play["\']|\bmethod:["\']play["\']|'
+        r'\.action\(\{[^{}]{0,300}\bstate_lock\s*:)',
         source,
     ):
         start = max(0, match.start() - 1600)
@@ -213,6 +224,17 @@ def _play_request_window(text: str) -> str:
         + int("buyBonusModeMultiplier" in item),
         len(item),
     ))
+
+
+def _req_numeric_literal(window: str, key: str) -> int | float | None:
+    if not window:
+        return None
+    escaped = re.escape(key)
+    match = re.search(
+        rf'\b{escaped}\s*:\s*(-?\d+(?:\.\d+)?)',
+        window,
+    )
+    return _number_scalar(match.group(1)) if match else None
 
 
 def _req_literal_field_present(window: str, key: str) -> bool:
@@ -254,6 +276,13 @@ def _req_field_present(window: str, key: str) -> bool:
 
 
 def _normal_bet_type_from_play_window(window: str) -> str:
+    direct = re.search(
+        r'\bbet_type\s*:\s*[^,:{}]{0,120}\?["\']freebet["\']\s*:\s*["\']([^"\']+)["\']',
+        window or "",
+    )
+    if direct:
+        return str(direct.group(1)).casefold()
+
     match = re.search(
         r'\bbet_type:([A-Za-z_$][A-Za-z0-9_$]*)',
         window or "",
@@ -339,14 +368,23 @@ def _literal_values(text: str, key: str) -> set[str]:
 
 
 def _play_has_state_lock(text: str) -> bool:
-    if not re.search(
-        r'(?:method|["\']method["\']):["\']play["\']',
-        text or "",
-    ):
+    source = text or ""
+    has_play = bool(
+        re.search(
+            r'(?:method|["\']method["\']):["\']play["\']',
+            source,
+        )
+        or re.search(r'\.invoke\(["\']play["\']', source)
+        or re.search(
+            r'\.action\(\{[^{}]{0,400}\bstate_lock\s*:[^{}]{0,400}\breq\s*:',
+            source,
+        )
+    )
+    if not has_play:
         return False
     return bool(
-        re.search(r'(?:\bstate_lock\b|["\']state_lock["\']):', text or "")
-        or re.search(r'\.params\.state_lock=', text or "")
+        re.search(r'(?:\bstate_lock\b|["\']state_lock["\'])\s*:', source)
+        or re.search(r'\.params\.state_lock=', source)
     )
 
 
