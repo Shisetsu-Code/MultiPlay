@@ -123,9 +123,10 @@ jobs:
 
           python - <<'PY'
           import json
+          import os
           from pathlib import Path
 
-          root = Path("artifacts/$GAME_ID")
+          root = Path("artifacts") / os.environ["GAME_ID"]
           analysis = root / "analysis.json"
           if analysis.exists():
               report = json.loads(analysis.read_text())
