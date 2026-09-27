@@ -17,6 +17,12 @@ class HyperHiveWireProfile:
     custom_stake: bool
     custom_literals: dict[str, Any]
     script_count: int
+    req_purchased_feature: bool = False
+    req_balance: bool = False
+    req_fe_exponent: bool = False
+    req_buy_bonus_multiplier: bool = False
+    base_buy_bonus_multiplier: int | float | None = None
+    buy_bonus_multiplier: int | float | None = None
 
     def to_dict(self) -> dict[str, Any]:
         return asdict(self)
@@ -59,6 +65,15 @@ def analyze_current_wire(
         )
     )
     literals = _formatted_request_literals(compact) if custom_req else {}
+    play_window = _play_request_window(compact)
+
+    if not bet_type and play_window:
+        bet_type = _normal_bet_type_from_play_window(play_window)
+
+    base_multiplier, purchase_multiplier = _buy_bonus_multipliers(
+        compact,
+        play_window,
+    )
 
     return HyperHiveWireProfile(
         rpc_id_zero=bool(
@@ -76,7 +91,174 @@ def analyze_current_wire(
         custom_stake=custom_req and "formattedRequest.params.stake" in compact,
         custom_literals=literals,
         script_count=max(0, int(script_count)),
+        req_purchased_feature=_req_field_present(play_window, "purchased_feature"),
+        req_balance=_req_field_present(play_window, "balance"),
+        req_fe_exponent=_req_field_present(play_window, "fe_exponent"),
+        req_buy_bonus_multiplier=_req_field_present(
+            play_window,
+            "buyBonusModeMultiplier",
+        ),
+        base_buy_bonus_multiplier=base_multiplier,
+        buy_bonus_multiplier=purchase_multiplier,
     )
+
+
+def build_profile_request(
+    profile: HyperHiveWireProfile,
+    init_result: dict[str, Any],
+    *,
+    bet: int | float,
+    purchased_feature: str | None = None,
+) -> dict[str, Any]:
+    """Build the client-demonstrated flat HyperHive req shape."""
+    request: dict[str, Any] = {"bet": bet}
+    if profile.bet_type:
+        request["bet_type"] = profile.bet_type
+    if profile.req_fe_exponent:
+        request["fe_exponent"] = resolve_hyperhive_fe_exponent(init_result)
+    if profile.req_purchased_feature:
+        request["purchased_feature"] = purchased_feature
+    if profile.req_balance:
+        balance = init_result.get("balance")
+        if isinstance(balance, (int, float)) and not isinstance(balance, bool):
+            request["balance"] = balance
+    if profile.req_buy_bonus_multiplier:
+        multiplier = (
+            profile.buy_bonus_multiplier
+            if purchased_feature
+            else profile.base_buy_bonus_multiplier
+        )
+        if multiplier is not None:
+            request["buyBonusModeMultiplier"] = multiplier
+    return request
+
+
+def resolve_hyperhive_fe_exponent(init_result: dict[str, Any]) -> int:
+    attrs = init_result.get("currency_attributes")
+    config = init_result.get("config")
+    exponent = 2
+    subunits: int | float = 100
+    if isinstance(attrs, dict):
+        raw_exponent = attrs.get("exponent")
+        raw_subunits = attrs.get("subunits")
+        if isinstance(raw_exponent, int) and not isinstance(raw_exponent, bool):
+            exponent = max(0, raw_exponent)
+        if (
+            isinstance(raw_subunits, (int, float))
+            and not isinstance(raw_subunits, bool)
+            and raw_subunits > 0
+        ):
+            subunits = raw_subunits
+
+    limits = config.get("bet_limits") if isinstance(config, dict) else None
+    if not isinstance(limits, list):
+        return exponent
+
+    out = exponent
+    for raw in limits:
+        if not isinstance(raw, (int, float)) or isinstance(raw, bool):
+            continue
+        value = raw / subunits
+        text = format(value, ".12g")
+        decimals = len(text.split(".", 1)[1]) + 1 if "." in text else 0
+        out = max(out, decimals)
+    return out
+
+
+def _play_request_window(text: str) -> str:
+    source = text or ""
+    candidates: list[str] = []
+    for match in re.finditer(
+        r'(?:\.invoke\(["\']play["\']|\bmethod:["\']play["\'])',
+        source,
+    ):
+        start = max(0, match.start() - 1600)
+        end = min(len(source), match.end() + 2600)
+        window = source[start:end]
+        if "req:{" in window or ".req." in window:
+            candidates.append(window)
+    if not candidates:
+        return ""
+    return max(candidates, key=lambda item: (
+        int("purchased_feature" in item)
+        + int("bet_type" in item)
+        + int("balance" in item)
+        + int("fe_exponent" in item)
+        + int("buyBonusModeMultiplier" in item),
+        len(item),
+    ))
+
+
+def _req_field_present(window: str, key: str) -> bool:
+    if not window:
+        return False
+    escaped = re.escape(key)
+    return bool(
+        re.search(rf'\b{escaped}\s*:', window)
+        or re.search(rf'\.req\.{escaped}\s*=', window)
+        or re.search(rf'\.req\[["\']{escaped}["\']\]\s*=', window)
+    )
+
+
+def _normal_bet_type_from_play_window(window: str) -> str:
+    match = re.search(
+        r'\bbet_type:([A-Za-z_$][A-Za-z0-9_$]*)',
+        window or "",
+    )
+    if match is None:
+        return ""
+    variable = re.escape(match.group(1))
+    prior = window[: match.start()][-1200:]
+    ternary = re.search(
+        rf'\b{variable}=.{{0,700}}?["\']freebet["\']:["\']([^"\']+)["\']',
+        prior,
+    )
+    if ternary:
+        return str(ternary.group(1)).casefold()
+    return ""
+
+
+def _buy_bonus_multipliers(
+    text: str,
+    window: str,
+) -> tuple[int | float | None, int | float | None]:
+    base: int | float | None = None
+    purchase: int | float | None = None
+
+    field = re.search(
+        r'\bbuyBonusModeMultiplier:([A-Za-z_$][A-Za-z0-9_$]*)',
+        window or "",
+    )
+    if field is not None:
+        variable = re.escape(field.group(1))
+        prior = window[: field.start()][-1400:]
+        assignments = re.findall(
+            rf'(?:^|[,;]){variable}=(-?\d+(?:\.\d+)?)',
+            prior,
+        )
+        if assignments:
+            base = _number_scalar(assignments[-1])
+
+    values = {
+        _number_scalar(raw)
+        for raw in re.findall(
+            r'\bbuyBonusModeMultiplier=(-?\d+(?:\.\d+)?)',
+            text or "",
+        )
+    }
+    values.discard(None)
+    if len(values) == 1:
+        purchase = next(iter(values))
+    return base, purchase
+
+
+def _number_scalar(raw: str) -> int | float | None:
+    value = str(raw or "").strip()
+    if re.fullmatch(r"-?\d+", value):
+        return int(value)
+    if re.fullmatch(r"-?(?:\d+\.\d*|\d*\.\d+)", value):
+        return float(value)
+    return None
 
 
 def _request_literals(text: str, key: str) -> set[str]:
