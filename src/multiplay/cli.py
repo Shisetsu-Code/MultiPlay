@@ -31,6 +31,16 @@ def main() -> int:
     har_map.add_argument("--output")
     har_map.add_argument("--json", action="store_true")
 
+    direct_port = sub.add_parser(
+        "bgaming-port",
+        help="Serve observed BGaming demo actions over a loopback HTTP port",
+    )
+    direct_port.add_argument("har")
+    direct_port.add_argument("url")
+    direct_port.add_argument("--host", default="127.0.0.1")
+    direct_port.add_argument("--port", type=int, default=8765)
+    direct_port.add_argument("--timeout", type=float, default=30.0)
+
     browser_explore = sub.add_parser(
         "browser-explore",
         help="Discover visible controls with Playwright and correlate clicks to network effects",
@@ -133,6 +143,8 @@ def main() -> int:
         return _analyze(args)
     if args.command == "har-map":
         return _har_map(args)
+    if args.command == "bgaming-port":
+        return _bgaming_port(args)
     if args.command == "browser-explore":
         return _browser_explore(args)
     if args.command == "bgaming-browser-discover":
@@ -203,6 +215,19 @@ def _har_map(args: argparse.Namespace) -> int:
         print(json.dumps(report, indent=2, ensure_ascii=False))
     else:
         print(render_har_map(report, action_id=args.action), end="")
+    return 0
+
+
+def _bgaming_port(args: argparse.Namespace) -> int:
+    from .providers.bgaming.direct_port import serve_bgaming_demo_port
+
+    serve_bgaming_demo_port(
+        har_path=args.har,
+        url=args.url,
+        host=args.host,
+        port=args.port,
+        timeout_s=args.timeout,
+    )
     return 0
 
 
