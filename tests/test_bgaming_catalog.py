@@ -128,3 +128,26 @@ def test_catalog_marks_total_change_non_authoritative(monkeypatch):
     result = crawl_catalog()
     assert result.authoritative is False
     assert any("total changed" in item for item in result.diagnostics)
+
+
+
+def test_catalog_derives_stable_classic_url_from_ephemeral_demo():
+    html = """
+    <div data-catalog-card>
+      <a href="https://bgaming.com/games/sweet-royale-megaways">Details</a>
+      <a href="https://demo.bgaming-network.com/games/SweetRoyaleMegaways/FUN?launch_token=SECRET">
+        Play Demo
+      </a>
+      <img alt="Sweet Royale MEGAWAYS">
+      <span class="game-type-text">Slots</span>
+    </div>
+    """
+
+    item = parse_catalog_html(html)[0]
+    assert item.availability == "EPHEMERAL_DEMO"
+    assert item.identifier == "SweetRoyaleMegaways"
+    assert item.demo_url == ""
+    assert item.execution_url == (
+        "https://demo.bgaming-network.com/play/SweetRoyaleMegaways/FUN"
+    )
+    assert "SECRET" not in repr(item)
