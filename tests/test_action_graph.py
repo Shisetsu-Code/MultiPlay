@@ -331,3 +331,99 @@ def test_action_graph_keeps_chance_separate_from_bonus_purchase(tmp_path):
     assert route["semantic"] == "CHANCE"
     assert route["status"] != "NETWORK_OBSERVED"
     assert route["replay_action_id"] == ""
+
+
+
+def test_action_graph_keeps_purchase_variants_separate(tmp_path):
+    def exchange(feature):
+        return {
+            "request": {
+                "method": "POST",
+                "url": "https://game.example/api",
+                "headers": [],
+                "postData": {
+                    "mimeType": "application/json",
+                    "text": json.dumps(
+                        {
+                            "command": "spin",
+                            "options": {
+                                "bet": 20,
+                                "purchased_feature": feature,
+                            },
+                            "extra_data": {"round_series_id": 1},
+                        }
+                    ),
+                },
+            },
+            "response": {
+                "status": 200,
+                "headers": [],
+                "content": {
+                    "mimeType": "application/json",
+                    "text": '{"ok":true}',
+                },
+            },
+        }
+
+    tick = chr(96)
+    har = {
+        "log": {
+            "entries": [
+                exchange("freespin_buy"),
+                exchange("high_freespin_buy"),
+                {
+                    "request": {
+                        "method": "GET",
+                        "url": "https://game.example/app.js",
+                        "headers": [],
+                    },
+                    "response": {
+                        "status": 200,
+                        "headers": [],
+                        "content": {
+                            "mimeType": "application/javascript",
+                            "text": (
+                                'const a={c:"Button",p:{name:"buy-confirm",'
+                                'onClick:"all.buy-features.buyBonusClick'
+                                + tick
+                                + 'freespin_buy"}};'
+                                'const b={c:"Button",p:{name:"buy-confirm",'
+                                'onClick:"all.buy-features.buyBonusClick'
+                                + tick
+                                + 'high_freespin_buy"}};'
+                            ),
+                        },
+                    },
+                },
+            ]
+        }
+    }
+    path = tmp_path / "variants.har"
+    path.write_text(json.dumps(har), encoding="utf-8")
+
+    graph = build_action_graph(path)
+    routes = [
+        item
+        for item in graph["routes"]
+        if item["semantic"] == "BUY_BONUS"
+        and item["control"] == "buy-confirm"
+    ]
+
+    assert len(routes) == 2
+    handlers = {item["handler"] for item in routes}
+    assert handlers == {
+        "all.buy-features.buyBonusClick" + tick + "freespin_buy",
+        "all.buy-features.buyBonusClick" + tick + "high_freespin_buy",
+    }
+    features = {
+        next(
+            marker
+            for marker in item["wire_markers"]
+            if marker.startswith("purchased_feature=")
+        )
+        for item in routes
+    }
+    assert features == {
+        "purchased_feature=freespin_buy",
+        "purchased_feature=high_freespin_buy",
+    }
