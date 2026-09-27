@@ -1,0 +1,588 @@
+{
+  "schema": "multiplay/bgaming-recovery-test/v1",
+  "run_id": "36331156745",
+  "generated_at": "2026-09-27T15:54:12.934178+00:00",
+  "games": [
+    {
+      "id": "bgaming-recovery-big-atlantis-frenzy",
+      "family": "api-v2",
+      "enrichment": {
+        "attempted": true,
+        "success": false,
+        "kind": "base-spin",
+        "metadata": {
+          "requested_url": "https://demo.bgaming-network.com/play/BigAtlantisFrenzy/FUN",
+          "launch_url": "https://demo.bgaming-network.com/games/BigAtlantisFrenzy/FUN",
+          "identifier": "BigAtlantisFrenzy",
+          "family": "api-v2",
+          "wager": 30.0,
+          "line_count": 0,
+          "init_status": 200,
+          "spin_status": 422
+        }
+      },
+      "direct_executable_count": 0,
+      "blockers": [
+        "handler probe did not produce a matching successful request"
+      ],
+      "handler_probe": {
+        "attempted": true,
+        "success": false,
+        "route_id": "RF8C87151",
+        "route_ids": [
+          "RF8C87151"
+        ],
+        "outcomes": [
+          {
+            "route_id": "RF8C87151",
+            "handler": "currentScene.spin`1",
+            "called": false,
+            "resolved_path": "",
+            "frame_url": "",
+            "request_start": 0,
+            "request_end": 0,
+            "error": "not found"
+          }
+        ],
+        "results": [
+          {
+            "route_id": "RF8C87151",
+            "semantic": "SPIN",
+            "control": "spin-button",
+            "handler": "currentScene.spin`1",
+            "success": false,
+            "outcomes": [
+              {
+                "route_id": "RF8C87151",
+                "handler": "currentScene.spin`1",
+                "called": false,
+                "resolved_path": "",
+                "frame_url": "",
+                "request_start": 0,
+                "request_end": 0,
+                "error": "not found"
+              }
+            ],
+            "request_count": 0
+          },
+          {
+            "route_id": "R18088DBE",
+            "semantic": "BUY_BONUS",
+            "control": "buy-bonus-popup-buy",
+            "handler": "all.buy-features.buyBonusClick`freespin_buy",
+            "kind": "direct-inferred-api-v2-purchase",
+            "success": false,
+            "outcomes": [],
+            "error": "ValueError: no unique successful base spin template"
+          }
+        ]
+      },
+      "routes": [
+        {
+          "semantic": "BUY_BONUS",
+          "status": "NETWORK_INFERRED",
+          "control": "buy-bonus-popup-buy",
+          "handler": "all.buy-features.buyBonusClick`freespin_buy",
+          "wire_markers": [
+            "command=play",
+            "purchased_feature=freespin_buy"
+          ],
+          "direct_executable": false,
+          "direct_reason": "no demonstrated replay action linked to route"
+        },
+        {
+          "semantic": "CHANCE",
+          "status": "CLIENT_OR_UNKNOWN",
+          "control": "double-chance-btn",
+          "handler": "all.buy-features.switchChance`freespin_chance",
+          "wire_markers": [],
+          "direct_executable": false,
+          "direct_reason": "no demonstrated replay action linked to route"
+        },
+        {
+          "semantic": "SPIN",
+          "status": "CLIENT_OR_UNKNOWN",
+          "control": "spin-button",
+          "handler": "currentScene.spin`1",
+          "wire_markers": [],
+          "direct_executable": false,
+          "direct_reason": "no demonstrated replay action linked to route"
+        },
+        {
+          "semantic": "BUY_BONUS",
+          "status": "UI_ONLY",
+          "control": "bonus-btn",
+          "handler": "showModal`buy-bonus-popup",
+          "wire_markers": [],
+          "direct_executable": false,
+          "direct_reason": "no demonstrated replay action linked to route"
+        },
+        {
+          "semantic": "BUY_BONUS",
+          "status": "UI_ONLY",
+          "control": "buy-bonus-popup-close",
+          "handler": "hideModal",
+          "wire_markers": [],
+          "direct_executable": false,
+          "direct_reason": "no demonstrated replay action linked to route"
+        }
+      ]
+    },
+    {
+      "id": "bgaming-recovery-big-boat-big-catch",
+      "family": "api-v2",
+      "enrichment": {
+        "attempted": true,
+        "success": false,
+        "kind": "base-spin",
+        "metadata": {
+          "requested_url": "https://demo.bgaming-network.com/play/BigTunaBonanza/FUN",
+          "launch_url": "https://demo.bgaming-network.com/games/BigTunaBonanza/FUN",
+          "identifier": "BigTunaBonanza",
+          "family": "api-v2",
+          "wager": 200.0,
+          "line_count": 0,
+          "init_status": 200,
+          "spin_status": 422
+        }
+      },
+      "direct_executable_count": 0,
+      "blockers": [
+        "handler probe did not produce a matching successful request"
+      ],
+      "handler_probe": {
+        "attempted": true,
+        "success": false,
+        "route_id": "RF8C87151",
+        "route_ids": [
+          "RF8C87151"
+        ],
+        "outcomes": [
+          {
+            "route_id": "RF8C87151",
+            "handler": "currentScene.spin`1",
+            "called": false,
+            "resolved_path": "",
+            "frame_url": "",
+            "request_start": 0,
+            "request_end": 0,
+            "error": "not found"
+          }
+        ],
+        "results": [
+          {
+            "route_id": "RF8C87151",
+            "semantic": "SPIN",
+            "control": "spin-button",
+            "handler": "currentScene.spin`1",
+            "success": false,
+            "outcomes": [
+              {
+                "route_id": "RF8C87151",
+                "handler": "currentScene.spin`1",
+                "called": false,
+                "resolved_path": "",
+                "frame_url": "",
+                "request_start": 0,
+                "request_end": 0,
+                "error": "not found"
+              }
+            ],
+            "request_count": 0
+          },
+          {
+            "route_id": "R425BFECD",
+            "semantic": "BUY_BONUS",
+            "control": "buy-btn",
+            "handler": "all.buy-features.buyBonusClick`freespin_buy,4",
+            "kind": "direct-inferred-api-v2-purchase",
+            "success": false,
+            "outcomes": [],
+            "error": "ValueError: no unique successful base spin template"
+          }
+        ]
+      },
+      "routes": [
+        {
+          "semantic": "BUY_BONUS",
+          "status": "NETWORK_INFERRED",
+          "control": "buy-btn",
+          "handler": "all.buy-features.buyBonusClick`freespin_buy,4",
+          "wire_markers": [
+            "command=play",
+            "purchased_feature=freespin_buy",
+            "purchased_feature_level=4"
+          ],
+          "direct_executable": false,
+          "direct_reason": "no demonstrated replay action linked to route"
+        },
+        {
+          "semantic": "CHANCE",
+          "status": "CLIENT_OR_UNKNOWN",
+          "control": "double-chance-btn",
+          "handler": "currentScene.switchChance",
+          "wire_markers": [],
+          "direct_executable": false,
+          "direct_reason": "no demonstrated replay action linked to route"
+        },
+        {
+          "semantic": "SPIN",
+          "status": "CLIENT_OR_UNKNOWN",
+          "control": "spin-button",
+          "handler": "currentScene.spin`1",
+          "wire_markers": [],
+          "direct_executable": false,
+          "direct_reason": "no demonstrated replay action linked to route"
+        }
+      ]
+    },
+    {
+      "id": "bgaming-recovery-derby-rush",
+      "family": "api-v2",
+      "enrichment": {
+        "attempted": true,
+        "success": true,
+        "kind": "base-spin",
+        "metadata": {
+          "requested_url": "https://demo.bgaming-network.com/play/DerbyRush/FUN",
+          "launch_url": "https://demo.bgaming-network.com/games/DerbyRush/FUN",
+          "identifier": "DerbyRush",
+          "family": "api-v2",
+          "wager": 200.0,
+          "line_count": 0,
+          "init_status": 200,
+          "spin_status": 200
+        }
+      },
+      "direct_executable_count": 1,
+      "blockers": [],
+      "handler_probe": {
+        "attempted": false,
+        "success": false,
+        "route_id": "",
+        "route_ids": [],
+        "outcomes": [],
+        "results": [
+          {
+            "route_id": "RE0C03999",
+            "semantic": "BUY_BONUS",
+            "control": "buy-btn",
+            "handler": "currentScene.buyBonusClick`2",
+            "kind": "direct-inferred-api-v2-purchase",
+            "success": false,
+            "outcomes": [],
+            "status": 422,
+            "request": {
+              "command": "play",
+              "options": {
+                "bet": 200,
+                "purchased_feature": "2"
+              },
+              "extra_data": {
+                "round_series_id": 1790524421897
+              }
+            }
+          },
+          {
+            "route_id": "R8313137F",
+            "semantic": "BUY_BONUS",
+            "control": "buy-btn",
+            "handler": "currentScene.buyBonusClick`1",
+            "kind": "direct-inferred-api-v2-purchase",
+            "success": false,
+            "outcomes": [],
+            "status": 422,
+            "request": {
+              "command": "play",
+              "options": {
+                "bet": 200,
+                "purchased_feature": "1"
+              },
+              "extra_data": {
+                "round_series_id": 1790524424164
+              }
+            }
+          },
+          {
+            "route_id": "R6695E4E2",
+            "semantic": "BUY_BONUS",
+            "control": "buy-btn",
+            "handler": "currentScene.buyBonusClick`0",
+            "kind": "direct-inferred-api-v2-purchase",
+            "success": false,
+            "outcomes": [],
+            "status": 422,
+            "request": {
+              "command": "play",
+              "options": {
+                "bet": 200,
+                "purchased_feature": "0"
+              },
+              "extra_data": {
+                "round_series_id": 1790524426412
+              }
+            }
+          }
+        ]
+      },
+      "routes": [
+        {
+          "semantic": "SPIN",
+          "status": "NETWORK_OBSERVED",
+          "control": "spin-button",
+          "handler": "currentScene.spin`1",
+          "wire_markers": [
+            "command=spin"
+          ],
+          "direct_executable": true,
+          "direct_reason": ""
+        },
+        {
+          "semantic": "BUY_BONUS",
+          "status": "NETWORK_INFERRED",
+          "control": "buy-btn",
+          "handler": "currentScene.buyBonusClick`0",
+          "wire_markers": [
+            "command=play",
+            "purchased_feature=0"
+          ],
+          "direct_executable": false,
+          "direct_reason": "no demonstrated replay action linked to route"
+        },
+        {
+          "semantic": "BUY_BONUS",
+          "status": "NETWORK_INFERRED",
+          "control": "buy-btn",
+          "handler": "currentScene.buyBonusClick`1",
+          "wire_markers": [
+            "command=play",
+            "purchased_feature=1"
+          ],
+          "direct_executable": false,
+          "direct_reason": "no demonstrated replay action linked to route"
+        },
+        {
+          "semantic": "BUY_BONUS",
+          "status": "NETWORK_INFERRED",
+          "control": "buy-btn",
+          "handler": "currentScene.buyBonusClick`2",
+          "wire_markers": [
+            "command=play",
+            "purchased_feature=2"
+          ],
+          "direct_executable": false,
+          "direct_reason": "no demonstrated replay action linked to route"
+        },
+        {
+          "semantic": "CHANCE",
+          "status": "CLIENT_OR_UNKNOWN",
+          "control": "double-chance-btn",
+          "handler": "currentScene.switchChance",
+          "wire_markers": [],
+          "direct_executable": false,
+          "direct_reason": "no demonstrated replay action linked to route"
+        }
+      ]
+    },
+    {
+      "id": "bgaming-recovery-maneki-88-gold",
+      "family": "api-v2",
+      "enrichment": {
+        "attempted": true,
+        "success": false,
+        "kind": "base-spin",
+        "metadata": {
+          "requested_url": "https://demo.bgaming-network.com/play/Maneki88Gold/FUN",
+          "launch_url": "https://demo.bgaming-network.com/games/Maneki88Gold/FUN",
+          "identifier": "Maneki88Gold",
+          "family": "api-v2",
+          "wager": 2.0,
+          "line_count": 0,
+          "init_status": 200,
+          "spin_status": 422
+        }
+      },
+      "direct_executable_count": 0,
+      "blockers": [
+        "handler probe did not produce a matching successful request"
+      ],
+      "handler_probe": {
+        "attempted": true,
+        "success": false,
+        "route_id": "RF8C87151",
+        "route_ids": [
+          "RF8C87151"
+        ],
+        "outcomes": [
+          {
+            "route_id": "RF8C87151",
+            "handler": "currentScene.spin`1",
+            "called": false,
+            "resolved_path": "",
+            "frame_url": "",
+            "request_start": 0,
+            "request_end": 0,
+            "error": "not found"
+          }
+        ],
+        "results": [
+          {
+            "route_id": "RF8C87151",
+            "semantic": "SPIN",
+            "control": "spin-button",
+            "handler": "currentScene.spin`1",
+            "success": false,
+            "outcomes": [
+              {
+                "route_id": "RF8C87151",
+                "handler": "currentScene.spin`1",
+                "called": false,
+                "resolved_path": "",
+                "frame_url": "",
+                "request_start": 0,
+                "request_end": 0,
+                "error": "not found"
+              }
+            ],
+            "request_count": 0
+          },
+          {
+            "route_id": "RE3E8ABDC",
+            "semantic": "BUY_BONUS",
+            "control": "5",
+            "handler": "all.buy-features.buyBonusClick`freespin_buy,5",
+            "kind": "direct-inferred-api-v2-purchase",
+            "success": false,
+            "outcomes": [],
+            "error": "ValueError: no unique successful base spin template"
+          },
+          {
+            "route_id": "RCB4997A9",
+            "semantic": "BUY_BONUS",
+            "control": "4",
+            "handler": "all.buy-features.buyBonusClick`freespin_buy,4",
+            "kind": "direct-inferred-api-v2-purchase",
+            "success": false,
+            "outcomes": [],
+            "error": "ValueError: no unique successful base spin template"
+          },
+          {
+            "route_id": "R6A888BA4",
+            "semantic": "BUY_BONUS",
+            "control": "3",
+            "handler": "all.buy-features.buyBonusClick`freespin_buy,3",
+            "kind": "direct-inferred-api-v2-purchase",
+            "success": false,
+            "outcomes": [],
+            "error": "ValueError: no unique successful base spin template"
+          },
+          {
+            "route_id": "R6749C662",
+            "semantic": "BUY_BONUS",
+            "control": "1",
+            "handler": "all.buy-features.buyBonusClick`freespin_buy,1",
+            "kind": "direct-inferred-api-v2-purchase",
+            "success": false,
+            "outcomes": [],
+            "error": "ValueError: no unique successful base spin template"
+          },
+          {
+            "route_id": "R22EDA9DA",
+            "semantic": "BUY_BONUS",
+            "control": "2",
+            "handler": "all.buy-features.buyBonusClick`freespin_buy,2",
+            "kind": "direct-inferred-api-v2-purchase",
+            "success": false,
+            "outcomes": [],
+            "error": "ValueError: no unique successful base spin template"
+          }
+        ]
+      },
+      "routes": [
+        {
+          "semantic": "BUY_BONUS",
+          "status": "NETWORK_INFERRED",
+          "control": "1",
+          "handler": "all.buy-features.buyBonusClick`freespin_buy,1",
+          "wire_markers": [
+            "command=play",
+            "purchased_feature=freespin_buy",
+            "purchased_feature_level=1"
+          ],
+          "direct_executable": false,
+          "direct_reason": "no demonstrated replay action linked to route"
+        },
+        {
+          "semantic": "BUY_BONUS",
+          "status": "NETWORK_INFERRED",
+          "control": "2",
+          "handler": "all.buy-features.buyBonusClick`freespin_buy,2",
+          "wire_markers": [
+            "command=play",
+            "purchased_feature=freespin_buy",
+            "purchased_feature_level=2"
+          ],
+          "direct_executable": false,
+          "direct_reason": "no demonstrated replay action linked to route"
+        },
+        {
+          "semantic": "BUY_BONUS",
+          "status": "NETWORK_INFERRED",
+          "control": "3",
+          "handler": "all.buy-features.buyBonusClick`freespin_buy,3",
+          "wire_markers": [
+            "command=play",
+            "purchased_feature=freespin_buy",
+            "purchased_feature_level=3"
+          ],
+          "direct_executable": false,
+          "direct_reason": "no demonstrated replay action linked to route"
+        },
+        {
+          "semantic": "BUY_BONUS",
+          "status": "NETWORK_INFERRED",
+          "control": "4",
+          "handler": "all.buy-features.buyBonusClick`freespin_buy,4",
+          "wire_markers": [
+            "command=play",
+            "purchased_feature=freespin_buy",
+            "purchased_feature_level=4"
+          ],
+          "direct_executable": false,
+          "direct_reason": "no demonstrated replay action linked to route"
+        },
+        {
+          "semantic": "BUY_BONUS",
+          "status": "NETWORK_INFERRED",
+          "control": "5",
+          "handler": "all.buy-features.buyBonusClick`freespin_buy,5",
+          "wire_markers": [
+            "command=play",
+            "purchased_feature=freespin_buy",
+            "purchased_feature_level=5"
+          ],
+          "direct_executable": false,
+          "direct_reason": "no demonstrated replay action linked to route"
+        },
+        {
+          "semantic": "SPIN",
+          "status": "CLIENT_OR_UNKNOWN",
+          "control": "spin-button",
+          "handler": "currentScene.spin`1",
+          "wire_markers": [],
+          "direct_executable": false,
+          "direct_reason": "no demonstrated replay action linked to route"
+        },
+        {
+          "semantic": "BUY_BONUS",
+          "status": "UI_ONLY",
+          "control": "bonus-btn",
+          "handler": "showModal`buy-bonus-popup",
+          "wire_markers": [],
+          "direct_executable": false,
+          "direct_reason": "no demonstrated replay action linked to route"
+        }
+      ]
+    }
+  ]
+}
