@@ -32,6 +32,8 @@ jobs:
             url: https://demo.bgaming-network.com/play/PotionSpells/FUN
           - id: hyperhive
             url: https://demo.bgaming-network.com/play/BigBucksSaloon/FUN
+          - id: sweet-royale
+            url: https://bgaming.com/games/sweet-royale-megaways
 
     steps:
       - uses: actions/checkout@v4
