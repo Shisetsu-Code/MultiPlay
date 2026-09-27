@@ -1,5 +1,8 @@
 from multiplay.providers.bgaming.hyperhive_demo import resolve_hyperhive_bet
-from multiplay.providers.bgaming.hyperhive_wire_profile import analyze_current_wire
+from multiplay.providers.bgaming.hyperhive_wire_profile import (
+    analyze_current_wire,
+    build_profile_request,
+)
 
 
 def test_current_wire_detects_zero_id_and_state_lock():
@@ -39,3 +42,56 @@ def test_resolve_hyperhive_bet_uses_min_limit():
     assert resolve_hyperhive_bet(
         {"config": {"bet_limits": [500, 100, 200]}}
     ) == 100
+
+
+def test_flat_hyperhive_profile_reconstructs_client_play_shape():
+    profile = analyze_current_wire(
+        'class G{constructor(){this.buyBonusModeMultiplier=60}};'
+        'let n=x?"freebet":"default",r=1;'
+        '"buy_bonus"==e&&(r=this.globalState.buyBonusModeMultiplier);'
+        'this.network.invoke("play",{token:this.network.token,req:{'
+        'bet:i,bet_type:n,fe_exponent:this.globalState.feBetExponent,'
+        'purchased_feature:e,balance:this.globalState.balance,'
+        'buyBonusModeMultiplier:r}})'
+    )
+
+    assert profile.bet_type == "default"
+    assert profile.req_purchased_feature is True
+    assert profile.req_balance is True
+    assert profile.req_fe_exponent is True
+    assert profile.req_buy_bonus_multiplier is True
+    assert profile.base_buy_bonus_multiplier == 1
+    assert profile.buy_bonus_multiplier == 60
+    assert profile.state_lock_present is False
+
+    init_result = {
+        "balance": 100000,
+        "currency_attributes": {
+            "subunits": 100,
+            "exponent": 2,
+        },
+        "config": {
+            "default_bet": 30,
+            "bet_limits": [10, 20, 30, 50],
+        },
+    }
+
+    assert build_profile_request(
+        profile,
+        init_result,
+        bet=30,
+    ) == {
+        "bet": 30,
+        "bet_type": "default",
+        "fe_exponent": 2,
+        "purchased_feature": None,
+        "balance": 100000,
+        "buyBonusModeMultiplier": 1,
+    }
+
+    assert build_profile_request(
+        profile,
+        init_result,
+        bet=30,
+        purchased_feature="buy_bonus",
+    )["buyBonusModeMultiplier"] == 60
