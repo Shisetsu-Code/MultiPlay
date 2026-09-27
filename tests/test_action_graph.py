@@ -427,3 +427,137 @@ def test_action_graph_keeps_purchase_variants_separate(tmp_path):
         "purchased_feature=freespin_buy",
         "purchased_feature=high_freespin_buy",
     }
+
+
+
+def test_action_graph_traces_event_manager_spin_to_hyperhive_play(tmp_path):
+    har = {
+        "log": {
+            "entries": [
+                {
+                    "request": {
+                        "method": "POST",
+                        "url": "https://game.example/api",
+                        "headers": [],
+                        "postData": {
+                            "mimeType": "application/json",
+                            "text": json.dumps(
+                                {
+                                    "jsonrpc": "2.0",
+                                    "method": "play",
+                                    "params": {
+                                        "token": "secret",
+                                        "req": {"bet": 200},
+                                    },
+                                }
+                            ),
+                        },
+                    },
+                    "response": {
+                        "status": 200,
+                        "headers": [],
+                        "content": {
+                            "mimeType": "application/json",
+                            "text": '{"result":{"final":true}}',
+                        },
+                    },
+                },
+                {
+                    "request": {
+                        "method": "GET",
+                        "url": "https://game.example/bundle.js",
+                        "headers": [],
+                    },
+                    "response": {
+                        "status": 200,
+                        "headers": [],
+                        "content": {
+                            "mimeType": "application/javascript",
+                            "text": (
+                                'class UI{init(){this.eventManager.addListener('
+                                '"start-btn-start",t=>{this.onSpinClick(t)})}'
+                                'onSpinClick(t){this.network.invoke("play",'
+                                '{token:this.network.token,req:{bet:200}})}}'
+                            ),
+                        },
+                    },
+                },
+            ]
+        }
+    }
+    path = tmp_path / "event-spin.har"
+    path.write_text(json.dumps(har), encoding="utf-8")
+
+    graph = build_action_graph(path)
+    route = next(item for item in graph["routes"] if item["semantic"] == "SPIN")
+
+    assert route["control"] == "start-btn-start"
+    assert route["handler"] == "onSpinClick"
+    assert route["status"] == "NETWORK_OBSERVED"
+    assert route["wire_markers"] == ["method=play"]
+
+
+def test_action_graph_does_not_promote_event_buy_without_feature(tmp_path):
+    har = {
+        "log": {
+            "entries": [
+                {
+                    "request": {
+                        "method": "POST",
+                        "url": "https://game.example/api",
+                        "headers": [],
+                        "postData": {
+                            "mimeType": "application/json",
+                            "text": json.dumps(
+                                {
+                                    "jsonrpc": "2.0",
+                                    "method": "play",
+                                    "params": {
+                                        "token": "secret",
+                                        "req": {"bet": 200},
+                                    },
+                                }
+                            ),
+                        },
+                    },
+                    "response": {
+                        "status": 200,
+                        "headers": [],
+                        "content": {
+                            "mimeType": "application/json",
+                            "text": '{"result":{"final":true}}',
+                        },
+                    },
+                },
+                {
+                    "request": {
+                        "method": "GET",
+                        "url": "https://game.example/bundle.js",
+                        "headers": [],
+                    },
+                    "response": {
+                        "status": 200,
+                        "headers": [],
+                        "content": {
+                            "mimeType": "application/javascript",
+                            "text": (
+                                'class UI{init(){this.eventManager.addListener('
+                                '"buy-bonus",t=>{this.onSpinClick(false,t)})}'
+                                'onSpinClick(t,e){this.network.invoke("play",'
+                                '{token:this.network.token,req:{bet:200}})}}'
+                            ),
+                        },
+                    },
+                },
+            ]
+        }
+    }
+    path = tmp_path / "event-buy.har"
+    path.write_text(json.dumps(har), encoding="utf-8")
+
+    graph = build_action_graph(path, include_all=True)
+    route = next(item for item in graph["routes"] if item["control"] == "buy-bonus")
+
+    assert route["semantic"] == "BUY_BONUS"
+    assert route["status"] != "NETWORK_OBSERVED"
+    assert route["replay_action_id"] == ""
