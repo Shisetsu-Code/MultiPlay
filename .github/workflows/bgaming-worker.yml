@@ -18,6 +18,7 @@ permissions:
 
 # pending rerun: purchase-level + api-version + math-mode
 # pending rerun: static freespin purchase handlers
+# plan from latest persisted worker state
 
 concurrency:
   group: bgaming-analyzer-worker
@@ -32,6 +33,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
+          ref: main
           fetch-depth: 0
       - uses: actions/setup-python@v5
         with:
@@ -129,6 +131,8 @@ jobs:
       SHARD_ID: ${{ matrix.shard }}
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: main
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
