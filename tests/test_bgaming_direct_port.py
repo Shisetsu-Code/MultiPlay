@@ -2,10 +2,12 @@ import json
 
 import pytest
 
-from multiplay.providers.bgaming.api_v2 import extract_api_v2_templates
+from multiplay.models import EvidenceBundle, ScriptEvidence
+from multiplay.providers.bgaming.api_v2 import ApiV2Template, extract_api_v2_templates
 from multiplay.providers.bgaming.direct_port import (
     BGamingDemoDirectSession,
     _api_v2_purchase_retry_payloads,
+    _infer_api_v2_purchase_level,
     _marker_map,
     _require_demo_intent,
 )
