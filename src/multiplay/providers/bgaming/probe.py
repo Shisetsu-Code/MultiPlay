@@ -280,12 +280,15 @@ def _resolve_demo(
             return first
 
     candidates = _demo_candidates(first.text, first.url)
-    for candidate in candidates:
+    expected = _public_game_slug(source) or _public_game_slug(first.url)
+    for candidate in _rank_demo_candidates(candidates, expected):
         try:
             result = session.get(candidate, timeout_s=timeout_s)
         except RuntimeError:
             continue
         if not _is_demo_url(result.url):
+            continue
+        if not _candidate_matches_public_game(result.url, expected):
             continue
         if _is_hyperhive_url(result.url):
             return result
@@ -319,6 +322,73 @@ def _demo_candidates(html: str, base_url: str) -> list[str]:
             values.append(candidate)
 
     return list(dict.fromkeys(values))
+
+
+def _public_game_slug(url: str) -> str:
+    parsed = urlsplit(str(url or ""))
+    host = (parsed.hostname or "").casefold()
+    if not (host == "bgaming.com" or host.endswith(".bgaming.com")):
+        return ""
+    parts = [part for part in parsed.path.split("/") if part]
+    lowered = [part.casefold() for part in parts]
+    if "games" not in lowered:
+        return ""
+    index = lowered.index("games")
+    return parts[index + 1] if index + 1 < len(parts) else ""
+
+
+def _demo_identifier(url: str) -> str:
+    parsed = urlsplit(str(url or ""))
+    parts = [part for part in parsed.path.split("/") if part]
+    lowered = [part.casefold() for part in parts]
+    for marker in ("play", "games"):
+        if marker not in lowered:
+            continue
+        index = lowered.index(marker)
+        if index + 1 < len(parts):
+            return parts[index + 1]
+    return ""
+
+
+def _identity_key(value: str) -> str:
+    return "".join(
+        char.casefold()
+        for char in str(value or "")
+        if char.isalnum()
+    )
+
+
+def _candidate_matches_public_game(url: str, expected_slug: str) -> bool:
+    expected = _identity_key(expected_slug)
+    if not expected:
+        return True
+    if _is_hyperhive_url(url):
+        return True
+    identifier = _identity_key(_demo_identifier(url))
+    if not identifier:
+        return False
+    return identifier == expected
+
+
+def _rank_demo_candidates(
+    candidates: list[str],
+    expected_slug: str,
+) -> list[str]:
+    expected = _identity_key(expected_slug)
+    if not expected:
+        return candidates
+
+    def rank(url: str) -> tuple[int, int]:
+        if _is_hyperhive_url(url):
+            return (1, 0)
+        identifier = _identity_key(_demo_identifier(url))
+        if identifier == expected:
+            return (0, 0)
+        if identifier:
+            return (2, 0)
+        return (3, 0)
+
+    return sorted(candidates, key=rank)
 
 
 def _allowed_source(url: str) -> bool:
