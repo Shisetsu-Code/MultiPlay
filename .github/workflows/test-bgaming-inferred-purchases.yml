@@ -1,0 +1,84 @@
+name: Test inferred BGaming API-v2 purchases
+
+on:
+  push:
+    branches: ["main"]
+    paths:
+      - ".github/workflows/test-bgaming-inferred-purchases.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  purchase:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - id: bone
+            url: https://demo.bgaming-network.com/play/BoneBonanza/FUN
+          - id: clover
+            url: https://demo.bgaming-network.com/play/CloverBonanza/FUN
+
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install --upgrade pip
+      - run: pip install -e ".[dev]"
+
+      - name: Validate fresh purchase
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          from multiplay.providers.bgaming.demo_spin import run_demo_base_spin
+          from multiplay.providers.bgaming.direct_port import BGamingDemoDirectSession
+
+          url = "${{ matrix.url }}"
+          seed = run_demo_base_spin(url, timeout_s=30)
+
+          entries = []
+          for item in seed.evidence.http:
+              entries.append(
+                  {
+                      "request": {
+                          "method": item.method,
+                          "url": item.url,
+                          "headers": [],
+                          "postData": {
+                              "mimeType": "application/json",
+                              "text": json.dumps(item.request_body),
+                          },
+                      },
+                      "response": {
+                          "status": item.response_status or 0,
+                          "headers": [],
+                          "content": {
+                              "mimeType": "application/json",
+                              "text": json.dumps(item.response_body),
+                          },
+                      },
+                  }
+              )
+
+          har = Path("seed.har")
+          har.write_text(json.dumps({"log": {"entries": entries}}), encoding="utf-8")
+
+          session = BGamingDemoDirectSession(
+              har_path=har,
+              url=url,
+              timeout_s=30,
+          )
+          session.open()
+          result = session.execute_inferred_api_v2_purchase(
+              ["purchased_feature=freespin_buy"]
+          )
+          print(json.dumps(result, indent=2, ensure_ascii=False))
+          if not result.get("success"):
+              raise SystemExit("purchase validation failed")
+          PY
