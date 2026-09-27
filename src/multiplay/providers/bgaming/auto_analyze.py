@@ -47,6 +47,25 @@ def analyze_bgaming_demo(
             timeout_s=timeout_s,
         )
 
+    if source_host == "bgaming.com" or source_host.endswith(".bgaming.com"):
+        resolved_host = (urlsplit(execution_url).hostname or "").casefold()
+        if resolved_host == "bgaming.com" or resolved_host.endswith(".bgaming.com"):
+            try:
+                public_probe = probe_bgaming_demo(
+                    requested_url,
+                    timeout_s=timeout_s,
+                )
+            except (OSError, RuntimeError, TypeError, ValueError) as exc:
+                return _write_unresolved_runtime_report(
+                    root,
+                    requested_url=requested_url,
+                    reason=(
+                        "no matching BGaming demo runtime could be resolved: "
+                        f"{type(exc).__name__}: {exc}"
+                    ),
+                )
+            execution_url = public_probe.metadata.launch_url
+
     raw_har = root / "browser.raw.har"
     shot = root / "initial.jpg" if screenshot else None
     capture_browser_evidence(
@@ -403,6 +422,66 @@ def analyze_bgaming_demo(
         for handler_raw_har in handler_raw_hars:
             handler_raw_har.unlink(missing_ok=True)
 
+    return report
+
+
+def _write_unresolved_runtime_report(
+    root: Path,
+    *,
+    requested_url: str,
+    reason: str,
+) -> dict[str, Any]:
+    contract_har = root / "contract.har"
+    _write_safe_har(
+        EvidenceBundle(
+            metadata={"source": "bgaming-auto-analysis-unresolved"}
+        ),
+        contract_har,
+    )
+    actions = {
+        "schema": "multiplay/action-graph/v1",
+        "source": str(contract_har),
+        "routes": [],
+        "endpoints": [],
+    }
+    (root / "actions.json").write_text(
+        json.dumps(actions, ensure_ascii=False, indent=2) + "\n",
+        encoding="utf-8",
+    )
+
+    report = {
+        "schema": "multiplay/bgaming-auto-analysis/v1",
+        "status": "PARTIAL_REQUIRES_REVIEW",
+        "runtime_status": "NO_RESOLVABLE_DEMO",
+        "url": _strip_query(requested_url),
+        "execution_url": "",
+        "family": "unresolved",
+        "enrichment": {
+            "attempted": False,
+            "success": False,
+            "kind": "",
+        },
+        "handler_probe": {
+            "attempted": False,
+            "success": False,
+            "route_id": "",
+            "route_ids": [],
+            "outcomes": [],
+            "results": [],
+        },
+        "blockers": [reason],
+        "contract_har": str(contract_har),
+        "screenshot": None,
+        "route_count": 0,
+        "direct_executable_count": 0,
+        "routes": [],
+        "direct_session": None,
+        "direct_session_error": reason,
+    }
+    (root / "analysis.json").write_text(
+        json.dumps(report, ensure_ascii=False, indent=2) + "\n",
+        encoding="utf-8",
+    )
     return report
 
 
