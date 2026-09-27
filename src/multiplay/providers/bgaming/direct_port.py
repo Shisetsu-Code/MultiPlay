@@ -376,6 +376,30 @@ class BGamingDemoDirectSession:
             headers=self.headers,
         )
         self.current_init = _json_object(result.text, "init")
+
+        if not is_legacy_init(self.current_init) and not isinstance(
+            self.current_init.get("options"),
+            dict,
+        ):
+            retry_payload = {
+                "command": "init",
+                "extra_data": {
+                    "round_series_id": self.round_series_id,
+                    "api_version": 2,
+                },
+            }
+            retry = self.http.post_json(
+                bootstrap.api,
+                retry_payload,
+                timeout_s=self.timeout_s,
+                headers=self.headers,
+                allow_http_error=True,
+            )
+            retry_data = _json_object(retry.text, "init")
+            if isinstance(retry_data.get("options"), dict):
+                result = retry
+                init_payload = retry_payload
+                self.current_init = retry_data
         if is_legacy_init(self.current_init):
             self.family = LEGACY_LINES
             wager, _count, _options = legacy_spin_options(self.current_init)
