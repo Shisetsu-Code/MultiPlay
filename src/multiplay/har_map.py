@@ -199,7 +199,7 @@ def build_har_map(path: str | Path) -> dict[str, Any]:
                 actions.extend(_javascript_controls(body, url))
                 actions.extend(_javascript_declared_buttons(body, url))
 
-    actions.extend(_observed_request_actions(endpoints))
+    actions.extend(_observed_request_actions(evidence, endpoints))
     actions = _dedupe_actions(actions)
 
     for action in actions:
@@ -571,31 +571,48 @@ def _javascript_controls(text: str, source: str) -> list[dict[str, Any]]:
     return rows
 
 
-def _observed_request_actions(endpoints: list[dict[str, Any]]) -> list[dict[str, Any]]:
+def _observed_request_actions(
+    evidence,
+    endpoints: list[dict[str, Any]],
+) -> list[dict[str, Any]]:
     rows: list[dict[str, Any]] = []
-    for endpoint in endpoints:
-        markers = endpoint.get("_wire_markers") or []
+    endpoint_ids = {
+        (item["method"], item["endpoint_template"]): item["endpoint_id"]
+        for item in endpoints
+    }
+    for exchange in evidence.http:
+        if not _is_protocol_endpoint(exchange.method, exchange.url):
+            continue
+        if (
+            exchange.response_status is not None
+            and not 200 <= exchange.response_status < 400
+        ):
+            continue
+        markers = sorted(_wire_markers_value(exchange.request_body))
         if not markers:
             continue
-
+        endpoint = sanitize_endpoint_url(exchange.url)
+        endpoint_id = endpoint_ids.get((exchange.method, endpoint), "")
         primary = next(
             (
                 marker
                 for marker in markers
-                if marker.startswith(("command=", "purchased_feature=", "action=", "method="))
+                if marker.startswith(
+                    ("command=", "purchased_feature=", "action=", "method=")
+                )
             ),
             "",
         )
-        label = primary.split("=", 1)[1] if "=" in primary else endpoint["endpoint_template"]
+        label = primary.split("=", 1)[1] if "=" in primary else endpoint
         rows.append(
             {
                 "kind": "observed_request",
-                "source": "HAR network",
+                "source": exchange.evidence_id,
                 "event": "request",
                 "label": label,
                 "handler_hint": "",
-                "wire_markers": list(markers),
-                "endpoint_ids": [endpoint["endpoint_id"]],
+                "wire_markers": markers,
+                "endpoint_ids": [endpoint_id] if endpoint_id else [],
                 "confidence": "OBSERVED",
             }
         )
