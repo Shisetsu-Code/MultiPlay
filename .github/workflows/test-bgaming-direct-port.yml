@@ -172,6 +172,14 @@ jobs:
           )
           result = session.execute(selected.action_id)
 
+          inferred = None
+          if case == "hyperhive":
+              inferred = session.execute_inferred_hyperhive(
+                  ["method=play", "purchased_feature=buy_bonus"]
+              )
+              if not inferred.get("success"):
+                  raise SystemExit("inferred HyperHive replay failed")
+
           print(
               json.dumps(
                   {
@@ -180,6 +188,7 @@ jobs:
                       "action": selected.to_dict(),
                       "result_status": result["status"],
                       "request": result["request"],
+                      "inferred": inferred,
                   },
                   indent=2,
               )
