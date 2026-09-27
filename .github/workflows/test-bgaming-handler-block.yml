@@ -19,8 +19,10 @@ jobs:
       matrix:
         include:
           - id: spin
+            control: "spin-button"
             handler: "currentScene.spin\x601"
           - id: buy
+            control: "buy-bonus-popup-buy"
             handler: "all.buy-features.buyBonusClick\x60bonus_buy"
 
     steps:
@@ -44,6 +46,7 @@ jobs:
 
           route = {
               "route_id": "probe-${{ matrix.id }}",
+              "control": "${{ matrix.control }}",
               "handler": "${{ matrix.handler }}",
           }
           result = probe_bgaming_handlers(
