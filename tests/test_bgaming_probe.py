@@ -131,3 +131,52 @@ def test_hyperhive_probe_classifies_without_guessing_init_wire(monkeypatch):
         reason == "runtime:hyperhive-jsonrpc"
         for reason in analysis.provider_decision.reasons
     )
+
+
+
+def test_public_detail_rejects_mismatched_classic_demo(monkeypatch):
+    public = probe_module._HttpResult(
+        200,
+        "https://bgaming.com/games/sweet-royale-megaways",
+        (
+            '<a href="https://demo.bgaming-network.com/games/'
+            'MagicMummyMegaways/FUN">Play Demo</a>'
+        ),
+    )
+    wrong = probe_module._HttpResult(
+        200,
+        "https://demo.bgaming-network.com/games/MagicMummyMegaways/FUN",
+        """
+        <script>
+          window.__OPTIONS__ = {
+            "api":"https://demo.bgaming-network.com/api/MagicMummyMegaways/1/session",
+            "identifier":"MagicMummyMegaways",
+            "csrfTokenHeaderName":"X-CSRF",
+            "csrfTokenHeaderValue":"secret"
+          };
+        </script>
+        """,
+    )
+    session = FakeSession([public, wrong])
+    monkeypatch.setattr(probe_module, "_HttpSession", lambda: session)
+
+    try:
+        probe_bgaming_demo(
+            "https://bgaming.com/games/sweet-royale-megaways"
+        )
+    except ValueError as exc:
+        assert "could not be resolved" in str(exc)
+    else:
+        raise AssertionError("mismatched public demo must be rejected")
+
+
+def test_demo_candidate_ranking_prefers_matching_public_slug():
+    candidates = [
+        "https://demo.bgaming-network.com/games/MagicMummyMegaways/FUN",
+        "https://demo.bgaming-network.com/play/SweetRoyaleMegaways/FUN",
+    ]
+    ranked = probe_module._rank_demo_candidates(
+        candidates,
+        "sweet-royale-megaways",
+    )
+    assert ranked[0].endswith("/play/SweetRoyaleMegaways/FUN")
