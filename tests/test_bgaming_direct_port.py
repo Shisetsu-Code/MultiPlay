@@ -104,5 +104,6 @@ def test_direct_session_maps_executable_spin_route(tmp_path):
         url="https://demo.bgaming-network.com/play/Foo/FUN",
     )
     route = next(item for item in session.routes() if item["semantic"] == "SPIN")
-    assert route["executable"] is True
     assert route["replay_action_id"]
+    assert route["executable"] is False
+    assert "not executable in this session" in route["execution_reason"]
