@@ -362,13 +362,19 @@ def _resolve_control(
     markers.update(_handler_wire_markers(semantic, handler))
     markers = _relevant_markers(semantic, markers)
 
+    strong_spin = (
+        semantic == "SPIN"
+        and bool(re.search(r"spin", f"{label} {handler}", re.IGNORECASE))
+    )
     observed_match = _match_observed(
         label=label,
         handler=handler,
         markers=markers,
         observed=observed,
-        allow_semantic=bool(markers or best.get("protocol_hint"))
-        and not _ui_opener(handler, best.get("chain") or []),
+        allow_semantic=(
+            bool(markers or best.get("protocol_hint") or strong_spin)
+            and not _ui_opener(handler, best.get("chain") or [])
+        ),
     )
     if observed_match is not None:
         markers.update(str(item) for item in observed_match.get("wire_markers") or [])
