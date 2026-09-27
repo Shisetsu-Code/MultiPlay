@@ -1,28 +1,28 @@
 {
   "schema": "multiplay/bgaming-worker-review/v1",
-  "run_id": "36327590196",
-  "generated_at": "2026-09-27T15:12:27.480538+00:00",
+  "run_id": "36328707801",
+  "generated_at": "2026-09-27T15:16:03.861032+00:00",
   "summary": {
     "schema": "multiplay/bgaming-worker-summary/v1",
-    "run_id": "36327590196",
-    "generated_at": "2026-09-27T15:12:27.480538+00:00",
-    "planned": 86,
-    "processed": 86,
+    "run_id": "36328707801",
+    "generated_at": "2026-09-27T15:16:03.861032+00:00",
+    "planned": 47,
+    "processed": 47,
     "status_counts": {
-      "COMPLETE": 39,
-      "NO_ROUTES": 3,
-      "PARTIAL": 44
+      "COMPLETE": 4,
+      "NO_ROUTES": 2,
+      "PARTIAL": 41
     },
     "family_counts": {
-      "api-v2": 58,
+      "api-v2": 19,
       "hyperhive-jsonrpc": 28
     },
     "unresolved_semantic_counts": {
-      "BUY_BONUS": 29
+      "BUY_BONUS": 29,
+      "SPIN": 1
     },
-    "complete": 39,
-    "needs_review": 47,
-    "shards_recovered": 8
+    "complete": 4,
+    "needs_review": 43
   },
   "games": [
     {
@@ -64,25 +64,6 @@
       "error": ""
     },
     {
-      "slug": "sweet-samurai",
-      "name": "Sweet Samurai",
-      "url": "https://demo.bgaming-network.com/play/SweetSamurai/FUN",
-      "availability": "DEMO",
-      "returncode": 0,
-      "status": "NO_ROUTES",
-      "family": "hyperhive-jsonrpc",
-      "route_count": 0,
-      "direct_executable_count": 0,
-      "unresolved_network_count": 0,
-      "blockers": [
-        "HyperHive base-play enrichment failed: ValueError: BGaming HyperHive client scripts exposed no usable wire contract."
-      ],
-      "direct_actions": [],
-      "unresolved_actions": [],
-      "switchable_children": [],
-      "error": ""
-    },
-    {
       "slug": "big-atlantis-frenzy",
       "name": "Big Atlantis Frenzy",
       "url": "https://demo.bgaming-network.com/play/BigAtlantisFrenzy/FUN?server=demo",
@@ -93,9 +74,7 @@
       "route_count": 8,
       "direct_executable_count": 0,
       "unresolved_network_count": 1,
-      "blockers": [
-        "handler probe did not produce a matching successful request"
-      ],
+      "blockers": [],
       "direct_actions": [],
       "unresolved_actions": [
         {
@@ -123,9 +102,7 @@
       "route_count": 6,
       "direct_executable_count": 0,
       "unresolved_network_count": 1,
-      "blockers": [
-        "handler probe did not produce a matching successful request"
-      ],
+      "blockers": [],
       "direct_actions": [],
       "unresolved_actions": [
         {
@@ -154,9 +131,7 @@
       "route_count": 4,
       "direct_executable_count": 0,
       "unresolved_network_count": 0,
-      "blockers": [
-        "handler probe did not produce a matching successful request"
-      ],
+      "blockers": [],
       "direct_actions": [],
       "unresolved_actions": [],
       "switchable_children": [],
@@ -231,9 +206,7 @@
       "route_count": 6,
       "direct_executable_count": 0,
       "unresolved_network_count": 2,
-      "blockers": [
-        "handler probe did not produce a matching successful request"
-      ],
+      "blockers": [],
       "direct_actions": [],
       "unresolved_actions": [
         {
@@ -273,9 +246,7 @@
       "route_count": 6,
       "direct_executable_count": 0,
       "unresolved_network_count": 2,
-      "blockers": [
-        "handler probe did not produce a matching successful request"
-      ],
+      "blockers": [],
       "direct_actions": [],
       "unresolved_actions": [
         {
@@ -342,9 +313,7 @@
       "route_count": 8,
       "direct_executable_count": 0,
       "unresolved_network_count": 3,
-      "blockers": [
-        "handler probe did not produce a matching successful request"
-      ],
+      "blockers": [],
       "direct_actions": [],
       "unresolved_actions": [
         {
@@ -395,9 +364,7 @@
       "route_count": 6,
       "direct_executable_count": 0,
       "unresolved_network_count": 1,
-      "blockers": [
-        "handler probe did not produce a matching successful request"
-      ],
+      "blockers": [],
       "direct_actions": [],
       "unresolved_actions": [
         {
@@ -500,9 +467,7 @@
       "route_count": 6,
       "direct_executable_count": 0,
       "unresolved_network_count": 1,
-      "blockers": [
-        "handler probe did not produce a matching successful request"
-      ],
+      "blockers": [],
       "direct_actions": [],
       "unresolved_actions": [
         {
@@ -529,9 +494,7 @@
       "route_count": 10,
       "direct_executable_count": 0,
       "unresolved_network_count": 5,
-      "blockers": [
-        "handler probe did not produce a matching successful request"
-      ],
+      "blockers": [],
       "direct_actions": [],
       "unresolved_actions": [
         {
@@ -668,9 +631,7 @@
       "route_count": 4,
       "direct_executable_count": 0,
       "unresolved_network_count": 0,
-      "blockers": [
-        "handler probe did not produce a matching successful request"
-      ],
+      "blockers": [],
       "direct_actions": [],
       "unresolved_actions": [],
       "switchable_children": [],
@@ -791,9 +752,7 @@
       "route_count": 4,
       "direct_executable_count": 0,
       "unresolved_network_count": 0,
-      "blockers": [
-        "handler probe did not produce a matching successful request"
-      ],
+      "blockers": [],
       "direct_actions": [],
       "unresolved_actions": [],
       "switchable_children": [],
@@ -1208,33 +1167,6 @@
       "error": ""
     },
     {
-      "slug": "recycle-riches",
-      "name": "Recycle Riches",
-      "url": "https://demo.bgaming-network.com/play/RecycleRiches/FUN",
-      "availability": "DEMO",
-      "returncode": 0,
-      "status": "PARTIAL",
-      "family": "hyperhive-jsonrpc",
-      "route_count": 1,
-      "direct_executable_count": 1,
-      "unresolved_network_count": 0,
-      "blockers": [],
-      "direct_actions": [
-        {
-          "semantic": "SPIN",
-          "control": "protocol:play",
-          "handler": "",
-          "wire": [
-            "method=play"
-          ],
-          "role": "protocol_action"
-        }
-      ],
-      "unresolved_actions": [],
-      "switchable_children": [],
-      "error": ""
-    },
-    {
       "slug": "red-hot-chilli-chickens",
       "name": "Red Hot Chilli Chickens",
       "url": "https://demo.bgaming-network.com/play/RedHotChilliChickens/FUN",
@@ -1322,29 +1254,31 @@
       "error": ""
     },
     {
-      "slug": "sugar-mix",
-      "name": "Sugar Mix",
-      "url": "https://demo.bgaming-network.com/play/SugarMix/FUN",
+      "slug": "sweet-samurai",
+      "name": "Sweet Samurai",
+      "url": "https://demo.bgaming-network.com/play/SweetSamurai/FUN",
       "availability": "DEMO",
       "returncode": 0,
       "status": "PARTIAL",
       "family": "hyperhive-jsonrpc",
       "route_count": 1,
-      "direct_executable_count": 1,
-      "unresolved_network_count": 0,
-      "blockers": [],
-      "direct_actions": [
+      "direct_executable_count": 0,
+      "unresolved_network_count": 1,
+      "blockers": [
+        "HyperHive base-play enrichment failed: ValueError: BGaming HyperHive client scripts exposed no usable wire contract."
+      ],
+      "direct_actions": [],
+      "unresolved_actions": [
         {
           "semantic": "SPIN",
-          "control": "protocol:play",
-          "handler": "",
+          "control": "spin-button",
+          "handler": "onPressStart",
+          "status": "NETWORK_INFERRED",
           "wire": [
             "method=play"
-          ],
-          "role": "protocol_action"
+          ]
         }
       ],
-      "unresolved_actions": [],
       "switchable_children": [],
       "error": ""
     },
@@ -1405,63 +1339,9 @@
       "error": ""
     },
     {
-      "slug": "treasure-explorer",
-      "name": "Treasure Explorer",
-      "url": "https://demo.bgaming-network.com/play/TreasureExplorer/FUN",
-      "availability": "DEMO",
-      "returncode": 0,
-      "status": "PARTIAL",
-      "family": "hyperhive-jsonrpc",
-      "route_count": 1,
-      "direct_executable_count": 1,
-      "unresolved_network_count": 0,
-      "blockers": [],
-      "direct_actions": [
-        {
-          "semantic": "SPIN",
-          "control": "protocol:play",
-          "handler": "",
-          "wire": [
-            "method=play"
-          ],
-          "role": "protocol_action"
-        }
-      ],
-      "unresolved_actions": [],
-      "switchable_children": [],
-      "error": ""
-    },
-    {
       "slug": "wild-clusters",
       "name": "Wild Clusters",
       "url": "https://demo.bgaming-network.com/play/WildClustersP/FUN",
-      "availability": "DEMO",
-      "returncode": 0,
-      "status": "PARTIAL",
-      "family": "hyperhive-jsonrpc",
-      "route_count": 1,
-      "direct_executable_count": 1,
-      "unresolved_network_count": 0,
-      "blockers": [],
-      "direct_actions": [
-        {
-          "semantic": "SPIN",
-          "control": "protocol:play",
-          "handler": "",
-          "wire": [
-            "method=play"
-          ],
-          "role": "protocol_action"
-        }
-      ],
-      "unresolved_actions": [],
-      "switchable_children": [],
-      "error": ""
-    },
-    {
-      "slug": "yommi-rush",
-      "name": "Yommi Rush",
-      "url": "https://demo.bgaming-network.com/play/YommiRush/FUN",
       "availability": "DEMO",
       "returncode": 0,
       "status": "PARTIAL",
