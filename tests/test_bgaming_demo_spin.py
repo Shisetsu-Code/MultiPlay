@@ -1,4 +1,5 @@
 from multiplay.providers.bgaming.demo_spin import (
+    api_v2_spin_retry_options,
     legacy_spin_options,
     resolve_base_bet,
 )
@@ -28,3 +29,30 @@ def test_legacy_spin_uses_options_bets_for_every_line():
     assert wager == 2.0
     assert count == 3
     assert options == {"bets": {"0": 2, "1": 2, "2": 2}}
+
+
+
+def test_api_v2_spin_retry_options_uses_init_layout_rows_before_mode():
+    retries = api_v2_spin_retry_options(
+        {
+            "options": {
+                "layout": {"reels": 5, "rows": 5},
+                "default_bet": 30,
+            }
+        },
+        {"bet": 30},
+    )
+
+    assert retries == [
+        {"bet": 30, "rows": 5},
+        {"bet": 30, "mode": "0"},
+        {"bet": 30, "rows": 5, "mode": "0"},
+    ]
+
+
+def test_api_v2_spin_retry_options_does_not_invent_rows():
+    retries = api_v2_spin_retry_options(
+        {"options": {"default_bet": 20}},
+        {"bet": 20},
+    )
+    assert retries == [{"bet": 20, "mode": "0"}]
