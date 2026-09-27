@@ -268,6 +268,8 @@ def _write_safe_har(bundle: EvidenceBundle, path: Path) -> None:
     entries: list[dict[str, Any]] = []
 
     for exchange in bundle.http:
+        if not _keep_contract_exchange(exchange):
+            continue
         entries.append(
             {
                 "request": {
@@ -350,3 +352,28 @@ def _strip_query(url: str) -> str:
 
 def _safe_contract_url(url: str) -> str:
     return sanitize_session_url(sanitize_endpoint_url(str(url or "")))
+
+
+
+def _keep_contract_exchange(exchange: HttpExchange) -> bool:
+    parts = urlsplit(str(exchange.url or ""))
+    host = (parts.hostname or "").casefold()
+    if not (
+        host == "bgaming-network.com"
+        or host.endswith(".bgaming-network.com")
+    ):
+        return False
+
+    method = str(exchange.method or "").upper()
+    if method not in {"GET", "HEAD", "OPTIONS"}:
+        return True
+
+    path = parts.path.casefold()
+    return (
+        "/api/" in path
+        or path.endswith("/api")
+        or "/lobby/" in path
+        or "/launch" in path
+        or path.rstrip("/").endswith("/hyperhive")
+        or "/games/" in path
+    )
