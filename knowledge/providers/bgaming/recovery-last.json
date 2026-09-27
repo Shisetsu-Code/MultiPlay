@@ -1,7 +1,7 @@
 {
   "schema": "multiplay/bgaming-recovery-test/v1",
-  "run_id": "36337620286",
-  "generated_at": "2026-09-27T17:40:59.216486+00:00",
+  "run_id": "36338132547",
+  "generated_at": "2026-09-27T17:47:33.030469+00:00",
   "games": [
     {
       "id": "bgaming-recovery-big-atlantis-frenzy",
@@ -47,7 +47,7 @@
                 "purchased_feature": "freespin_buy"
               },
               "extra_data": {
-                "round_series_id": 1790530699908
+                "round_series_id": 1790531216133
               }
             }
           }
@@ -151,7 +151,7 @@
                 "purchased_feature_level": "4"
               },
               "extra_data": {
-                "round_series_id": 1790530704947
+                "round_series_id": 1790531206196
               }
             }
           }
@@ -237,7 +237,7 @@
                 "purchased_feature_level": "1"
               },
               "extra_data": {
-                "round_series_id": 1790530698789
+                "round_series_id": 1790531207371
               }
             }
           },
@@ -258,7 +258,7 @@
                 "purchased_feature_level": "0"
               },
               "extra_data": {
-                "round_series_id": 1790530701023
+                "round_series_id": 1790531210150
               }
             }
           },
@@ -279,7 +279,7 @@
                 "purchased_feature_level": "2"
               },
               "extra_data": {
-                "round_series_id": 1790530703216
+                "round_series_id": 1790531212850
               }
             }
           }
@@ -383,14 +383,49 @@
         }
       },
       "direct_executable_count": 0,
-      "blockers": [],
+      "blockers": [
+        "handler probe did not produce a matching successful request"
+      ],
       "handler_probe": {
-        "attempted": false,
+        "attempted": true,
         "success": false,
-        "route_id": "",
-        "route_ids": [],
-        "outcomes": [],
+        "route_id": "RA1DC5206",
+        "route_ids": [
+          "RA1DC5206"
+        ],
+        "outcomes": [
+          {
+            "route_id": "RA1DC5206",
+            "handler": "onSpinClicked",
+            "called": false,
+            "resolved_path": "",
+            "frame_url": "",
+            "request_start": 0,
+            "request_end": 0,
+            "error": "not found"
+          }
+        ],
         "results": [
+          {
+            "route_id": "RA1DC5206",
+            "semantic": "SPIN",
+            "control": "spin-button",
+            "handler": "onSpinClicked",
+            "success": false,
+            "outcomes": [
+              {
+                "route_id": "RA1DC5206",
+                "handler": "onSpinClicked",
+                "called": false,
+                "resolved_path": "",
+                "frame_url": "",
+                "request_start": 0,
+                "request_end": 0,
+                "error": "not found"
+              }
+            ],
+            "request_count": 0
+          },
           {
             "route_id": "RA1DC5206",
             "semantic": "SPIN",
@@ -401,7 +436,7 @@
             "outcomes": [],
             "status": 200,
             "request": {
-              "id": "6746c1d8-cc7b-4cd5-ba6c-ea619242a0dc",
+              "id": "4964a83a-6a30-4e94-bf56-84213c8612a5",
               "jsonrpc": "2.0",
               "method": "play",
               "params": {
@@ -466,7 +501,7 @@
           }
         }
       },
-      "direct_executable_count": 3,
+      "direct_executable_count": 1,
       "blockers": [],
       "handler_probe": {
         "attempted": false,
@@ -485,7 +520,7 @@
             "outcomes": [],
             "status": 200,
             "request": {
-              "id": 0,
+              "id": "4f0544cb-77fb-4fa0-9936-e1e44f8e6859",
               "jsonrpc": "2.0",
               "method": "play",
               "params": {
@@ -511,7 +546,7 @@
             "outcomes": [],
             "status": 200,
             "request": {
-              "id": 0,
+              "id": "24e44f6f-067b-44e0-a3f0-b806f0f7172a",
               "jsonrpc": "2.0",
               "method": "play",
               "params": {
@@ -539,8 +574,21 @@
             "method=play",
             "purchased_feature=buy_bonus"
           ],
-          "direct_executable": true,
-          "direct_reason": ""
+          "direct_executable": false,
+          "direct_reason": "matched replay shape is not executable in this session"
+        },
+        {
+          "semantic": "BUY_BONUS",
+          "status": "NETWORK_OBSERVED",
+          "control": "protocol:play",
+          "handler": "",
+          "wire_markers": [
+            "bet_type=default",
+            "method=play",
+            "purchased_feature=buy_bonus"
+          ],
+          "direct_executable": false,
+          "direct_reason": "matched replay shape is not executable in this session"
         },
         {
           "semantic": "SPIN",
@@ -552,8 +600,8 @@
             "method=play",
             "purchased_feature=buy_bonus"
           ],
-          "direct_executable": true,
-          "direct_reason": ""
+          "direct_executable": false,
+          "direct_reason": "matched replay shape is not executable in this session"
         },
         {
           "semantic": "SPIN",
@@ -864,14 +912,49 @@
         }
       },
       "direct_executable_count": 0,
-      "blockers": [],
+      "blockers": [
+        "handler probe did not produce a matching successful request"
+      ],
       "handler_probe": {
-        "attempted": false,
+        "attempted": true,
         "success": false,
-        "route_id": "",
-        "route_ids": [],
-        "outcomes": [],
+        "route_id": "RA1DC5206",
+        "route_ids": [
+          "RA1DC5206"
+        ],
+        "outcomes": [
+          {
+            "route_id": "RA1DC5206",
+            "handler": "onSpinClicked",
+            "called": false,
+            "resolved_path": "",
+            "frame_url": "",
+            "request_start": 0,
+            "request_end": 0,
+            "error": "not found"
+          }
+        ],
         "results": [
+          {
+            "route_id": "RA1DC5206",
+            "semantic": "SPIN",
+            "control": "spin-button",
+            "handler": "onSpinClicked",
+            "success": false,
+            "outcomes": [
+              {
+                "route_id": "RA1DC5206",
+                "handler": "onSpinClicked",
+                "called": false,
+                "resolved_path": "",
+                "frame_url": "",
+                "request_start": 0,
+                "request_end": 0,
+                "error": "not found"
+              }
+            ],
+            "request_count": 0
+          },
           {
             "route_id": "RA1DC5206",
             "semantic": "SPIN",
@@ -882,7 +965,7 @@
             "outcomes": [],
             "status": 200,
             "request": {
-              "id": "4ab57047-1a8b-4021-a71e-230c07faf60e",
+              "id": "cc1781b1-45d5-4b1a-a67f-9df3f2ad9869",
               "jsonrpc": "2.0",
               "method": "play",
               "params": {
@@ -948,14 +1031,49 @@
         }
       },
       "direct_executable_count": 0,
-      "blockers": [],
+      "blockers": [
+        "handler probe did not produce a matching successful request"
+      ],
       "handler_probe": {
-        "attempted": false,
+        "attempted": true,
         "success": false,
-        "route_id": "",
-        "route_ids": [],
-        "outcomes": [],
+        "route_id": "R47B03ED2",
+        "route_ids": [
+          "R47B03ED2"
+        ],
+        "outcomes": [
+          {
+            "route_id": "R47B03ED2",
+            "handler": "onActionButtonClick",
+            "called": false,
+            "resolved_path": "",
+            "frame_url": "",
+            "request_start": 0,
+            "request_end": 0,
+            "error": "not found"
+          }
+        ],
         "results": [
+          {
+            "route_id": "R47B03ED2",
+            "semantic": "SPIN",
+            "control": "spin-button",
+            "handler": "onActionButtonClick",
+            "success": false,
+            "outcomes": [
+              {
+                "route_id": "R47B03ED2",
+                "handler": "onActionButtonClick",
+                "called": false,
+                "resolved_path": "",
+                "frame_url": "",
+                "request_start": 0,
+                "request_end": 0,
+                "error": "not found"
+              }
+            ],
+            "request_count": 0
+          },
           {
             "route_id": "R47B03ED2",
             "semantic": "SPIN",
@@ -966,7 +1084,7 @@
             "outcomes": [],
             "status": 200,
             "request": {
-              "id": "0d189c64-bf35-4f6d-9f17-c597114fcec6",
+              "id": "7d97f67c-9152-4655-9d1f-a36e7f59af1d",
               "jsonrpc": "2.0",
               "method": "play",
               "params": {
