@@ -5,6 +5,7 @@ from multiplay.models import EvidenceBundle, HttpExchange, ScriptEvidence
 from multiplay.providers.bgaming.auto_analyze import (
     _merge_evidence,
     _require_runtime_identity,
+    _select_base_spin_browser_fallback,
     _write_safe_har,
 )
 
@@ -153,3 +154,31 @@ def test_public_game_without_matching_demo_returns_partial(
     assert (tmp_path / "analysis.json").exists()
     assert (tmp_path / "actions.json").exists()
     assert (tmp_path / "contract.har").exists()
+
+
+
+def test_select_base_spin_browser_fallback_uses_explicit_client_control():
+    routes = [
+        {
+            "route_id": "bonus",
+            "semantic": "BUY_BONUS",
+            "status": "NETWORK_INFERRED",
+            "interface_role": "network_action",
+            "control": "buy-btn",
+            "handler": "currentScene.buyBonusClick\u00602",
+        },
+        {
+            "route_id": "spin",
+            "semantic": "SPIN",
+            "status": "CLIENT_OR_UNKNOWN",
+            "interface_role": "client_control",
+            "control": "spin-button",
+            "handler": "currentScene.spin\u00601",
+            "confidence": "HIGH",
+        },
+    ]
+
+    selected = _select_base_spin_browser_fallback(routes)
+
+    assert selected is not None
+    assert selected["route_id"] == "spin"
