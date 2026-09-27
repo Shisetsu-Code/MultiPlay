@@ -142,8 +142,9 @@ def run_demo_base_spin(
 
     # Retry only after a failed API-v2 base spin. Candidate fields are
     # derived from the init contract, never from a per-game hardcode.
+    retry_option_sets = api_v2_spin_retry_options(init_data, spin_options)
     if family == API_V2 and not 200 <= spin.status < 400:
-        for retry_options in api_v2_spin_retry_options(init_data, spin_options):
+        for retry_options in retry_option_sets:
             retry_payload = {
                 "command": "spin",
                 "options": retry_options,
@@ -162,6 +163,34 @@ def run_demo_base_spin(
                 spin = retry_spin
                 spin_data = retry_data
                 break
+
+    # Provably-fair API-v2 clients add a fresh client_seed on the real
+    # playGame path. Only retry this shape after ordinary API-v2 probes fail.
+    if family == API_V2 and not 200 <= spin.status < 400:
+        fair_extra = api_v2_provable_fair_extra_data(
+            getattr(bootstrap, "raw", None),
+            spin_extra,
+        )
+        if fair_extra is not None:
+            for retry_options in [spin_options, *retry_option_sets]:
+                retry_payload = {
+                    "command": "spin",
+                    "options": retry_options,
+                    "extra_data": dict(fair_extra),
+                }
+                retry_spin = session.post_json(
+                    bootstrap.api,
+                    retry_payload,
+                    timeout_s=timeout_s,
+                    headers=common_headers,
+                    allow_http_error=True,
+                )
+                retry_data = _json_value(retry_spin.text)
+                if 200 <= retry_spin.status < 400:
+                    spin_payload = retry_payload
+                    spin = retry_spin
+                    spin_data = retry_data
+                    break
 
     safe_api = sanitize_session_url(bootstrap.api)
     evidence = EvidenceBundle(
@@ -217,6 +246,28 @@ def run_demo_base_spin(
             spin_status=spin.status,
         ),
     )
+
+
+def api_v2_provable_fair_extra_data(
+    bootstrap_options: Any,
+    base_extra: dict[str, Any],
+    *,
+    client_seed: int | None = None,
+) -> dict[str, Any] | None:
+    if not isinstance(bootstrap_options, dict):
+        return None
+    fair = bootstrap_options.get("provable_fair")
+    if not isinstance(fair, dict) or not fair:
+        return None
+
+    seed = (
+        secrets.randbelow(100000)
+        if client_seed is None
+        else int(client_seed)
+    )
+    out = dict(base_extra)
+    out["client_seed"] = seed
+    return out
 
 
 def api_v2_spin_retry_options(
