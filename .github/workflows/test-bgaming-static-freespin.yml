@@ -75,6 +75,12 @@ jobs:
             url: https://demo.bgaming-network.com/play/RocketEruptionTripleBlast/FUN
           - id: joker-vs-joker
             url: https://demo.bgaming-network.com/play/JokerVsJoker/FUN
+          - id: hot-rocket-5x-3x-2x
+            url: https://demo.bgaming-network.com/play/HotRocket532/FUN
+          - id: godfather-3-pillars
+            url: https://demo.bgaming-network.com/play/TheGodfather3PillarsOfPower/FUN
+          - id: maneki-88-fortunes
+            url: https://demo.bgaming-network.com/play/Maneki88Fortunes/FUN?server=demo
 
     steps:
       - uses: actions/checkout@v4
