@@ -215,28 +215,60 @@ def resolve_hyperhive_fe_exponent(init_result: dict[str, Any]) -> int:
 
 def _play_request_window(text: str) -> str:
     source = text or ""
-    candidates: list[str] = []
+    candidates: list[tuple[str, str]] = []
+
+    # Keep method/invoke candidates tight enough that adjacent bonus/wheel
+    # requests do not contaminate the normal-spin profile.
     for match in re.finditer(
-        r'(?:\.invoke\(["\']play["\']|\bmethod:["\']play["\']|'
-        r'\.action\(\{[^{}]{0,300}\bstate_lock\s*:)',
+        r'(?:\\.invoke\\(["\\\']play["\\\']|\\bmethod\\s*:\\s*["\\\']play["\\\'])',
+        source,
+    ):
+        start = max(0, match.start() - 500)
+        end = min(len(source), match.start() + 2600)
+        window = source[start:end]
+        if re.search(r'\\breq\\s*:', window) or ".req." in window:
+            candidates.append(("play", window))
+
+    # Intercom-style clients materialize req in a variable before action().
+    for match in re.finditer(
+        r'\\.action\\(\\{[^{}]{0,300}\\bstate_lock\\s*:',
         source,
     ):
         start = max(0, match.start() - 1600)
-        end = min(len(source), match.end() + 2600)
+        end = min(len(source), match.start() + 2600)
         window = source[start:end]
-        if re.search(r'\breq\s*:', window) or ".req." in window:
-            candidates.append(window)
+        if re.search(r'\\breq\\s*:', window) or ".req." in window:
+            candidates.append(("action", window))
+
     if not candidates:
         return ""
-    return max(candidates, key=lambda item: (
-        int("purchased_feature" in item)
-        + int("bet_type" in item)
-        + int("balance" in item)
-        + int("fe_exponent" in item)
-        + int("buyBonusModeMultiplier" in item),
-        len(item),
-    ))
 
+    def rank(item: tuple[str, str]) -> tuple[int, int]:
+        _kind, window = item
+        score = 0
+        prefix = window[:900]
+
+        if re.search(r'(?:^|[,;{])play\\s*:\\s*(?:async)?', prefix):
+            score += 30
+        if re.search(r'\\baction\\s*:\\s*["\\\']spin["\\\']', window):
+            score += 20
+        if re.search(r'\\bbet_type\\s*:', window):
+            score += 3
+        if "purchased_feature" not in window:
+            score += 8
+        if _req_field_is_conditional_spread(window, "purchased_feature"):
+            score += 12
+        if "formattedRequest.params" in window:
+            score += 6
+        if re.search(
+            r'\\baction\\s*:\\s*["\\\'](?:bonus|wheel|collect)["\\\']',
+            window,
+        ):
+            score -= 15
+
+        return (score, -len(window))
+
+    return max(candidates, key=rank)[1]
 
 def _play_req_action_present(text: str) -> bool:
     """Detect req.action only inside a play payload, never from init."""
