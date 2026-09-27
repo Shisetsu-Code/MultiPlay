@@ -1,8 +1,111 @@
 {
   "schema": "multiplay/bgaming-recovery-test/v1",
-  "run_id": "36332183395",
-  "generated_at": "2026-09-27T16:10:55.302715+00:00",
+  "run_id": "36332254400",
+  "generated_at": "2026-09-27T16:12:28.341185+00:00",
   "games": [
+    {
+      "id": "bgaming-recovery-big-atlantis-frenzy",
+      "family": "api-v2",
+      "enrichment": {
+        "attempted": true,
+        "success": true,
+        "kind": "base-spin",
+        "metadata": {
+          "requested_url": "https://demo.bgaming-network.com/play/BigAtlantisFrenzy/FUN",
+          "launch_url": "https://demo.bgaming-network.com/games/BigAtlantisFrenzy/FUN",
+          "identifier": "BigAtlantisFrenzy",
+          "family": "api-v2",
+          "wager": 30.0,
+          "line_count": 0,
+          "init_status": 200,
+          "spin_status": 200
+        }
+      },
+      "direct_executable_count": 2,
+      "blockers": [],
+      "handler_probe": {
+        "attempted": false,
+        "success": true,
+        "route_id": "",
+        "route_ids": [],
+        "outcomes": [],
+        "results": [
+          {
+            "route_id": "R18088DBE",
+            "semantic": "BUY_BONUS",
+            "control": "buy-bonus-popup-buy",
+            "handler": "all.buy-features.buyBonusClick`freespin_buy",
+            "kind": "direct-inferred-api-v2-purchase",
+            "success": true,
+            "outcomes": [],
+            "status": 200,
+            "request": {
+              "command": "spin",
+              "options": {
+                "rows": 5,
+                "bet": 30,
+                "purchased_feature": "freespin_buy"
+              },
+              "extra_data": {
+                "round_series_id": 1790525519153
+              }
+            }
+          }
+        ]
+      },
+      "routes": [
+        {
+          "semantic": "BUY_BONUS",
+          "status": "NETWORK_OBSERVED",
+          "control": "buy-bonus-popup-buy",
+          "handler": "all.buy-features.buyBonusClick`freespin_buy",
+          "wire_markers": [
+            "command=spin",
+            "purchased_feature=freespin_buy"
+          ],
+          "direct_executable": true,
+          "direct_reason": ""
+        },
+        {
+          "semantic": "SPIN",
+          "status": "NETWORK_OBSERVED",
+          "control": "spin-button",
+          "handler": "currentScene.spin`1",
+          "wire_markers": [
+            "command=spin"
+          ],
+          "direct_executable": true,
+          "direct_reason": ""
+        },
+        {
+          "semantic": "CHANCE",
+          "status": "CLIENT_OR_UNKNOWN",
+          "control": "double-chance-btn",
+          "handler": "all.buy-features.switchChance`freespin_chance",
+          "wire_markers": [],
+          "direct_executable": false,
+          "direct_reason": "no demonstrated replay action linked to route"
+        },
+        {
+          "semantic": "BUY_BONUS",
+          "status": "UI_ONLY",
+          "control": "bonus-btn",
+          "handler": "showModal`buy-bonus-popup",
+          "wire_markers": [],
+          "direct_executable": false,
+          "direct_reason": "no demonstrated replay action linked to route"
+        },
+        {
+          "semantic": "BUY_BONUS",
+          "status": "UI_ONLY",
+          "control": "buy-bonus-popup-close",
+          "handler": "hideModal",
+          "wire_markers": [],
+          "direct_executable": false,
+          "direct_reason": "no demonstrated replay action linked to route"
+        }
+      ]
+    },
     {
       "id": "bgaming-recovery-big-boat-big-catch",
       "family": "api-v2",
@@ -48,7 +151,7 @@
                 "purchased_feature_level": "4"
               },
               "extra_data": {
-                "round_series_id": 1790525436618
+                "round_series_id": 1790525519384
               }
             }
           }
@@ -134,7 +237,7 @@
                 "purchased_feature_level": "1"
               },
               "extra_data": {
-                "round_series_id": 1790525437930
+                "round_series_id": 1790525522300
               }
             }
           },
@@ -155,7 +258,7 @@
                 "purchased_feature_level": "0"
               },
               "extra_data": {
-                "round_series_id": 1790525440658
+                "round_series_id": 1790525524653
               }
             }
           },
@@ -176,7 +279,7 @@
                 "purchased_feature_level": "2"
               },
               "extra_data": {
-                "round_series_id": 1790525443090
+                "round_series_id": 1790525527035
               }
             }
           }
@@ -286,11 +389,114 @@
         {
           "semantic": "SPIN",
           "status": "NETWORK_OBSERVED",
-          "control": "protocol:spin",
-          "handler": "",
+          "control": "spin-button",
+          "handler": "onSpinClicked",
           "wire_markers": [
-            "action=spin",
             "bet_type=bet",
+            "method=play"
+          ],
+          "direct_executable": true,
+          "direct_reason": ""
+        }
+      ]
+    },
+    {
+      "id": "bgaming-recovery-multi-rush",
+      "family": "hyperhive-jsonrpc",
+      "enrichment": {
+        "attempted": true,
+        "success": true,
+        "kind": "hyperhive-base-play",
+        "metadata": {
+          "requested_url": "https://demo.bgaming-network.com/play/MultiRush/FUN",
+          "launch_url": "https://multi-rush.demo.bgaming-network.com/hyperhive",
+          "inner_url": "https://multi-rush.demo.bgaming-network.com/",
+          "default_bet": 200,
+          "init_status": 200,
+          "play_status": 200,
+          "profile": {
+            "rpc_id_zero": false,
+            "bet_type": "",
+            "req_action": false,
+            "state_lock_present": true,
+            "custom_req": false,
+            "custom_action": false,
+            "custom_exponent": false,
+            "custom_stake": false,
+            "custom_literals": {},
+            "script_count": 1
+          }
+        }
+      },
+      "direct_executable_count": 1,
+      "blockers": [],
+      "handler_probe": {
+        "attempted": false,
+        "success": false,
+        "route_id": "",
+        "route_ids": [],
+        "outcomes": [],
+        "results": []
+      },
+      "routes": [
+        {
+          "semantic": "SPIN",
+          "status": "NETWORK_OBSERVED",
+          "control": "spin-button",
+          "handler": "v0",
+          "wire_markers": [
+            "method=play"
+          ],
+          "direct_executable": true,
+          "direct_reason": ""
+        }
+      ]
+    },
+    {
+      "id": "bgaming-recovery-yommi-rush",
+      "family": "hyperhive-jsonrpc",
+      "enrichment": {
+        "attempted": true,
+        "success": true,
+        "kind": "hyperhive-base-play",
+        "metadata": {
+          "requested_url": "https://demo.bgaming-network.com/play/YommiRush/FUN",
+          "launch_url": "https://yommi-rush.demo.bgaming-network.com/hyperhive",
+          "inner_url": "https://yommi-rush.demo.bgaming-network.com/",
+          "default_bet": 200,
+          "init_status": 200,
+          "play_status": 200,
+          "profile": {
+            "rpc_id_zero": false,
+            "bet_type": "",
+            "req_action": false,
+            "state_lock_present": false,
+            "custom_req": false,
+            "custom_action": false,
+            "custom_exponent": false,
+            "custom_stake": false,
+            "custom_literals": {},
+            "script_count": 1
+          }
+        }
+      },
+      "direct_executable_count": 1,
+      "blockers": [],
+      "handler_probe": {
+        "attempted": false,
+        "success": false,
+        "route_id": "",
+        "route_ids": [],
+        "outcomes": [],
+        "results": []
+      },
+      "routes": [
+        {
+          "semantic": "SPIN",
+          "status": "NETWORK_OBSERVED",
+          "control": "spin-button",
+          "handler": "onActionButtonClick",
+          "wire_markers": [
             "method=play"
           ],
           "direct_executable": true,
