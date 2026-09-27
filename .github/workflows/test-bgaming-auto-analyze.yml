@@ -9,6 +9,7 @@ on:
       - "src/multiplay/action_graph.py"
       - "src/multiplay/har_map.py"
       - "src/multiplay/providers/bgaming/direct_port.py"
+      - "src/multiplay/providers/bgaming/handler_probe.py"
 
 permissions:
   contents: read
