@@ -114,7 +114,7 @@ def probe_bgaming_handlers(
                         {"control": "__multiplay_advance_only__"},
                     )
                 except Exception:  # noqa: BLE001
-                    continue
+                    result = None
                 if isinstance(result, dict) and result.get("advanced"):
                     advanced = True
                     page.wait_for_timeout(1200)
