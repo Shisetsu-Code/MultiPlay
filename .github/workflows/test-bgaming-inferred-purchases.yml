@@ -19,8 +19,16 @@ jobs:
         include:
           - id: bone
             url: https://demo.bgaming-network.com/play/BoneBonanza/FUN
+            feature: freespin_buy
           - id: clover
             url: https://demo.bgaming-network.com/play/CloverBonanza/FUN
+            feature: freespin_buy
+          - id: book-cats
+            url: https://demo.bgaming-network.com/play/BookOfCatsMegaways/FUN
+            feature: freespin_buy
+          - id: book-cats-high
+            url: https://demo.bgaming-network.com/play/BookOfCatsMegaways/FUN
+            feature: high_freespin_buy
 
     steps:
       - uses: actions/checkout@v4
@@ -75,8 +83,9 @@ jobs:
               timeout_s=30,
           )
           session.open()
+          feature = "${{ matrix.feature }}"
           result = session.execute_inferred_api_v2_purchase(
-              ["purchased_feature=freespin_buy"]
+              [f"purchased_feature={feature}"]
           )
           print(json.dumps(result, indent=2, ensure_ascii=False))
           if not result.get("success"):
