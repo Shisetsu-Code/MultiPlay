@@ -140,32 +140,28 @@ def run_demo_base_spin(
     )
     spin_data = _json_value(spin.text)
 
-    # Some API-v2 clients serialize the active math variant as options.mode.
-    # Retry only after a failed base spin so successful simple games stay untouched.
-    if (
-        family == API_V2
-        and not 200 <= spin.status < 400
-        and "mode" not in spin_options
-    ):
-        retry_options = dict(spin_options)
-        retry_options["mode"] = "0"
-        retry_payload = {
-            "command": "spin",
-            "options": retry_options,
-            "extra_data": dict(spin_extra),
-        }
-        retry_spin = session.post_json(
-            bootstrap.api,
-            retry_payload,
-            timeout_s=timeout_s,
-            headers=common_headers,
-            allow_http_error=True,
-        )
-        retry_data = _json_value(retry_spin.text)
-        if 200 <= retry_spin.status < 400:
-            spin_payload = retry_payload
-            spin = retry_spin
-            spin_data = retry_data
+    # Retry only after a failed API-v2 base spin. Candidate fields are
+    # derived from the init contract, never from a per-game hardcode.
+    if family == API_V2 and not 200 <= spin.status < 400:
+        for retry_options in api_v2_spin_retry_options(init_data, spin_options):
+            retry_payload = {
+                "command": "spin",
+                "options": retry_options,
+                "extra_data": dict(spin_extra),
+            }
+            retry_spin = session.post_json(
+                bootstrap.api,
+                retry_payload,
+                timeout_s=timeout_s,
+                headers=common_headers,
+                allow_http_error=True,
+            )
+            retry_data = _json_value(retry_spin.text)
+            if 200 <= retry_spin.status < 400:
+                spin_payload = retry_payload
+                spin = retry_spin
+                spin_data = retry_data
+                break
 
     safe_api = sanitize_session_url(bootstrap.api)
     evidence = EvidenceBundle(
@@ -221,6 +217,49 @@ def run_demo_base_spin(
             spin_status=spin.status,
         ),
     )
+
+
+def api_v2_spin_retry_options(
+    init_data: dict[str, Any],
+    base_options: dict[str, Any],
+) -> list[dict[str, Any]]:
+    """Build conservative retry shapes from fields exposed by init."""
+    options = init_data.get("options")
+    if not isinstance(options, dict):
+        return []
+
+    candidates: list[dict[str, Any]] = []
+    layout = options.get("layout")
+    rows = layout.get("rows") if isinstance(layout, dict) else None
+
+    def add(extra: dict[str, Any]) -> None:
+        candidate = dict(base_options)
+        candidate.update(extra)
+        if candidate != base_options and candidate not in candidates:
+            candidates.append(candidate)
+
+    if (
+        isinstance(rows, (int, float))
+        and not isinstance(rows, bool)
+        and rows > 0
+    ):
+        add({"rows": int(rows) if float(rows).is_integer() else rows})
+
+    if "mode" not in base_options:
+        add({"mode": "0"})
+
+    if (
+        isinstance(rows, (int, float))
+        and not isinstance(rows, bool)
+        and rows > 0
+        and "mode" not in base_options
+    ):
+        add({
+            "rows": int(rows) if float(rows).is_integer() else rows,
+            "mode": "0",
+        })
+
+    return candidates
 
 
 def resolve_base_bet(init_data: dict[str, Any]) -> int | float:
