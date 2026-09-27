@@ -1043,12 +1043,13 @@ def _route_rank(route: dict[str, Any]) -> int:
 
 
 def _dedupe_routes(routes: list[dict[str, Any]]) -> list[dict[str, Any]]:
-    grouped: dict[tuple[str, str, str], dict[str, Any]] = {}
+    grouped: dict[tuple[str, str, str, str], dict[str, Any]] = {}
     for route in routes:
         key = (
             str(route.get("control") or ""),
             str(route.get("semantic") or ""),
             str(route.get("interface_role") or ""),
+            str(route.get("handler") or ""),
         )
         current = grouped.get(key)
         if current is None or _route_rank(route) < _route_rank(current):
