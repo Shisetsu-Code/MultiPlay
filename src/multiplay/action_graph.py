@@ -685,8 +685,9 @@ def _relevant_markers(semantic: str, markers: set[str]) -> set[str]:
         return {
             marker
             for marker in markers
-            if marker.startswith(("command=pick", "command=select", "command=choose"))
-            or marker.startswith("action=")
+            if marker.startswith(
+                ("command=pick", "command=select", "command=choose", "action=")
+            )
         }
     if semantic in {"BET", "AUTOSPIN", "GAME_VARIANT"}:
         return set()
@@ -757,8 +758,11 @@ def _route_status(
         return "NETWORK_OBSERVED"
     if markers:
         return "NETWORK_INFERRED"
-    if protocol_hint and not _ui_opener(handler, []):
-        if _semantic(label, handler, [], set()) in {
+    if (
+        protocol_hint
+        and not _ui_opener(handler, [])
+        and _semantic(label, handler, [], set())
+        in {
             "SPIN",
             "BUY_BONUS",
             "FREESPIN",
@@ -766,8 +770,9 @@ def _route_status(
             "GAMBLE",
             "COLLECT",
             "PICK",
-        }:
-            return "NETWORK_INFERRED"
+        }
+    ):
+        return "NETWORK_INFERRED"
     if _UI_ONLY_RE.search(f"{label} {handler}"):
         return "UI_ONLY"
     return "CLIENT_OR_UNKNOWN"
