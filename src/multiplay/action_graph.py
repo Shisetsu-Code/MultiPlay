@@ -86,8 +86,21 @@ _UI_ONLY_RE = re.compile(
 )
 
 _SEMANTICS = (
-    ("CHANCE", re.compile(r"(double.?chance|switchChance|freespin_chance)", re.IGNORECASE)),
-    ("BUY_BONUS", re.compile(r"(buy.*bonus|bonus.*buy|buy.?feature)", re.IGNORECASE)),
+    (
+        "CHANCE",
+        re.compile(
+            r"(double.?chance|switchChance|freespin_chance|"
+            r"switch.*(?:freespin|respin).*chance|buyBothChances)",
+            re.IGNORECASE,
+        ),
+    ),
+    (
+        "BUY_BONUS",
+        re.compile(
+            r"(buy.*bonus|bonus.*buy|buy.?feature|buyFreespins|buyRespin)",
+            re.IGNORECASE,
+        ),
+    ),
     ("FREESPIN", re.compile(r"(free.?spin|freespin)", re.IGNORECASE)),
     ("RESPIN", re.compile(r"respin", re.IGNORECASE)),
     ("AUTOSPIN", re.compile(r"autospin", re.IGNORECASE)),
@@ -274,6 +287,7 @@ def _function_index(
     scripts: list[tuple[str, str]],
 ) -> dict[str, list[dict[str, Any]]]:
     index: dict[str, list[dict[str, Any]]] = defaultdict(list)
+    constants = _string_constant_index(scripts)
     for source, text in scripts:
         seen: set[tuple[int, str]] = set()
         for pattern in _FUNC_PATTERNS:
@@ -293,7 +307,10 @@ def _function_index(
                 if not body:
                     continue
 
-                markers = sorted(_protocol_markers(body))
+                markers = sorted(
+                    _protocol_markers(body)
+                    | _feature_markers_from_body(body, constants)
+                )
                 calls = _called_symbols(body)
                 protocol_hint = _protocol_hint(body)
                 score = (
@@ -323,6 +340,56 @@ def _function_index(
             reverse=True,
         )
     return dict(index)
+
+
+_FEATURE_LITERAL_RE = re.compile(
+    r"(?:freespin|free_spin|bonus|respin).*(?:buy|chance)|"
+    r"(?:buy|chance).*(?:freespin|free_spin|bonus|respin)",
+    re.IGNORECASE,
+)
+
+
+def _string_constant_index(
+    scripts: list[tuple[str, str]],
+) -> dict[str, set[str]]:
+    out: dict[str, set[str]] = defaultdict(set)
+    pattern = re.compile(
+        r"(?<![A-Za-z0-9_$])([A-Za-z_$][A-Za-z0-9_$]*)\s*=\s*"
+        r"[\"']([^\"']{1,120})[\"']"
+    )
+    for _source, text in scripts:
+        for match in pattern.finditer(text):
+            value = str(match.group(2) or "").strip()
+            if value:
+                out[str(match.group(1))].add(value)
+    return dict(out)
+
+
+def _feature_markers_from_body(
+    body: str,
+    constants: dict[str, set[str]],
+) -> set[str]:
+    out: set[str] = set()
+    pattern = re.compile(
+        r"setBoughtBonusParameter\(\s*"
+        r"([\"'][^\"']+[\"']|[A-Za-z_$][A-Za-z0-9_$]*)"
+    )
+    for match in pattern.finditer(body or ""):
+        raw = str(match.group(1) or "").strip()
+        if not raw or raw in {"null", "undefined"}:
+            continue
+        if raw[0:1] in {"\"", "'"}:
+            values = {raw.strip("\"'")}
+        else:
+            values = set(constants.get(raw) or set())
+        feature_values = {
+            value
+            for value in values
+            if _FEATURE_LITERAL_RE.search(value)
+        }
+        if len(feature_values) == 1:
+            out.add(f"purchased_feature={next(iter(feature_values))}")
+    return out
 
 
 def _resolve_control(
@@ -649,6 +716,11 @@ def _protocol_markers(text: str) -> set[str]:
     for key, pattern in patterns:
         for match in pattern.finditer(text):
             value = str(match.group(1) or "").strip()
+            if (
+                key == "purchased_feature_level"
+                and not re.fullmatch(r"[A-Za-z0-9_-]+", value)
+            ):
+                continue
             if value:
                 out.add(f"{key}={value}")
 
