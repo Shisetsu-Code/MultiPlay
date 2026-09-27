@@ -70,9 +70,16 @@ jobs:
                   route.get("wire_markers"),
               )
 
-          contract = (root / "contract.har").read_text()
-          if "Cookie:" in contract:
-              raise SystemExit("raw Cookie header leaked into contract HAR")
+          contract = json.loads((root / "contract.har").read_text())
+          sensitive = {"cookie", "authorization", "proxy-authorization", "x-api-key"}
+          for entry in contract["log"]["entries"]:
+              for side in ("request", "response"):
+                  for header in (entry.get(side) or {}).get("headers") or []:
+                      if str(header.get("name") or "").casefold() in sensitive:
+                          if header.get("value") != "<redacted>":
+                              raise SystemExit(
+                                  f"raw sensitive header leaked: {header.get('name')}"
+                              )
           PY
 
       - uses: actions/upload-artifact@v4
