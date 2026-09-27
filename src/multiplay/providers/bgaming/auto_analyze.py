@@ -227,6 +227,19 @@ def analyze_bgaming_demo(
         if family == SWITCHABLE_CONTAINER
         else _select_handler_probe_routes(routes)
     )
+    if family == API_V2 and not enrichment.get("success"):
+        fallback_spin = _select_base_spin_browser_fallback(routes)
+        if fallback_spin is not None:
+            fallback_id = str(fallback_spin.get("route_id") or "")
+            candidates = [
+                fallback_spin,
+                *[
+                    item
+                    for item in candidates
+                    if str(item.get("route_id") or "") != fallback_id
+                ],
+            ]
+
     browser_candidates: list[dict[str, Any]] = []
     for candidate in candidates:
         markers = {
@@ -298,6 +311,12 @@ def analyze_bgaming_demo(
 
         handler_probe["success"] = True
         contract_bundle = _merge_evidence(contract_bundle, probe.evidence)
+
+    # If the synthetic base spin failed but an explicit client spin handler
+    # produced a valid request, persist it before inferred purchases. This lets
+    # the direct session learn the provider's real successful payload shape.
+    if handler_probe["success"]:
+        _write_safe_har(contract_bundle, contract_har)
 
     if family == API_V2:
         succeeded = {
@@ -706,6 +725,44 @@ def _seed_hyperhive_spin_routes(
         route["status"] = "NETWORK_INFERRED"
         route["interface_role"] = "network_action"
         route["confidence"] = "MEDIUM"
+
+
+def _select_base_spin_browser_fallback(
+    routes: list[dict[str, Any]],
+) -> dict[str, Any] | None:
+    """Choose one explicit client spin handler as an API-v2 recovery probe."""
+    candidates: list[dict[str, Any]] = []
+    for route in routes:
+        if route.get("semantic") != "SPIN":
+            continue
+        if route.get("status") == "NETWORK_OBSERVED":
+            continue
+        if route.get("interface_role") not in {"client_control", "network_action"}:
+            continue
+        control = str(route.get("control") or "").strip()
+        handler = str(route.get("handler") or "").strip()
+        if not control or not handler:
+            continue
+        if not re.search(r"spin", f"{control} {handler}", re.IGNORECASE):
+            continue
+        candidates.append(route)
+
+    if not candidates:
+        return None
+
+    def rank(route: dict[str, Any]) -> tuple[int, int, str]:
+        control = str(route.get("control") or "")
+        handler = str(route.get("handler") or "")
+        score = 0
+        if re.search(r"spin", control, re.IGNORECASE):
+            score += 20
+        if re.search(r"spin", handler, re.IGNORECASE):
+            score += 20
+        if str(route.get("confidence") or "").upper() == "HIGH":
+            score += 5
+        return (score, len(handler), str(route.get("route_id") or ""))
+
+    return max(candidates, key=rank)
 
 
 def _select_handler_probe_routes(
