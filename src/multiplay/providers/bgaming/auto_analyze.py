@@ -10,7 +10,13 @@ from ...browser import BrowserAction, capture_browser_evidence
 from ...endpoints import sanitize_endpoint_url
 from ...evidence import load_har, redact
 from ...models import EvidenceBundle, HttpExchange, ScriptEvidence
-from .classify import API_V2, HYPERHIVE_JSONRPC, LEGACY_LINES, SWITCHABLE_CONTAINER, classify_bgaming
+from .classify import (
+    API_V2,
+    HYPERHIVE_JSONRPC,
+    LEGACY_LINES,
+    SWITCHABLE_CONTAINER,
+    classify_bgaming,
+)
 from .demo_spin import run_demo_base_spin
 from .direct_port import BGamingDemoDirectSession
 from .hyperhive_demo import run_demo_hyperhive
