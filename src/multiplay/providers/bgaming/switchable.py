@@ -7,7 +7,7 @@ from urllib.parse import urlsplit, urlunsplit
 from ...models import EvidenceBundle
 
 _ARRAY_RE_TEMPLATE = (
-    r"\[(?P<body>(?:\s*[\"']{prefix}[A-Za-z0-9_-]+[\"']\s*,?){2,})\]"
+    r"\[(?P<body>(?:\s*[\"']{prefix}[A-Za-z0-9_-]+[\"']\s*,?){{2,}})\]"
 )
 
 
