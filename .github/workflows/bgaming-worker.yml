@@ -21,6 +21,7 @@ permissions:
 # plan from latest persisted worker state
 # 16-way catalog fanout
 # conflict-safe state persistence
+# rerun after API-v2 + HyperHive flat-wire recovery
 
 concurrency:
   group: bgaming-analyzer-worker
