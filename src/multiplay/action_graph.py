@@ -240,6 +240,7 @@ def _control_roots(report: dict[str, Any]) -> list[dict[str, Any]]:
             "html_control",
             "react_control",
             "signal_control",
+            "svelte_control",
             "vue_control",
         }:
             continue
