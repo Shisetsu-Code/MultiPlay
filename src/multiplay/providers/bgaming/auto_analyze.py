@@ -99,47 +99,76 @@ def analyze_bgaming_demo(
         "attempted": False,
         "success": False,
         "route_id": "",
+        "route_ids": [],
         "outcomes": [],
+        "results": [],
     }
-    handler_raw_har = root / "handler.raw.har"
+    handler_raw_hars: list[Path] = []
 
-    candidate = _select_handler_probe_route(routes)
-    if candidate is not None:
+    candidates = _select_handler_probe_routes(routes)
+    for index, candidate in enumerate(candidates, start=1):
         handler_probe["attempted"] = True
-        handler_probe["route_id"] = str(candidate.get("route_id") or "")
+        route_id = str(candidate.get("route_id") or "")
+        handler_probe["route_ids"].append(route_id)
+        if not handler_probe["route_id"]:
+            handler_probe["route_id"] = route_id
+
+        handler_raw_har = root / f"handler-{index}.raw.har"
+        handler_raw_hars.append(handler_raw_har)
+        result_row: dict[str, Any] = {
+            "route_id": route_id,
+            "semantic": candidate.get("semantic"),
+            "control": candidate.get("control"),
+            "handler": candidate.get("handler"),
+            "success": False,
+            "outcomes": [],
+        }
+
         try:
             probe = probe_bgaming_handlers(
                 url,
                 [candidate],
                 har_path=handler_raw_har,
                 settle_ms=max(8000, int(settle_ms)),
-                after_call_ms=2500,
+                after_call_ms=3500,
             )
         except (OSError, RuntimeError, TypeError, ValueError) as exc:
-            handler_probe["error"] = f"{type(exc).__name__}: {exc}"
-        else:
-            handler_probe["outcomes"] = [
-                item.to_dict()
-                for item in probe.outcomes
-            ]
-            handler_probe["success"] = (
-                any(item.called for item in probe.outcomes)
-                and _probe_matches_route(probe.evidence, candidate)
-            )
-            if handler_probe["success"]:
-                contract_bundle = _merge_evidence(contract_bundle, probe.evidence)
-                _write_safe_har(contract_bundle, contract_har)
-                graph = build_action_graph(contract_har)
-                routes = [dict(item) for item in graph.get("routes", [])]
-                if family == HYPERHIVE_JSONRPC and not enrichment["success"]:
-                    enrichment["success"] = True
-                    enrichment["kind"] = "handler-probe"
-                    enrichment["metadata"] = {
-                        "route_id": handler_probe["route_id"],
-                        "handler": candidate.get("handler"),
-                        "semantic": candidate.get("semantic"),
-                    }
-                    hyperhive_base_error = ""
+            result_row["error"] = f"{type(exc).__name__}: {exc}"
+            handler_probe["results"].append(result_row)
+            continue
+
+        outcomes = [item.to_dict() for item in probe.outcomes]
+        result_row["outcomes"] = outcomes
+        handler_probe["outcomes"].extend(outcomes)
+        matched = (
+            any(item.called for item in probe.outcomes)
+            and _probe_matches_route(probe.evidence, candidate)
+        )
+        result_row["success"] = matched
+        result_row["request_count"] = len(probe.evidence.http)
+        handler_probe["results"].append(result_row)
+
+        if not matched:
+            continue
+
+        handler_probe["success"] = True
+        contract_bundle = _merge_evidence(contract_bundle, probe.evidence)
+
+    if handler_probe["success"]:
+        _write_safe_har(contract_bundle, contract_har)
+        graph = build_action_graph(contract_har)
+        routes = [dict(item) for item in graph.get("routes", [])]
+        if family == HYPERHIVE_JSONRPC and not enrichment["success"]:
+            enrichment["success"] = True
+            enrichment["kind"] = "handler-probe"
+            enrichment["metadata"] = {
+                "route_ids": [
+                    row["route_id"]
+                    for row in handler_probe["results"]
+                    if row.get("success")
+                ],
+            }
+            hyperhive_base_error = ""
 
     if hyperhive_base_error:
         blockers.append(hyperhive_base_error)
@@ -213,7 +242,8 @@ def analyze_bgaming_demo(
 
     if not keep_raw_har:
         raw_har.unlink(missing_ok=True)
-        handler_raw_har.unlink(missing_ok=True)
+        for handler_raw_har in handler_raw_hars:
+            handler_raw_har.unlink(missing_ok=True)
 
     return report
 
@@ -259,47 +289,83 @@ def render_bgaming_analysis(report: dict[str, Any]) -> str:
 
 
 
-def _select_handler_probe_route(
+def _select_handler_probe_routes(
     routes: list[dict[str, Any]],
-) -> dict[str, Any] | None:
+    *,
+    max_routes: int = 8,
+) -> list[dict[str, Any]]:
     candidates = [
         route
         for route in routes
         if str(route.get("handler") or "").strip()
-        and (
-            (
-                route.get("interface_role") == "network_action"
-                and route.get("status") == "NETWORK_INFERRED"
-            )
-            or (
-                route.get("semantic") == "SPIN"
-                and route.get("status") != "NETWORK_OBSERVED"
-            )
-        )
+        and str(route.get("control") or "").strip()
+        and route.get("interface_role") != "opener"
+        and route.get("status") != "NETWORK_OBSERVED"
+        and route.get("semantic")
+        in {
+            "SPIN",
+            "BUY_BONUS",
+            "FREESPIN",
+            "RESPIN",
+            "GAMBLE",
+            "COLLECT",
+            "PICK",
+            "GAME_VARIANT",
+            "CONTINUE",
+        }
     ]
-    if not candidates:
-        return None
 
-    def rank(route: dict[str, Any]) -> tuple[int, int, str]:
+    priority = {
+        "BUY_BONUS": 100,
+        "SPIN": 90,
+        "FREESPIN": 80,
+        "RESPIN": 80,
+        "PICK": 70,
+        "GAMBLE": 60,
+        "COLLECT": 60,
+        "GAME_VARIANT": 50,
+        "CONTINUE": 40,
+    }
+
+    def rank(route: dict[str, Any]) -> tuple[int, int, int, str]:
         markers = set(route.get("wire_markers") or [])
-        specificity = 0
+        score = priority.get(str(route.get("semantic") or ""), 0)
+        if route.get("status") == "NETWORK_INFERRED":
+            score += 20
         if any(
             str(marker).startswith("purchased_feature=")
             for marker in markers
         ):
-            specificity += 100
-        if route.get("semantic") == "BUY_BONUS":
-            specificity += 50
-        if route.get("semantic") == "SPIN":
-            specificity += 20
-        specificity += len(markers) * 5
+            score += 30
         return (
-            specificity,
+            score,
+            len(markers),
             len(str(route.get("handler") or "")),
             str(route.get("route_id") or ""),
         )
 
-    return max(candidates, key=rank)
+    deduped: dict[tuple[str, str, str], dict[str, Any]] = {}
+    for route in candidates:
+        key = (
+            str(route.get("semantic") or ""),
+            str(route.get("control") or ""),
+            str(route.get("handler") or ""),
+        )
+        deduped.setdefault(key, route)
+
+    return sorted(
+        deduped.values(),
+        key=rank,
+        reverse=True,
+    )[: max(1, int(max_routes))]
+
+
+def _select_handler_probe_route(
+    routes: list[dict[str, Any]],
+) -> dict[str, Any] | None:
+    """Compatibility helper for callers/tests expecting one best route."""
+    selected = _select_handler_probe_routes(routes, max_routes=1)
+    return selected[0] if selected else None
 
 
 def _probe_matches_route(
