@@ -364,7 +364,10 @@ def parse_catalog_html(
 
         if ephemeral:
             availability = "EPHEMERAL_DEMO"
-            execution_url = public_url
+            execution_url = _stable_ephemeral_execution_url(
+                demo_url,
+                identifier,
+            ) or public_url
             safe_demo = ""
         elif demo_url:
             availability = "DEMO"
@@ -484,6 +487,50 @@ def _identifier_from_demo_url(url: str) -> str:
         if values:
             return str(values[0])
     return ""
+
+
+def resolve_catalog_execution_url(
+    source: str,
+    *,
+    timeout_s: float = 30.0,
+    max_pages: int = 100,
+) -> str:
+    parsed = urlsplit(str(source or ""))
+    slug = _slug_from_public_url(
+        parsed._replace(query="", fragment="").geturl()
+    )
+    if not slug:
+        return str(source or "")
+
+    result = crawl_catalog(
+        max_pages=max_pages,
+        timeout_s=timeout_s,
+    )
+    for item in result.records:
+        if item.slug == slug:
+            return item.execution_url or item.public_url
+    return str(source or "")
+
+
+def _stable_ephemeral_execution_url(
+    demo_url: str,
+    identifier: str,
+) -> str:
+    if not demo_url or not identifier:
+        return ""
+    parsed = urlsplit(demo_url)
+    if parsed.path.casefold().rstrip("/").endswith("/hyperhive"):
+        return ""
+    host = (parsed.hostname or "").casefold()
+    if not (
+        host == "bgaming-network.com"
+        or host.endswith(".bgaming-network.com")
+    ):
+        return ""
+    return (
+        f"{parsed.scheme or 'https'}://{parsed.netloc}"
+        f"/play/{identifier}/FUN"
+    )
 
 
 def _has_ephemeral_credential(url: str) -> bool:
