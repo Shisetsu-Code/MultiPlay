@@ -31,6 +31,16 @@ def main() -> int:
     har_map.add_argument("--output")
     har_map.add_argument("--json", action="store_true")
 
+    har_actions = sub.add_parser(
+        "har-actions",
+        help="Resolve declared controls through handlers to protocol actions",
+    )
+    har_actions.add_argument("har")
+    har_actions.add_argument("--route")
+    har_actions.add_argument("--all", action="store_true")
+    har_actions.add_argument("--output")
+    har_actions.add_argument("--json", action="store_true")
+
     direct_port = sub.add_parser(
         "bgaming-port",
         help="Serve observed BGaming demo actions over a loopback HTTP port",
@@ -143,6 +153,8 @@ def main() -> int:
         return _analyze(args)
     if args.command == "har-map":
         return _har_map(args)
+    if args.command == "har-actions":
+        return _har_actions(args)
     if args.command == "bgaming-port":
         return _bgaming_port(args)
     if args.command == "browser-explore":
@@ -215,6 +227,22 @@ def _har_map(args: argparse.Namespace) -> int:
         print(json.dumps(report, indent=2, ensure_ascii=False))
     else:
         print(render_har_map(report, action_id=args.action), end="")
+    return 0
+
+
+def _har_actions(args: argparse.Namespace) -> int:
+    from .action_graph import build_action_graph, render_action_graph
+
+    graph = build_action_graph(args.har, include_all=args.all)
+    if args.output:
+        Path(args.output).write_text(
+            json.dumps(graph, indent=2, ensure_ascii=False) + "\n",
+            encoding="utf-8",
+        )
+    if args.json and not args.route:
+        print(json.dumps(graph, indent=2, ensure_ascii=False))
+    else:
+        print(render_action_graph(graph, route_id=args.route), end="")
     return 0
 
 
