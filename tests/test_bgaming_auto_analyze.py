@@ -1,5 +1,6 @@
 import json
 
+import multiplay.providers.bgaming.auto_analyze as auto_module
 from multiplay.models import EvidenceBundle, HttpExchange, ScriptEvidence
 from multiplay.providers.bgaming.auto_analyze import (
     _merge_evidence,
@@ -114,3 +115,41 @@ def test_runtime_identity_accepts_matching_public_game():
         "https://bgaming.com/games/sweet-royale-megaways",
         evidence,
     )
+
+
+
+def test_public_game_without_matching_demo_returns_partial(
+    tmp_path,
+    monkeypatch,
+):
+    public = "https://bgaming.com/games/sweet-royale-megaways"
+    monkeypatch.setattr(
+        auto_module,
+        "resolve_catalog_execution_url",
+        lambda *_args, **_kwargs: public,
+    )
+
+    def fail_probe(*_args, **_kwargs):
+        raise ValueError("mismatched runtime")
+
+    monkeypatch.setattr(auto_module, "probe_bgaming_demo", fail_probe)
+
+    def must_not_capture(**_kwargs):
+        raise AssertionError("browser must not open for unresolved public demo")
+
+    monkeypatch.setattr(auto_module, "capture_browser_evidence", must_not_capture)
+
+    report = auto_module.analyze_bgaming_demo(
+        public,
+        output_dir=tmp_path,
+        screenshot=False,
+    )
+
+    assert report["status"] == "PARTIAL_REQUIRES_REVIEW"
+    assert report["runtime_status"] == "NO_RESOLVABLE_DEMO"
+    assert report["family"] == "unresolved"
+    assert report["route_count"] == 0
+    assert report["execution_url"] == ""
+    assert (tmp_path / "analysis.json").exists()
+    assert (tmp_path / "actions.json").exists()
+    assert (tmp_path / "contract.har").exists()
