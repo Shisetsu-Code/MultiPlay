@@ -390,7 +390,12 @@ def _play_has_state_lock(text: str) -> bool:
 
 
 def _formatted_request_literals(text: str) -> dict[str, Any]:
-    found: dict[str, Any] = {}
+    # The bridge copies formattedRequest.params into req.custom_req. Games
+    # commonly define the normal-spin params in RequestMap first, then append
+    # dynamic fields (action/exponent/stake) immediately before sending.
+    # Keep the last demonstrated normal-spin map because game-specific code can
+    # override the generic integration map loaded earlier.
+    found: dict[str, Any] = _normal_spin_request_literals(text)
     scalar = (
         r'(?:!0|!1|true|false|null|-?\d+(?:\.\d+)?|'
         r'"[^"\\]{0,200}"|\'[^\'\\]{0,200}\')'
@@ -409,6 +414,57 @@ def _formatted_request_literals(text: str) -> dict[str, Any]:
 
     for dynamic in ("action", "exponent", "stake"):
         found.pop(dynamic, None)
+    return found
+
+
+def _normal_spin_request_literals(text: str) -> dict[str, Any]:
+    source = text or ""
+    pattern = re.compile(
+        r'ActionType:[A-Za-z_$][A-Za-z0-9_$]*\.SPIN,'
+        r'AdditionalData:\{request:[A-Za-z_$][A-Za-z0-9_$]*\.SPIN,'
+        r'rel:[A-Za-z_$][A-Za-z0-9_$]*\.NEW_SPIN,'
+        r'params:\{([^{}]{0,2400})\}\}'
+    )
+    candidates: list[tuple[int, dict[str, Any]]] = []
+    for match in pattern.finditer(source):
+        parsed = _safe_params_object(match.group(1))
+        if parsed:
+            candidates.append((match.start(), parsed))
+    if not candidates:
+        return {}
+    candidates.sort(key=lambda item: item[0])
+    return candidates[-1][1]
+
+
+def _safe_params_object(body: str) -> dict[str, Any]:
+    found: dict[str, Any] = {}
+    value_re = re.compile(
+        r'(?:^|,)([A-Za-z_$][A-Za-z0-9_$]*):'
+        r'(\[[^\[\]{}]{0,1800}\]|!0|!1|true|false|null|'
+        r'-?\d+(?:\.\d+)?|"[^"\\]{0,200}"|\'[^\'\\]{0,200}\')'
+        r'(?=,|$)'
+    )
+    for match in value_re.finditer(body or ""):
+        key = str(match.group(1))
+        if not _safe_literal_key(key):
+            continue
+        raw = str(match.group(2))
+        try:
+            if raw.startswith("["):
+                inner = raw[1:-1].strip()
+                if not inner:
+                    value: Any = []
+                else:
+                    value = [
+                        _parse_scalar(item.strip())
+                        for item in inner.split(",")
+                        if item.strip()
+                    ]
+            else:
+                value = _parse_scalar(raw)
+        except ValueError:
+            continue
+        found[key] = value
     return found
 
 
