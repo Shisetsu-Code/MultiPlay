@@ -407,6 +407,11 @@ _SVELTE_SPIN_CONTROL_RE = re.compile(
     r'\s*(?P=handler)\s*,',
     re.IGNORECASE,
 )
+_GAME_CONTROLS_SPIN_EVENT_RE = re.compile(
+    r'["\']GAME_CONTROLS_VL_ON_SPIN_CLICK["\']'
+    r'[\s\S]{0,260}?this\.([A-Za-z_$][A-Za-z0-9_$]*Spin[A-Za-z0-9_$]*)\s*\(',
+    re.IGNORECASE,
+)
 
 
 
@@ -574,6 +579,26 @@ def _javascript_declared_buttons(text: str, source: str) -> list[dict[str, Any]]
                 "label": "spin-button",
                 "handler": handler,
                 "element": "button",
+                "handler_hint": " ".join(window.split())[:1000],
+                "wire_markers": sorted(_wire_markers_text(window)),
+                "endpoint_ids": [],
+                "confidence": "HIGH",
+            }
+        )
+
+    for match in _GAME_CONTROLS_SPIN_EVENT_RE.finditer(text):
+        handler = str(match.group(1))
+        start = max(0, match.start() - 180)
+        end = min(len(text), match.end() + 360)
+        window = text[start:end]
+        rows.append(
+            {
+                "kind": "event_control",
+                "source": source,
+                "event": "GAME_CONTROLS_VL_ON_SPIN_CLICK",
+                "label": "spin-button",
+                "handler": handler,
+                "element": "game-controls",
                 "handler_hint": " ".join(window.split())[:1000],
                 "wire_markers": sorted(_wire_markers_text(window)),
                 "endpoint_ids": [],
