@@ -24,6 +24,11 @@ from .direct_port import BGamingDemoDirectSession
 from .handler_probe import probe_bgaming_handlers
 from .hyperhive_demo import run_demo_hyperhive
 from .probe import _identity_key, _public_game_slug, probe_bgaming_demo
+from .switchable import (
+    extract_switchable_variants,
+    route_child_index,
+    switchable_child_url,
+)
 
 
 def analyze_bgaming_demo(
