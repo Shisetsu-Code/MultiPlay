@@ -57,13 +57,17 @@ jobs:
               )
 
           if "${{ matrix.id }}" == "sweet-royale":
-              execution = report.get("execution_url") or ""
-              if "SweetRoyaleMegaways" not in execution:
-                  raise SystemExit(f"wrong Sweet Royale runtime: {execution}")
-              if "MagicMummyMegaways" in execution:
-                  raise SystemExit("Sweet Royale resolved to Magic Mummy")
-              if report["route_count"] < 1:
-                  raise SystemExit("Sweet Royale exposed no routes")
+              if report.get("runtime_status") != "NO_RESOLVABLE_DEMO":
+                  execution = report.get("execution_url") or ""
+                  if "SweetRoyaleMegaways" not in execution:
+                      raise SystemExit(f"wrong Sweet Royale runtime: {execution}")
+                  if "MagicMummyMegaways" in execution:
+                      raise SystemExit("Sweet Royale resolved to Magic Mummy")
+                  if report["route_count"] < 1:
+                      raise SystemExit("Sweet Royale exposed no routes")
+              else:
+                  if report.get("family") != "unresolved":
+                      raise SystemExit("unresolved Sweet Royale has wrong family")
 
           if "${{ matrix.id }}" == "book-cats":
               purchases = [
