@@ -5,6 +5,7 @@ import pytest
 from multiplay.providers.bgaming.api_v2 import extract_api_v2_templates
 from multiplay.providers.bgaming.direct_port import (
     BGamingDemoDirectSession,
+    _api_v2_purchase_retry_payloads,
     _marker_map,
     _require_demo_intent,
 )
@@ -161,3 +162,23 @@ def test_inferred_api_purchase_keeps_observed_spin_command(tmp_path):
     assert captured["payload"]["command"] == "spin"
     assert captured["payload"]["options"]["bet"] == 100
     assert captured["payload"]["options"]["purchased_feature"] == "freespin_buy"
+
+
+
+def test_api_v2_purchase_retry_converts_numeric_rows_to_wire_string():
+    payload = {
+        "command": "spin",
+        "options": {
+            "bet": 200,
+            "rows": 4,
+            "purchased_feature": "freespin_buy",
+            "purchased_feature_level": "4",
+        },
+        "extra_data": {"round_series_id": 123},
+    }
+
+    retries = _api_v2_purchase_retry_payloads(payload)
+
+    assert len(retries) == 1
+    assert retries[0]["options"]["rows"] == "4"
+    assert payload["options"]["rows"] == 4
