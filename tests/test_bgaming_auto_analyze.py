@@ -182,3 +182,52 @@ def test_select_base_spin_browser_fallback_uses_explicit_client_control():
 
     assert selected is not None
     assert selected["route_id"] == "spin"
+
+def test_static_buy_feature_table_enriches_matching_popup_controls():
+    evidence = EvidenceBundle(
+        scripts=[
+            ScriptEvidence(
+                evidence_id="s",
+                source="https://example.test/app.js",
+                text=(
+                    'cfg={buy_features:{features:['
+                    '{requestName:"freespin_buy",name:"bonus_1",level:"0",price:100},'
+                    '{requestName:"freespin_buy",name:"bonus_2",level:"1",price:250}'
+                    ']}};'
+                ),
+            )
+        ]
+    )
+    assert _api_v2_static_buy_features(evidence) == [
+        {"name": "bonus_1", "request_name": "freespin_buy", "level": "0"},
+        {"name": "bonus_2", "request_name": "freespin_buy", "level": "1"},
+    ]
+
+    routes = [
+        {
+            "semantic": "BUY_BONUS",
+            "control": "buy-bonus-1",
+            "wire_markers": ["command=spin"],
+            "status": "NETWORK_INFERRED",
+            "interface_role": "network_action",
+        },
+        {
+            "semantic": "BUY_BONUS",
+            "control": "buy-bonus-2",
+            "wire_markers": ["command=spin"],
+            "status": "NETWORK_INFERRED",
+            "interface_role": "network_action",
+        },
+    ]
+    _seed_api_v2_buy_feature_routes(routes, evidence)
+    assert routes[0]["wire_markers"] == [
+        "command=spin",
+        "purchased_feature=freespin_buy",
+        "purchased_feature_level=0",
+    ]
+    assert routes[1]["wire_markers"] == [
+        "command=spin",
+        "purchased_feature=freespin_buy",
+        "purchased_feature_level=1",
+    ]
+
