@@ -9,7 +9,11 @@ from urllib.parse import quote, urlsplit
 from ...models import EvidenceBundle, HttpExchange, ScriptEvidence
 from .bootstrap import extract_window_options, sanitize_bootstrap_options
 from .hyperhive_client import collect_hyperhive_contract_scripts
-from .hyperhive_wire_profile import HyperHiveWireProfile, analyze_current_wire
+from .hyperhive_wire_profile import (
+    HyperHiveWireProfile,
+    analyze_current_wire,
+    build_profile_request,
+)
 from .probe import _allowed_source, _HttpSession, _is_hyperhive_url, _resolve_demo
 
 
@@ -21,6 +25,7 @@ class HyperHiveDemoMetadata:
     default_bet: int | float
     init_status: int
     play_status: int
+    play_success: bool
     profile: HyperHiveWireProfile
 
     def to_dict(self) -> dict[str, Any]:
@@ -112,9 +117,11 @@ def run_demo_hyperhive(
     state_lock = init_result.get("state_lock")
     exponent = _currency_exponent(init_result)
 
-    request = {"bet": default_bet}
-    if profile.bet_type:
-        request["bet_type"] = profile.bet_type
+    request = build_profile_request(
+        profile,
+        init_result,
+        bet=default_bet,
+    )
     if profile.req_action and not profile.custom_req:
         request["action"] = "spin"
 
@@ -135,8 +142,6 @@ def run_demo_hyperhive(
     }
     if profile.state_lock_present:
         play_params["state_lock"] = "" if state_lock is None else state_lock
-    elif state_lock not in (None, ""):
-        play_params["state_lock"] = state_lock
 
     play_payload = {
         "id": _rpc_id(profile),
@@ -152,18 +157,24 @@ def run_demo_hyperhive(
         allow_http_error=True,
     )
     play_data = _json_object(play.text, "play")
+    play_success = (
+        200 <= play.status < 400
+        and play_data.get("error") in (None, {}, [])
+    )
 
-    evidence = EvidenceBundle(
-        http=[
-            HttpExchange(
-                evidence_id="hyperhive:init",
-                method="POST",
-                url=rpc_url,
-                request_headers={"content-type": "application/json"},
-                request_body=_safe_rpc(init_payload),
-                response_status=init.status,
-                response_body=_safe_rpc(init_data),
-            ),
+    http_evidence = [
+        HttpExchange(
+            evidence_id="hyperhive:init",
+            method="POST",
+            url=rpc_url,
+            request_headers={"content-type": "application/json"},
+            request_body=_safe_rpc(init_payload),
+            response_status=init.status,
+            response_body=_safe_rpc(init_data),
+        ),
+    ]
+    if play_success:
+        http_evidence.append(
             HttpExchange(
                 evidence_id="hyperhive:play",
                 method="POST",
@@ -172,8 +183,11 @@ def run_demo_hyperhive(
                 request_body=_safe_rpc(play_payload),
                 response_status=play.status,
                 response_body=_safe_rpc(play_data),
-            ),
-        ],
+            )
+        )
+
+    evidence = EvidenceBundle(
+        http=http_evidence,
         scripts=[
             ScriptEvidence(
                 evidence_id=f"hyperhive:script:{index}",
@@ -185,6 +199,11 @@ def run_demo_hyperhive(
         metadata={
             "source": "bgaming-hyperhive-demo",
             "bootstrap": sanitize_bootstrap_options(options),
+            "play_attempt": {
+                "status": play.status,
+                "success": play_success,
+                "error": _safe_rpc(play_data.get("error")),
+            },
         },
     )
     return HyperHiveDemoResult(
@@ -196,6 +215,7 @@ def run_demo_hyperhive(
             default_bet=default_bet,
             init_status=init.status,
             play_status=play.status,
+            play_success=play_success,
             profile=profile,
         ),
     )
