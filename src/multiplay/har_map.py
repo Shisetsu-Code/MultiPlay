@@ -367,6 +367,19 @@ _EVENT_MANAGER_LISTENER_RE = re.compile(
     r'[\s\S]{0,240}?this\.([A-Za-z_$][A-Za-z0-9_$]*)\s*\(',
     re.IGNORECASE,
 )
+_EVENT_MANAGER_DIRECT_LISTENER_RE = re.compile(
+    r'eventManager\.addListener\(\s*["\']([^"\']{1,120})["\']\s*,\s*'
+    r'this\.([A-Za-z_$][A-Za-z0-9_$]*)\s*\)',
+    re.IGNORECASE,
+)
+_NAMED_EVENT_BUS_CONTROL_RE = re.compile(
+    r'\b[A-Za-z_$][A-Za-z0-9_$]*\.on\(\s*["\']'
+    r'(spin(?:[-_ ]clicked)?|buy[-_ ]bonus|bonus[-_ ]buy|'
+    r'respin(?:[-_ ]clicked)?|collect(?:[-_ ]clicked)?|'
+    r'gamble(?:[-_ ]clicked)?)'
+    r'["\']\s*,\s*([A-Za-z_$][A-Za-z0-9_$]*)\s*\)',
+    re.IGNORECASE,
+)
 _LEGACY_CREATE_BUTTON_RE = re.compile(
     r'addListener\(\s*[^;]{0,160}?createButton\(\s*["\']'
     r'([^"\']{1,120})["\'][^)]{0,220}\)\s*,\s*'
@@ -483,6 +496,31 @@ def _javascript_declared_buttons(text: str, source: str) -> list[dict[str, Any]]
                 "confidence": "HIGH",
             }
         )
+
+    for pattern in (
+        _EVENT_MANAGER_DIRECT_LISTENER_RE,
+        _NAMED_EVENT_BUS_CONTROL_RE,
+    ):
+        for match in pattern.finditer(text):
+            event_name = str(match.group(1))
+            handler = str(match.group(2))
+            start = max(0, match.start() - 180)
+            end = min(len(text), match.end() + 360)
+            window = text[start:end]
+            rows.append(
+                {
+                    "kind": "event_control",
+                    "source": source,
+                    "event": event_name,
+                    "label": event_name,
+                    "handler": handler,
+                    "element": event_name,
+                    "handler_hint": " ".join(window.split())[:1000],
+                    "wire_markers": sorted(_wire_markers_text(window)),
+                    "endpoint_ids": [],
+                    "confidence": "HIGH",
+                }
+            )
     for match in _SIGNAL_CONTROL_RE.finditer(text):
         label = str(match.group(1))
         handler = str(match.group(2))
