@@ -1,0 +1,43 @@
+name: Test BGaming switchable child
+
+on:
+  push:
+    branches: ["main"]
+    paths:
+      - ".github/workflows/test-bgaming-switchable-child.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  child:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install --upgrade pip
+      - run: pip install -e ".[dev]"
+      - name: Run child base spin
+        run: |
+          python - <<'PY'
+          import json
+          from multiplay.providers.bgaming.demo_spin import run_demo_base_spin
+
+          result = run_demo_base_spin(
+              "https://demo.bgaming-network.com/play/AllLuckyClover100/FUN",
+              timeout_s=30,
+          )
+          print(json.dumps(result.metadata.to_dict(), indent=2))
+          for item in result.evidence.http:
+              print(json.dumps({
+                  "method": item.method,
+                  "url": item.url,
+                  "status": item.response_status,
+                  "body": item.request_body,
+              }, ensure_ascii=False))
+          if not 200 <= result.metadata.spin_status < 400:
+              raise SystemExit("child spin failed")
+          PY
