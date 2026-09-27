@@ -256,6 +256,7 @@ def analyze_bgaming_demo(
         )
         direct_hyper_play = (
             family == HYPERHIVE_JSONRPC
+            and enrichment.get("success")
             and "method=play" in markers
         )
         if direct_api_purchase or direct_hyper_play:
