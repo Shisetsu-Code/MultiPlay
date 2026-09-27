@@ -195,6 +195,20 @@ def analyze_bgaming_demo(
     graph = build_action_graph(contract_har)
     routes = [dict(item) for item in graph.get("routes", [])]
 
+    if switchable_variants:
+        by_identifier = {
+            str(item.get("identifier") or ""): item
+            for item in switchable_children
+        }
+        for route in routes:
+            index = route_child_index(route)
+            if index is None or index >= len(switchable_variants):
+                continue
+            identifier = switchable_variants[index]
+            child = by_identifier.get(identifier) or {}
+            route["child_identifier"] = identifier
+            route["child_spin_validated"] = bool(child.get("success"))
+
     handler_probe: dict[str, Any] = {
         "attempted": False,
         "success": False,
@@ -205,7 +219,11 @@ def analyze_bgaming_demo(
     }
     handler_raw_hars: list[Path] = []
 
-    candidates = _select_handler_probe_routes(routes)
+    candidates = (
+        []
+        if family == SWITCHABLE_CONTAINER
+        else _select_handler_probe_routes(routes)
+    )
     for index, candidate in enumerate(candidates, start=1):
         handler_probe["attempted"] = True
         route_id = str(candidate.get("route_id") or "")
