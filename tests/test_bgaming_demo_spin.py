@@ -1,5 +1,6 @@
 from multiplay.providers.bgaming.demo_spin import (
     api_v2_provable_fair_extra_data,
+    api_v2_script_spin_option_hints,
     api_v2_spin_retry_options,
     legacy_spin_options,
     resolve_base_bet,
@@ -73,3 +74,16 @@ def test_api_v2_provable_fair_extra_data_adds_client_seed_only_when_declared():
         {"round_series_id": 7},
         client_seed=12345,
     ) is None
+
+
+def test_api_v2_script_spin_option_hints_extracts_persistent_literal_levels():
+    script = (
+        'setSpecialSymbolsLevel(t,e){'
+        'this.additionalSpinOptions.gold_symbols_count=""+t;'
+        '}'
+        'this.setSpecialSymbolsLevel(settings.getItem("special-level",flag?1:3),true);'
+    )
+    assert api_v2_script_spin_option_hints([script]) == [
+        {"gold_symbols_count": "1"},
+        {"gold_symbols_count": "3"},
+    ]
