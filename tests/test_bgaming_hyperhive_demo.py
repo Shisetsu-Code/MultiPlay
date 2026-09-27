@@ -95,3 +95,50 @@ def test_flat_hyperhive_profile_reconstructs_client_play_shape():
         bet=30,
         purchased_feature="buy_bonus",
     )["buyBonusModeMultiplier"] == 60
+
+
+def test_optional_purchase_feature_is_omitted_from_normal_spin():
+    profile = analyze_current_wire(
+        'x={method:"play",params:{token:t,req:{bet:a,bet_type:"bet"},state_lock:""}};'
+        'if(buy)x.params.req.purchased_feature="buy_bonus";'
+    )
+    req = build_profile_request(
+        profile,
+        {
+            "config": {"default_bet": 200, "bet_limits": [20, 200]},
+            "currency_attributes": {"subunits": 100, "exponent": 2},
+        },
+        bet=200,
+    )
+    assert "purchased_feature" not in req
+
+
+def test_intercom_hyperhive_profile_builds_normal_action_request():
+    profile = analyze_current_wire(
+        'j=void 0;'
+        'U={bet:g,integrationId:C,bet_type:R?"freebet":"bet",'
+        'purchased_feature:j,modelRev:0,minExponent:y.state.ui.minExponent};'
+        'c.action({state_lock:i.stateLock,req:U});'
+    )
+    assert profile.bet_type == "bet"
+    assert profile.state_lock_present is True
+    assert profile.req_model_rev == 0
+    assert profile.req_min_exponent is True
+    assert profile.req_integration_id is True
+    assert profile.req_purchased_feature is True
+    assert profile.req_purchased_feature_omit_empty is True
+
+    req = build_profile_request(
+        profile,
+        {
+            "config": {"default_bet": 200, "bet_limits": [20, 40, 200]},
+            "currency_attributes": {"subunits": 100, "exponent": 2},
+        },
+        bet=200,
+    )
+    assert req == {
+        "bet": 200,
+        "bet_type": "bet",
+        "modelRev": 0,
+        "minExponent": 2,
+    }
