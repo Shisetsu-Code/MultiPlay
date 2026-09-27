@@ -2,15 +2,6 @@ name: BGaming family browser discovery
 
 on:
   workflow_dispatch:
-  push:
-    branches: ["main"]
-    paths:
-      - ".github/workflows/bgaming-family-browser.yml"
-      - "src/multiplay/browser/**"
-      - "src/multiplay/providers/bgaming/browser_discovery.py"
-      - "src/multiplay/providers/bgaming/ledger.py"
-      - "src/multiplay/cli.py"
-      - "knowledge/providers/bgaming/family-map.json"
 
 permissions:
   contents: read
