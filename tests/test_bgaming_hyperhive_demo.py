@@ -142,3 +142,54 @@ def test_intercom_hyperhive_profile_builds_normal_action_request():
         "modelRev": 0,
         "minExponent": 2,
     }
+
+def test_custom_request_uses_last_game_specific_normal_spin_map():
+    profile = analyze_current_wire(
+        'initRequestMap(){return this.RequestMap={'
+        '[A.Regular]:{ActionType:T.SPIN,AdditionalData:{request:T.SPIN,'
+        'rel:R.NEW_SPIN,params:{selectedWinLines:[],perLine:!0,isFeatureBuy:!1}}}}}'
+        'setRequestConfig(){this._requestMap[A.Regular]={ActionType:T.SPIN,'
+        'AdditionalData:{request:T.SPIN,rel:R.NEW_SPIN,'
+        'params:{selectedWinLines:[0,1,2,3],perLine:!0}}}}'
+        'formattedRequest.params.action=t;'
+        'formattedRequest.params.exponent=2;'
+        'formattedRequest.params.stake=a;'
+        'x.req.custom_req=formattedRequest.params;'
+        'x={method:"play",params:{token:q,req:{bet:a,bet_type:"bet"},state_lock:""}}'
+    )
+    assert profile.custom_literals == {
+        "selectedWinLines": [0, 1, 2, 3],
+        "perLine": True,
+    }
+
+    req = build_profile_request(
+        profile,
+        {
+            "config": {"default_bet": 200, "bet_limits": [20, 200]},
+            "currency_attributes": {"subunits": 100, "exponent": 2},
+        },
+        bet=200,
+    )
+    assert req["custom_req"] == {
+        "selectedWinLines": [0, 1, 2, 3],
+        "perLine": True,
+        "action": "spin",
+        "exponent": 2,
+        "stake": 200,
+    }
+
+
+def test_custom_request_recovers_game_specific_buy_flags():
+    profile = analyze_current_wire(
+        'this._requestMap[A.Regular]={ActionType:T.SPIN,AdditionalData:{'
+        'request:T.SPIN,rel:R.NEW_SPIN,'
+        'params:{isNormalBuy:!1,isSuperBuy:!1}}};'
+        'formattedRequest.params.action=t;'
+        'x.req.custom_req=formattedRequest.params;'
+        'x={method:"play",params:{token:q,req:{bet:a,bet_type:"bet"},state_lock:""}}'
+    )
+    assert profile.custom_literals == {
+        "isNormalBuy": False,
+        "isSuperBuy": False,
+    }
+
