@@ -1,0 +1,186 @@
+name: Test 5 random BGaming games
+
+on:
+  push:
+    branches: ["main"]
+    paths:
+      - ".github/workflows/test-bgaming-random-five.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  random-five:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - run: python -m pip install --upgrade pip
+      - run: pip install -e ".[browser,dev]"
+      - run: python -m playwright install --with-deps chromium
+
+      - name: Fetch current BGaming catalog and sample five
+        run: |
+          mkdir -p artifacts
+          multiplay bgaming-catalog --output artifacts/catalog.json
+          python - <<'PY'
+          import json
+          import random
+          from pathlib import Path
+
+          payload = json.loads(Path("artifacts/catalog.json").read_text())
+          records = payload.get("records") if isinstance(payload, dict) else payload
+          records = [r for r in records if isinstance(r, dict)]
+
+          candidates = []
+          for item in records:
+              url = (
+                  item.get("execution_url")
+                  or item.get("demo_url")
+                  or item.get("public_url")
+                  or ""
+              )
+              if not url:
+                  continue
+              candidates.append(
+                  {
+                      "slug": str(item.get("slug") or ""),
+                      "name": str(item.get("name") or item.get("slug") or ""),
+                      "url": str(url),
+                  }
+              )
+
+          sample = random.SystemRandom().sample(candidates, 5)
+          Path("artifacts/sample.json").write_text(
+              json.dumps(sample, indent=2, ensure_ascii=False) + "\n"
+          )
+          print(json.dumps(sample, indent=2, ensure_ascii=False))
+          PY
+
+      - name: Analyze five games
+        run: |
+          python - <<'PY'
+          import json
+          import subprocess
+          from pathlib import Path
+
+          sample = json.loads(Path("artifacts/sample.json").read_text())
+          summary = []
+
+          for index, item in enumerate(sample, start=1):
+              slug = item["slug"] or f"game-{index}"
+              root = Path("artifacts/results") / slug
+              root.mkdir(parents=True, exist_ok=True)
+
+              command = [
+                  "multiplay",
+                  "bgaming-analyze-demo",
+                  item["url"],
+                  "--output-dir",
+                  str(root),
+                  "--settle-ms",
+                  "12000",
+                  "--timeout",
+                  "30",
+              ]
+
+              completed = subprocess.run(
+                  command,
+                  capture_output=True,
+                  text=True,
+                  timeout=240,
+              )
+
+              analysis_path = root / "analysis.json"
+              if analysis_path.exists():
+                  report = json.loads(analysis_path.read_text())
+                  routes = report.get("routes") or []
+                  summary.append(
+                      {
+                          "slug": slug,
+                          "name": item["name"],
+                          "url": item["url"],
+                          "returncode": completed.returncode,
+                          "family": report.get("family"),
+                          "route_count": report.get("route_count", 0),
+                          "direct_executable_count": report.get(
+                              "direct_executable_count",
+                              0,
+                          ),
+                          "blockers": report.get("blockers") or [],
+                          "routes": [
+                              {
+                                  "semantic": r.get("semantic"),
+                                  "role": r.get("interface_role"),
+                                  "status": r.get("status"),
+                                  "direct": bool(r.get("direct_executable")),
+                                  "control": r.get("control"),
+                                  "handler": r.get("handler"),
+                                  "wire": r.get("wire_markers") or [],
+                              }
+                              for r in routes
+                          ],
+                          "stdout": completed.stdout[-4000:],
+                          "stderr": completed.stderr[-4000:],
+                      }
+                  )
+              else:
+                  summary.append(
+                      {
+                          "slug": slug,
+                          "name": item["name"],
+                          "url": item["url"],
+                          "returncode": completed.returncode,
+                          "family": None,
+                          "route_count": 0,
+                          "direct_executable_count": 0,
+                          "blockers": ["analysis.json was not produced"],
+                          "routes": [],
+                          "stdout": completed.stdout[-4000:],
+                          "stderr": completed.stderr[-4000:],
+                      }
+                  )
+
+          Path("artifacts/summary.json").write_text(
+              json.dumps(summary, indent=2, ensure_ascii=False) + "\n"
+          )
+
+          for item in summary:
+              print()
+              print("=" * 80)
+              print(item["name"], f"({item['slug']})")
+              print("family:", item["family"])
+              print("routes:", item["route_count"])
+              print("direct:", item["direct_executable_count"])
+              print("returncode:", item["returncode"])
+              for blocker in item["blockers"]:
+                  print("blocker:", blocker)
+              for route in item["routes"]:
+                  print(
+                      route["semantic"],
+                      route["role"],
+                      route["status"],
+                      "DIRECT" if route["direct"] else "-",
+                      route["control"],
+                      route["wire"],
+                  )
+          PY
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: bgaming-random-five
+          path: |
+            artifacts/sample.json
+            artifacts/summary.json
+            artifacts/results/*/analysis.json
+            artifacts/results/*/actions.json
+            artifacts/results/*/contract.har
+            artifacts/results/*/initial.jpg
+          if-no-files-found: warn
+          retention-days: 3
