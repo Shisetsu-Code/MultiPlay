@@ -8,7 +8,7 @@ from urllib.parse import urlsplit
 from ...action_graph import build_action_graph
 from ...browser import BrowserAction, capture_browser_evidence
 from ...endpoints import sanitize_endpoint_url
-from ...evidence import load_har
+from ...evidence import load_har, redact
 from ...models import EvidenceBundle, HttpExchange, ScriptEvidence
 from .classify import API_V2, HYPERHIVE_JSONRPC, LEGACY_LINES, SWITCHABLE_CONTAINER, classify_bgaming
 from .demo_spin import run_demo_base_spin
@@ -268,13 +268,13 @@ def _write_safe_har(bundle: EvidenceBundle, path: Path) -> None:
                     "url": sanitize_endpoint_url(exchange.url),
                     "headers": [
                         {"name": key, "value": value}
-                        for key, value in exchange.request_headers.items()
+                        for key, value in redact(exchange.request_headers).items()
                     ],
                     "postData": (
                         {
                             "mimeType": "application/json",
                             "text": json.dumps(
-                                exchange.request_body,
+                                redact(exchange.request_body),
                                 ensure_ascii=False,
                                 separators=(",", ":"),
                             ),
@@ -287,12 +287,12 @@ def _write_safe_har(bundle: EvidenceBundle, path: Path) -> None:
                     "status": exchange.response_status or 0,
                     "headers": [
                         {"name": key, "value": value}
-                        for key, value in exchange.response_headers.items()
+                        for key, value in redact(exchange.response_headers).items()
                     ],
                     "content": {
                         "mimeType": "application/json",
                         "text": json.dumps(
-                            exchange.response_body,
+                            redact(exchange.response_body),
                             ensure_ascii=False,
                             separators=(",", ":"),
                         ),
