@@ -1,0 +1,73 @@
+name: Debug BGaming Clash event routes
+
+on:
+  push:
+    branches: ["main"]
+    paths:
+      - ".github/workflows/debug-bgaming-clash-event.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  debug:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install --upgrade pip
+      - run: pip install -e ".[browser,dev]"
+      - run: python -m playwright install --with-deps chromium
+
+      - name: Capture and inspect
+        run: |
+          mkdir -p artifacts
+          python - <<'PY'
+          import json
+          from multiplay.browser import BrowserAction, capture_browser_evidence
+          from multiplay.har_map import build_har_map
+          from multiplay.action_graph import build_action_graph
+
+          url = "https://demo.bgaming-network.com/play/ClashofGodsAnubisvsHades/FUN"
+          capture_browser_evidence(
+              url=url,
+              har_path="artifacts/clash.har",
+              actions=[BrowserAction(kind="wait", timeout_ms=12000)],
+          )
+
+          har_map = build_har_map("artifacts/clash.har")
+          event_controls = [
+              a for a in har_map.get("actions", [])
+              if a.get("kind") == "event_control"
+          ]
+          print("EVENT_CONTROLS", len(event_controls))
+          for row in event_controls:
+              print(json.dumps({
+                  "label": row.get("label"),
+                  "handler": row.get("handler"),
+                  "wire": row.get("wire_markers"),
+                  "source": row.get("source"),
+              }, ensure_ascii=False))
+
+          graph = build_action_graph("artifacts/clash.har", include_all=True)
+          print("ALL_ROUTES", graph.get("route_count"))
+          for row in graph.get("routes", []):
+              print(json.dumps({
+                  "semantic": row.get("semantic"),
+                  "status": row.get("status"),
+                  "role": row.get("interface_role"),
+                  "control": row.get("control"),
+                  "handler": row.get("handler"),
+                  "chain": row.get("chain"),
+                  "wire": row.get("wire_markers"),
+              }, ensure_ascii=False))
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: clash-event-debug
+          path: artifacts/clash.har
+          retention-days: 2
