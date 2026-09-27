@@ -219,12 +219,20 @@ def _play_request_window(text: str) -> str:
 
     # Keep method/invoke candidates tight enough that adjacent bonus/wheel
     # requests do not contaminate the normal-spin profile.
-    for match in re.finditer(
-        r'(?:\.invoke\(["\']play["\']|\bmethod\s*:\s*["\']play["\'])',
-        source,
-    ):
-        start = max(0, match.start() - 500)
-        end = min(len(source), match.start() + 2600)
+    play_matches = list(
+        re.finditer(
+            r'(?:\.invoke\(["\']play["\']|\bmethod\s*:\s*["\']play["\'])',
+            source,
+        )
+    )
+    for index, match in enumerate(play_matches):
+        start = max(0, match.start() - 300)
+        next_start = (
+            play_matches[index + 1].start()
+            if index + 1 < len(play_matches)
+            else len(source)
+        )
+        end = min(len(source), match.start() + 2600, next_start)
         window = source[start:end]
         if re.search(r'\breq\s*:', window) or ".req." in window:
             candidates.append(("play", window))
@@ -344,7 +352,7 @@ def _req_field_uses_void_zero(window: str, key: str) -> bool:
     prior = window[: field.start()][-2200:]
     return bool(
         re.search(
-            rf'(?<![A-Za-z0-9_$]){variable}\s*=\s*void\s+0',
+            rf'(?<![A-Za-z0-9_$]){variable}\s*=\s*void\s*0',
             prior,
         )
     )
