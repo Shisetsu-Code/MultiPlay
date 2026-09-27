@@ -1,0 +1,141 @@
+name: Repair BGaming worker pass 3
+
+on:
+  push:
+    branches: ["main"]
+    paths:
+      - ".github/workflows/repair-bgaming-worker-pass3.yml"
+
+permissions:
+  actions: read
+  contents: write
+
+jobs:
+  repair:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+
+      - uses: actions/download-artifact@v4
+        with:
+          github-token: ${{ github.token }}
+          repository: ${{ github.repository }}
+          run-id: 36327590196
+          pattern: bgaming-worker-shard-*
+          path: downloaded
+          merge-multiple: false
+
+      - name: Rebuild pass state
+        run: |
+          python - <<'PY'
+          import json
+          from collections import Counter
+          from datetime import datetime, timezone
+          from pathlib import Path
+
+          run_id = "36327590196"
+          summaries = [
+              json.loads(p.read_text())
+              for p in sorted(Path("downloaded").rglob("summary.json"))
+          ]
+          if len(summaries) != 8:
+              raise SystemExit(f"expected 8 shards, got {len(summaries)}")
+
+          games = []
+          for summary in summaries:
+              games.extend(summary.get("games") or [])
+          games = list({row["slug"]: row for row in games}.values())
+          if len(games) != 86:
+              raise SystemExit(f"expected 86 games, got {len(games)}")
+
+          base = Path("knowledge/providers/bgaming")
+          state_path = base / "worker-state.json"
+          state_doc = json.loads(state_path.read_text()) if state_path.exists() else {}
+          state_games = state_doc.get("games") if isinstance(state_doc, dict) else {}
+          if not isinstance(state_games, dict):
+              state_games = {}
+
+          now = datetime.now(timezone.utc).isoformat()
+          for row in games:
+              old = state_games.get(row["slug"], {})
+              state_games[row["slug"]] = {
+                  "name": row["name"],
+                  "status": row["status"],
+                  "family": row.get("family"),
+                  "route_count": row.get("route_count", 0),
+                  "direct_executable_count": row.get("direct_executable_count", 0),
+                  "unresolved_network_count": row.get("unresolved_network_count", 0),
+                  "attempts": int(old.get("attempts") or 0) + 1,
+                  "last_run_id": run_id,
+                  "updated_at": now,
+              }
+
+          status_counts = Counter(row["status"] for row in games)
+          family_counts = Counter(str(row.get("family")) for row in games)
+          unresolved = Counter()
+          for row in games:
+              for action in row.get("unresolved_actions") or []:
+                  unresolved[str(action.get("semantic"))] += 1
+
+          review = [row for row in games if row.get("status") != "COMPLETE"]
+          review.sort(key=lambda row: (
+              {"ERROR":0,"NO_ROUTES":1,"PARTIAL":2}.get(row.get("status"),9),
+              str(row.get("family")),
+              row["slug"],
+          ))
+          summary = {
+              "schema":"multiplay/bgaming-worker-summary/v1",
+              "run_id":run_id,
+              "generated_at":now,
+              "planned":86,
+              "processed":86,
+              "status_counts":dict(sorted(status_counts.items())),
+              "family_counts":dict(sorted(family_counts.items())),
+              "unresolved_semantic_counts":dict(sorted(
+                  unresolved.items(), key=lambda x:(-x[1],x[0])
+              )),
+              "complete":status_counts.get("COMPLETE",0),
+              "needs_review":len(review),
+              "shards_recovered":8,
+          }
+          state_doc = {
+              "schema":"multiplay/bgaming-worker-state/v1",
+              "updated_at":now,
+              "last_run_id":run_id,
+              "games":state_games,
+          }
+          review_doc = {
+              "schema":"multiplay/bgaming-worker-review/v1",
+              "run_id":run_id,
+              "generated_at":now,
+              "summary":summary,
+              "games":review,
+          }
+          base.mkdir(parents=True, exist_ok=True)
+          state_path.write_text(json.dumps(state_doc,ensure_ascii=False,indent=2)+"\n")
+          (base/"worker-last-summary.json").write_text(
+              json.dumps(summary,ensure_ascii=False,indent=2)+"\n"
+          )
+          (base/"worker-last-review.json").write_text(
+              json.dumps(review_doc,ensure_ascii=False,indent=2)+"\n"
+          )
+          print(json.dumps(summary,indent=2))
+          PY
+
+      - name: Persist repaired state safely
+        run: |
+          mkdir -p /tmp/bgaming-worker-state
+          cp knowledge/providers/bgaming/worker-state.json /tmp/bgaming-worker-state/
+          cp knowledge/providers/bgaming/worker-last-summary.json /tmp/bgaming-worker-state/
+          cp knowledge/providers/bgaming/worker-last-review.json /tmp/bgaming-worker-state/
+          git fetch origin main
+          git reset --hard origin/main
+          cp /tmp/bgaming-worker-state/* knowledge/providers/bgaming/
+          git config user.name "MultiPlay Worker"
+          git config user.email "multiplay-worker@users.noreply.github.com"
+          git add knowledge/providers/bgaming/worker-*.json
+          git commit -m "Repair BGaming pass 3 aggregate"
+          git push origin HEAD:main
