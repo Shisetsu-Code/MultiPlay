@@ -359,6 +359,7 @@ def _resolve_control(
     if control.get("kind") != "declared_button":
         markers.update(str(item) for item in control.get("wire_markers") or [])
     markers.update(str(item) for item in best.get("wire_markers") or [])
+    markers.update(_handler_wire_markers(semantic, handler))
     markers = _relevant_markers(semantic, markers)
 
     observed_match = _match_observed(
@@ -576,6 +577,23 @@ def _called_symbols(body: str) -> list[str]:
         )
     )
     return unique[:30]
+
+
+def _handler_wire_markers(semantic: str, handler: str) -> set[str]:
+    if semantic != "BUY_BONUS" or "`" not in handler:
+        return set()
+
+    raw = handler.split("`", 1)[1]
+    args = [item.strip() for item in raw.split(",")]
+    if not args or not args[0]:
+        return set()
+
+    markers = {f"purchased_feature={args[0]}"}
+    if len(args) > 1:
+        level = args[1]
+        if level and level.casefold() not in {"null", "none", "undefined"}:
+            markers.add(f"purchased_feature_level={level}")
+    return markers
 
 
 def _protocol_markers(text: str) -> set[str]:
