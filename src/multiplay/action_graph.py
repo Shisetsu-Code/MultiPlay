@@ -936,6 +936,18 @@ def _match_observed(
                 elif semantic_tokens and semantic_tokens <= value_tokens:
                     score += 25
 
+        if (
+            score == 0
+            and allow_semantic
+            and semantic == "SPIN"
+            and not has_purchase
+            and "method=play" in observed_markers
+            and re.search(r"spin", f"{label} {handler}", re.IGNORECASE)
+        ):
+            # HyperHive UI controls are often named spin/spinClicked while
+            # the actual wire operation is the generic JSON-RPC method "play".
+            score = 60
+
         if score > 0:
             if semantic == "SPIN":
                 score += 80 if not has_purchase else -120
