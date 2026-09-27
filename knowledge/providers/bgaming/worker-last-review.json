@@ -1,30 +1,30 @@
 {
   "schema": "multiplay/bgaming-worker-review/v1",
-  "run_id": "36337851707",
-  "generated_at": "2026-09-27T17:44:16.477251+00:00",
+  "run_id": "36341112515",
+  "generated_at": "2026-09-27T18:36:35.709528+00:00",
   "summary": {
     "schema": "multiplay/bgaming-worker-summary/v1",
-    "run_id": "36337851707",
-    "generated_at": "2026-09-27T17:44:16.477251+00:00",
-    "planned": 47,
-    "processed": 47,
+    "run_id": "36341112515",
+    "generated_at": "2026-09-27T18:36:35.709528+00:00",
+    "planned": 33,
+    "processed": 33,
     "status_counts": {
-      "COMPLETE": 14,
+      "COMPLETE": 3,
       "ERROR": 3,
-      "NO_ROUTES": 8,
-      "PARTIAL": 22
+      "NO_ROUTES": 9,
+      "PARTIAL": 18
     },
     "family_counts": {
       "None": 3,
-      "api-v2": 20,
-      "hyperhive-jsonrpc": 24
+      "api-v2": 10,
+      "hyperhive-jsonrpc": 20
     },
     "unresolved_semantic_counts": {
-      "BUY_BONUS": 13,
-      "SPIN": 8
+      "SPIN": 8,
+      "BUY_BONUS": 4
     },
-    "complete": 14,
-    "needs_review": 33
+    "complete": 3,
+    "needs_review": 30
   },
   "games": [
     {
@@ -42,7 +42,7 @@
       "direct_actions": [],
       "unresolved_actions": [],
       "switchable_children": [],
-      "error": "^^^^^^^^^^^^^^^^^^^\n  File \"/opt/hostedtoolcache/Python/3.12.14/x64/lib/python3.12/urllib/request.py\", line 492, in _call_chain\n    result = func(*args)\n             ^^^^^^^^^^^\n  File \"/opt/hostedtoolcache/Python/3.12.14/x64/lib/python3.12/urllib/request.py\", line 639, in http_error_default\n    raise HTTPError(req.full_url, code, msg, hdrs, fp)\nurllib.error.HTTPError: HTTP Error 404: Not Found\n\nThe above exception was the direct cause of the following exception:\n\nTraceback (most recent call last):\n  File \"/opt/hostedtoolcache/Python/3.12.14/x64/bin/multiplay\", line 6, in <module>\n    sys.exit(main())\n             ^^^^^^\n  File \"/home/runner/work/MultiPlay/MultiPlay/src/multiplay/cli.py\", line 168, in main\n    return _bgaming_analyze_demo(args)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/work/MultiPlay/MultiPlay/src/multiplay/cli.py\", line 252, in _bgaming_analyze_demo\n    report = analyze_bgaming_demo(\n             ^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/work/MultiPlay/MultiPlay/src/multiplay/providers/bgaming/auto_analyze.py\", line 86, in analyze_bgaming_demo\n    family = _detect_family(browser_evidence, url=execution_url, timeout_s=timeout_s)\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/work/MultiPlay/MultiPlay/src/multiplay/providers/bgaming/auto_analyze.py\", line 974, in _detect_family\n    probe = probe_bgaming_demo(url, timeout_s=timeout_s)\n            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/work/MultiPlay/MultiPlay/src/multiplay/providers/bgaming/probe.py\", line 172, in probe_bgaming_demo\n    launch = _resolve_demo(session, source, timeout_s=timeout_s)\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/work/MultiPlay/MultiPlay/src/multiplay/providers/bgaming/probe.py\", line 271, in _resolve_demo\n    first = session.get(source, timeout_s=timeout_s)\n            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/work/MultiPlay/MultiPlay/src/multiplay/providers/bgaming/probe.py\", line 87, in get\n    return self._request(url, timeout_s=timeout_s, headers=headers)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/work/MultiPlay/MultiPlay/src/multiplay/providers/bgaming/probe.py\", line 153, in _request\n    raise RuntimeError(f\"BGaming probe HTTP {exc.code}: {safe}\") from exc\nRuntimeError: BGaming probe HTTP 404: https://demo.bgaming-network.com/play/PrincessOfSky/FUN\n"
+      "error": "^^^^^^^^^^^^^^^^^^^\n  File \"/opt/hostedtoolcache/Python/3.12.14/x64/lib/python3.12/urllib/request.py\", line 492, in _call_chain\n    result = func(*args)\n             ^^^^^^^^^^^\n  File \"/opt/hostedtoolcache/Python/3.12.14/x64/lib/python3.12/urllib/request.py\", line 639, in http_error_default\n    raise HTTPError(req.full_url, code, msg, hdrs, fp)\nurllib.error.HTTPError: HTTP Error 404: Not Found\n\nThe above exception was the direct cause of the following exception:\n\nTraceback (most recent call last):\n  File \"/opt/hostedtoolcache/Python/3.12.14/x64/bin/multiplay\", line 6, in <module>\n    sys.exit(main())\n             ^^^^^^\n  File \"/home/runner/work/MultiPlay/MultiPlay/src/multiplay/cli.py\", line 168, in main\n    return _bgaming_analyze_demo(args)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/work/MultiPlay/MultiPlay/src/multiplay/cli.py\", line 252, in _bgaming_analyze_demo\n    report = analyze_bgaming_demo(\n             ^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/work/MultiPlay/MultiPlay/src/multiplay/providers/bgaming/auto_analyze.py\", line 86, in analyze_bgaming_demo\n    family = _detect_family(browser_evidence, url=execution_url, timeout_s=timeout_s)\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/work/MultiPlay/MultiPlay/src/multiplay/providers/bgaming/auto_analyze.py\", line 985, in _detect_family\n    probe = probe_bgaming_demo(url, timeout_s=timeout_s)\n            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/work/MultiPlay/MultiPlay/src/multiplay/providers/bgaming/probe.py\", line 172, in probe_bgaming_demo\n    launch = _resolve_demo(session, source, timeout_s=timeout_s)\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/work/MultiPlay/MultiPlay/src/multiplay/providers/bgaming/probe.py\", line 271, in _resolve_demo\n    first = session.get(source, timeout_s=timeout_s)\n            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/work/MultiPlay/MultiPlay/src/multiplay/providers/bgaming/probe.py\", line 87, in get\n    return self._request(url, timeout_s=timeout_s, headers=headers)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/work/MultiPlay/MultiPlay/src/multiplay/providers/bgaming/probe.py\", line 153, in _request\n    raise RuntimeError(f\"BGaming probe HTTP {exc.code}: {safe}\") from exc\nRuntimeError: BGaming probe HTTP 404: https://demo.bgaming-network.com/play/PrincessOfSky/FUN\n"
     },
     {
       "slug": "princess-royal",
@@ -59,7 +59,7 @@
       "direct_actions": [],
       "unresolved_actions": [],
       "switchable_children": [],
-      "error": "^^^^^^^^^^^^^^^^^^^\n  File \"/opt/hostedtoolcache/Python/3.12.14/x64/lib/python3.12/urllib/request.py\", line 492, in _call_chain\n    result = func(*args)\n             ^^^^^^^^^^^\n  File \"/opt/hostedtoolcache/Python/3.12.14/x64/lib/python3.12/urllib/request.py\", line 639, in http_error_default\n    raise HTTPError(req.full_url, code, msg, hdrs, fp)\nurllib.error.HTTPError: HTTP Error 404: Not Found\n\nThe above exception was the direct cause of the following exception:\n\nTraceback (most recent call last):\n  File \"/opt/hostedtoolcache/Python/3.12.14/x64/bin/multiplay\", line 6, in <module>\n    sys.exit(main())\n             ^^^^^^\n  File \"/home/runner/work/MultiPlay/MultiPlay/src/multiplay/cli.py\", line 168, in main\n    return _bgaming_analyze_demo(args)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/work/MultiPlay/MultiPlay/src/multiplay/cli.py\", line 252, in _bgaming_analyze_demo\n    report = analyze_bgaming_demo(\n             ^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/work/MultiPlay/MultiPlay/src/multiplay/providers/bgaming/auto_analyze.py\", line 86, in analyze_bgaming_demo\n    family = _detect_family(browser_evidence, url=execution_url, timeout_s=timeout_s)\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/work/MultiPlay/MultiPlay/src/multiplay/providers/bgaming/auto_analyze.py\", line 974, in _detect_family\n    probe = probe_bgaming_demo(url, timeout_s=timeout_s)\n            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/work/MultiPlay/MultiPlay/src/multiplay/providers/bgaming/probe.py\", line 172, in probe_bgaming_demo\n    launch = _resolve_demo(session, source, timeout_s=timeout_s)\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/work/MultiPlay/MultiPlay/src/multiplay/providers/bgaming/probe.py\", line 271, in _resolve_demo\n    first = session.get(source, timeout_s=timeout_s)\n            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/work/MultiPlay/MultiPlay/src/multiplay/providers/bgaming/probe.py\", line 87, in get\n    return self._request(url, timeout_s=timeout_s, headers=headers)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/work/MultiPlay/MultiPlay/src/multiplay/providers/bgaming/probe.py\", line 153, in _request\n    raise RuntimeError(f\"BGaming probe HTTP {exc.code}: {safe}\") from exc\nRuntimeError: BGaming probe HTTP 404: https://demo.bgaming-network.com/play/PrincessRoyal/FUN\n"
+      "error": "^^^^^^^^^^^^^^^^^^^\n  File \"/opt/hostedtoolcache/Python/3.12.14/x64/lib/python3.12/urllib/request.py\", line 492, in _call_chain\n    result = func(*args)\n             ^^^^^^^^^^^\n  File \"/opt/hostedtoolcache/Python/3.12.14/x64/lib/python3.12/urllib/request.py\", line 639, in http_error_default\n    raise HTTPError(req.full_url, code, msg, hdrs, fp)\nurllib.error.HTTPError: HTTP Error 404: Not Found\n\nThe above exception was the direct cause of the following exception:\n\nTraceback (most recent call last):\n  File \"/opt/hostedtoolcache/Python/3.12.14/x64/bin/multiplay\", line 6, in <module>\n    sys.exit(main())\n             ^^^^^^\n  File \"/home/runner/work/MultiPlay/MultiPlay/src/multiplay/cli.py\", line 168, in main\n    return _bgaming_analyze_demo(args)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/work/MultiPlay/MultiPlay/src/multiplay/cli.py\", line 252, in _bgaming_analyze_demo\n    report = analyze_bgaming_demo(\n             ^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/work/MultiPlay/MultiPlay/src/multiplay/providers/bgaming/auto_analyze.py\", line 86, in analyze_bgaming_demo\n    family = _detect_family(browser_evidence, url=execution_url, timeout_s=timeout_s)\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/work/MultiPlay/MultiPlay/src/multiplay/providers/bgaming/auto_analyze.py\", line 985, in _detect_family\n    probe = probe_bgaming_demo(url, timeout_s=timeout_s)\n            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/work/MultiPlay/MultiPlay/src/multiplay/providers/bgaming/probe.py\", line 172, in probe_bgaming_demo\n    launch = _resolve_demo(session, source, timeout_s=timeout_s)\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/work/MultiPlay/MultiPlay/src/multiplay/providers/bgaming/probe.py\", line 271, in _resolve_demo\n    first = session.get(source, timeout_s=timeout_s)\n            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/work/MultiPlay/MultiPlay/src/multiplay/providers/bgaming/probe.py\", line 87, in get\n    return self._request(url, timeout_s=timeout_s, headers=headers)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/work/MultiPlay/MultiPlay/src/multiplay/providers/bgaming/probe.py\", line 153, in _request\n    raise RuntimeError(f\"BGaming probe HTTP {exc.code}: {safe}\") from exc\nRuntimeError: BGaming probe HTTP 404: https://demo.bgaming-network.com/play/PrincessRoyal/FUN\n"
     },
     {
       "slug": "scroll-of-adventure",
@@ -76,7 +76,7 @@
       "direct_actions": [],
       "unresolved_actions": [],
       "switchable_children": [],
-      "error": "^^^^^^^^^^^^^^^\n  File \"/opt/hostedtoolcache/Python/3.12.14/x64/lib/python3.12/urllib/request.py\", line 492, in _call_chain\n    result = func(*args)\n             ^^^^^^^^^^^\n  File \"/opt/hostedtoolcache/Python/3.12.14/x64/lib/python3.12/urllib/request.py\", line 639, in http_error_default\n    raise HTTPError(req.full_url, code, msg, hdrs, fp)\nurllib.error.HTTPError: HTTP Error 404: Not Found\n\nThe above exception was the direct cause of the following exception:\n\nTraceback (most recent call last):\n  File \"/opt/hostedtoolcache/Python/3.12.14/x64/bin/multiplay\", line 6, in <module>\n    sys.exit(main())\n             ^^^^^^\n  File \"/home/runner/work/MultiPlay/MultiPlay/src/multiplay/cli.py\", line 168, in main\n    return _bgaming_analyze_demo(args)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/work/MultiPlay/MultiPlay/src/multiplay/cli.py\", line 252, in _bgaming_analyze_demo\n    report = analyze_bgaming_demo(\n             ^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/work/MultiPlay/MultiPlay/src/multiplay/providers/bgaming/auto_analyze.py\", line 86, in analyze_bgaming_demo\n    family = _detect_family(browser_evidence, url=execution_url, timeout_s=timeout_s)\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/work/MultiPlay/MultiPlay/src/multiplay/providers/bgaming/auto_analyze.py\", line 974, in _detect_family\n    probe = probe_bgaming_demo(url, timeout_s=timeout_s)\n            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/work/MultiPlay/MultiPlay/src/multiplay/providers/bgaming/probe.py\", line 172, in probe_bgaming_demo\n    launch = _resolve_demo(session, source, timeout_s=timeout_s)\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/work/MultiPlay/MultiPlay/src/multiplay/providers/bgaming/probe.py\", line 271, in _resolve_demo\n    first = session.get(source, timeout_s=timeout_s)\n            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/work/MultiPlay/MultiPlay/src/multiplay/providers/bgaming/probe.py\", line 87, in get\n    return self._request(url, timeout_s=timeout_s, headers=headers)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/work/MultiPlay/MultiPlay/src/multiplay/providers/bgaming/probe.py\", line 153, in _request\n    raise RuntimeError(f\"BGaming probe HTTP {exc.code}: {safe}\") from exc\nRuntimeError: BGaming probe HTTP 404: https://demo.bgaming-network.com/play/ScrollOfAdventure/FUN\n"
+      "error": "^^^^^^^^^^^^^^^\n  File \"/opt/hostedtoolcache/Python/3.12.14/x64/lib/python3.12/urllib/request.py\", line 492, in _call_chain\n    result = func(*args)\n             ^^^^^^^^^^^\n  File \"/opt/hostedtoolcache/Python/3.12.14/x64/lib/python3.12/urllib/request.py\", line 639, in http_error_default\n    raise HTTPError(req.full_url, code, msg, hdrs, fp)\nurllib.error.HTTPError: HTTP Error 404: Not Found\n\nThe above exception was the direct cause of the following exception:\n\nTraceback (most recent call last):\n  File \"/opt/hostedtoolcache/Python/3.12.14/x64/bin/multiplay\", line 6, in <module>\n    sys.exit(main())\n             ^^^^^^\n  File \"/home/runner/work/MultiPlay/MultiPlay/src/multiplay/cli.py\", line 168, in main\n    return _bgaming_analyze_demo(args)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/work/MultiPlay/MultiPlay/src/multiplay/cli.py\", line 252, in _bgaming_analyze_demo\n    report = analyze_bgaming_demo(\n             ^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/work/MultiPlay/MultiPlay/src/multiplay/providers/bgaming/auto_analyze.py\", line 86, in analyze_bgaming_demo\n    family = _detect_family(browser_evidence, url=execution_url, timeout_s=timeout_s)\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/work/MultiPlay/MultiPlay/src/multiplay/providers/bgaming/auto_analyze.py\", line 985, in _detect_family\n    probe = probe_bgaming_demo(url, timeout_s=timeout_s)\n            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/work/MultiPlay/MultiPlay/src/multiplay/providers/bgaming/probe.py\", line 172, in probe_bgaming_demo\n    launch = _resolve_demo(session, source, timeout_s=timeout_s)\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/work/MultiPlay/MultiPlay/src/multiplay/providers/bgaming/probe.py\", line 271, in _resolve_demo\n    first = session.get(source, timeout_s=timeout_s)\n            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/work/MultiPlay/MultiPlay/src/multiplay/providers/bgaming/probe.py\", line 87, in get\n    return self._request(url, timeout_s=timeout_s, headers=headers)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/work/MultiPlay/MultiPlay/src/multiplay/providers/bgaming/probe.py\", line 153, in _request\n    raise RuntimeError(f\"BGaming probe HTTP {exc.code}: {safe}\") from exc\nRuntimeError: BGaming probe HTTP 404: https://demo.bgaming-network.com/play/ScrollOfAdventure/FUN\n"
     },
     {
       "slug": "aztecs-claw-wild-dice",
@@ -202,6 +202,23 @@
       "error": ""
     },
     {
+      "slug": "wild-clusters",
+      "name": "Wild Clusters",
+      "url": "https://demo.bgaming-network.com/play/WildClustersP/FUN",
+      "availability": "DEMO",
+      "returncode": 0,
+      "status": "NO_ROUTES",
+      "family": "hyperhive-jsonrpc",
+      "route_count": 0,
+      "direct_executable_count": 0,
+      "unresolved_network_count": 0,
+      "blockers": [],
+      "direct_actions": [],
+      "unresolved_actions": [],
+      "switchable_children": [],
+      "error": ""
+    },
+    {
       "slug": "zeus-goes-wild",
       "name": "Zeus Goes Wild",
       "url": "https://demo.bgaming-network.com/play/ZeusGoesWild/FUN",
@@ -234,90 +251,6 @@
       ],
       "direct_actions": [],
       "unresolved_actions": [],
-      "switchable_children": [],
-      "error": ""
-    },
-    {
-      "slug": "diamond-of-jungle",
-      "name": "Diamond of Jungle",
-      "url": "https://demo.bgaming-network.com/play/DiamondOfJungle/FUN?server=demo",
-      "availability": "DEMO",
-      "returncode": 0,
-      "status": "PARTIAL",
-      "family": "api-v2",
-      "route_count": 6,
-      "direct_executable_count": 0,
-      "unresolved_network_count": 2,
-      "blockers": [
-        "handler probe did not produce a matching successful request"
-      ],
-      "direct_actions": [],
-      "unresolved_actions": [
-        {
-          "semantic": "BUY_BONUS",
-          "control": "buy-btn",
-          "handler": "all.buy-features.buyBonusClick`freespin_buy,2",
-          "status": "NETWORK_INFERRED",
-          "wire": [
-            "command=play",
-            "purchased_feature=freespin_buy",
-            "purchased_feature_level=2"
-          ]
-        },
-        {
-          "semantic": "BUY_BONUS",
-          "control": "buy-btn",
-          "handler": "all.buy-features.buyBonusClick`freespin_buy,1",
-          "status": "NETWORK_INFERRED",
-          "wire": [
-            "command=play",
-            "purchased_feature=freespin_buy",
-            "purchased_feature_level=1"
-          ]
-        }
-      ],
-      "switchable_children": [],
-      "error": ""
-    },
-    {
-      "slug": "disco-party",
-      "name": "Disco Party",
-      "url": "https://demo.bgaming-network.com/play/DiscoParty/FUN?server=demo",
-      "availability": "DEMO",
-      "returncode": 0,
-      "status": "PARTIAL",
-      "family": "api-v2",
-      "route_count": 6,
-      "direct_executable_count": 0,
-      "unresolved_network_count": 2,
-      "blockers": [
-        "handler probe did not produce a matching successful request"
-      ],
-      "direct_actions": [],
-      "unresolved_actions": [
-        {
-          "semantic": "BUY_BONUS",
-          "control": "buy-btn",
-          "handler": "all.buy-features.buyBonusClick`freespin_buy,2",
-          "status": "NETWORK_INFERRED",
-          "wire": [
-            "command=play",
-            "purchased_feature=freespin_buy",
-            "purchased_feature_level=2"
-          ]
-        },
-        {
-          "semantic": "BUY_BONUS",
-          "control": "buy-btn",
-          "handler": "all.buy-features.buyBonusClick`freespin_buy,1",
-          "status": "NETWORK_INFERRED",
-          "wire": [
-            "command=play",
-            "purchased_feature=freespin_buy",
-            "purchased_feature_level=1"
-          ]
-        }
-      ],
       "switchable_children": [],
       "error": ""
     },
@@ -357,12 +290,20 @@
       "status": "PARTIAL",
       "family": "api-v2",
       "route_count": 6,
-      "direct_executable_count": 0,
+      "direct_executable_count": 1,
       "unresolved_network_count": 1,
-      "blockers": [
-        "handler probe did not produce a matching successful request"
+      "blockers": [],
+      "direct_actions": [
+        {
+          "semantic": "SPIN",
+          "control": "spin-button",
+          "handler": "currentScene.spin`1",
+          "wire": [
+            "command=spin"
+          ],
+          "role": "network_action"
+        }
       ],
-      "direct_actions": [],
       "unresolved_actions": [
         {
           "semantic": "BUY_BONUS",
@@ -371,81 +312,6 @@
           "status": "NETWORK_INFERRED",
           "wire": [
             "purchased_feature=freespin_buy"
-          ]
-        }
-      ],
-      "switchable_children": [],
-      "error": ""
-    },
-    {
-      "slug": "maneki-88-gold",
-      "name": "Maneki 88 Gold",
-      "url": "https://demo.bgaming-network.com/play/Maneki88Gold/FUN?server=demo",
-      "availability": "DEMO",
-      "returncode": 0,
-      "status": "PARTIAL",
-      "family": "api-v2",
-      "route_count": 10,
-      "direct_executable_count": 0,
-      "unresolved_network_count": 5,
-      "blockers": [
-        "handler probe did not produce a matching successful request"
-      ],
-      "direct_actions": [],
-      "unresolved_actions": [
-        {
-          "semantic": "BUY_BONUS",
-          "control": "1",
-          "handler": "all.buy-features.buyBonusClick`freespin_buy,1",
-          "status": "NETWORK_INFERRED",
-          "wire": [
-            "command=play",
-            "purchased_feature=freespin_buy",
-            "purchased_feature_level=1"
-          ]
-        },
-        {
-          "semantic": "BUY_BONUS",
-          "control": "2",
-          "handler": "all.buy-features.buyBonusClick`freespin_buy,2",
-          "status": "NETWORK_INFERRED",
-          "wire": [
-            "command=play",
-            "purchased_feature=freespin_buy",
-            "purchased_feature_level=2"
-          ]
-        },
-        {
-          "semantic": "BUY_BONUS",
-          "control": "3",
-          "handler": "all.buy-features.buyBonusClick`freespin_buy,3",
-          "status": "NETWORK_INFERRED",
-          "wire": [
-            "command=play",
-            "purchased_feature=freespin_buy",
-            "purchased_feature_level=3"
-          ]
-        },
-        {
-          "semantic": "BUY_BONUS",
-          "control": "4",
-          "handler": "all.buy-features.buyBonusClick`freespin_buy,4",
-          "status": "NETWORK_INFERRED",
-          "wire": [
-            "command=play",
-            "purchased_feature=freespin_buy",
-            "purchased_feature_level=4"
-          ]
-        },
-        {
-          "semantic": "BUY_BONUS",
-          "control": "5",
-          "handler": "all.buy-features.buyBonusClick`freespin_buy,5",
-          "status": "NETWORK_INFERRED",
-          "wire": [
-            "command=play",
-            "purchased_feature=freespin_buy",
-            "purchased_feature_level=5"
           ]
         }
       ],
@@ -574,7 +440,9 @@
       "route_count": 1,
       "direct_executable_count": 0,
       "unresolved_network_count": 1,
-      "blockers": [],
+      "blockers": [
+        "handler probe did not produce a matching successful request"
+      ],
       "direct_actions": [],
       "unresolved_actions": [
         {
@@ -628,7 +496,9 @@
       "route_count": 2,
       "direct_executable_count": 0,
       "unresolved_network_count": 2,
-      "blockers": [],
+      "blockers": [
+        "handler probe did not produce a matching successful request"
+      ],
       "direct_actions": [],
       "unresolved_actions": [
         {
@@ -664,7 +534,9 @@
       "route_count": 1,
       "direct_executable_count": 0,
       "unresolved_network_count": 1,
-      "blockers": [],
+      "blockers": [
+        "handler probe did not produce a matching successful request"
+      ],
       "direct_actions": [],
       "unresolved_actions": [
         {
@@ -691,7 +563,9 @@
       "route_count": 1,
       "direct_executable_count": 0,
       "unresolved_network_count": 1,
-      "blockers": [],
+      "blockers": [
+        "handler probe did not produce a matching successful request"
+      ],
       "direct_actions": [],
       "unresolved_actions": [
         {
@@ -774,7 +648,9 @@
       "route_count": 1,
       "direct_executable_count": 0,
       "unresolved_network_count": 1,
-      "blockers": [],
+      "blockers": [
+        "handler probe did not produce a matching successful request"
+      ],
       "direct_actions": [],
       "unresolved_actions": [
         {
@@ -801,7 +677,9 @@
       "route_count": 1,
       "direct_executable_count": 0,
       "unresolved_network_count": 1,
-      "blockers": [],
+      "blockers": [
+        "handler probe did not produce a matching successful request"
+      ],
       "direct_actions": [],
       "unresolved_actions": [
         {
@@ -829,7 +707,8 @@
       "direct_executable_count": 0,
       "unresolved_network_count": 1,
       "blockers": [
-        "HyperHive base-play enrichment failed: ValueError: BGaming HyperHive client scripts exposed no usable wire contract."
+        "HyperHive base-play enrichment failed: ValueError: BGaming HyperHive client scripts exposed no usable wire contract.",
+        "handler probe did not produce a matching successful request"
       ],
       "direct_actions": [],
       "unresolved_actions": [
@@ -857,7 +736,9 @@
       "route_count": 1,
       "direct_executable_count": 0,
       "unresolved_network_count": 1,
-      "blockers": [],
+      "blockers": [
+        "handler probe did not produce a matching successful request"
+      ],
       "direct_actions": [],
       "unresolved_actions": [
         {
@@ -870,33 +751,6 @@
           ]
         }
       ],
-      "switchable_children": [],
-      "error": ""
-    },
-    {
-      "slug": "wild-clusters",
-      "name": "Wild Clusters",
-      "url": "https://demo.bgaming-network.com/play/WildClustersP/FUN",
-      "availability": "DEMO",
-      "returncode": 0,
-      "status": "PARTIAL",
-      "family": "hyperhive-jsonrpc",
-      "route_count": 1,
-      "direct_executable_count": 1,
-      "unresolved_network_count": 0,
-      "blockers": [],
-      "direct_actions": [
-        {
-          "semantic": "SPIN",
-          "control": "protocol:play",
-          "handler": "",
-          "wire": [
-            "method=play"
-          ],
-          "role": "protocol_action"
-        }
-      ],
-      "unresolved_actions": [],
       "switchable_children": [],
       "error": ""
     }
