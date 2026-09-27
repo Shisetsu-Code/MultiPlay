@@ -87,6 +87,7 @@ _SEMANTICS = (
     ("FREESPIN", re.compile(r"(free.?spin|freespin)", re.IGNORECASE)),
     ("RESPIN", re.compile(r"respin", re.IGNORECASE)),
     ("AUTOSPIN", re.compile(r"autospin", re.IGNORECASE)),
+    ("SKIP", re.compile(r"(^|[-_.])skip(?:desktop|mobile)?($|[-_.])|\bskip(?:desktop|mobile)?\b", re.IGNORECASE)),
     ("SPIN", re.compile(r"(^|[-_.])spin($|[-_.])|spinClick|\bspin(?:desktop|mobile)?\b", re.IGNORECASE)),
     ("GAMBLE", re.compile(r"gamble", re.IGNORECASE)),
     ("COLLECT", re.compile(r"collect", re.IGNORECASE)),
@@ -398,7 +399,7 @@ def _resolve_control(
         observed_match=observed_match,
     )
     if semantic == "OTHER":
-        semantic = _semantic(label, handler, best.get("chain") or [], markers)
+        semantic = _semantic(label, handler, best.get("chain") or [], set())
     endpoint_ids = (
         list(observed_match.get("endpoint_ids") or [])
         if observed_match is not None
@@ -799,6 +800,31 @@ def _match_observed(
 
     for item in observed:
         observed_markers = {str(value) for value in item.get("wire_markers") or []}
+
+        if semantic == "SPIN" and not (
+            {"command=spin", "method=play"} & observed_markers
+        ):
+            continue
+        if semantic == "FREESPIN" and not (
+            {"command=freespin", "method=play"} & observed_markers
+            or any(
+                marker.startswith("purchased_feature=")
+                for marker in observed_markers
+            )
+        ):
+            continue
+        if semantic == "RESPIN" and not (
+            {"command=respin", "method=play"} & observed_markers
+        ):
+            continue
+        if semantic == "BUY_BONUS" and not any(
+            marker.startswith("purchased_feature=")
+            for marker in observed_markers
+        ):
+            continue
+        if semantic in {"SKIP", "CHANCE"}:
+            continue
+
         shared = markers & observed_markers
         score = len(shared) * 100
 
@@ -912,6 +938,8 @@ def _interface_role(
         return "network_action"
     if semantic in {"BET", "AUTOSPIN", "CHANCE"}:
         return "client_state"
+    if semantic == "SKIP":
+        return "client_control"
     return "client_control"
 
 def _keep_route(route: dict[str, Any]) -> bool:
@@ -980,6 +1008,13 @@ def _keep_route(route: dict[str, Any]) -> bool:
     ):
         return True
 
+    if semantic == "SKIP" and re.search(
+        r"skip",
+        f"{label} {handler}",
+        re.IGNORECASE,
+    ):
+        return True
+
     if status == "CLIENT_OR_UNKNOWN" and semantic in {
         "SPIN",
         "GAMBLE",
@@ -1012,8 +1047,8 @@ def _dedupe_routes(routes: list[dict[str, Any]]) -> list[dict[str, Any]]:
     for route in routes:
         key = (
             str(route.get("control") or ""),
-            str(route.get("handler") or ""),
             str(route.get("semantic") or ""),
+            str(route.get("interface_role") or ""),
         )
         current = grouped.get(key)
         if current is None or _route_rank(route) < _route_rank(current):
