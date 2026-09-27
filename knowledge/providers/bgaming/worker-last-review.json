@@ -1,30 +1,151 @@
 {
   "schema": "multiplay/bgaming-worker-review/v1",
-  "run_id": "36328707801",
-  "generated_at": "2026-09-27T15:16:03.861032+00:00",
+  "run_id": "36337851707",
+  "generated_at": "2026-09-27T17:44:16.477251+00:00",
   "summary": {
     "schema": "multiplay/bgaming-worker-summary/v1",
-    "run_id": "36328707801",
-    "generated_at": "2026-09-27T15:16:03.861032+00:00",
+    "run_id": "36337851707",
+    "generated_at": "2026-09-27T17:44:16.477251+00:00",
     "planned": 47,
     "processed": 47,
     "status_counts": {
-      "COMPLETE": 4,
-      "NO_ROUTES": 2,
-      "PARTIAL": 41
+      "COMPLETE": 14,
+      "ERROR": 3,
+      "NO_ROUTES": 8,
+      "PARTIAL": 22
     },
     "family_counts": {
-      "api-v2": 19,
-      "hyperhive-jsonrpc": 28
+      "None": 3,
+      "api-v2": 20,
+      "hyperhive-jsonrpc": 24
     },
     "unresolved_semantic_counts": {
-      "BUY_BONUS": 29,
-      "SPIN": 1
+      "BUY_BONUS": 13,
+      "SPIN": 8
     },
-    "complete": 4,
-    "needs_review": 43
+    "complete": 14,
+    "needs_review": 33
   },
   "games": [
+    {
+      "slug": "princess-of-sky",
+      "name": "Princess of Sky",
+      "url": "https://demo.bgaming-network.com/play/PrincessOfSky/FUN?server=demo",
+      "availability": "DEMO",
+      "returncode": 1,
+      "status": "ERROR",
+      "family": null,
+      "route_count": 0,
+      "direct_executable_count": 0,
+      "unresolved_network_count": 0,
+      "blockers": [],
+      "direct_actions": [],
+      "unresolved_actions": [],
+      "switchable_children": [],
+      "error": "^^^^^^^^^^^^^^^^^^^\n  File \"/opt/hostedtoolcache/Python/3.12.14/x64/lib/python3.12/urllib/request.py\", line 492, in _call_chain\n    result = func(*args)\n             ^^^^^^^^^^^\n  File \"/opt/hostedtoolcache/Python/3.12.14/x64/lib/python3.12/urllib/request.py\", line 639, in http_error_default\n    raise HTTPError(req.full_url, code, msg, hdrs, fp)\nurllib.error.HTTPError: HTTP Error 404: Not Found\n\nThe above exception was the direct cause of the following exception:\n\nTraceback (most recent call last):\n  File \"/opt/hostedtoolcache/Python/3.12.14/x64/bin/multiplay\", line 6, in <module>\n    sys.exit(main())\n             ^^^^^^\n  File \"/home/runner/work/MultiPlay/MultiPlay/src/multiplay/cli.py\", line 168, in main\n    return _bgaming_analyze_demo(args)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/work/MultiPlay/MultiPlay/src/multiplay/cli.py\", line 252, in _bgaming_analyze_demo\n    report = analyze_bgaming_demo(\n             ^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/work/MultiPlay/MultiPlay/src/multiplay/providers/bgaming/auto_analyze.py\", line 86, in analyze_bgaming_demo\n    family = _detect_family(browser_evidence, url=execution_url, timeout_s=timeout_s)\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/work/MultiPlay/MultiPlay/src/multiplay/providers/bgaming/auto_analyze.py\", line 974, in _detect_family\n    probe = probe_bgaming_demo(url, timeout_s=timeout_s)\n            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/work/MultiPlay/MultiPlay/src/multiplay/providers/bgaming/probe.py\", line 172, in probe_bgaming_demo\n    launch = _resolve_demo(session, source, timeout_s=timeout_s)\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/work/MultiPlay/MultiPlay/src/multiplay/providers/bgaming/probe.py\", line 271, in _resolve_demo\n    first = session.get(source, timeout_s=timeout_s)\n            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/work/MultiPlay/MultiPlay/src/multiplay/providers/bgaming/probe.py\", line 87, in get\n    return self._request(url, timeout_s=timeout_s, headers=headers)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/work/MultiPlay/MultiPlay/src/multiplay/providers/bgaming/probe.py\", line 153, in _request\n    raise RuntimeError(f\"BGaming probe HTTP {exc.code}: {safe}\") from exc\nRuntimeError: BGaming probe HTTP 404: https://demo.bgaming-network.com/play/PrincessOfSky/FUN\n"
+    },
+    {
+      "slug": "princess-royal",
+      "name": "Princess Royal",
+      "url": "https://bgaming-network.com/play/PrincessRoyal/FUN?server=demo",
+      "availability": "DEMO",
+      "returncode": 1,
+      "status": "ERROR",
+      "family": null,
+      "route_count": 0,
+      "direct_executable_count": 0,
+      "unresolved_network_count": 0,
+      "blockers": [],
+      "direct_actions": [],
+      "unresolved_actions": [],
+      "switchable_children": [],
+      "error": "^^^^^^^^^^^^^^^^^^^\n  File \"/opt/hostedtoolcache/Python/3.12.14/x64/lib/python3.12/urllib/request.py\", line 492, in _call_chain\n    result = func(*args)\n             ^^^^^^^^^^^\n  File \"/opt/hostedtoolcache/Python/3.12.14/x64/lib/python3.12/urllib/request.py\", line 639, in http_error_default\n    raise HTTPError(req.full_url, code, msg, hdrs, fp)\nurllib.error.HTTPError: HTTP Error 404: Not Found\n\nThe above exception was the direct cause of the following exception:\n\nTraceback (most recent call last):\n  File \"/opt/hostedtoolcache/Python/3.12.14/x64/bin/multiplay\", line 6, in <module>\n    sys.exit(main())\n             ^^^^^^\n  File \"/home/runner/work/MultiPlay/MultiPlay/src/multiplay/cli.py\", line 168, in main\n    return _bgaming_analyze_demo(args)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/work/MultiPlay/MultiPlay/src/multiplay/cli.py\", line 252, in _bgaming_analyze_demo\n    report = analyze_bgaming_demo(\n             ^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/work/MultiPlay/MultiPlay/src/multiplay/providers/bgaming/auto_analyze.py\", line 86, in analyze_bgaming_demo\n    family = _detect_family(browser_evidence, url=execution_url, timeout_s=timeout_s)\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/work/MultiPlay/MultiPlay/src/multiplay/providers/bgaming/auto_analyze.py\", line 974, in _detect_family\n    probe = probe_bgaming_demo(url, timeout_s=timeout_s)\n            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/work/MultiPlay/MultiPlay/src/multiplay/providers/bgaming/probe.py\", line 172, in probe_bgaming_demo\n    launch = _resolve_demo(session, source, timeout_s=timeout_s)\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/work/MultiPlay/MultiPlay/src/multiplay/providers/bgaming/probe.py\", line 271, in _resolve_demo\n    first = session.get(source, timeout_s=timeout_s)\n            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/work/MultiPlay/MultiPlay/src/multiplay/providers/bgaming/probe.py\", line 87, in get\n    return self._request(url, timeout_s=timeout_s, headers=headers)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/work/MultiPlay/MultiPlay/src/multiplay/providers/bgaming/probe.py\", line 153, in _request\n    raise RuntimeError(f\"BGaming probe HTTP {exc.code}: {safe}\") from exc\nRuntimeError: BGaming probe HTTP 404: https://demo.bgaming-network.com/play/PrincessRoyal/FUN\n"
+    },
+    {
+      "slug": "scroll-of-adventure",
+      "name": "Scroll of Adventure new",
+      "url": "https://bgaming-network.com/play/ScrollOfAdventure/FUN?server=demo",
+      "availability": "DEMO",
+      "returncode": 1,
+      "status": "ERROR",
+      "family": null,
+      "route_count": 0,
+      "direct_executable_count": 0,
+      "unresolved_network_count": 0,
+      "blockers": [],
+      "direct_actions": [],
+      "unresolved_actions": [],
+      "switchable_children": [],
+      "error": "^^^^^^^^^^^^^^^\n  File \"/opt/hostedtoolcache/Python/3.12.14/x64/lib/python3.12/urllib/request.py\", line 492, in _call_chain\n    result = func(*args)\n             ^^^^^^^^^^^\n  File \"/opt/hostedtoolcache/Python/3.12.14/x64/lib/python3.12/urllib/request.py\", line 639, in http_error_default\n    raise HTTPError(req.full_url, code, msg, hdrs, fp)\nurllib.error.HTTPError: HTTP Error 404: Not Found\n\nThe above exception was the direct cause of the following exception:\n\nTraceback (most recent call last):\n  File \"/opt/hostedtoolcache/Python/3.12.14/x64/bin/multiplay\", line 6, in <module>\n    sys.exit(main())\n             ^^^^^^\n  File \"/home/runner/work/MultiPlay/MultiPlay/src/multiplay/cli.py\", line 168, in main\n    return _bgaming_analyze_demo(args)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/work/MultiPlay/MultiPlay/src/multiplay/cli.py\", line 252, in _bgaming_analyze_demo\n    report = analyze_bgaming_demo(\n             ^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/work/MultiPlay/MultiPlay/src/multiplay/providers/bgaming/auto_analyze.py\", line 86, in analyze_bgaming_demo\n    family = _detect_family(browser_evidence, url=execution_url, timeout_s=timeout_s)\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/work/MultiPlay/MultiPlay/src/multiplay/providers/bgaming/auto_analyze.py\", line 974, in _detect_family\n    probe = probe_bgaming_demo(url, timeout_s=timeout_s)\n            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/work/MultiPlay/MultiPlay/src/multiplay/providers/bgaming/probe.py\", line 172, in probe_bgaming_demo\n    launch = _resolve_demo(session, source, timeout_s=timeout_s)\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/work/MultiPlay/MultiPlay/src/multiplay/providers/bgaming/probe.py\", line 271, in _resolve_demo\n    first = session.get(source, timeout_s=timeout_s)\n            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/work/MultiPlay/MultiPlay/src/multiplay/providers/bgaming/probe.py\", line 87, in get\n    return self._request(url, timeout_s=timeout_s, headers=headers)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/work/MultiPlay/MultiPlay/src/multiplay/providers/bgaming/probe.py\", line 153, in _request\n    raise RuntimeError(f\"BGaming probe HTTP {exc.code}: {safe}\") from exc\nRuntimeError: BGaming probe HTTP 404: https://demo.bgaming-network.com/play/ScrollOfAdventure/FUN\n"
+    },
+    {
+      "slug": "aztecs-claw-wild-dice",
+      "name": "Aztec's Claw Wild Dice",
+      "url": "https://demo.bgaming-network.com/play/AztecsClawWildDice/FUN",
+      "availability": "DEMO",
+      "returncode": 0,
+      "status": "NO_ROUTES",
+      "family": "hyperhive-jsonrpc",
+      "route_count": 0,
+      "direct_executable_count": 0,
+      "unresolved_network_count": 0,
+      "blockers": [],
+      "direct_actions": [],
+      "unresolved_actions": [],
+      "switchable_children": [],
+      "error": ""
+    },
+    {
+      "slug": "blackbeards-bounty",
+      "name": "Blackbeard's Bounty",
+      "url": "https://demo.bgaming-network.com/play/BlackbeardsBounty/FUN",
+      "availability": "DEMO",
+      "returncode": 0,
+      "status": "NO_ROUTES",
+      "family": "hyperhive-jsonrpc",
+      "route_count": 0,
+      "direct_executable_count": 0,
+      "unresolved_network_count": 0,
+      "blockers": [],
+      "direct_actions": [],
+      "unresolved_actions": [],
+      "switchable_children": [],
+      "error": ""
+    },
+    {
+      "slug": "blazing-fire-pots-hold-spin",
+      "name": "Blazing Fire Pots Hold & Spin",
+      "url": "https://demo.bgaming-network.com/play/BlazingFirepots/FUN",
+      "availability": "DEMO",
+      "returncode": 0,
+      "status": "NO_ROUTES",
+      "family": "hyperhive-jsonrpc",
+      "route_count": 0,
+      "direct_executable_count": 0,
+      "unresolved_network_count": 0,
+      "blockers": [],
+      "direct_actions": [],
+      "unresolved_actions": [],
+      "switchable_children": [],
+      "error": ""
+    },
+    {
+      "slug": "cats-love-yummy",
+      "name": "Cats Love Yummy",
+      "url": "https://demo.bgaming-network.com/play/CatsLoveYummy/FUN",
+      "availability": "DEMO",
+      "returncode": 0,
+      "status": "NO_ROUTES",
+      "family": "hyperhive-jsonrpc",
+      "route_count": 0,
+      "direct_executable_count": 0,
+      "unresolved_network_count": 0,
+      "blockers": [],
+      "direct_actions": [],
+      "unresolved_actions": [],
+      "switchable_children": [],
+      "error": ""
+    },
     {
       "slug": "grand-patron",
       "name": "Grand Patron",
@@ -39,6 +160,23 @@
       "blockers": [
         "HyperHive base-play enrichment failed: ValueError: BGaming HyperHive client scripts exposed no usable wire contract."
       ],
+      "direct_actions": [],
+      "unresolved_actions": [],
+      "switchable_children": [],
+      "error": ""
+    },
+    {
+      "slug": "jungle-queen",
+      "name": "Jungle Queen",
+      "url": "https://demo.bgaming-network.com/play/JungleQueen/FUN",
+      "availability": "DEMO",
+      "returncode": 0,
+      "status": "NO_ROUTES",
+      "family": "hyperhive-jsonrpc",
+      "route_count": 0,
+      "direct_executable_count": 0,
+      "unresolved_network_count": 0,
+      "blockers": [],
       "direct_actions": [],
       "unresolved_actions": [],
       "switchable_children": [],
@@ -64,59 +202,19 @@
       "error": ""
     },
     {
-      "slug": "big-atlantis-frenzy",
-      "name": "Big Atlantis Frenzy",
-      "url": "https://demo.bgaming-network.com/play/BigAtlantisFrenzy/FUN?server=demo",
+      "slug": "zeus-goes-wild",
+      "name": "Zeus Goes Wild",
+      "url": "https://demo.bgaming-network.com/play/ZeusGoesWild/FUN",
       "availability": "DEMO",
       "returncode": 0,
-      "status": "PARTIAL",
-      "family": "api-v2",
-      "route_count": 8,
+      "status": "NO_ROUTES",
+      "family": "hyperhive-jsonrpc",
+      "route_count": 0,
       "direct_executable_count": 0,
-      "unresolved_network_count": 1,
+      "unresolved_network_count": 0,
       "blockers": [],
       "direct_actions": [],
-      "unresolved_actions": [
-        {
-          "semantic": "BUY_BONUS",
-          "control": "buy-bonus-popup-buy",
-          "handler": "all.buy-features.buyBonusClick`freespin_buy",
-          "status": "NETWORK_INFERRED",
-          "wire": [
-            "command=play",
-            "purchased_feature=freespin_buy"
-          ]
-        }
-      ],
-      "switchable_children": [],
-      "error": ""
-    },
-    {
-      "slug": "big-boat-big-catch",
-      "name": "Big Boat \nBig catch",
-      "url": "https://demo.bgaming-network.com/play/BigTunaBonanza/FUN?server=demo",
-      "availability": "DEMO",
-      "returncode": 0,
-      "status": "PARTIAL",
-      "family": "api-v2",
-      "route_count": 6,
-      "direct_executable_count": 0,
-      "unresolved_network_count": 1,
-      "blockers": [],
-      "direct_actions": [],
-      "unresolved_actions": [
-        {
-          "semantic": "BUY_BONUS",
-          "control": "buy-btn",
-          "handler": "all.buy-features.buyBonusClick`freespin_buy,4",
-          "status": "NETWORK_INFERRED",
-          "wire": [
-            "command=play",
-            "purchased_feature=freespin_buy",
-            "purchased_feature_level=4"
-          ]
-        }
-      ],
+      "unresolved_actions": [],
       "switchable_children": [],
       "error": ""
     },
@@ -131,67 +229,11 @@
       "route_count": 4,
       "direct_executable_count": 0,
       "unresolved_network_count": 0,
-      "blockers": [],
+      "blockers": [
+        "handler probe did not produce a matching successful request"
+      ],
       "direct_actions": [],
       "unresolved_actions": [],
-      "switchable_children": [],
-      "error": ""
-    },
-    {
-      "slug": "derby-rush",
-      "name": "Derby Rush",
-      "url": "https://demo.bgaming-network.com/play/DerbyRush/FUN?server=demo",
-      "availability": "DEMO",
-      "returncode": 0,
-      "status": "PARTIAL",
-      "family": "api-v2",
-      "route_count": 8,
-      "direct_executable_count": 1,
-      "unresolved_network_count": 3,
-      "blockers": [],
-      "direct_actions": [
-        {
-          "semantic": "SPIN",
-          "control": "spin-button",
-          "handler": "currentScene.spin`1",
-          "wire": [
-            "command=spin"
-          ],
-          "role": "network_action"
-        }
-      ],
-      "unresolved_actions": [
-        {
-          "semantic": "BUY_BONUS",
-          "control": "buy-btn",
-          "handler": "currentScene.buyBonusClick`0",
-          "status": "NETWORK_INFERRED",
-          "wire": [
-            "command=play",
-            "purchased_feature=0"
-          ]
-        },
-        {
-          "semantic": "BUY_BONUS",
-          "control": "buy-btn",
-          "handler": "currentScene.buyBonusClick`1",
-          "status": "NETWORK_INFERRED",
-          "wire": [
-            "command=play",
-            "purchased_feature=1"
-          ]
-        },
-        {
-          "semantic": "BUY_BONUS",
-          "control": "buy-btn",
-          "handler": "currentScene.buyBonusClick`2",
-          "status": "NETWORK_INFERRED",
-          "wire": [
-            "command=play",
-            "purchased_feature=2"
-          ]
-        }
-      ],
       "switchable_children": [],
       "error": ""
     },
@@ -206,7 +248,9 @@
       "route_count": 6,
       "direct_executable_count": 0,
       "unresolved_network_count": 2,
-      "blockers": [],
+      "blockers": [
+        "handler probe did not produce a matching successful request"
+      ],
       "direct_actions": [],
       "unresolved_actions": [
         {
@@ -246,7 +290,9 @@
       "route_count": 6,
       "direct_executable_count": 0,
       "unresolved_network_count": 2,
-      "blockers": [],
+      "blockers": [
+        "handler probe did not produce a matching successful request"
+      ],
       "direct_actions": [],
       "unresolved_actions": [
         {
@@ -303,160 +349,6 @@
       "error": ""
     },
     {
-      "slug": "krakens-hunger",
-      "name": "Kraken's Hunger",
-      "url": "https://demo.bgaming-network.com/play/KrakensHunger/FUN?server=demo",
-      "availability": "DEMO",
-      "returncode": 0,
-      "status": "PARTIAL",
-      "family": "api-v2",
-      "route_count": 8,
-      "direct_executable_count": 0,
-      "unresolved_network_count": 3,
-      "blockers": [],
-      "direct_actions": [],
-      "unresolved_actions": [
-        {
-          "semantic": "BUY_BONUS",
-          "control": "buy-btn",
-          "handler": "all.buy-features.buyBonusClick`freespin_buy,4",
-          "status": "NETWORK_INFERRED",
-          "wire": [
-            "command=play",
-            "purchased_feature=freespin_buy",
-            "purchased_feature_level=4"
-          ]
-        },
-        {
-          "semantic": "BUY_BONUS",
-          "control": "buy-btn",
-          "handler": "all.buy-features.buyBonusClick`freespin_buy,3",
-          "status": "NETWORK_INFERRED",
-          "wire": [
-            "command=play",
-            "purchased_feature=freespin_buy",
-            "purchased_feature_level=3"
-          ]
-        },
-        {
-          "semantic": "BUY_BONUS",
-          "control": "buy-btn",
-          "handler": "all.buy-features.buyBonusClick`freespin_buy,5",
-          "status": "NETWORK_INFERRED",
-          "wire": [
-            "command=play",
-            "purchased_feature=freespin_buy",
-            "purchased_feature_level=5"
-          ]
-        }
-      ],
-      "switchable_children": [],
-      "error": ""
-    },
-    {
-      "slug": "loki-loot",
-      "name": "Loki Loot",
-      "url": "https://demo.bgaming-network.com/play/LokiLoot/FUN?server=demo",
-      "availability": "DEMO",
-      "returncode": 0,
-      "status": "PARTIAL",
-      "family": "api-v2",
-      "route_count": 6,
-      "direct_executable_count": 0,
-      "unresolved_network_count": 1,
-      "blockers": [],
-      "direct_actions": [],
-      "unresolved_actions": [
-        {
-          "semantic": "BUY_BONUS",
-          "control": "buy-btn",
-          "handler": "all.buy-features.buyBonusClick`freespin_buy,5",
-          "status": "NETWORK_INFERRED",
-          "wire": [
-            "command=play",
-            "purchased_feature=freespin_buy",
-            "purchased_feature_level=5"
-          ]
-        }
-      ],
-      "switchable_children": [],
-      "error": ""
-    },
-    {
-      "slug": "lucky-crew",
-      "name": "Lucky Crew",
-      "url": "https://demo.bgaming-network.com/play/LuckyCrew/FUN?server=demo",
-      "availability": "DEMO",
-      "returncode": 0,
-      "status": "PARTIAL",
-      "family": "api-v2",
-      "route_count": 6,
-      "direct_executable_count": 1,
-      "unresolved_network_count": 1,
-      "blockers": [],
-      "direct_actions": [
-        {
-          "semantic": "SPIN",
-          "control": "spin-button",
-          "handler": "currentScene.spin`1",
-          "wire": [
-            "command=spin"
-          ],
-          "role": "network_action"
-        }
-      ],
-      "unresolved_actions": [
-        {
-          "semantic": "BUY_BONUS",
-          "control": "btn-buy",
-          "handler": "currentScene.onBuyBonusClick",
-          "status": "NETWORK_INFERRED",
-          "wire": [
-            "command=play"
-          ]
-        }
-      ],
-      "switchable_children": [],
-      "error": ""
-    },
-    {
-      "slug": "lucky-ducky",
-      "name": "Lucky Ducky",
-      "url": "https://demo.bgaming-network.com/play/LuckyDucky/FUN?server=demo",
-      "availability": "DEMO",
-      "returncode": 0,
-      "status": "PARTIAL",
-      "family": "api-v2",
-      "route_count": 7,
-      "direct_executable_count": 1,
-      "unresolved_network_count": 1,
-      "blockers": [],
-      "direct_actions": [
-        {
-          "semantic": "SPIN",
-          "control": "spin-button",
-          "handler": "currentScene.spin`1",
-          "wire": [
-            "command=spin"
-          ],
-          "role": "network_action"
-        }
-      ],
-      "unresolved_actions": [
-        {
-          "semantic": "BUY_BONUS",
-          "control": "Button",
-          "handler": "currentScene.buyBonusClick",
-          "status": "NETWORK_INFERRED",
-          "wire": [
-            "command=play"
-          ]
-        }
-      ],
-      "switchable_children": [],
-      "error": ""
-    },
-    {
       "slug": "maneki-88-fortunes",
       "name": "Maneki 88 Fortunes",
       "url": "https://demo.bgaming-network.com/play/Maneki88Fortunes/FUN?server=demo",
@@ -467,7 +359,9 @@
       "route_count": 6,
       "direct_executable_count": 0,
       "unresolved_network_count": 1,
-      "blockers": [],
+      "blockers": [
+        "handler probe did not produce a matching successful request"
+      ],
       "direct_actions": [],
       "unresolved_actions": [
         {
@@ -476,7 +370,7 @@
           "handler": "currentScene.buyBonusClick",
           "status": "NETWORK_INFERRED",
           "wire": [
-            "command=play"
+            "purchased_feature=freespin_buy"
           ]
         }
       ],
@@ -494,7 +388,9 @@
       "route_count": 10,
       "direct_executable_count": 0,
       "unresolved_network_count": 5,
-      "blockers": [],
+      "blockers": [
+        "handler probe did not produce a matching successful request"
+      ],
       "direct_actions": [],
       "unresolved_actions": [
         {
@@ -557,43 +453,6 @@
       "error": ""
     },
     {
-      "slug": "penny-pelican",
-      "name": "Penny Pelican",
-      "url": "https://demo.bgaming-network.com/play/PennyPelican/FUN?server=demo",
-      "availability": "DEMO",
-      "returncode": 0,
-      "status": "PARTIAL",
-      "family": "api-v2",
-      "route_count": 6,
-      "direct_executable_count": 1,
-      "unresolved_network_count": 1,
-      "blockers": [],
-      "direct_actions": [
-        {
-          "semantic": "SPIN",
-          "control": "spin-button",
-          "handler": "currentScene.spin`1",
-          "wire": [
-            "command=spin"
-          ],
-          "role": "network_action"
-        }
-      ],
-      "unresolved_actions": [
-        {
-          "semantic": "BUY_BONUS",
-          "control": "Button",
-          "handler": "currentScene.onBuyBonusClick",
-          "status": "NETWORK_INFERRED",
-          "wire": [
-            "command=play"
-          ]
-        }
-      ],
-      "switchable_children": [],
-      "error": ""
-    },
-    {
       "slug": "piggy-bank-holdwin",
       "name": "Piggy Bank Hold&Win",
       "url": "https://demo.bgaming-network.com/play/PiggyBankHoldAndWin/FUN?server=demo",
@@ -631,7 +490,9 @@
       "route_count": 4,
       "direct_executable_count": 0,
       "unresolved_network_count": 0,
-      "blockers": [],
+      "blockers": [
+        "handler probe did not produce a matching successful request"
+      ],
       "direct_actions": [],
       "unresolved_actions": [],
       "switchable_children": [],
@@ -684,64 +545,6 @@
       "error": ""
     },
     {
-      "slug": "wild-million",
-      "name": "Wild Million",
-      "url": "https://demo.bgaming-network.com/play/WildMillion/FUN?server=demo",
-      "availability": "DEMO",
-      "returncode": 0,
-      "status": "PARTIAL",
-      "family": "api-v2",
-      "route_count": 8,
-      "direct_executable_count": 1,
-      "unresolved_network_count": 3,
-      "blockers": [],
-      "direct_actions": [
-        {
-          "semantic": "SPIN",
-          "control": "spin-button",
-          "handler": "currentScene.spin`1",
-          "wire": [
-            "command=spin"
-          ],
-          "role": "network_action"
-        }
-      ],
-      "unresolved_actions": [
-        {
-          "semantic": "BUY_BONUS",
-          "control": "buy-btn",
-          "handler": "currentScene.buyBonusClick`0",
-          "status": "NETWORK_INFERRED",
-          "wire": [
-            "command=play",
-            "purchased_feature=0"
-          ]
-        },
-        {
-          "semantic": "BUY_BONUS",
-          "control": "buy-btn",
-          "handler": "currentScene.buyBonusClick`1",
-          "status": "NETWORK_INFERRED",
-          "wire": [
-            "command=play",
-            "purchased_feature=1"
-          ]
-        },
-        {
-          "semantic": "BUY_BONUS",
-          "control": "buy-btn",
-          "handler": "currentScene.buyBonusClick`2",
-          "status": "NETWORK_INFERRED",
-          "wire": [
-            "command=play",
-            "purchased_feature=2"
-          ]
-        }
-      ],
-      "switchable_children": [],
-      "error": ""
-    },
-    {
       "slug": "wild-tiger",
       "name": "Wild Tiger",
       "url": "https://demo.bgaming-network.com/play/WildTiger/FUN?server=demo",
@@ -752,93 +555,10 @@
       "route_count": 4,
       "direct_executable_count": 0,
       "unresolved_network_count": 0,
-      "blockers": [],
+      "blockers": [
+        "handler probe did not produce a matching successful request"
+      ],
       "direct_actions": [],
-      "unresolved_actions": [],
-      "switchable_children": [],
-      "error": ""
-    },
-    {
-      "slug": "aztecs-claw-wild-dice",
-      "name": "Aztec's Claw Wild Dice",
-      "url": "https://demo.bgaming-network.com/play/AztecsClawWildDice/FUN",
-      "availability": "DEMO",
-      "returncode": 0,
-      "status": "PARTIAL",
-      "family": "hyperhive-jsonrpc",
-      "route_count": 1,
-      "direct_executable_count": 1,
-      "unresolved_network_count": 0,
-      "blockers": [],
-      "direct_actions": [
-        {
-          "semantic": "SPIN",
-          "control": "protocol:spin",
-          "handler": "",
-          "wire": [
-            "action=spin",
-            "bet_type=bet",
-            "method=play"
-          ],
-          "role": "protocol_action"
-        }
-      ],
-      "unresolved_actions": [],
-      "switchable_children": [],
-      "error": ""
-    },
-    {
-      "slug": "blackbeards-bounty",
-      "name": "Blackbeard's Bounty",
-      "url": "https://demo.bgaming-network.com/play/BlackbeardsBounty/FUN",
-      "availability": "DEMO",
-      "returncode": 0,
-      "status": "PARTIAL",
-      "family": "hyperhive-jsonrpc",
-      "route_count": 1,
-      "direct_executable_count": 1,
-      "unresolved_network_count": 0,
-      "blockers": [],
-      "direct_actions": [
-        {
-          "semantic": "SPIN",
-          "control": "protocol:play",
-          "handler": "",
-          "wire": [
-            "method=play"
-          ],
-          "role": "protocol_action"
-        }
-      ],
-      "unresolved_actions": [],
-      "switchable_children": [],
-      "error": ""
-    },
-    {
-      "slug": "blazing-fire-pots-hold-spin",
-      "name": "Blazing Fire Pots Hold & Spin",
-      "url": "https://demo.bgaming-network.com/play/BlazingFirepots/FUN",
-      "availability": "DEMO",
-      "returncode": 0,
-      "status": "PARTIAL",
-      "family": "hyperhive-jsonrpc",
-      "route_count": 1,
-      "direct_executable_count": 1,
-      "unresolved_network_count": 0,
-      "blockers": [],
-      "direct_actions": [
-        {
-          "semantic": "SPIN",
-          "control": "protocol:spin",
-          "handler": "",
-          "wire": [
-            "action=spin",
-            "bet_type=betting",
-            "method=play"
-          ],
-          "role": "protocol_action"
-        }
-      ],
       "unresolved_actions": [],
       "switchable_children": [],
       "error": ""
@@ -852,50 +572,21 @@
       "status": "PARTIAL",
       "family": "hyperhive-jsonrpc",
       "route_count": 1,
-      "direct_executable_count": 1,
-      "unresolved_network_count": 0,
+      "direct_executable_count": 0,
+      "unresolved_network_count": 1,
       "blockers": [],
-      "direct_actions": [
+      "direct_actions": [],
+      "unresolved_actions": [
         {
           "semantic": "SPIN",
-          "control": "protocol:spin",
-          "handler": "",
-          "wire": [
-            "action=spin",
-            "bet_type=bet",
-            "method=play"
-          ],
-          "role": "protocol_action"
-        }
-      ],
-      "unresolved_actions": [],
-      "switchable_children": [],
-      "error": ""
-    },
-    {
-      "slug": "cats-love-yummy",
-      "name": "Cats Love Yummy",
-      "url": "https://demo.bgaming-network.com/play/CatsLoveYummy/FUN",
-      "availability": "DEMO",
-      "returncode": 0,
-      "status": "PARTIAL",
-      "family": "hyperhive-jsonrpc",
-      "route_count": 1,
-      "direct_executable_count": 1,
-      "unresolved_network_count": 0,
-      "blockers": [],
-      "direct_actions": [
-        {
-          "semantic": "SPIN",
-          "control": "protocol:play",
-          "handler": "",
+          "control": "spin-button",
+          "handler": "onSpinClicked",
+          "status": "NETWORK_INFERRED",
           "wire": [
             "method=play"
-          ],
-          "role": "protocol_action"
+          ]
         }
       ],
-      "unresolved_actions": [],
       "switchable_children": [],
       "error": ""
     },
@@ -935,20 +626,10 @@
       "status": "PARTIAL",
       "family": "hyperhive-jsonrpc",
       "route_count": 2,
-      "direct_executable_count": 1,
-      "unresolved_network_count": 1,
+      "direct_executable_count": 0,
+      "unresolved_network_count": 2,
       "blockers": [],
-      "direct_actions": [
-        {
-          "semantic": "SPIN",
-          "control": "start-btn-start",
-          "handler": "onSpinClick",
-          "wire": [
-            "method=play"
-          ],
-          "role": "network_action"
-        }
-      ],
+      "direct_actions": [],
       "unresolved_actions": [
         {
           "semantic": "BUY_BONUS",
@@ -958,35 +639,17 @@
           "wire": [
             "method=play"
           ]
-        }
-      ],
-      "switchable_children": [],
-      "error": ""
-    },
-    {
-      "slug": "clucking-hell",
-      "name": "Clucking Hell",
-      "url": "https://demo.bgaming-network.com/play/CluckingHell/FUN",
-      "availability": "DEMO",
-      "returncode": 0,
-      "status": "PARTIAL",
-      "family": "hyperhive-jsonrpc",
-      "route_count": 1,
-      "direct_executable_count": 1,
-      "unresolved_network_count": 0,
-      "blockers": [],
-      "direct_actions": [
+        },
         {
           "semantic": "SPIN",
-          "control": "protocol:play",
-          "handler": "",
+          "control": "start-btn-start",
+          "handler": "onSpinClick",
+          "status": "NETWORK_INFERRED",
           "wire": [
             "method=play"
-          ],
-          "role": "protocol_action"
+          ]
         }
       ],
-      "unresolved_actions": [],
       "switchable_children": [],
       "error": ""
     },
@@ -999,23 +662,21 @@
       "status": "PARTIAL",
       "family": "hyperhive-jsonrpc",
       "route_count": 1,
-      "direct_executable_count": 1,
-      "unresolved_network_count": 0,
+      "direct_executable_count": 0,
+      "unresolved_network_count": 1,
       "blockers": [],
-      "direct_actions": [
+      "direct_actions": [],
+      "unresolved_actions": [
         {
           "semantic": "SPIN",
-          "control": "protocol:spin",
-          "handler": "",
+          "control": "spin-button",
+          "handler": "onSpinClicked",
+          "status": "NETWORK_INFERRED",
           "wire": [
-            "action=spin",
-            "bet_type=bet",
             "method=play"
-          ],
-          "role": "protocol_action"
+          ]
         }
       ],
-      "unresolved_actions": [],
       "switchable_children": [],
       "error": ""
     },
@@ -1028,114 +689,21 @@
       "status": "PARTIAL",
       "family": "hyperhive-jsonrpc",
       "route_count": 1,
-      "direct_executable_count": 1,
-      "unresolved_network_count": 0,
-      "blockers": [],
-      "direct_actions": [
-        {
-          "semantic": "SPIN",
-          "control": "protocol:spin",
-          "handler": "",
-          "wire": [
-            "action=spin",
-            "bet_type=bet",
-            "method=play"
-          ],
-          "role": "protocol_action"
-        }
-      ],
-      "unresolved_actions": [],
-      "switchable_children": [],
-      "error": ""
-    },
-    {
-      "slug": "joker-vs-joker",
-      "name": "Joker vs Joker",
-      "url": "https://demo.bgaming-network.com/play/JokerVsJoker/FUN",
-      "availability": "DEMO",
-      "returncode": 0,
-      "status": "PARTIAL",
-      "family": "hyperhive-jsonrpc",
-      "route_count": 2,
-      "direct_executable_count": 1,
+      "direct_executable_count": 0,
       "unresolved_network_count": 1,
       "blockers": [],
-      "direct_actions": [
-        {
-          "semantic": "SPIN",
-          "control": "start-btn-start",
-          "handler": "onSpinClick",
-          "wire": [
-            "method=play"
-          ],
-          "role": "network_action"
-        }
-      ],
+      "direct_actions": [],
       "unresolved_actions": [
         {
-          "semantic": "BUY_BONUS",
-          "control": "buy-bonus",
-          "handler": "onSpinClick",
+          "semantic": "SPIN",
+          "control": "spin-button",
+          "handler": "onSpinClicked",
           "status": "NETWORK_INFERRED",
           "wire": [
             "method=play"
           ]
         }
       ],
-      "switchable_children": [],
-      "error": ""
-    },
-    {
-      "slug": "jungle-queen",
-      "name": "Jungle Queen",
-      "url": "https://demo.bgaming-network.com/play/JungleQueen/FUN",
-      "availability": "DEMO",
-      "returncode": 0,
-      "status": "PARTIAL",
-      "family": "hyperhive-jsonrpc",
-      "route_count": 1,
-      "direct_executable_count": 1,
-      "unresolved_network_count": 0,
-      "blockers": [],
-      "direct_actions": [
-        {
-          "semantic": "SPIN",
-          "control": "protocol:play",
-          "handler": "",
-          "wire": [
-            "method=play"
-          ],
-          "role": "protocol_action"
-        }
-      ],
-      "unresolved_actions": [],
-      "switchable_children": [],
-      "error": ""
-    },
-    {
-      "slug": "multi-rush",
-      "name": "Multi Rush",
-      "url": "https://demo.bgaming-network.com/play/MultiRush/FUN",
-      "availability": "DEMO",
-      "returncode": 0,
-      "status": "PARTIAL",
-      "family": "hyperhive-jsonrpc",
-      "route_count": 1,
-      "direct_executable_count": 1,
-      "unresolved_network_count": 0,
-      "blockers": [],
-      "direct_actions": [
-        {
-          "semantic": "SPIN",
-          "control": "protocol:play",
-          "handler": "",
-          "wire": [
-            "method=play"
-          ],
-          "role": "protocol_action"
-        }
-      ],
-      "unresolved_actions": [],
       "switchable_children": [],
       "error": ""
     },
@@ -1204,23 +772,21 @@
       "status": "PARTIAL",
       "family": "hyperhive-jsonrpc",
       "route_count": 1,
-      "direct_executable_count": 1,
-      "unresolved_network_count": 0,
+      "direct_executable_count": 0,
+      "unresolved_network_count": 1,
       "blockers": [],
-      "direct_actions": [
+      "direct_actions": [],
+      "unresolved_actions": [
         {
           "semantic": "SPIN",
-          "control": "protocol:spin",
-          "handler": "",
+          "control": "spin-button",
+          "handler": "onSpinClicked",
+          "status": "NETWORK_INFERRED",
           "wire": [
-            "action=spin",
-            "bet_type=bet",
             "method=play"
-          ],
-          "role": "protocol_action"
+          ]
         }
       ],
-      "unresolved_actions": [],
       "switchable_children": [],
       "error": ""
     },
@@ -1233,23 +799,21 @@
       "status": "PARTIAL",
       "family": "hyperhive-jsonrpc",
       "route_count": 1,
-      "direct_executable_count": 1,
-      "unresolved_network_count": 0,
+      "direct_executable_count": 0,
+      "unresolved_network_count": 1,
       "blockers": [],
-      "direct_actions": [
+      "direct_actions": [],
+      "unresolved_actions": [
         {
           "semantic": "SPIN",
-          "control": "protocol:spin",
-          "handler": "",
+          "control": "spin-button",
+          "handler": "onSpinClicked",
+          "status": "NETWORK_INFERRED",
           "wire": [
-            "action=spin",
-            "bet_type=bet",
             "method=play"
-          ],
-          "role": "protocol_action"
+          ]
         }
       ],
-      "unresolved_actions": [],
       "switchable_children": [],
       "error": ""
     },
@@ -1283,33 +847,6 @@
       "error": ""
     },
     {
-      "slug": "temple-of-power",
-      "name": "Temple of Power",
-      "url": "https://demo.bgaming-network.com/play/GatesOfPower/FUN",
-      "availability": "DEMO",
-      "returncode": 0,
-      "status": "PARTIAL",
-      "family": "hyperhive-jsonrpc",
-      "route_count": 1,
-      "direct_executable_count": 1,
-      "unresolved_network_count": 0,
-      "blockers": [],
-      "direct_actions": [
-        {
-          "semantic": "SPIN",
-          "control": "protocol:play",
-          "handler": "",
-          "wire": [
-            "method=play"
-          ],
-          "role": "protocol_action"
-        }
-      ],
-      "unresolved_actions": [],
-      "switchable_children": [],
-      "error": ""
-    },
-    {
       "slug": "the-godfather-3-pillars-of-power",
       "name": "The Godfather: 3 Pillars of Power",
       "url": "https://demo.bgaming-network.com/play/TheGodfather3PillarsOfPower/FUN",
@@ -1318,23 +855,21 @@
       "status": "PARTIAL",
       "family": "hyperhive-jsonrpc",
       "route_count": 1,
-      "direct_executable_count": 1,
-      "unresolved_network_count": 0,
+      "direct_executable_count": 0,
+      "unresolved_network_count": 1,
       "blockers": [],
-      "direct_actions": [
+      "direct_actions": [],
+      "unresolved_actions": [
         {
           "semantic": "SPIN",
-          "control": "protocol:spin",
-          "handler": "",
+          "control": "spin-button",
+          "handler": "onSpinClicked",
+          "status": "NETWORK_INFERRED",
           "wire": [
-            "action=spin",
-            "bet_type=bet",
             "method=play"
-          ],
-          "role": "protocol_action"
+          ]
         }
       ],
-      "unresolved_actions": [],
       "switchable_children": [],
       "error": ""
     },
@@ -1342,33 +877,6 @@
       "slug": "wild-clusters",
       "name": "Wild Clusters",
       "url": "https://demo.bgaming-network.com/play/WildClustersP/FUN",
-      "availability": "DEMO",
-      "returncode": 0,
-      "status": "PARTIAL",
-      "family": "hyperhive-jsonrpc",
-      "route_count": 1,
-      "direct_executable_count": 1,
-      "unresolved_network_count": 0,
-      "blockers": [],
-      "direct_actions": [
-        {
-          "semantic": "SPIN",
-          "control": "protocol:play",
-          "handler": "",
-          "wire": [
-            "method=play"
-          ],
-          "role": "protocol_action"
-        }
-      ],
-      "unresolved_actions": [],
-      "switchable_children": [],
-      "error": ""
-    },
-    {
-      "slug": "zeus-goes-wild",
-      "name": "Zeus Goes Wild",
-      "url": "https://demo.bgaming-network.com/play/ZeusGoesWild/FUN",
       "availability": "DEMO",
       "returncode": 0,
       "status": "PARTIAL",
