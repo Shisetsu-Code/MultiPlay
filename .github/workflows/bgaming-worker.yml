@@ -231,6 +231,10 @@ jobs:
                           r for r in routes
                           if r.get("direct_executable")
                       ]
+                      ui_direct = [
+                          r for r in direct
+                          if r.get("interface_role") != "protocol_action"
+                      ]
                       children = report.get("switchable_children") or []
 
                       row.update(
@@ -249,6 +253,7 @@ jobs:
                                       "control": r.get("control"),
                                       "handler": r.get("handler"),
                                       "wire": r.get("wire_markers") or [],
+                                      "role": r.get("interface_role"),
                                   }
                                   for r in direct
                               ],
@@ -281,7 +286,7 @@ jobs:
                           returncode == 0
                           and not unresolved
                           and (
-                              row["direct_executable_count"] > 0
+                              len(ui_direct) > 0
                               or switchable_ok
                           )
                       ):
