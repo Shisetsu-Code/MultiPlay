@@ -797,10 +797,6 @@ def _match_observed(
             marker.startswith("purchased_feature=")
             for marker in observed_markers
         )
-        if semantic == "SPIN":
-            score += 80 if not has_purchase else -120
-        elif semantic == "BUY_BONUS":
-            score += 120 if has_purchase else -80
 
         if not shared and allow_semantic:
             for marker in observed_markers:
@@ -813,7 +809,11 @@ def _match_observed(
                 elif semantic_tokens and semantic_tokens <= value_tokens:
                     score += 25
 
-        if score:
+        if score > 0:
+            if semantic == "SPIN":
+                score += 80 if not has_purchase else -120
+            elif semantic == "BUY_BONUS":
+                score += 120 if has_purchase else -80
             candidates.append((score, item))
 
     if not candidates:
