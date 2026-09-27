@@ -29,7 +29,7 @@ from .hyperhive import (
     extract_hyperhive_templates,
 )
 from .hyperhive_demo import resolve_hyperhive_bet
-from .probe import _HttpSession, _allowed_source, _is_hyperhive_url, _resolve_demo
+from .probe import _allowed_source, _HttpSession, _is_hyperhive_url, _resolve_demo
 from .wire import is_legacy_init
 
 
@@ -445,7 +445,7 @@ def serve_bgaming_demo_port(
     session.open()
 
     class Handler(BaseHTTPRequestHandler):
-        def do_GET(self) -> None:  # noqa: N802
+        def do_GET(self) -> None:
             if self.path == "/state":
                 self._json(200, session.state())
                 return
@@ -454,7 +454,7 @@ def serve_bgaming_demo_port(
                 return
             self._json(404, {"error": "not found"})
 
-        def do_POST(self) -> None:  # noqa: N802
+        def do_POST(self) -> None:
             prefix = "/actions/"
             if not self.path.startswith(prefix):
                 self._json(404, {"error": "not found"})
