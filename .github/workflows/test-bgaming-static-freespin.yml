@@ -7,7 +7,11 @@ on:
       - ".github/workflows/test-bgaming-static-freespin.yml"
 
 permissions:
-  contents: read
+  contents: write
+
+concurrency:
+  group: bgaming-api-v2-recovery
+  cancel-in-progress: true
 
 jobs:
   unit:
@@ -82,3 +86,88 @@ jobs:
           path: artifacts/${{ matrix.id }}
           if-no-files-found: warn
           retention-days: 3
+
+
+  aggregate:
+    needs: [unit, analyze]
+    if: always() && needs.unit.result == 'success'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: bgaming-recovery-*
+          path: downloaded
+          merge-multiple: false
+      - name: Build compact recovery result
+        env:
+          RUN_ID: ${{ github.run_id }}
+        run: |
+          python - <<'PY'
+          import json
+          import os
+          from datetime import datetime, timezone
+          from pathlib import Path
+
+          games = []
+          for path in sorted(Path("downloaded").rglob("analysis.json")):
+              try:
+                  d = json.loads(path.read_text())
+              except Exception as exc:
+                  games.append({"path": str(path), "error": f"{type(exc).__name__}: {exc}"})
+                  continue
+
+              routes = d.get("routes") or []
+              interesting = []
+              for r in routes:
+                  if r.get("semantic") not in {"SPIN", "BUY_BONUS", "FREESPIN", "CHANCE"}:
+                      continue
+                  interesting.append({
+                      "semantic": r.get("semantic"),
+                      "status": r.get("status"),
+                      "control": r.get("control"),
+                      "handler": r.get("handler"),
+                      "wire_markers": r.get("wire_markers") or [],
+                      "direct_executable": bool(r.get("direct_executable")),
+                      "direct_reason": r.get("direct_reason") or "",
+                  })
+
+              games.append({
+                  "id": path.parent.name,
+                  "family": d.get("family"),
+                  "enrichment": d.get("enrichment"),
+                  "direct_executable_count": d.get("direct_executable_count"),
+                  "blockers": d.get("blockers") or [],
+                  "handler_probe": d.get("handler_probe"),
+                  "routes": interesting,
+              })
+
+          doc = {
+              "schema": "multiplay/bgaming-recovery-test/v1",
+              "run_id": os.environ["RUN_ID"],
+              "generated_at": datetime.now(timezone.utc).isoformat(),
+              "games": games,
+          }
+          out = Path("knowledge/providers/bgaming/recovery-last.json")
+          out.parent.mkdir(parents=True, exist_ok=True)
+          out.write_text(json.dumps(doc, ensure_ascii=False, indent=2) + "\n")
+          print(json.dumps(doc, ensure_ascii=False, indent=2))
+          PY
+      - name: Persist recovery result
+        run: |
+          cp knowledge/providers/bgaming/recovery-last.json /tmp/recovery-last.json
+          git fetch origin main
+          git reset --hard origin/main
+          mkdir -p knowledge/providers/bgaming
+          cp /tmp/recovery-last.json knowledge/providers/bgaming/recovery-last.json
+          git config user.name "MultiPlay Worker"
+          git config user.email "multiplay-worker@users.noreply.github.com"
+          git add knowledge/providers/bgaming/recovery-last.json
+          if git diff --cached --quiet; then
+            echo "No recovery changes"
+            exit 0
+          fi
+          git commit -m "Update BGaming recovery results"
+          git push origin HEAD:main
