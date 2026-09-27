@@ -366,6 +366,7 @@ def analyze_bgaming_demo(
 
             row["status"] = direct_result.get("status")
             row["request"] = direct_result.get("request")
+            row["response"] = direct_result.get("response")
             row["success"] = bool(direct_result.get("success"))
             if not row["success"]:
                 handler_probe["results"].append(row)
@@ -441,6 +442,7 @@ def analyze_bgaming_demo(
 
             row["status"] = direct_result.get("status")
             row["request"] = direct_result.get("request")
+            row["response"] = direct_result.get("response")
             row["success"] = bool(direct_result.get("success"))
             if not row["success"]:
                 handler_probe["results"].append(row)
