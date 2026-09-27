@@ -1,0 +1,53 @@
+name: Test Potion auto final
+
+on:
+  push:
+    branches: ["main"]
+    paths:
+      - ".github/workflows/test-potion-auto-final.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install --upgrade pip
+      - run: pip install -e ".[browser,dev]"
+      - run: python -m playwright install --with-deps chromium
+      - name: Analyze Potion Spells
+        run: |
+          mkdir -p artifacts/potion
+          multiplay bgaming-analyze-demo             "https://demo.bgaming-network.com/play/PotionSpells/FUN"             --output-dir artifacts/potion             --settle-ms 12000             --timeout 30             > artifacts/potion/stdout.txt
+          cat artifacts/potion/stdout.txt
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          d=json.loads(Path("artifacts/potion/analysis.json").read_text())
+          print("SUMMARY")
+          print("family",d.get("family"))
+          print("routes",d.get("route_count"))
+          print("direct",d.get("direct_executable_count"))
+          print("handler_probe",json.dumps(d.get("handler_probe"),ensure_ascii=False))
+          for r in d.get("routes") or []:
+              print(
+                  r.get("semantic"),
+                  r.get("status"),
+                  "DIRECT" if r.get("direct_executable") else "-",
+                  r.get("control"),
+                  r.get("handler"),
+                  r.get("wire_markers"),
+              )
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: potion-auto-final
+          path: artifacts/potion
+          if-no-files-found: error
+          retention-days: 2
