@@ -9,6 +9,8 @@ on:
 permissions:
   contents: read
 
+# retry math mode
+
 jobs:
   analyze:
     runs-on: ubuntu-latest
