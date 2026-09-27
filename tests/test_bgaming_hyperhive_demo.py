@@ -193,3 +193,39 @@ def test_custom_request_recovers_game_specific_buy_flags():
         "isSuperBuy": False,
     }
 
+def test_play_profile_ignores_init_action_and_omits_conditional_purchase():
+    profile = analyze_current_wire(
+        'init:async t=>post("/api",{jsonrpc:"2.0",method:"init",'
+        'params:{token:t,req:{action:"INIT"}}});'
+        'play:async(i,e,t,n)=>post("/api",{jsonrpc:"2.0",method:"play",'
+        'params:{token:q,req:{bet:i,bet_type:"bet",'
+        '...n?{instant_bonus_game:n}:{},'
+        '...n?{purchased_feature:"buy_bonus"}:{},'
+        '...e?{ante_bet:!0}:{},...t?{wild_bet:!0}:{}}}})'
+    )
+    assert profile.req_action is False
+    assert profile.req_purchased_feature is True
+    assert profile.req_purchased_feature_always is False
+    assert profile.req_purchased_feature_omit_empty is True
+
+    normal = build_profile_request(
+        profile,
+        {
+            "config": {"default_bet": 100, "bet_limits": [20, 100]},
+            "currency_attributes": {"subunits": 100, "exponent": 2},
+        },
+        bet=100,
+    )
+    assert normal == {"bet": 100, "bet_type": "bet"}
+
+    bought = build_profile_request(
+        profile,
+        {
+            "config": {"default_bet": 100, "bet_limits": [20, 100]},
+            "currency_attributes": {"subunits": 100, "exponent": 2},
+        },
+        bet=100,
+        purchased_feature="buy_bonus",
+    )
+    assert bought["purchased_feature"] == "buy_bonus"
+
