@@ -194,6 +194,8 @@ def analyze_bgaming_demo(
 
     graph = build_action_graph(contract_har)
     routes = [dict(item) for item in graph.get("routes", [])]
+    if family == HYPERHIVE_JSONRPC:
+        _seed_hyperhive_spin_routes(routes)
 
     if switchable_variants:
         by_identifier = {
@@ -450,6 +452,8 @@ def analyze_bgaming_demo(
         _write_safe_har(contract_bundle, contract_har)
         graph = build_action_graph(contract_har)
         routes = [dict(item) for item in graph.get("routes", [])]
+        if family == HYPERHIVE_JSONRPC:
+            _seed_hyperhive_spin_routes(routes)
         if family == HYPERHIVE_JSONRPC and not enrichment["success"]:
             enrichment["success"] = True
             enrichment["kind"] = "handler-probe"
@@ -676,6 +680,31 @@ def render_bgaming_analysis(report: dict[str, Any]) -> str:
             )
     return "\n".join(lines) + "\n"
 
+
+
+def _seed_hyperhive_spin_routes(
+    routes: list[dict[str, Any]],
+) -> None:
+    for route in routes:
+        if route.get("semantic") != "SPIN":
+            continue
+        if route.get("interface_role") == "opener":
+            continue
+        if route.get("status") == "NETWORK_OBSERVED":
+            continue
+        text = f"{route.get('control') or ''} {route.get('handler') or ''}"
+        if not __import__("re").search(r"spin", text, __import__("re").IGNORECASE):
+            continue
+
+        markers = {
+            str(item)
+            for item in route.get("wire_markers") or []
+        }
+        markers.add("method=play")
+        route["wire_markers"] = sorted(markers)
+        route["status"] = "NETWORK_INFERRED"
+        route["interface_role"] = "network_action"
+        route["confidence"] = "MEDIUM"
 
 
 def _select_handler_probe_routes(
