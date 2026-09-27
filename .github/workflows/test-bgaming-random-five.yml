@@ -69,6 +69,11 @@ jobs:
               name = str(item.get("name") or item.get("slug") or "game")
               if name.strip().casefold() in excluded:
                   continue
+              if str(item.get("availability") or "") not in {
+                  "DEMO",
+                  "EPHEMERAL_DEMO",
+              }:
+                  continue
               url = (
                   item.get("execution_url")
                   or item.get("demo_url")
