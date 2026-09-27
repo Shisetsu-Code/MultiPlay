@@ -117,6 +117,7 @@ def build_action_graph(
         if item.get("kind") == "observed_request"
     ]
 
+    trace_cache: dict[tuple[str, int], list[dict[str, Any]]] = {}
     routes: list[dict[str, Any]] = []
     for control in _control_roots(report):
         route = _resolve_control(
@@ -124,6 +125,7 @@ def build_action_graph(
             definitions=definitions,
             observed=observed,
             max_depth=max_depth,
+            trace_cache=trace_cache,
         )
         if include_all or _keep_route(route):
             routes.append(route)
@@ -317,6 +319,7 @@ def _resolve_control(
     definitions: dict[str, list[dict[str, Any]]],
     observed: list[dict[str, Any]],
     max_depth: int,
+    trace_cache: dict[tuple[str, int], list[dict[str, Any]]],
 ) -> dict[str, Any]:
     label = str(control.get("label") or "")
     handler = str(control.get("handler") or control.get("handler_hint") or "")
@@ -331,6 +334,7 @@ def _resolve_control(
                 definitions=definitions,
                 max_depth=max_depth,
                 visited=(),
+                memo=trace_cache,
             )
         )
 
@@ -430,9 +434,19 @@ def _trace_symbol(
     definitions: dict[str, list[dict[str, Any]]],
     max_depth: int,
     visited: tuple[str, ...],
+    memo: dict[tuple[str, int], list[dict[str, Any]]],
 ) -> list[dict[str, Any]]:
     if not name or name in visited or len(visited) >= max_depth:
         return []
+
+    remaining = max_depth - len(visited)
+    cache_key = (name, remaining)
+    cached = memo.get(cache_key)
+    if cached is not None:
+        blocked = set(visited)
+        if not any(blocked & set(item.get("chain") or []) for item in cached):
+            return cached
+
     items = definitions.get(name) or []
     if not items:
         return []
@@ -443,15 +457,21 @@ def _trace_symbol(
         own_hint = bool(definition.get("protocol_hint"))
         children: list[dict[str, Any]] = []
 
-        for call in definition.get("calls", [])[:12]:
-            if call == name or call in visited:
-                continue
+        useful_calls = [
+            call
+            for call in definition.get("calls", [])
+            if call != name
+            and call not in visited
+            and _useful_call(call, definitions)
+        ][:6]
+        for call in useful_calls:
             children.extend(
                 _trace_symbol(
                     call,
                     definitions=definitions,
                     max_depth=max_depth,
                     visited=(*visited, name),
+                    memo=memo,
                 )
             )
 
@@ -497,7 +517,20 @@ def _trace_symbol(
             }
         )
 
+    memo[cache_key] = results
     return results
+
+
+def _useful_call(
+    name: str,
+    definitions: dict[str, list[dict[str, Any]]],
+) -> bool:
+    if _INTEREST_RE.search(name):
+        return True
+    return any(
+        item.get("wire_markers") or item.get("protocol_hint")
+        for item in (definitions.get(name) or [])[:3]
+    )
 
 
 def _handler_symbols(
