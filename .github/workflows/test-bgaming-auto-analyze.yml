@@ -13,6 +13,10 @@ on:
 permissions:
   contents: read
 
+concurrency:
+  group: bgaming-auto-analyzer
+  cancel-in-progress: true
+
 jobs:
   analyze:
     runs-on: ubuntu-latest
