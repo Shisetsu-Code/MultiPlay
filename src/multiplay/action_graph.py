@@ -137,6 +137,8 @@ def build_action_graph(
             routes.append(route)
 
     routes = _dedupe_routes(routes)
+    routes.extend(_protocol_fallback_routes(observed, routes))
+    routes = _dedupe_routes(routes)
     routes.sort(
         key=lambda item: (
             _route_rank(item),
@@ -1045,6 +1047,96 @@ def _keep_route(route: dict[str, Any]) -> bool:
             )
         )
     return False
+
+
+def _protocol_fallback_routes(
+    observed: list[dict[str, Any]],
+    existing: list[dict[str, Any]],
+) -> list[dict[str, Any]]:
+    linked = {
+        str(route.get("replay_action_id") or "")
+        for route in existing
+        if route.get("replay_action_id")
+    }
+    out: list[dict[str, Any]] = []
+
+    for action in observed:
+        action_id = str(action.get("action_id") or "")
+        if not action_id or action_id in linked:
+            continue
+
+        markers = {
+            str(item)
+            for item in action.get("wire_markers") or []
+        }
+        if markers <= {"command=init", "method=init"}:
+            continue
+
+        if any(marker.startswith("purchased_feature=") for marker in markers):
+            semantic = "BUY_BONUS"
+        elif (
+            "command=spin" in markers
+            or "action=spin" in markers
+            or (
+                "method=play" in markers
+                and not any(
+                    marker.startswith(("action=", "purchased_feature="))
+                    for marker in markers
+                )
+            )
+        ):
+            semantic = "SPIN"
+        elif any(marker.startswith("action=") for marker in markers):
+            semantic = "OTHER"
+        else:
+            continue
+
+        if semantic == "OTHER":
+            continue
+
+        fingerprint = json.dumps(
+            {
+                "kind": "protocol_action",
+                "semantic": semantic,
+                "action_id": action_id,
+                "markers": sorted(markers),
+            },
+            sort_keys=True,
+            ensure_ascii=False,
+        )
+        route_id = (
+            "R"
+            + hashlib.sha256(fingerprint.encode("utf-8")).hexdigest()[:8].upper()
+        )
+        primary = next(
+            (
+                marker.split("=", 1)[1]
+                for marker in sorted(markers)
+                if marker.startswith(
+                    ("purchased_feature=", "action=", "command=", "method=")
+                )
+            ),
+            semantic.casefold(),
+        )
+        out.append(
+            {
+                "route_id": route_id,
+                "semantic": semantic,
+                "status": "NETWORK_OBSERVED",
+                "interface_role": "protocol_action",
+                "control": f"protocol:{primary}",
+                "handler": "",
+                "occurrence_source": str(action.get("source") or ""),
+                "chain": [],
+                "wire_markers": sorted(markers),
+                "endpoint_ids": list(action.get("endpoint_ids") or []),
+                "replay_action_id": action_id,
+                "confidence": "HIGH",
+                "trace_source": str(action.get("source") or ""),
+                "trace_snippet": "",
+            }
+        )
+    return out
 
 
 def _route_rank(route: dict[str, Any]) -> int:
