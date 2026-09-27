@@ -105,32 +105,45 @@ def probe_bgaming_handlers(
 
         for route in routes:
             route_id = str(route.get("route_id") or "")
+            control = str(route.get("control") or "").strip()
             handler = str(route.get("handler") or "").strip()
             spec = _parse_handler(handler)
-            if spec is None:
+            if spec is None and not control:
                 outcomes.append(
                     HandlerProbeOutcome(
                         route_id=route_id,
                         handler=handler,
                         called=False,
-                        error="unsupported handler expression",
+                        error="no executable control or handler",
                     )
                 )
                 continue
 
-            paths, args = spec
+            paths, args = spec if spec is not None else ([], [])
             called = False
             last_error = ""
             capture_state["active"] = True
             for frame in page.frames:
-                try:
-                    result = frame.evaluate(
-                        _CALL_HANDLER_JS,
-                        {"paths": paths, "args": args},
-                    )
-                except Exception as exc:  # noqa: BLE001
-                    last_error = f"{type(exc).__name__}: {exc}"
-                    continue
+                result = None
+                if control:
+                    try:
+                        result = frame.evaluate(
+                            _CALL_CONTROL_JS,
+                            {"control": control},
+                        )
+                    except Exception as exc:  # noqa: BLE001
+                        last_error = f"{type(exc).__name__}: {exc}"
+
+                if not isinstance(result, dict) or not result.get("called"):
+                    if paths:
+                        try:
+                            result = frame.evaluate(
+                                _CALL_HANDLER_JS,
+                                {"paths": paths, "args": args},
+                            )
+                        except Exception as exc:  # noqa: BLE001
+                            last_error = f"{type(exc).__name__}: {exc}"
+                            continue
 
                 if not isinstance(result, dict):
                     continue
@@ -226,6 +239,85 @@ def _safe_frame_url(url: str) -> str:
     parts = urlsplit(str(url or ""))
     return parts._replace(query="", fragment="").geturl()
 
+
+_CALL_CONTROL_JS = """
+({control}) => {
+  const getRequire = () => {
+    try {
+      const chunks = globalThis.webpackChunk;
+      if (!chunks || typeof chunks.push !== "function") return null;
+      let req = null;
+      const chunkId = 900000000 + Math.floor(Math.random() * 90000000);
+      chunks.push([[chunkId], {}, (runtime) => { req = runtime; }]);
+      return req;
+    } catch (_error) {
+      return null;
+    }
+  };
+
+  const runtime = getRequire();
+  if (!runtime || !runtime.m) {
+    return {called: false, error: "webpack runtime not found"};
+  }
+
+  const ids = Object.keys(runtime.m)
+    .map((id) => {
+      let source = "";
+      try { source = Function.prototype.toString.call(runtime.m[id]); } catch (_error) {}
+      let score = 0;
+      if (source.includes("currentScene")) score += 8;
+      if (source.includes("casinoOptions")) score += 8;
+      if (source.includes("showModal")) score += 4;
+      if (source.includes("all")) score += 2;
+      return {id, score};
+    })
+    .filter((item) => item.score > 0)
+    .sort((a, b) => b.score - a.score)
+    .slice(0, 40);
+
+  for (const item of ids) {
+    let exports;
+    try { exports = runtime(item.id); } catch (_error) { continue; }
+
+    const values = [exports];
+    if (exports && (typeof exports === "object" || typeof exports === "function")) {
+      for (const key of ["A", "default"]) {
+        try { if (exports[key] != null) values.push(exports[key]); } catch (_error) {}
+      }
+      try { values.push(...Object.values(exports).slice(0, 20)); } catch (_error) {}
+    }
+
+    for (const value of values) {
+      if (value == null) continue;
+      if (typeof value !== "object" && typeof value !== "function") continue;
+      let all;
+      try { all = value.all; } catch (_error) { continue; }
+      if (!all || !all[control]) continue;
+
+      const button = all[control];
+      const basePath = "webpack:" + item.id + ".all[" + JSON.stringify(control) + "]";
+      try {
+        if (button && typeof button._executeOnClick === "function") {
+          button._executeOnClick("invoke");
+          return {called: true, path: basePath + "._executeOnClick"};
+        }
+        if (button && typeof button.callClick === "function") {
+          button.callClick();
+          return {called: true, path: basePath + ".callClick"};
+        }
+      } catch (error) {
+        return {
+          called: false,
+          path: basePath,
+          error: String(error && (error.stack || error.message || error)),
+        };
+      }
+    }
+  }
+
+  return {called: false, error: "button object not found"};
+}
+"""
 
 _CALL_HANDLER_JS = """
 ({paths, args}) => {
