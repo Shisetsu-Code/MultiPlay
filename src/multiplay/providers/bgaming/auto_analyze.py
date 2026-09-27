@@ -100,7 +100,15 @@ def analyze_bgaming_demo(
         enrichment["attempted"] = True
         enrichment["kind"] = "base-spin"
         try:
-            base = run_demo_base_spin(execution_url, timeout_s=timeout_s)
+            base = run_demo_base_spin(
+                execution_url,
+                timeout_s=timeout_s,
+                client_scripts=[
+                    item.text
+                    for item in browser_evidence.scripts
+                    if str(item.text or "").strip()
+                ],
+            )
         except (OSError, RuntimeError, TypeError, ValueError) as exc:
             blockers.append(f"base-spin enrichment failed: {type(exc).__name__}: {exc}")
         else:
