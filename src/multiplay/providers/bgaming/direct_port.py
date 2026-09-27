@@ -30,6 +30,11 @@ from .hyperhive import (
     extract_hyperhive_templates,
 )
 from .hyperhive_demo import resolve_hyperhive_bet
+from .hyperhive_wire_profile import (
+    HyperHiveWireProfile,
+    analyze_current_wire,
+    build_profile_request,
+)
 from .probe import _allowed_source, _HttpSession, _is_hyperhive_url, _resolve_demo
 from .wire import is_legacy_init
 
@@ -97,6 +102,7 @@ class BGamingDemoDirectSession:
         self.rpc_id_sample: Any = 0
         self.api_templates: list[ApiV2Template] = []
         self.hyper_templates: list[HyperHiveTemplate] = []
+        self.hyper_profile: HyperHiveWireProfile | None = None
 
     def open(self) -> dict[str, Any]:
         launch = _resolve_demo(self.http, self.url, timeout_s=self.timeout_s)
@@ -318,9 +324,17 @@ class BGamingDemoDirectSession:
             )
 
         values = dict(overrides or {})
-        req: dict[str, Any] = {
-            "bet": values.get("bet", self.default_bet),
-        }
+        purchased_feature = features[0] if features else None
+        if self.hyper_profile is not None:
+            req = build_profile_request(
+                self.hyper_profile,
+                self.current_init,
+                bet=values.get("bet", self.default_bet),
+                purchased_feature=purchased_feature,
+            )
+        else:
+            req = {"bet": values.get("bet", self.default_bet)}
+
         for key in (
             "purchased_feature",
             "purchased_feature_level",
@@ -335,8 +349,14 @@ class BGamingDemoDirectSession:
             "token": self.token,
             "req": req,
         }
-        if self.state_lock is not None:
-            params["state_lock"] = self.state_lock
+        if (
+            self.hyper_profile is None
+            and self.state_lock is not None
+        ) or (
+            self.hyper_profile is not None
+            and self.hyper_profile.state_lock_present
+        ):
+            params["state_lock"] = "" if self.state_lock is None else self.state_lock
 
         payload = {
             "id": _fresh_rpc_id(self.rpc_id_sample),
@@ -476,6 +496,16 @@ class BGamingDemoDirectSession:
         self.current_init = current
         self.state_lock = current.get("state_lock")
         self.default_bet = resolve_hyperhive_bet(current)
+        script_texts = [
+            item.text
+            for item in self.evidence.scripts
+            if str(item.text or "").strip()
+        ]
+        if script_texts:
+            self.hyper_profile = analyze_current_wire(
+                "\n".join(script_texts),
+                script_count=len(script_texts),
+            )
         self.hyper_templates = extract_hyperhive_templates(self.evidence)
 
     def _can_execute(self, markers: tuple[str, ...]) -> tuple[bool, str]:
