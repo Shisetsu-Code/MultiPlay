@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import re
 import secrets
 import time
 import uuid
@@ -264,6 +265,8 @@ class BGamingDemoDirectSession:
 
         options["purchased_feature"] = purchased_feature
         level = str(marker_map.get("purchased_feature_level") or "").strip()
+        if not level:
+            level = _infer_api_v2_purchase_level(self.evidence, base)
         if level:
             # Current BGaming API-v2 clients serialize purchase levels as strings.
             options["purchased_feature_level"] = level
@@ -681,6 +684,57 @@ class BGamingDemoDirectSession:
             "request": redact(payload),
             "response": redact(response),
         }
+
+
+def _infer_api_v2_purchase_level(
+    evidence: Any,
+    base: ApiV2Template,
+) -> str:
+    """Infer a missing purchase level only when client state maps uniquely to wire."""
+    candidates: set[str] = set()
+    option_static = dict(base.option_static or {})
+    for script in getattr(evidence, "scripts", []) or []:
+        source = str(getattr(script, "text", "") or "")
+        if "buyBonusClick" not in source or "additionalSpinOptions" not in source:
+            continue
+
+        level_props = {
+            str(match.group(1))
+            for match in re.finditer(
+                r'buyBonusClick\(\)\{[^{}]{0,1800}?'
+                r'\.buyBonusClick\([^,()]{1,300},this\.'
+                r'([A-Za-z_$][A-Za-z0-9_$]*)\)',
+                source,
+            )
+        }
+        for prop in level_props:
+            assignment = re.compile(
+                rf'this\.{re.escape(prop)}\s*=\s*'
+                r'([A-Za-z_$][A-Za-z0-9_$]*)\b'
+            )
+            for match in assignment.finditer(source):
+                variable = str(match.group(1))
+                window = source[match.end() : match.end() + 2600]
+                option_match = re.search(
+                    r'additionalSpinOptions\.'
+                    r'([A-Za-z_$][A-Za-z0-9_$]*)\s*=\s*'
+                    r'["\']["\']\s*\+\s*'
+                    + re.escape(variable)
+                    + r'\b',
+                    window,
+                )
+                if option_match is None:
+                    continue
+                key = str(option_match.group(1))
+                value = option_static.get(key)
+                if (
+                    isinstance(value, (str, int, float))
+                    and not isinstance(value, bool)
+                    and str(value).strip()
+                ):
+                    candidates.add(str(value).strip())
+
+    return next(iter(candidates)) if len(candidates) == 1 else ""
 
 
 def _api_v2_purchase_retry_payloads(
