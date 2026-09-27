@@ -147,10 +147,13 @@ def _parse_text_payload(text: Any, mime: str) -> Any:
         except json.JSONDecodeError:
             pass
 
-    if "x-www-form-urlencoded" in mime or ("=" in text and "&" in text):
+    if "x-www-form-urlencoded" in mime:
         parsed = parse_qs(text, keep_blank_values=True)
         if parsed:
-            return {k: values[0] if len(values) == 1 else values for k, values in parsed.items()}
+            return {
+                key: values[0] if len(values) == 1 else values
+                for key, values in parsed.items()
+            }
 
     return text
 
