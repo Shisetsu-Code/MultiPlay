@@ -86,7 +86,7 @@ _SEMANTICS = (
     ("FREESPIN", re.compile(r"(free.?spin|freespin)", re.IGNORECASE)),
     ("RESPIN", re.compile(r"respin", re.IGNORECASE)),
     ("AUTOSPIN", re.compile(r"autospin", re.IGNORECASE)),
-    ("SPIN", re.compile(r"(^|[-_.])spin($|[-_.])|spinClick|\bspin\b", re.IGNORECASE)),
+    ("SPIN", re.compile(r"(^|[-_.])spin($|[-_.])|spinClick|\bspin(?:desktop|mobile)?\b", re.IGNORECASE)),
     ("GAMBLE", re.compile(r"gamble", re.IGNORECASE)),
     ("COLLECT", re.compile(r"collect", re.IGNORECASE)),
     ("PICK", re.compile(r"(pick|choose|select.?bonus|choice)", re.IGNORECASE)),
