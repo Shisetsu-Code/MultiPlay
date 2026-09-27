@@ -174,9 +174,16 @@ jobs:
 
           inferred = None
           if case == "hyperhive":
-              inferred = session.execute_inferred_hyperhive(
+              inferred_session = BGamingDemoDirectSession(
+                  har_path=har,
+                  url=url,
+                  timeout_s=30,
+              )
+              inferred_session.open()
+              inferred = inferred_session.execute_inferred_hyperhive(
                   ["method=play", "purchased_feature=buy_bonus"]
               )
+              print("inferred:", json.dumps(inferred, indent=2))
               if not inferred.get("success"):
                   raise SystemExit("inferred HyperHive replay failed")
 
