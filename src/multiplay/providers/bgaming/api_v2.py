@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import json
 from copy import deepcopy
 from dataclasses import dataclass, field
 from typing import Any
@@ -101,7 +102,23 @@ def choose_api_v2_template(
         if str(item.option_static.get("purchased_feature_level") or "") != wanted_level:
             continue
         matches.append(item)
-    return matches[0] if len(matches) == 1 else None
+    if len(matches) == 1:
+        return matches[0]
+    if not matches:
+        return None
+
+    signatures = {
+        (
+            item.command,
+            item.has_options,
+            json.dumps(item.option_static, sort_keys=True, default=str),
+            json.dumps(item.option_dynamic_shapes, sort_keys=True, default=str),
+            json.dumps(item.extra_static, sort_keys=True, default=str),
+            json.dumps(item.extra_dynamic_shapes, sort_keys=True, default=str),
+        )
+        for item in matches
+    }
+    return matches[0] if len(signatures) == 1 else None
 
 
 def apply_api_v2_template(
