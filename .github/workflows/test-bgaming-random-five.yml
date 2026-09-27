@@ -57,6 +57,11 @@ jobs:
               "alien fruits 3",
               "big bucks saloon",
               "catdiana",
+              "platinum lightning deluxe",
+              "clover bonanza",
+              "yokai",
+              "bone bonanza",
+              "wild moon thieves",
           }
 
           candidates = []
