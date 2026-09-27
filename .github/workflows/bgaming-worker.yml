@@ -1,0 +1,492 @@
+name: BGaming analyzer worker
+
+on:
+  workflow_dispatch:
+    inputs:
+      refresh_complete:
+        description: "Reprocess games already marked COMPLETE"
+        required: false
+        type: boolean
+        default: false
+  push:
+    branches: ["main"]
+    paths:
+      - ".github/workflows/bgaming-worker.yml"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: bgaming-analyzer-worker
+  cancel-in-progress: false
+
+jobs:
+  plan:
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.plan.outputs.matrix }}
+      total: ${{ steps.plan.outputs.total }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install --upgrade pip
+      - run: pip install -e .
+      - name: Fetch current catalog
+        run: multiplay bgaming-catalog --output catalog.json
+      - id: plan
+        env:
+          REFRESH_COMPLETE: ${{ inputs.refresh_complete || 'false' }}
+        run: |
+          python - <<'PY' >> "$GITHUB_OUTPUT"
+          import json
+          import os
+          from pathlib import Path
+
+          catalog = json.loads(Path("catalog.json").read_text())
+          records = catalog.get("records", catalog) if isinstance(catalog, dict) else catalog
+          records = [r for r in records if isinstance(r, dict)]
+
+          state_path = Path("knowledge/providers/bgaming/worker-state.json")
+          if state_path.exists():
+              state_doc = json.loads(state_path.read_text())
+              state = state_doc.get("games", {}) if isinstance(state_doc, dict) else {}
+          else:
+              state = {}
+
+          refresh = os.environ.get("REFRESH_COMPLETE", "false").casefold() == "true"
+          eligible = []
+          for item in records:
+              availability = str(item.get("availability") or "")
+              if availability not in {"DEMO", "EPHEMERAL_DEMO"}:
+                  continue
+              slug = str(item.get("slug") or "").strip()
+              url = (
+                  item.get("execution_url")
+                  or item.get("demo_url")
+                  or item.get("public_url")
+                  or ""
+              )
+              if not slug or not url:
+                  continue
+              previous = state.get(slug, {})
+              if (
+                  not refresh
+                  and isinstance(previous, dict)
+                  and previous.get("status") == "COMPLETE"
+              ):
+                  continue
+              eligible.append(
+                  {
+                      "slug": slug,
+                      "name": str(item.get("name") or slug),
+                      "url": str(url),
+                      "availability": availability,
+                  }
+              )
+
+          eligible.sort(key=lambda r: (r["name"].casefold(), r["slug"]))
+          shard_count = min(8, max(1, len(eligible)))
+          shards = [[] for _ in range(shard_count)]
+          for index, item in enumerate(eligible):
+              shards[index % shard_count].append(item)
+
+          matrix = {
+              "include": [
+                  {
+                      "shard": index,
+                      "games_json": json.dumps(games, separators=(",", ":")),
+                  }
+                  for index, games in enumerate(shards)
+                  if games
+              ]
+          }
+          print("matrix=" + json.dumps(matrix, separators=(",", ":")))
+          print("total=" + str(len(eligible)))
+          print(
+              f"planned={len(eligible)} shards={len(matrix['include'])}",
+              file=os.sys.stderr,
+          )
+          PY
+
+  analyze:
+    needs: plan
+    if: needs.plan.outputs.total != '0'
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    strategy:
+      fail-fast: false
+      max-parallel: 8
+      matrix: ${{ fromJSON(needs.plan.outputs.matrix) }}
+    env:
+      GAMES_JSON: ${{ matrix.games_json }}
+      SHARD_ID: ${{ matrix.shard }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install --upgrade pip
+      - run: pip install -e ".[browser,dev]"
+      - run: python -m playwright install --with-deps chromium
+
+      - name: Process shard
+        run: |
+          mkdir -p "worker/shard-$SHARD_ID"
+          python - <<'PY'
+          import json
+          import os
+          import shutil
+          import subprocess
+          from collections import Counter
+          from pathlib import Path
+
+          shard = os.environ["SHARD_ID"]
+          games = json.loads(os.environ["GAMES_JSON"])
+          root = Path("worker") / f"shard-{shard}"
+          results = []
+
+          NETWORK_SEMANTICS = {
+              "SPIN",
+              "BUY_BONUS",
+              "FREESPIN",
+              "RESPIN",
+              "GAMBLE",
+              "COLLECT",
+              "PICK",
+              "GAME_VARIANT",
+          }
+
+          for number, game in enumerate(games, start=1):
+              slug = game["slug"]
+              out = root / slug
+              out.mkdir(parents=True, exist_ok=True)
+
+              command = [
+                  "multiplay",
+                  "bgaming-analyze-demo",
+                  game["url"],
+                  "--output-dir",
+                  str(out),
+                  "--settle-ms",
+                  "7000",
+                  "--timeout",
+                  "25",
+              ]
+
+              try:
+                  completed = subprocess.run(
+                      command,
+                      capture_output=True,
+                      text=True,
+                      timeout=240,
+                  )
+                  returncode = completed.returncode
+                  stdout = completed.stdout
+                  stderr = completed.stderr
+              except subprocess.TimeoutExpired as exc:
+                  returncode = 124
+                  stdout = exc.stdout or ""
+                  stderr = (exc.stderr or "") + "\nworker timeout"
+              except Exception as exc:
+                  returncode = 125
+                  stdout = ""
+                  stderr = f"{type(exc).__name__}: {exc}"
+
+              (out / "stdout.txt").write_text(str(stdout)[-12000:], encoding="utf-8")
+              (out / "stderr.txt").write_text(str(stderr)[-12000:], encoding="utf-8")
+
+              analysis_path = out / "analysis.json"
+              row = {
+                  "slug": slug,
+                  "name": game["name"],
+                  "url": game["url"],
+                  "availability": game["availability"],
+                  "returncode": returncode,
+                  "status": "ERROR",
+                  "family": None,
+                  "route_count": 0,
+                  "direct_executable_count": 0,
+                  "unresolved_network_count": 0,
+                  "blockers": [],
+                  "direct_actions": [],
+                  "unresolved_actions": [],
+                  "switchable_children": [],
+                  "error": "",
+              }
+
+              if analysis_path.exists():
+                  try:
+                      report = json.loads(analysis_path.read_text())
+                  except Exception as exc:
+                      row["error"] = f"analysis read: {type(exc).__name__}: {exc}"
+                  else:
+                      routes = report.get("routes") or []
+                      unresolved = [
+                          r for r in routes
+                          if r.get("interface_role") == "network_action"
+                          and r.get("semantic") in NETWORK_SEMANTICS
+                          and not r.get("direct_executable")
+                      ]
+                      direct = [
+                          r for r in routes
+                          if r.get("direct_executable")
+                      ]
+                      children = report.get("switchable_children") or []
+
+                      row.update(
+                          {
+                              "family": report.get("family"),
+                              "route_count": report.get("route_count", len(routes)),
+                              "direct_executable_count": report.get(
+                                  "direct_executable_count",
+                                  len(direct),
+                              ),
+                              "unresolved_network_count": len(unresolved),
+                              "blockers": report.get("blockers") or [],
+                              "direct_actions": [
+                                  {
+                                      "semantic": r.get("semantic"),
+                                      "control": r.get("control"),
+                                      "handler": r.get("handler"),
+                                      "wire": r.get("wire_markers") or [],
+                                  }
+                                  for r in direct
+                              ],
+                              "unresolved_actions": [
+                                  {
+                                      "semantic": r.get("semantic"),
+                                      "control": r.get("control"),
+                                      "handler": r.get("handler"),
+                                      "status": r.get("status"),
+                                      "wire": r.get("wire_markers") or [],
+                                  }
+                                  for r in unresolved
+                              ],
+                              "switchable_children": [
+                                  {
+                                      "identifier": c.get("identifier"),
+                                      "success": bool(c.get("success")),
+                                      "init_status": c.get("init_status"),
+                                      "spin_status": c.get("spin_status"),
+                                  }
+                                  for c in children
+                              ],
+                          }
+                      )
+
+                      switchable_ok = bool(children) and all(
+                          bool(child.get("success")) for child in children
+                      )
+                      if (
+                          returncode == 0
+                          and not unresolved
+                          and (
+                              row["direct_executable_count"] > 0
+                              or switchable_ok
+                          )
+                      ):
+                          row["status"] = "COMPLETE"
+                      elif returncode == 0 and row["route_count"] == 0:
+                          row["status"] = "NO_ROUTES"
+                      elif returncode == 0:
+                          row["status"] = "PARTIAL"
+                      else:
+                          row["status"] = "ERROR"
+
+              if not row["error"] and returncode != 0:
+                  row["error"] = str(stderr)[-2500:]
+
+              # Keep only compact evidence for completed games.
+              if row["status"] == "COMPLETE":
+                  for name in (
+                      "contract.har",
+                      "initial.jpg",
+                      "browser.raw.har",
+                  ):
+                      (out / name).unlink(missing_ok=True)
+                  for p in out.glob("handler-*.raw.har"):
+                      p.unlink(missing_ok=True)
+
+              results.append(row)
+              print(
+                  f"[{shard}:{number}/{len(games)}] "
+                  f"{slug} {row['status']} "
+                  f"family={row['family']} direct={row['direct_executable_count']} "
+                  f"unresolved={row['unresolved_network_count']}"
+              )
+
+          summary = {
+              "shard": int(shard),
+              "processed": len(results),
+              "status_counts": dict(Counter(r["status"] for r in results)),
+              "family_counts": dict(Counter(str(r["family"]) for r in results)),
+              "games": results,
+          }
+          (root / "summary.json").write_text(
+              json.dumps(summary, ensure_ascii=False, indent=2) + "\n",
+              encoding="utf-8",
+          )
+          PY
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: bgaming-worker-shard-${{ matrix.shard }}
+          path: worker/shard-${{ matrix.shard }}
+          if-no-files-found: error
+          retention-days: 7
+
+  aggregate:
+    needs: [plan, analyze]
+    if: always() && needs.plan.result == 'success'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/download-artifact@v4
+        if: needs.plan.outputs.total != '0'
+        with:
+          pattern: bgaming-worker-shard-*
+          path: downloaded
+          merge-multiple: true
+
+      - name: Aggregate worker results
+        env:
+          PLANNED_TOTAL: ${{ needs.plan.outputs.total }}
+          RUN_ID: ${{ github.run_id }}
+        run: |
+          python - <<'PY'
+          import json
+          import os
+          from collections import Counter, defaultdict
+          from datetime import datetime, timezone
+          from pathlib import Path
+
+          summaries = []
+          for path in Path("downloaded").rglob("summary.json"):
+              try:
+                  summaries.append(json.loads(path.read_text()))
+              except Exception:
+                  continue
+
+          games = []
+          for summary in summaries:
+              games.extend(summary.get("games") or [])
+
+          state_path = Path("knowledge/providers/bgaming/worker-state.json")
+          if state_path.exists():
+              try:
+                  state_doc = json.loads(state_path.read_text())
+              except Exception:
+                  state_doc = {}
+          else:
+              state_doc = {}
+
+          state_games = state_doc.get("games")
+          if not isinstance(state_games, dict):
+              state_games = {}
+
+          now = datetime.now(timezone.utc).isoformat()
+          for row in games:
+              slug = row["slug"]
+              previous = state_games.get(slug, {})
+              attempts = int(previous.get("attempts") or 0) + 1
+              state_games[slug] = {
+                  "name": row["name"],
+                  "status": row["status"],
+                  "family": row.get("family"),
+                  "route_count": row.get("route_count", 0),
+                  "direct_executable_count": row.get("direct_executable_count", 0),
+                  "unresolved_network_count": row.get("unresolved_network_count", 0),
+                  "attempts": attempts,
+                  "last_run_id": os.environ["RUN_ID"],
+                  "updated_at": now,
+              }
+
+          state_doc = {
+              "schema": "multiplay/bgaming-worker-state/v1",
+              "updated_at": now,
+              "last_run_id": os.environ["RUN_ID"],
+              "games": state_games,
+          }
+
+          review = [
+              row for row in games
+              if row.get("status") != "COMPLETE"
+          ]
+          review.sort(
+              key=lambda r: (
+                  {"ERROR": 0, "NO_ROUTES": 1, "PARTIAL": 2}.get(r.get("status"), 9),
+                  str(r.get("family")),
+                  r["slug"],
+              )
+          )
+
+          family_counts = Counter(str(row.get("family")) for row in games)
+          status_counts = Counter(row.get("status") for row in games)
+          unresolved_by_semantic = Counter()
+          for row in review:
+              for action in row.get("unresolved_actions") or []:
+                  unresolved_by_semantic[str(action.get("semantic"))] += 1
+
+          summary_doc = {
+              "schema": "multiplay/bgaming-worker-summary/v1",
+              "run_id": os.environ["RUN_ID"],
+              "generated_at": now,
+              "planned": int(os.environ.get("PLANNED_TOTAL") or 0),
+              "processed": len(games),
+              "status_counts": dict(sorted(status_counts.items())),
+              "family_counts": dict(sorted(family_counts.items())),
+              "unresolved_semantic_counts": dict(
+                  sorted(
+                      unresolved_by_semantic.items(),
+                      key=lambda item: (-item[1], item[0]),
+                  )
+              ),
+              "complete": sum(1 for row in games if row.get("status") == "COMPLETE"),
+              "needs_review": len(review),
+          }
+
+          review_doc = {
+              "schema": "multiplay/bgaming-worker-review/v1",
+              "run_id": os.environ["RUN_ID"],
+              "generated_at": now,
+              "summary": summary_doc,
+              "games": review,
+          }
+
+          base = Path("knowledge/providers/bgaming")
+          base.mkdir(parents=True, exist_ok=True)
+          state_path.write_text(
+              json.dumps(state_doc, ensure_ascii=False, indent=2) + "\n"
+          )
+          (base / "worker-last-summary.json").write_text(
+              json.dumps(summary_doc, ensure_ascii=False, indent=2) + "\n"
+          )
+          (base / "worker-last-review.json").write_text(
+              json.dumps(review_doc, ensure_ascii=False, indent=2) + "\n"
+          )
+
+          print(json.dumps(summary_doc, indent=2))
+          PY
+
+      - name: Persist compact worker state
+        run: |
+          git config user.name "MultiPlay Worker"
+          git config user.email "multiplay-worker@users.noreply.github.com"
+          git add \
+            knowledge/providers/bgaming/worker-state.json \
+            knowledge/providers/bgaming/worker-last-summary.json \
+            knowledge/providers/bgaming/worker-last-review.json
+          if git diff --cached --quiet; then
+            echo "No worker-state changes"
+            exit 0
+          fi
+          git commit -m "Update BGaming worker results"
+          git pull --rebase origin main
+          git push origin HEAD:main
