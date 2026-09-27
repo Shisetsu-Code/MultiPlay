@@ -139,6 +139,33 @@ def run_demo_base_spin(
     )
     spin_data = _json_value(spin.text)
 
+    # Some API-v2 clients serialize the active math variant as options.mode.
+    # Retry only after a failed base spin so successful simple games stay untouched.
+    if (
+        family == API_V2
+        and not 200 <= spin.status < 400
+        and "mode" not in spin_options
+    ):
+        retry_options = dict(spin_options)
+        retry_options["mode"] = "0"
+        retry_payload = {
+            "command": "spin",
+            "options": retry_options,
+            "extra_data": dict(spin_extra),
+        }
+        retry_spin = session.post_json(
+            bootstrap.api,
+            retry_payload,
+            timeout_s=timeout_s,
+            headers=common_headers,
+            allow_http_error=True,
+        )
+        retry_data = _json_value(retry_spin.text)
+        if 200 <= retry_spin.status < 400:
+            spin_payload = retry_payload
+            spin = retry_spin
+            spin_data = retry_data
+
     safe_api = sanitize_session_url(bootstrap.api)
     evidence = EvidenceBundle(
         http=[
