@@ -514,14 +514,22 @@ def _formatted_request_literals(text: str) -> dict[str, Any]:
 def _normal_spin_request_literals(text: str) -> dict[str, Any]:
     source = text or ""
     pattern = re.compile(
-        r'ActionType:[A-Za-z_$][A-Za-z0-9_$]*\.SPIN,'
-        r'AdditionalData:\{request:[A-Za-z_$][A-Za-z0-9_$]*\.SPIN,'
-        r'rel:[A-Za-z_$][A-Za-z0-9_$]*\.NEW_SPIN,'
-        r'params:\{([^{}]{0,2400})\}\}'
+        r'ActionType:[A-Za-z_$][A-Za-z0-9_$]*\.SPIN'
+        r'[\s\S]{0,700}?AdditionalData:\{'
+        r'[\s\S]{0,500}?request:[A-Za-z_$][A-Za-z0-9_$]*\.SPIN'
+        r'[\s\S]{0,500}?params:\{'
     )
     candidates: list[tuple[int, dict[str, Any]]] = []
     for match in pattern.finditer(source):
-        parsed = _safe_params_object(match.group(1))
+        object_start = match.end() - 1
+        params_object = _balanced_js_object(
+            source,
+            object_start,
+            max_chars=3600,
+        )
+        if not params_object:
+            continue
+        parsed = _safe_params_object(params_object[1:-1])
         if parsed:
             candidates.append((match.start(), parsed))
     if not candidates:
@@ -530,8 +538,66 @@ def _normal_spin_request_literals(text: str) -> dict[str, Any]:
     return candidates[-1][1]
 
 
+def _balanced_js_object(
+    text: str,
+    start: int,
+    *,
+    max_chars: int,
+) -> str:
+    if start < 0 or start >= len(text) or text[start] != "{":
+        return ""
+
+    depth = 0
+    quote = ""
+    escaped = False
+    end = min(len(text), start + max_chars)
+    for index in range(start, end):
+        char = text[index]
+        if quote:
+            if escaped:
+                escaped = False
+            elif char == "\\":
+                escaped = True
+            elif char == quote:
+                quote = ""
+            continue
+        if char in {'"', "'", "\x60"}:
+            quote = char
+            continue
+        if char == "{":
+            depth += 1
+        elif char == "}":
+            depth -= 1
+            if depth == 0:
+                return text[start : index + 1]
+    return ""
+
+
 def _safe_params_object(body: str) -> dict[str, Any]:
     found: dict[str, Any] = {}
+
+    # Some clients construct a fixed list of line indexes rather than writing
+    # an array literal. This expression is still a deterministic client
+    # literal: Array.from({length:N}, ((value,index) => index)).
+    array_from_re = re.compile(
+        r'(?:^|,)([A-Za-z_$][A-Za-z0-9_$]*):'
+        r'Array\.from\(\{length:(\d+)\},'
+        r'\(\(([A-Za-z_$][A-Za-z0-9_$]*),'
+        r'([A-Za-z_$][A-Za-z0-9_$]*)\)=>'
+        r'([A-Za-z_$][A-Za-z0-9_$]*)\)\)\)'
+    )
+    for match in array_from_re.finditer(body or ""):
+        key = str(match.group(1))
+        length = int(match.group(2))
+        index_var = str(match.group(4))
+        returned = str(match.group(5))
+        if (
+            _safe_literal_key(key)
+            and index_var == returned
+            and 0 <= length <= 200
+        ):
+            found[key] = list(range(length))
+
     value_re = re.compile(
         r'(?:^|,)([A-Za-z_$][A-Za-z0-9_$]*):'
         r'(\[[^\[\]{}]{0,1800}\]|!0|!1|true|false|null|'
