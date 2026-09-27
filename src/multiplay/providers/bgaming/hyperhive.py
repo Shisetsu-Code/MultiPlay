@@ -42,6 +42,13 @@ def extract_hyperhive_templates(
         ):
             continue
 
+        response = exchange.response_body
+        if (
+            isinstance(response, dict)
+            and response.get("error") not in (None, {}, [])
+        ):
+            continue
+
         payload = exchange.request_body
         if payload.get("jsonrpc") != "2.0" or payload.get("method") != "play":
             continue
