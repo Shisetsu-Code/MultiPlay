@@ -727,6 +727,11 @@ def _wire_markers_text(text: str) -> set[str]:
     for name, pattern in _WIRE_PATTERNS:
         for match in pattern.finditer(text or ""):
             value = str(match.group(1) or "").strip()
+            if (
+                name == "purchased_feature_level"
+                and not re.fullmatch(r"[A-Za-z0-9_-]+", value)
+            ):
+                continue
             if value:
                 markers.add(f"{name}={value}")
     return markers
