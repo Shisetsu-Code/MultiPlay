@@ -1,0 +1,83 @@
+name: Test BGaming handlers directly
+
+on:
+  push:
+    branches: ["main"]
+    paths:
+      - ".github/workflows/test-bgaming-handler-direct.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - id: potion-spin
+            url: https://demo.bgaming-network.com/play/PotionSpells/FUN
+            route_id: R-SPIN
+            semantic: SPIN
+            control: spin-button
+            handler: currentScene.spin`1
+          - id: potion-buy
+            url: https://demo.bgaming-network.com/play/PotionSpells/FUN
+            route_id: R-BUY
+            semantic: BUY_BONUS
+            control: buy-bonus-popup-buy
+            handler: all.buy-features.buyBonusClick`bonus_buy
+          - id: stars-spin
+            url: https://demo.bgaming-network.com/play/StarsAndStripesHoldAndWin/FUN
+            route_id: R-SPIN
+            semantic: SPIN
+            control: spin-button
+            handler: currentScene.spin`1
+
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install --upgrade pip
+      - run: pip install -e ".[browser,dev]"
+      - run: python -m playwright install --with-deps chromium
+      - name: Call handler and print network
+        run: |
+          python - <<'PY'
+          import json
+          from multiplay.providers.bgaming.handler_probe import probe_bgaming_handlers
+
+          route = {
+              "route_id": "${{ matrix.route_id }}",
+              "semantic": "${{ matrix.semantic }}",
+              "control": "${{ matrix.control }}",
+              "handler": "${{ matrix.handler }}",
+              "wire_markers": [],
+          }
+          result = probe_bgaming_handlers(
+              "${{ matrix.url }}",
+              [route],
+              har_path="probe.har",
+              settle_ms=12000,
+              after_call_ms=3500,
+          )
+          print(json.dumps(result.to_dict(), indent=2, ensure_ascii=False))
+          print("HTTP:")
+          for item in result.evidence.http:
+              print(
+                  json.dumps(
+                      {
+                          "method": item.method,
+                          "url": item.url,
+                          "status": item.response_status,
+                          "body": item.request_body,
+                      },
+                      ensure_ascii=False,
+                  )
+              )
+          if not any(o.called for o in result.outcomes):
+              raise SystemExit("handler was not called")
+          PY
