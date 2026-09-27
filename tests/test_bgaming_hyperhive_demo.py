@@ -84,7 +84,6 @@ def test_flat_hyperhive_profile_reconstructs_client_play_shape():
         "bet": 30,
         "bet_type": "default",
         "fe_exponent": 2,
-        "purchased_feature": None,
         "balance": 100000,
         "buyBonusModeMultiplier": 1,
     }
@@ -258,4 +257,45 @@ def test_profile_prefers_normal_spin_when_bundle_has_multiple_play_requests():
         "bet_type": "betting",
         "action": "spin",
     }
+
+def test_variable_action_is_detected_in_play_request():
+    profile = analyze_current_wire(
+        'function request(mode){let action="";'
+        'mode==="BASE"?action="spin":mode==="FREEGAME"&&(action="freespin");'
+        'return fetch("/api",{body:JSON.stringify({jsonrpc:"2.0",method:"play",'
+        'params:{req:{bet:100,action:action,bet_type:"bet"},token:t}})})}'
+    )
+    assert profile.req_action is True
+
+    req = build_profile_request(
+        profile,
+        {
+            "config": {"default_bet": 100, "bet_limits": [20, 100]},
+            "currency_attributes": {"subunits": 100, "exponent": 2},
+        },
+        bet=100,
+    )
+    assert req == {"bet": 100, "bet_type": "bet"}
+
+
+def test_variable_purchased_feature_is_optional_for_normal_spin():
+    profile = analyze_current_wire(
+        'async play(bet,purchased,bonus,freebet){'
+        'const req={bet:bet,purchased_feature:purchased,bonus_buy:bonus};'
+        'freebet&&(req.bet_type="freebet");'
+        'return fetch("/api",{body:JSON.stringify({jsonrpc:"2.0",method:"play",'
+        'params:{token:t,req:req}})})}'
+    )
+    assert profile.req_purchased_feature is True
+    assert profile.req_purchased_feature_always is False
+
+    req = build_profile_request(
+        profile,
+        {
+            "config": {"default_bet": 100, "bet_limits": [20, 100]},
+            "currency_attributes": {"subunits": 100, "exponent": 2},
+        },
+        bet=100,
+    )
+    assert "purchased_feature" not in req
 
