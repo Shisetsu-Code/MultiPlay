@@ -122,55 +122,76 @@ def probe_bgaming_handlers(
             paths, args = spec if spec is not None else ([], [])
             called = False
             last_error = ""
+            resolved_path = ""
+            resolved_frame = ""
+            route_http_start = len(captured_http)
             capture_state["active"] = True
-            for frame in page.frames:
-                result = None
-                if control:
-                    for _attempt in range(3):
+
+            for attempt in range(3):
+                attempt_called = False
+                for frame in page.frames:
+                    result = None
+                    if control:
+                        for _advance in range(3):
+                            try:
+                                result = frame.evaluate(
+                                    _CALL_CONTROL_JS,
+                                    {"control": control},
+                                )
+                            except Exception as exc:  # noqa: BLE001
+                                last_error = f"{type(exc).__name__}: {exc}"
+                                break
+                            if isinstance(result, dict) and result.get("advanced"):
+                                page.wait_for_timeout(1200)
+                                continue
+                            break
+
+                    if (
+                        (not isinstance(result, dict) or not result.get("called"))
+                        and paths
+                    ):
                         try:
                             result = frame.evaluate(
-                                _CALL_CONTROL_JS,
-                                {"control": control},
+                                _CALL_HANDLER_JS,
+                                {"paths": paths, "args": args, "handler": handler},
                             )
                         except Exception as exc:  # noqa: BLE001
                             last_error = f"{type(exc).__name__}: {exc}"
-                            break
-                        if isinstance(result, dict) and result.get("advanced"):
-                            page.wait_for_timeout(1200)
                             continue
-                        break
 
-                if (
-                    (not isinstance(result, dict) or not result.get("called"))
-                    and paths
-                ):
-                    try:
-                        result = frame.evaluate(
-                            _CALL_HANDLER_JS,
-                            {"paths": paths, "args": args, "handler": handler},
-                        )
-                    except Exception as exc:  # noqa: BLE001
-                        last_error = f"{type(exc).__name__}: {exc}"
+                    if not isinstance(result, dict):
                         continue
+                    if result.get("called"):
+                        called = True
+                        attempt_called = True
+                        resolved_path = str(result.get("path") or "")
+                        resolved_frame = _safe_frame_url(frame.url)
+                        page.wait_for_timeout(max(250, int(after_call_ms)))
+                        break
+                    if result.get("error"):
+                        last_error = str(result["error"])
 
-                if not isinstance(result, dict):
+                if not attempt_called:
                     continue
-                if result.get("called"):
-                    outcomes.append(
-                        HandlerProbeOutcome(
-                            route_id=route_id,
-                            handler=handler,
-                            called=True,
-                            resolved_path=str(result.get("path") or ""),
-                            frame_url=_safe_frame_url(frame.url),
-                        )
-                    )
-                    called = True
-                    page.wait_for_timeout(max(250, int(after_call_ms)))
-                    capture_state["active"] = False
+
+                route_http = captured_http[route_http_start:]
+                if any(not _is_init_exchange(item) for item in route_http):
                     break
-                if result.get("error"):
-                    last_error = str(result["error"])
+
+                if attempt < 2:
+                    page.wait_for_timeout(1200)
+
+            capture_state["active"] = False
+            if called:
+                outcomes.append(
+                    HandlerProbeOutcome(
+                        route_id=route_id,
+                        handler=handler,
+                        called=True,
+                        resolved_path=resolved_path,
+                        frame_url=resolved_frame,
+                    )
+                )
 
             if not called:
                 capture_state["active"] = False
@@ -192,6 +213,16 @@ def probe_bgaming_handlers(
             metadata={"source": "bgaming-handler-probe"},
         ),
         outcomes=tuple(outcomes),
+    )
+
+
+def _is_init_exchange(exchange: HttpExchange) -> bool:
+    body = exchange.request_body
+    if not isinstance(body, dict):
+        return False
+    return (
+        str(body.get("command") or "").casefold() == "init"
+        or str(body.get("method") or "").casefold() == "init"
     )
 
 
