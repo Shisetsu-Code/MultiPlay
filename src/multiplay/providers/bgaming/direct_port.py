@@ -256,7 +256,8 @@ class BGamingDemoDirectSession:
         options["purchased_feature"] = purchased_feature
         level = str(marker_map.get("purchased_feature_level") or "").strip()
         if level:
-            options["purchased_feature_level"] = _marker_scalar(level)
+            # Current BGaming API-v2 clients serialize purchase levels as strings.
+            options["purchased_feature_level"] = level
 
         result = self.http.post_json(
             self.endpoint_url,
