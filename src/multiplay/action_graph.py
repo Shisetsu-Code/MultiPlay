@@ -404,6 +404,12 @@ def _resolve_control(
         "route_id": route_id,
         "semantic": semantic,
         "status": status,
+        "interface_role": _interface_role(
+            status,
+            semantic,
+            handler,
+            list(best.get("chain") or roots),
+        ),
         "control": label,
         "handler": handler,
         "occurrence_source": str(control.get("source") or ""),
@@ -760,22 +766,14 @@ def _route_status(
         return "NETWORK_OBSERVED"
     if markers:
         return "NETWORK_INFERRED"
+    semantic = _semantic(label, handler, [], set())
     if (
-        protocol_hint
+        semantic == "SPIN"
+        and protocol_hint
         and not _ui_opener(handler, [])
-        and _semantic(label, handler, [], set())
-        in {
-            "SPIN",
-            "BUY_BONUS",
-            "FREESPIN",
-            "RESPIN",
-            "GAMBLE",
-            "COLLECT",
-            "PICK",
-        }
     ):
         return "NETWORK_INFERRED"
-    if _UI_ONLY_RE.search(f"{label} {handler}"):
+    if _UI_ONLY_RE.search(f"{label} {handler}") or _ui_opener(handler, []):
         return "UI_ONLY"
     return "CLIENT_OR_UNKNOWN"
 
@@ -818,10 +816,50 @@ def _confidence(
     return "LOW"
 
 
+
+def _interface_role(
+    status: str,
+    semantic: str,
+    handler: str,
+    chain: list[str],
+) -> str:
+    if _ui_opener(handler, chain):
+        return "opener"
+    if status in {"NETWORK_OBSERVED", "NETWORK_INFERRED"}:
+        return "network_action"
+    if semantic in {"BET", "AUTOSPIN"}:
+        return "client_state"
+    return "client_control"
+
 def _keep_route(route: dict[str, Any]) -> bool:
-    if route.get("status") in {"NETWORK_OBSERVED", "NETWORK_INFERRED"}:
-        return True
-    return route.get("semantic") in {
+    semantic = str(route.get("semantic") or "")
+    status = str(route.get("status") or "")
+    role = str(route.get("interface_role") or "")
+    label = str(route.get("control") or "")
+    handler = str(route.get("handler") or "")
+    markers = set(route.get("wire_markers") or [])
+    text = f"{label} {handler}".casefold()
+
+    if semantic == "OTHER":
+        return False
+    if markers and markers <= {"command=init", "method=init"}:
+        return False
+    if any(
+        word in text
+        for word in (
+            "settings",
+            "paytable",
+            "history",
+            "replay",
+            "quick-spin",
+            "spacebar",
+            "info-button",
+            "provability",
+        )
+    ):
+        return False
+
+    network_semantics = {
         "SPIN",
         "BUY_BONUS",
         "FREESPIN",
@@ -830,8 +868,30 @@ def _keep_route(route: dict[str, Any]) -> bool:
         "COLLECT",
         "PICK",
         "GAME_VARIANT",
-        "CONTINUE",
     }
+    if (
+        status in {"NETWORK_OBSERVED", "NETWORK_INFERRED"}
+        and semantic in network_semantics
+    ):
+        return True
+
+    if semantic == "BUY_BONUS" and role == "opener":
+        return True
+
+    if status == "CLIENT_OR_UNKNOWN" and semantic in {
+        "SPIN",
+        "GAMBLE",
+        "COLLECT",
+        "GAME_VARIANT",
+    }:
+        return bool(
+            re.search(
+                r"(spin-button|gamble|collect|setCurrentGame|^game[1-9]$)",
+                f"{label} {handler}",
+                re.IGNORECASE,
+            )
+        )
+    return False
 
 
 def _route_rank(route: dict[str, Any]) -> int:
