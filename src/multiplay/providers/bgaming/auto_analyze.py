@@ -10,6 +10,7 @@ from ...browser import BrowserAction, capture_browser_evidence
 from ...endpoints import sanitize_endpoint_url
 from ...evidence import load_har, redact
 from ...models import EvidenceBundle, HttpExchange, ScriptEvidence
+from .bootstrap import sanitize_session_url
 from .classify import (
     API_V2,
     HYPERHIVE_JSONRPC,
@@ -226,7 +227,7 @@ def _merge_evidence(
         key = json.dumps(
             {
                 "method": item.method,
-                "url": sanitize_endpoint_url(item.url),
+                "url": _safe_contract_url(item.url),
                 "request": item.request_body,
                 "status": item.response_status,
             },
@@ -271,7 +272,7 @@ def _write_safe_har(bundle: EvidenceBundle, path: Path) -> None:
             {
                 "request": {
                     "method": exchange.method,
-                    "url": sanitize_endpoint_url(exchange.url),
+                    "url": _safe_contract_url(exchange.url),
                     "headers": [
                         {"name": key, "value": value}
                         for key, value in redact(exchange.request_headers).items()
@@ -344,3 +345,8 @@ def _write_safe_har(bundle: EvidenceBundle, path: Path) -> None:
 def _strip_query(url: str) -> str:
     parts = urlsplit(str(url or ""))
     return parts._replace(query="", fragment="").geturl()
+
+
+
+def _safe_contract_url(url: str) -> str:
+    return sanitize_session_url(sanitize_endpoint_url(str(url or "")))
