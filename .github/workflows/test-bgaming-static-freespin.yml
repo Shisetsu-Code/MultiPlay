@@ -10,6 +10,7 @@ on:
       - "src/multiplay/providers/bgaming/direct_port.py"
       - "src/multiplay/providers/bgaming/demo_spin.py"
       - "src/multiplay/providers/bgaming/auto_analyze.py"
+      - "src/multiplay/providers/bgaming/handler_probe.py"
       - "tests/test_action_graph.py"
       - "tests/test_har_map.py"
       - "tests/test_bgaming_direct_port.py"
@@ -63,6 +64,10 @@ jobs:
             url: https://demo.bgaming-network.com/play/JewelBoom/FUN
           - id: yommi-rush
             url: https://demo.bgaming-network.com/play/YommiRush/FUN
+          - id: rocket-eruption-triple-blast
+            url: https://demo.bgaming-network.com/play/RocketEruptionTripleBlast/FUN
+          - id: joker-vs-joker
+            url: https://demo.bgaming-network.com/play/JokerVsJoker/FUN
 
     steps:
       - uses: actions/checkout@v4
