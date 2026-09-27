@@ -361,6 +361,12 @@ _ONCLICK_RE = re.compile(
     r'(\[[^\]]{1,500}\]|["\'][^"\']{1,500}["\'])',
     re.IGNORECASE,
 )
+_LEGACY_CREATE_BUTTON_RE = re.compile(
+    r'addListener\(\s*[^;]{0,160}?createButton\(\s*["\']'
+    r'([^"\']{1,120})["\'][^)]{0,220}\)\s*,\s*'
+    r'((?:this\.)?[A-Za-z_$][A-Za-z0-9_$]*)',
+    re.IGNORECASE,
+)
 
 
 def _javascript_declared_buttons(text: str, source: str) -> list[dict[str, Any]]:
@@ -387,6 +393,26 @@ def _javascript_declared_buttons(text: str, source: str) -> list[dict[str, Any]]
                 "element": label,
                 "handler_hint": " ".join(properties[:1000].split()),
                 "wire_markers": sorted(_wire_markers_text(properties)),
+                "endpoint_ids": [],
+                "confidence": "HIGH",
+            }
+        )
+    for match in _LEGACY_CREATE_BUTTON_RE.finditer(text):
+        label = str(match.group(1))
+        handler = str(match.group(2))
+        start = max(0, match.start() - 300)
+        end = min(len(text), match.end() + 500)
+        window = text[start:end]
+        rows.append(
+            {
+                "kind": "declared_button",
+                "source": source,
+                "event": "click",
+                "label": label,
+                "handler": handler,
+                "element": label,
+                "handler_hint": " ".join(window.split())[:1000],
+                "wire_markers": sorted(_wire_markers_text(window)),
                 "endpoint_ids": [],
                 "confidence": "HIGH",
             }
