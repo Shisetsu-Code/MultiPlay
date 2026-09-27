@@ -1,0 +1,24 @@
+{
+  "schema": "multiplay/bgaming-worker-summary/v1",
+  "run_id": "36322623214",
+  "generated_at": "2026-09-27T13:57:37.040549+00:00",
+  "planned": 215,
+  "processed": 27,
+  "status_counts": {
+    "COMPLETE": 13,
+    "NO_ROUTES": 4,
+    "PARTIAL": 10
+  },
+  "family_counts": {
+    "api-v2": 22,
+    "hyperhive-jsonrpc": 4,
+    "legacy-lines": 1
+  },
+  "unresolved_semantic_counts": {
+    "BUY_BONUS": 17,
+    "FREESPIN": 3,
+    "SPIN": 1
+  },
+  "complete": 13,
+  "needs_review": 14
+}
