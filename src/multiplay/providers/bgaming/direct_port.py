@@ -229,6 +229,9 @@ class BGamingDemoDirectSession:
 
         normalized = tuple(str(item) for item in markers)
         marker_map = _marker_map(normalized)
+        purchase_command = str(marker_map.get("command") or "spin").strip()
+        if not purchase_command:
+            raise ValueError("inferred API-v2 purchase has no command marker")
         features = _marker_values(normalized, "purchased_feature")
         if len(features) != 1:
             raise ValueError(
@@ -249,6 +252,10 @@ class BGamingDemoDirectSession:
             fresh_options=self._fresh_api_options(base, values),
             fresh_extra_data=self._fresh_api_extra(base, values),
         )
+        # The successful base spin is a shape donor. Static client evidence can
+        # resolve purchases to a different command (currently commonly "play").
+        # Preserve that demonstrated command instead of silently forcing "spin".
+        payload["command"] = purchase_command
         options = payload.get("options")
         if not isinstance(options, dict):
             raise TypeError("base spin template has no options object")
