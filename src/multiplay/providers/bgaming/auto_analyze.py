@@ -92,6 +92,8 @@ def analyze_bgaming_demo(
         "kind": "",
     }
     extra = EvidenceBundle()
+    switchable_variants: list[str] = []
+    switchable_children: list[dict[str, Any]] = []
 
     if family in {API_V2, LEGACY_LINES}:
         enrichment["attempted"] = True
@@ -119,9 +121,72 @@ def analyze_bgaming_demo(
             enrichment["metadata"] = base.metadata.to_dict()
             extra = base.evidence
     elif family == SWITCHABLE_CONTAINER:
-        blockers.append(
-            "switchable container requires child selection before direct base-play enrichment"
-        )
+        enrichment["attempted"] = True
+        enrichment["kind"] = "switchable-children"
+        try:
+            parent_probe = probe_bgaming_demo(
+                execution_url,
+                timeout_s=timeout_s,
+            )
+            parent_identifier = parent_probe.metadata.identifier
+            parent_evidence = _merge_evidence(
+                browser_evidence,
+                parent_probe.evidence,
+            )
+            switchable_variants = extract_switchable_variants(
+                parent_evidence,
+                parent_identifier,
+            )
+            if not switchable_variants:
+                raise ValueError(
+                    "switchable runtime exposed no child identifier table"
+                )
+
+            for child_identifier in switchable_variants:
+                child_url = switchable_child_url(
+                    execution_url,
+                    child_identifier,
+                )
+                row: dict[str, Any] = {
+                    "identifier": child_identifier,
+                    "url": _strip_query(child_url),
+                    "success": False,
+                }
+                try:
+                    child = run_demo_base_spin(
+                        child_url,
+                        timeout_s=timeout_s,
+                    )
+                except (OSError, RuntimeError, TypeError, ValueError) as exc:
+                    row["error"] = f"{type(exc).__name__}: {exc}"
+                else:
+                    row["family"] = child.metadata.family
+                    row["init_status"] = child.metadata.init_status
+                    row["spin_status"] = child.metadata.spin_status
+                    row["success"] = (
+                        200 <= child.metadata.init_status < 400
+                        and 200 <= child.metadata.spin_status < 400
+                    )
+                switchable_children.append(row)
+
+            enrichment["success"] = bool(switchable_children) and all(
+                bool(item.get("success"))
+                for item in switchable_children
+            )
+            enrichment["metadata"] = {
+                "parent_identifier": parent_identifier,
+                "children": switchable_children,
+            }
+            extra = parent_probe.evidence
+            if not enrichment["success"]:
+                blockers.append(
+                    "one or more switchable child base spins failed"
+                )
+        except (OSError, RuntimeError, TypeError, ValueError) as exc:
+            blockers.append(
+                "switchable child enrichment failed: "
+                f"{type(exc).__name__}: {exc}"
+            )
 
     contract_bundle = _merge_evidence(browser_evidence, extra)
     contract_har = root / "contract.har"
