@@ -31,6 +31,17 @@ def main() -> int:
     har_map.add_argument("--output")
     har_map.add_argument("--json", action="store_true")
 
+    auto_analyze = sub.add_parser(
+        "bgaming-analyze-demo",
+        help="Capture code, enrich base wire, resolve actions, and prepare direct demo routes",
+    )
+    auto_analyze.add_argument("url")
+    auto_analyze.add_argument("--output-dir", required=True)
+    auto_analyze.add_argument("--settle-ms", type=int, default=10000)
+    auto_analyze.add_argument("--timeout", type=float, default=30.0)
+    auto_analyze.add_argument("--keep-raw-har", action="store_true")
+    auto_analyze.add_argument("--no-screenshot", action="store_true")
+
     har_actions = sub.add_parser(
         "har-actions",
         help="Resolve declared controls through handlers to protocol actions",
@@ -153,6 +164,8 @@ def main() -> int:
         return _analyze(args)
     if args.command == "har-map":
         return _har_map(args)
+    if args.command == "bgaming-analyze-demo":
+        return _bgaming_analyze_demo(args)
     if args.command == "har-actions":
         return _har_actions(args)
     if args.command == "bgaming-port":
@@ -227,6 +240,24 @@ def _har_map(args: argparse.Namespace) -> int:
         print(json.dumps(report, indent=2, ensure_ascii=False))
     else:
         print(render_har_map(report, action_id=args.action), end="")
+    return 0
+
+
+def _bgaming_analyze_demo(args: argparse.Namespace) -> int:
+    from .providers.bgaming.auto_analyze import (
+        analyze_bgaming_demo,
+        render_bgaming_analysis,
+    )
+
+    report = analyze_bgaming_demo(
+        args.url,
+        output_dir=args.output_dir,
+        settle_ms=args.settle_ms,
+        timeout_s=args.timeout,
+        keep_raw_har=args.keep_raw_har,
+        screenshot=not args.no_screenshot,
+    )
+    print(render_bgaming_analysis(report), end="")
     return 0
 
 

@@ -1,0 +1,340 @@
+from __future__ import annotations
+
+import json
+from pathlib import Path
+from typing import Any
+from urllib.parse import urlsplit
+
+from ...action_graph import build_action_graph
+from ...browser import BrowserAction, capture_browser_evidence
+from ...endpoints import sanitize_endpoint_url
+from ...evidence import load_har
+from ...models import EvidenceBundle, HttpExchange, ScriptEvidence
+from .classify import API_V2, HYPERHIVE_JSONRPC, LEGACY_LINES, SWITCHABLE_CONTAINER, classify_bgaming
+from .demo_spin import run_demo_base_spin
+from .direct_port import BGamingDemoDirectSession
+from .hyperhive_demo import run_demo_hyperhive
+from .probe import probe_bgaming_demo
+
+
+def analyze_bgaming_demo(
+    url: str,
+    *,
+    output_dir: str | Path,
+    settle_ms: int = 10_000,
+    timeout_s: float = 30.0,
+    keep_raw_har: bool = False,
+    screenshot: bool = True,
+) -> dict[str, Any]:
+    root = Path(output_dir)
+    root.mkdir(parents=True, exist_ok=True)
+
+    raw_har = root / "browser.raw.har"
+    shot = root / "initial.jpg" if screenshot else None
+    capture_browser_evidence(
+        url=url,
+        har_path=raw_har,
+        screenshot_path=shot,
+        actions=[BrowserAction(kind="wait", timeout_ms=max(1000, int(settle_ms)))],
+    )
+
+    browser_evidence = load_har(raw_har)
+    family = _detect_family(browser_evidence, url=url, timeout_s=timeout_s)
+
+    blockers: list[str] = []
+    enrichment: dict[str, Any] = {
+        "attempted": False,
+        "success": False,
+        "kind": "",
+    }
+    extra = EvidenceBundle()
+
+    if family in {API_V2, LEGACY_LINES}:
+        enrichment["attempted"] = True
+        enrichment["kind"] = "base-spin"
+        try:
+            base = run_demo_base_spin(url, timeout_s=timeout_s)
+        except (OSError, RuntimeError, TypeError, ValueError) as exc:
+            blockers.append(f"base-spin enrichment failed: {type(exc).__name__}: {exc}")
+        else:
+            enrichment["success"] = 200 <= base.metadata.spin_status < 400
+            enrichment["metadata"] = base.metadata.to_dict()
+            extra = base.evidence
+    elif family == HYPERHIVE_JSONRPC:
+        enrichment["attempted"] = True
+        enrichment["kind"] = "hyperhive-base-play"
+        try:
+            base = run_demo_hyperhive(url, timeout_s=timeout_s)
+        except (OSError, RuntimeError, TypeError, ValueError) as exc:
+            blockers.append(
+                f"HyperHive base-play enrichment failed: {type(exc).__name__}: {exc}"
+            )
+        else:
+            enrichment["success"] = 200 <= base.metadata.play_status < 400
+            enrichment["metadata"] = base.metadata.to_dict()
+            extra = base.evidence
+    elif family == SWITCHABLE_CONTAINER:
+        blockers.append(
+            "switchable container requires child selection before direct base-play enrichment"
+        )
+
+    contract_bundle = _merge_evidence(browser_evidence, extra)
+    contract_har = root / "contract.har"
+    _write_safe_har(contract_bundle, contract_har)
+
+    graph = build_action_graph(contract_har)
+    routes = [dict(item) for item in graph.get("routes", [])]
+
+    direct_state: dict[str, Any] | None = None
+    direct_error = ""
+    try:
+        direct = BGamingDemoDirectSession(
+            har_path=contract_har,
+            url=url,
+            timeout_s=timeout_s,
+        )
+        direct_state = direct.open()
+        route_state = {item["route_id"]: item for item in direct.routes()}
+        for route in routes:
+            resolved = route_state.get(str(route.get("route_id") or ""))
+            route["direct_executable"] = bool(
+                resolved is not None and resolved.get("executable")
+            )
+            route["direct_reason"] = (
+                str(resolved.get("execution_reason") or "")
+                if resolved is not None
+                else "route not present in direct session"
+            )
+    except (OSError, RuntimeError, TypeError, ValueError) as exc:
+        direct_error = f"{type(exc).__name__}: {exc}"
+        for route in routes:
+            route["direct_executable"] = False
+            route["direct_reason"] = direct_error
+
+    report = {
+        "schema": "multiplay/bgaming-auto-analysis/v1",
+        "url": _strip_query(url),
+        "family": family,
+        "enrichment": enrichment,
+        "blockers": blockers,
+        "contract_har": str(contract_har),
+        "screenshot": str(shot) if shot is not None else None,
+        "route_count": len(routes),
+        "direct_executable_count": sum(
+            1 for item in routes if item.get("direct_executable")
+        ),
+        "routes": routes,
+        "direct_session": direct_state,
+        "direct_session_error": direct_error,
+    }
+
+    (root / "actions.json").write_text(
+        json.dumps(
+            {
+                "schema": graph.get("schema"),
+                "source": str(contract_har),
+                "routes": routes,
+                "endpoints": graph.get("endpoints", []),
+            },
+            ensure_ascii=False,
+            indent=2,
+        )
+        + "\n",
+        encoding="utf-8",
+    )
+    (root / "analysis.json").write_text(
+        json.dumps(report, ensure_ascii=False, indent=2) + "\n",
+        encoding="utf-8",
+    )
+
+    if not keep_raw_har:
+        raw_har.unlink(missing_ok=True)
+
+    return report
+
+
+def render_bgaming_analysis(report: dict[str, Any]) -> str:
+    lines = [
+        f"family: {report.get('family')}",
+        f"routes: {report.get('route_count', 0)}",
+        f"direct executable: {report.get('direct_executable_count', 0)}",
+    ]
+
+    enrichment = report.get("enrichment") or {}
+    if enrichment.get("attempted"):
+        lines.append(
+            "base enrichment: "
+            + ("OK" if enrichment.get("success") else "FAILED")
+            + f" ({enrichment.get('kind')})"
+        )
+
+    for blocker in report.get("blockers") or []:
+        lines.append(f"blocker: {blocker}")
+    if report.get("direct_session_error"):
+        lines.append(f"direct session: {report['direct_session_error']}")
+
+    lines.extend(["", "ACTIONS"])
+    for route in report.get("routes") or []:
+        direct = "DIRECT" if route.get("direct_executable") else "-"
+        lines.append(
+            f"{route.get('route_id')}  "
+            f"{route.get('semantic', ''):<12} "
+            f"{route.get('interface_role', ''):<14} "
+            f"{route.get('status', ''):<18} "
+            f"{direct:<6} "
+            f"{route.get('control', '')}"
+        )
+        handler = route.get("handler") or "-"
+        chain = " -> ".join(route.get("chain") or []) or "-"
+        wire = ", ".join(route.get("wire_markers") or []) or "-"
+        lines.append(f"    handler: {handler}")
+        lines.append(f"    chain:   {chain}")
+        lines.append(f"    wire:    {wire}")
+    return "\n".join(lines) + "\n"
+
+
+def _detect_family(
+    evidence: EvidenceBundle,
+    *,
+    url: str,
+    timeout_s: float,
+) -> str:
+    found = classify_bgaming(evidence)
+    if found:
+        return found[0].family
+
+    probe = probe_bgaming_demo(url, timeout_s=timeout_s)
+    found = classify_bgaming(probe.evidence)
+    if found:
+        return found[0].family
+    raise ValueError("BGaming runtime family could not be classified.")
+
+
+def _merge_evidence(
+    primary: EvidenceBundle,
+    secondary: EvidenceBundle,
+) -> EvidenceBundle:
+    http: list[HttpExchange] = []
+    seen_http: set[str] = set()
+    for item in [*primary.http, *secondary.http]:
+        key = json.dumps(
+            {
+                "method": item.method,
+                "url": sanitize_endpoint_url(item.url),
+                "request": item.request_body,
+                "status": item.response_status,
+            },
+            ensure_ascii=False,
+            sort_keys=True,
+            default=str,
+        )
+        if key in seen_http:
+            continue
+        seen_http.add(key)
+        http.append(item)
+
+    scripts: list[ScriptEvidence] = []
+    seen_scripts: set[str] = set()
+    for item in [*primary.scripts, *secondary.scripts]:
+        key = f"{_strip_query(item.source)}\n{item.text}"
+        if key in seen_scripts:
+            continue
+        seen_scripts.add(key)
+        scripts.append(item)
+
+    return EvidenceBundle(
+        http=http,
+        websocket=[*primary.websocket, *secondary.websocket],
+        scripts=scripts,
+        ui=[*primary.ui, *secondary.ui],
+        metadata={
+            "source": "bgaming-auto-analysis",
+            "merged_sources": [
+                primary.metadata.get("source"),
+                secondary.metadata.get("source"),
+            ],
+        },
+    )
+
+
+def _write_safe_har(bundle: EvidenceBundle, path: Path) -> None:
+    entries: list[dict[str, Any]] = []
+
+    for exchange in bundle.http:
+        entries.append(
+            {
+                "request": {
+                    "method": exchange.method,
+                    "url": sanitize_endpoint_url(exchange.url),
+                    "headers": [
+                        {"name": key, "value": value}
+                        for key, value in exchange.request_headers.items()
+                    ],
+                    "postData": (
+                        {
+                            "mimeType": "application/json",
+                            "text": json.dumps(
+                                exchange.request_body,
+                                ensure_ascii=False,
+                                separators=(",", ":"),
+                            ),
+                        }
+                        if exchange.request_body is not None
+                        else None
+                    ),
+                },
+                "response": {
+                    "status": exchange.response_status or 0,
+                    "headers": [
+                        {"name": key, "value": value}
+                        for key, value in exchange.response_headers.items()
+                    ],
+                    "content": {
+                        "mimeType": "application/json",
+                        "text": json.dumps(
+                            exchange.response_body,
+                            ensure_ascii=False,
+                            separators=(",", ":"),
+                        ),
+                    },
+                },
+            }
+        )
+
+    for script in bundle.scripts:
+        entries.append(
+            {
+                "request": {
+                    "method": "GET",
+                    "url": _strip_query(script.source),
+                    "headers": [],
+                },
+                "response": {
+                    "status": 200,
+                    "headers": [],
+                    "content": {
+                        "mimeType": "application/javascript",
+                        "text": script.text,
+                    },
+                },
+            }
+        )
+
+    path.write_text(
+        json.dumps(
+            {
+                "log": {
+                    "version": "1.2",
+                    "creator": {"name": "MultiPlay", "version": "0.1"},
+                    "entries": entries,
+                }
+            },
+            ensure_ascii=False,
+        ),
+        encoding="utf-8",
+    )
+
+
+def _strip_query(url: str) -> str:
+    parts = urlsplit(str(url or ""))
+    return parts._replace(query="", fragment="").geturl()
