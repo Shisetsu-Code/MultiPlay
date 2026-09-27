@@ -113,3 +113,68 @@ def test_har_map_extracts_html_button(tmp_path):
     button = next(item for item in report["actions"] if item["kind"] == "html_control")
     assert button["label"] == "BUY FREE SPINS"
     assert button["event"] == "click"
+
+
+
+def test_har_map_extracts_legacy_create_button_binding(tmp_path):
+    har = {
+        "log": {
+            "entries": [
+                {
+                    "request": {
+                        "method": "POST",
+                        "url": "https://game.example/api",
+                        "headers": [],
+                        "postData": {
+                            "mimeType": "application/json",
+                            "text": json.dumps(
+                                {
+                                    "command": "spin",
+                                    "options": {"bet": 20},
+                                    "extra_data": {"round_series_id": 1},
+                                }
+                            ),
+                        },
+                    },
+                    "response": {
+                        "status": 200,
+                        "headers": [],
+                        "content": {
+                            "mimeType": "application/json",
+                            "text": '{"ok":true}',
+                        },
+                    },
+                },
+                {
+                    "request": {
+                        "method": "GET",
+                        "url": "https://game.example/casino.min.js",
+                        "headers": [],
+                    },
+                    "response": {
+                        "status": 200,
+                        "headers": [],
+                        "content": {
+                            "mimeType": "application/javascript",
+                            "text": (
+                                'u.a.addListener(r.createButton("spinDesktop",'
+                                'i.DESKTOP_CENTER),this.spin);'
+                            ),
+                        },
+                    },
+                },
+            ]
+        }
+    }
+    path = tmp_path / "legacy.har"
+    path.write_text(json.dumps(har), encoding="utf-8")
+
+    report = build_har_map(path)
+    button = next(
+        item
+        for item in report["actions"]
+        if item["kind"] == "declared_button"
+        and item["label"] == "spinDesktop"
+    )
+    assert button["handler"] == "this.spin"
+    assert button["event"] == "click"
