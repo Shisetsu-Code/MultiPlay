@@ -210,7 +210,8 @@ def _normal_bet_type_from_play_window(window: str) -> str:
     variable = re.escape(match.group(1))
     prior = window[: match.start()][-1200:]
     ternary = re.search(
-        rf'\b{variable}=.{{0,700}}?["\']freebet["\']:["\']([^"\']+)["\']',
+        rf'(?<![A-Za-z0-9_$])(?:let|const|var)?{variable}='
+        rf'.{{0,900}}?["\']freebet["\']:["\']([^"\']+)["\']',
         prior,
     )
     if ternary:
