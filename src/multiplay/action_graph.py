@@ -375,25 +375,33 @@ def _feature_markers_from_body(
     constants: dict[str, set[str]],
 ) -> set[str]:
     out: set[str] = set()
-    pattern = re.compile(
-        r"setBoughtBonusParameter\(\s*"
-        r"([\"'][^\"']+[\"']|[A-Za-z_$][A-Za-z0-9_$]*)"
+    patterns = (
+        re.compile(
+            r"setBoughtBonusParameter\(\s*"
+            r"([\"'][^\"']+[\"']|(?:this\.)?[A-Za-z_$][A-Za-z0-9_$]*)"
+        ),
+        re.compile(
+            r"(?:buyFeatures\.)?buyBonusClick\(\s*"
+            r"([\"'][^\"']+[\"']|(?:this\.)?[A-Za-z_$][A-Za-z0-9_$]*)"
+        ),
     )
-    for match in pattern.finditer(body or ""):
-        raw = str(match.group(1) or "").strip()
-        if not raw or raw in {"null", "undefined"}:
-            continue
-        if raw[0:1] in {"\"", "'"}:
-            values = {raw.strip("\"'")}
-        else:
-            values = set(constants.get(raw) or set())
-        feature_values = {
-            value
-            for value in values
-            if _FEATURE_LITERAL_RE.search(value)
-        }
-        if len(feature_values) == 1:
-            out.add(f"purchased_feature={next(iter(feature_values))}")
+    for pattern in patterns:
+        for match in pattern.finditer(body or ""):
+            raw = str(match.group(1) or "").strip()
+            if not raw or raw in {"null", "undefined"}:
+                continue
+            if raw[0:1] in {"\"", "'"}:
+                values = {raw.strip("\"'")}
+            else:
+                key = raw.removeprefix("this.")
+                values = set(constants.get(key) or set())
+            feature_values = {
+                value
+                for value in values
+                if _FEATURE_LITERAL_RE.search(value)
+            }
+            if len(feature_values) == 1:
+                out.add(f"purchased_feature={next(iter(feature_values))}")
     return out
 
 
@@ -692,7 +700,17 @@ def _handler_wire_markers(semantic: str, handler: str) -> set[str]:
     if not args or not args[0]:
         return set()
 
-    markers = {f"purchased_feature={args[0]}"}
+    owner = handler.split("`", 1)[0].casefold()
+    first = args[0]
+    scene_wrapper = owner.startswith("currentscene.")
+    numeric_first = bool(re.fullmatch(r"-?\d+(?:\.\d+)?", first))
+
+    if scene_wrapper and numeric_first:
+        # Game-specific scene wrappers commonly expose buyBonusClick(level)
+        # and inject the feature constant internally.
+        return {f"purchased_feature_level={first}"}
+
+    markers = {f"purchased_feature={first}"}
     if len(args) > 1:
         level = args[1]
         if level and level.casefold() not in {"null", "none", "undefined"}:
