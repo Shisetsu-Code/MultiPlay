@@ -217,6 +217,77 @@ class BGamingDemoDirectSession:
             return self._execute_hyperhive(markers, values)
         return self._execute_classic(markers, values)
 
+    def execute_inferred_hyperhive(
+        self,
+        markers: tuple[str, ...] | list[str],
+        *,
+        overrides: dict[str, Any] | None = None,
+    ) -> dict[str, Any]:
+        """Execute a statically resolved HyperHive play shape in a fresh demo session.
+
+        This path is intentionally narrow: the route must explicitly resolve to
+        method=play, and only demonstrated request fields encoded in route markers
+        are added to req. Success is determined by the provider response.
+        """
+        if self.family != HYPERHIVE_JSONRPC:
+            raise ValueError("inferred HyperHive execution requires a HyperHive session")
+
+        marker_map = _marker_map(tuple(str(item) for item in markers))
+        if marker_map.get("method") != "play":
+            raise ValueError("inferred HyperHive route must resolve to method=play")
+
+        values = dict(overrides or {})
+        req: dict[str, Any] = {
+            "bet": values.get("bet", self.default_bet),
+        }
+        for key in (
+            "purchased_feature",
+            "purchased_feature_level",
+            "action",
+            "bet_type",
+        ):
+            raw = marker_map.get(key)
+            if raw is not None and raw != "":
+                req[key] = _marker_scalar(raw)
+
+        params: dict[str, Any] = {
+            "token": self.token,
+            "req": req,
+        }
+        if self.state_lock is not None:
+            params["state_lock"] = self.state_lock
+
+        payload = {
+            "id": _fresh_rpc_id(self.rpc_id_sample),
+            "jsonrpc": "2.0",
+            "method": "play",
+            "params": params,
+        }
+        result = self.http.post_json(
+            self.endpoint_url,
+            payload,
+            timeout_s=self.timeout_s,
+            headers=self.headers,
+            allow_http_error=True,
+        )
+        response = _json_object(result.text, "play")
+        success = (
+            200 <= result.status < 400
+            and response.get("error") in (None, {}, [])
+        )
+        if success:
+            current = response.get("result")
+            if isinstance(current, dict) and "state_lock" in current:
+                self.state_lock = current.get("state_lock")
+
+        return {
+            "status": result.status,
+            "success": success,
+            "endpoint": sanitize_session_url(self.endpoint_url),
+            "request": redact(payload),
+            "response": redact(response),
+        }
+
     def _open_classic(self, html: str) -> None:
         bootstrap = extract_bootstrap_options(html)
         self.endpoint_url = bootstrap.api
@@ -604,6 +675,19 @@ def _marker_map(markers: tuple[str, ...]) -> dict[str, str]:
         key, value = marker.split("=", 1)
         out[key] = value
     return out
+
+
+def _marker_scalar(value: str) -> Any:
+    text = str(value).strip()
+    if not text:
+        return text
+    try:
+        parsed = json.loads(text)
+    except json.JSONDecodeError:
+        return text
+    if isinstance(parsed, (str, int, float, bool)) or parsed is None:
+        return parsed
+    return text
 
 
 def _fresh_rpc_id(sample: Any) -> int | str:
