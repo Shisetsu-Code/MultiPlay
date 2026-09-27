@@ -212,7 +212,7 @@ def _play_request_window(text: str) -> str:
         start = max(0, match.start() - 1600)
         end = min(len(source), match.end() + 2600)
         window = source[start:end]
-        if "req:{" in window or ".req." in window:
+        if re.search(r'\breq\s*:', window) or ".req." in window:
             candidates.append(window)
     if not candidates:
         return ""
