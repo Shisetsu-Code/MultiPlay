@@ -1,28 +1,28 @@
 {
   "schema": "multiplay/bgaming-worker-review/v1",
-  "run_id": "36327006348",
-  "generated_at": "2026-09-27T14:56:17.452854+00:00",
+  "run_id": "36327590196",
+  "generated_at": "2026-09-27T15:12:27.480538+00:00",
   "summary": {
     "schema": "multiplay/bgaming-worker-summary/v1",
-    "run_id": "36327006348",
-    "generated_at": "2026-09-27T14:56:17.452854+00:00",
+    "run_id": "36327590196",
+    "generated_at": "2026-09-27T15:12:27.480538+00:00",
     "planned": 86,
     "processed": 86,
     "status_counts": {
-      "COMPLETE": 27,
+      "COMPLETE": 39,
       "NO_ROUTES": 3,
-      "PARTIAL": 56
+      "PARTIAL": 44
     },
     "family_counts": {
       "api-v2": 58,
       "hyperhive-jsonrpc": 28
     },
     "unresolved_semantic_counts": {
-      "BUY_BONUS": 39,
-      "FREESPIN": 11
+      "BUY_BONUS": 29
     },
-    "complete": 27,
-    "needs_review": 59
+    "complete": 39,
+    "needs_review": 47,
+    "shards_recovered": 8
   },
   "games": [
     {
@@ -79,98 +79,6 @@
       ],
       "direct_actions": [],
       "unresolved_actions": [],
-      "switchable_children": [],
-      "error": ""
-    },
-    {
-      "slug": "aloha-king-elvis",
-      "name": "Aloha King Elvis",
-      "url": "https://demo.bgaming-network.com/play/AlohaKingElvis/FUN?server=demo",
-      "availability": "DEMO",
-      "returncode": 0,
-      "status": "PARTIAL",
-      "family": "api-v2",
-      "route_count": 7,
-      "direct_executable_count": 1,
-      "unresolved_network_count": 3,
-      "blockers": [],
-      "direct_actions": [
-        {
-          "semantic": "SPIN",
-          "control": "spin-button",
-          "handler": "currentScene.spin`1",
-          "wire": [
-            "command=spin"
-          ],
-          "role": "network_action"
-        }
-      ],
-      "unresolved_actions": [
-        {
-          "semantic": "BUY_BONUS",
-          "control": "Button",
-          "handler": "currentScene.buyBothChances",
-          "status": "NETWORK_INFERRED",
-          "wire": [
-            "purchased_feature_level=this.additionalSpinOptions.purchased_feature_level="
-          ]
-        },
-        {
-          "semantic": "FREESPIN",
-          "control": "Button",
-          "handler": "currentScene.switchFreespinsChanceBuying",
-          "status": "NETWORK_INFERRED",
-          "wire": [
-            "purchased_feature_level=this.additionalSpinOptions.purchased_feature_level="
-          ]
-        },
-        {
-          "semantic": "FREESPIN",
-          "control": "Button",
-          "handler": "currentScene.buyFreespins",
-          "status": "NETWORK_INFERRED",
-          "wire": [
-            "purchased_feature_level=this.additionalSpinOptions.purchased_feature_level="
-          ]
-        }
-      ],
-      "switchable_children": [],
-      "error": ""
-    },
-    {
-      "slug": "aztec-magic-megaways",
-      "name": "Aztec Magic MEGAWAYS™",
-      "url": "https://demo.bgaming-network.com/play/AztecMagicMegaways/FUN?server=demo",
-      "availability": "DEMO",
-      "returncode": 0,
-      "status": "PARTIAL",
-      "family": "api-v2",
-      "route_count": 6,
-      "direct_executable_count": 1,
-      "unresolved_network_count": 1,
-      "blockers": [],
-      "direct_actions": [
-        {
-          "semantic": "SPIN",
-          "control": "spin-button",
-          "handler": "currentScene.spin`1",
-          "wire": [
-            "command=spin"
-          ],
-          "role": "network_action"
-        }
-      ],
-      "unresolved_actions": [
-        {
-          "semantic": "BUY_BONUS",
-          "control": "buy",
-          "handler": "currentScene.buyBonus",
-          "status": "NETWORK_INFERRED",
-          "wire": [
-            "command=play"
-          ]
-        }
-      ],
       "switchable_children": [],
       "error": ""
     },
@@ -251,61 +159,6 @@
       ],
       "direct_actions": [],
       "unresolved_actions": [],
-      "switchable_children": [],
-      "error": ""
-    },
-    {
-      "slug": "catch-the-gold-hold-and-win",
-      "name": "Catch the Gold Hold and Win",
-      "url": "https://demo.bgaming-network.com/play/CatchTheGoldHoldAndWin/FUN?server=demo",
-      "availability": "DEMO",
-      "returncode": 0,
-      "status": "PARTIAL",
-      "family": "api-v2",
-      "route_count": 7,
-      "direct_executable_count": 1,
-      "unresolved_network_count": 3,
-      "blockers": [],
-      "direct_actions": [
-        {
-          "semantic": "SPIN",
-          "control": "spin-button",
-          "handler": "currentScene.spin`1",
-          "wire": [
-            "command=spin"
-          ],
-          "role": "network_action"
-        }
-      ],
-      "unresolved_actions": [
-        {
-          "semantic": "BUY_BONUS",
-          "control": "buy_both",
-          "handler": "currentScene.buyBothChances",
-          "status": "NETWORK_INFERRED",
-          "wire": [
-            "purchased_feature_level=this.additionalSpinOptions.purchased_feature_level="
-          ]
-        },
-        {
-          "semantic": "FREESPIN",
-          "control": "Button",
-          "handler": "currentScene.switchFreespinsChanceBuying",
-          "status": "NETWORK_INFERRED",
-          "wire": [
-            "purchased_feature_level=this.additionalSpinOptions.purchased_feature_level="
-          ]
-        },
-        {
-          "semantic": "FREESPIN",
-          "control": "Button",
-          "handler": "currentScene.buyFreespins",
-          "status": "NETWORK_INFERRED",
-          "wire": [
-            "purchased_feature_level=this.additionalSpinOptions.purchased_feature_level="
-          ]
-        }
-      ],
       "switchable_children": [],
       "error": ""
     },
@@ -445,321 +298,6 @@
             "command=play",
             "purchased_feature=freespin_buy",
             "purchased_feature_level=1"
-          ]
-        }
-      ],
-      "switchable_children": [],
-      "error": ""
-    },
-    {
-      "slug": "domnitors-treasure",
-      "name": "Domnitor's Treasure",
-      "url": "https://demo.bgaming-network.com/play/DomnitorsTreasure/FUN?server=demo",
-      "availability": "DEMO",
-      "returncode": 0,
-      "status": "PARTIAL",
-      "family": "api-v2",
-      "route_count": 11,
-      "direct_executable_count": 1,
-      "unresolved_network_count": 1,
-      "blockers": [],
-      "direct_actions": [
-        {
-          "semantic": "SPIN",
-          "control": "spin-button",
-          "handler": "currentScene.spin`1",
-          "wire": [
-            "command=spin"
-          ],
-          "role": "network_action"
-        }
-      ],
-      "unresolved_actions": [
-        {
-          "semantic": "FREESPIN",
-          "control": "Button",
-          "handler": "currentScene.buyFreespins",
-          "status": "NETWORK_INFERRED",
-          "wire": [
-            "purchased_feature_level=this.additionalSpinOptions.purchased_feature_level="
-          ]
-        }
-      ],
-      "switchable_children": [],
-      "error": ""
-    },
-    {
-      "slug": "dragon-age-hold-win",
-      "name": "Dragon Age Hold & Win",
-      "url": "https://demo.bgaming-network.com/play/DragonAge/FUN?server=demo",
-      "availability": "DEMO",
-      "returncode": 0,
-      "status": "PARTIAL",
-      "family": "api-v2",
-      "route_count": 6,
-      "direct_executable_count": 1,
-      "unresolved_network_count": 1,
-      "blockers": [],
-      "direct_actions": [
-        {
-          "semantic": "SPIN",
-          "control": "spin-button",
-          "handler": "currentScene.spin`1",
-          "wire": [
-            "command=spin"
-          ],
-          "role": "network_action"
-        }
-      ],
-      "unresolved_actions": [
-        {
-          "semantic": "FREESPIN",
-          "control": "buy",
-          "handler": "currentScene.buyFreespins",
-          "status": "NETWORK_INFERRED",
-          "wire": [
-            "purchased_feature_level=this.additionalSpinOptions.purchased_feature_level="
-          ]
-        }
-      ],
-      "switchable_children": [],
-      "error": ""
-    },
-    {
-      "slug": "easter-heist",
-      "name": "Easter Heist",
-      "url": "https://demo.bgaming-network.com/play/EasterHeist/FUN?server=demo",
-      "availability": "DEMO",
-      "returncode": 0,
-      "status": "PARTIAL",
-      "family": "api-v2",
-      "route_count": 11,
-      "direct_executable_count": 1,
-      "unresolved_network_count": 1,
-      "blockers": [],
-      "direct_actions": [
-        {
-          "semantic": "SPIN",
-          "control": "spin-button",
-          "handler": "currentScene.spin`1",
-          "wire": [
-            "command=spin"
-          ],
-          "role": "network_action"
-        }
-      ],
-      "unresolved_actions": [
-        {
-          "semantic": "FREESPIN",
-          "control": "Button",
-          "handler": "currentScene.buyFreespins",
-          "status": "NETWORK_INFERRED",
-          "wire": [
-            "purchased_feature_level=this.additionalSpinOptions.purchased_feature_level="
-          ]
-        }
-      ],
-      "switchable_children": [],
-      "error": ""
-    },
-    {
-      "slug": "elden-ring",
-      "name": "Aztec magic megaways™",
-      "url": "https://bgaming-network.com/play/AztecMagicMegaways/FUN?server=demo",
-      "availability": "DEMO",
-      "returncode": 0,
-      "status": "PARTIAL",
-      "family": "api-v2",
-      "route_count": 6,
-      "direct_executable_count": 1,
-      "unresolved_network_count": 1,
-      "blockers": [],
-      "direct_actions": [
-        {
-          "semantic": "SPIN",
-          "control": "spin-button",
-          "handler": "currentScene.spin`1",
-          "wire": [
-            "command=spin"
-          ],
-          "role": "network_action"
-        }
-      ],
-      "unresolved_actions": [
-        {
-          "semantic": "BUY_BONUS",
-          "control": "buy",
-          "handler": "currentScene.buyBonus",
-          "status": "NETWORK_INFERRED",
-          "wire": [
-            "command=play"
-          ]
-        }
-      ],
-      "switchable_children": [],
-      "error": ""
-    },
-    {
-      "slug": "fortune-trio-minions-of-fu",
-      "name": "Fortune Trio: Minions Of Fu",
-      "url": "https://bgaming-network.com/play/FortuneTrioMinionsOfFu/FUN?server=demo",
-      "availability": "DEMO",
-      "returncode": 0,
-      "status": "PARTIAL",
-      "family": "api-v2",
-      "route_count": 8,
-      "direct_executable_count": 2,
-      "unresolved_network_count": 3,
-      "blockers": [],
-      "direct_actions": [
-        {
-          "semantic": "BUY_BONUS",
-          "control": "btn",
-          "handler": "currentScene.buyBonusClick`bonus_buy",
-          "wire": [
-            "command=spin",
-            "purchased_feature=bonus_buy"
-          ],
-          "role": "network_action"
-        },
-        {
-          "semantic": "SPIN",
-          "control": "spin-button",
-          "handler": "currentScene.spin`1",
-          "wire": [
-            "command=spin"
-          ],
-          "role": "network_action"
-        }
-      ],
-      "unresolved_actions": [
-        {
-          "semantic": "BUY_BONUS",
-          "control": "btn",
-          "handler": "currentScene.buyBonusClick`freespin_buy,5,1",
-          "status": "NETWORK_INFERRED",
-          "wire": [
-            "command=play",
-            "purchased_feature=freespin_buy",
-            "purchased_feature_level=5"
-          ]
-        },
-        {
-          "semantic": "BUY_BONUS",
-          "control": "btn",
-          "handler": "currentScene.buyBonusClick`freespin_buy,3,0",
-          "status": "NETWORK_INFERRED",
-          "wire": [
-            "command=play",
-            "purchased_feature=freespin_buy",
-            "purchased_feature_level=3"
-          ]
-        },
-        {
-          "semantic": "FREESPIN",
-          "control": "btn",
-          "handler": "currentScene.switchFreespinsChanceBuying",
-          "status": "NETWORK_INFERRED",
-          "wire": [
-            "purchased_feature_level=this.additionalSpinOptions.purchased_feature_level="
-          ]
-        }
-      ],
-      "switchable_children": [],
-      "error": ""
-    },
-    {
-      "slug": "frenzy-clusters",
-      "name": "Frenzy Clusters",
-      "url": "https://demo.bgaming-network.com/play/FrenzyClusters/FUN?server=demo",
-      "availability": "DEMO",
-      "returncode": 0,
-      "status": "PARTIAL",
-      "family": "api-v2",
-      "route_count": 9,
-      "direct_executable_count": 1,
-      "unresolved_network_count": 3,
-      "blockers": [],
-      "direct_actions": [
-        {
-          "semantic": "SPIN",
-          "control": "spin-button",
-          "handler": "currentScene.spin`1",
-          "wire": [
-            "command=spin"
-          ],
-          "role": "network_action"
-        }
-      ],
-      "unresolved_actions": [
-        {
-          "semantic": "BUY_BONUS",
-          "control": "buy-bonus-popup-buy",
-          "handler": "all.buy-features.buyBonusClick`freespin_buy,1",
-          "status": "NETWORK_INFERRED",
-          "wire": [
-            "purchased_feature=freespin_buy",
-            "purchased_feature_level=1",
-            "purchased_feature_level=e.toString()"
-          ]
-        },
-        {
-          "semantic": "BUY_BONUS",
-          "control": "buy-bonus-popup-buy",
-          "handler": "all.buy-features.buyBonusClick`freespin_buy,2",
-          "status": "NETWORK_INFERRED",
-          "wire": [
-            "purchased_feature=freespin_buy",
-            "purchased_feature_level=2",
-            "purchased_feature_level=e.toString()"
-          ]
-        },
-        {
-          "semantic": "BUY_BONUS",
-          "control": "buy-bonus-popup-buy",
-          "handler": "all.buy-features.buyBonusClick`freespin_buy,0",
-          "status": "NETWORK_INFERRED",
-          "wire": [
-            "purchased_feature=freespin_buy",
-            "purchased_feature_level=0",
-            "purchased_feature_level=e.toString()"
-          ]
-        }
-      ],
-      "switchable_children": [],
-      "error": ""
-    },
-    {
-      "slug": "god-of-wealth-hold-and-win",
-      "name": "God of Wealth Hold And Win",
-      "url": "https://demo.bgaming-network.com/play/GodOfWealthHoldAndWin/FUN?server=demo",
-      "availability": "DEMO",
-      "returncode": 0,
-      "status": "PARTIAL",
-      "family": "api-v2",
-      "route_count": 11,
-      "direct_executable_count": 1,
-      "unresolved_network_count": 1,
-      "blockers": [],
-      "direct_actions": [
-        {
-          "semantic": "SPIN",
-          "control": "spin-button",
-          "handler": "currentScene.spin`1",
-          "wire": [
-            "command=spin"
-          ],
-          "role": "network_action"
-        }
-      ],
-      "unresolved_actions": [
-        {
-          "semantic": "FREESPIN",
-          "control": "Button",
-          "handler": "currentScene.buyFreespins",
-          "status": "NETWORK_INFERRED",
-          "wire": [
-            "purchased_feature_level=this.additionalSpinOptions.purchased_feature_level="
           ]
         }
       ],
@@ -1056,52 +594,6 @@
       "error": ""
     },
     {
-      "slug": "monster-hunt",
-      "name": "Monster Hunt",
-      "url": "https://demo.bgaming-network.com/play/MonsterHunt/FUN?server=demo",
-      "availability": "DEMO",
-      "returncode": 0,
-      "status": "PARTIAL",
-      "family": "api-v2",
-      "route_count": 6,
-      "direct_executable_count": 1,
-      "unresolved_network_count": 2,
-      "blockers": [],
-      "direct_actions": [
-        {
-          "semantic": "SPIN",
-          "control": "spin-button",
-          "handler": "currentScene.spin`1",
-          "wire": [
-            "command=spin"
-          ],
-          "role": "network_action"
-        }
-      ],
-      "unresolved_actions": [
-        {
-          "semantic": "FREESPIN",
-          "control": "Button",
-          "handler": "currentScene.switchFreespinsChanceBuying",
-          "status": "NETWORK_INFERRED",
-          "wire": [
-            "purchased_feature_level=this.additionalSpinOptions.purchased_feature_level="
-          ]
-        },
-        {
-          "semantic": "FREESPIN",
-          "control": "Button",
-          "handler": "currentScene.buyFreespins",
-          "status": "NETWORK_INFERRED",
-          "wire": [
-            "purchased_feature_level=this.additionalSpinOptions.purchased_feature_level="
-          ]
-        }
-      ],
-      "switchable_children": [],
-      "error": ""
-    },
-    {
       "slug": "penny-pelican",
       "name": "Penny Pelican",
       "url": "https://demo.bgaming-network.com/play/PennyPelican/FUN?server=demo",
@@ -1166,43 +658,6 @@
       "error": ""
     },
     {
-      "slug": "road-2-riches",
-      "name": "Road 2 Riches",
-      "url": "https://demo.bgaming-network.com/play/Road2Riches/FUN?server=demo",
-      "availability": "DEMO",
-      "returncode": 0,
-      "status": "PARTIAL",
-      "family": "api-v2",
-      "route_count": 7,
-      "direct_executable_count": 1,
-      "unresolved_network_count": 1,
-      "blockers": [],
-      "direct_actions": [
-        {
-          "semantic": "SPIN",
-          "control": "spin-button",
-          "handler": "currentScene.spin`1",
-          "wire": [
-            "command=spin"
-          ],
-          "role": "network_action"
-        }
-      ],
-      "unresolved_actions": [
-        {
-          "semantic": "BUY_BONUS",
-          "control": "buy",
-          "handler": "currentScene.buyBonus",
-          "status": "NETWORK_INFERRED",
-          "wire": [
-            "command=play"
-          ]
-        }
-      ],
-      "switchable_children": [],
-      "error": ""
-    },
-    {
       "slug": "royal-fruits-multilines",
       "name": "Royal Fruits MultiLines",
       "url": "https://demo.bgaming-network.com/play/RoyalFruitsMultiLines/FUN?server=demo",
@@ -1251,8 +706,7 @@
           "handler": "currentScene.gotoLabelRecursive,hide-rebuy",
           "status": "NETWORK_INFERRED",
           "wire": [
-            "command=spin",
-            "purchased_feature_level=e.level"
+            "command=spin"
           ]
         },
         {
@@ -1261,8 +715,7 @@
           "handler": "currentScene.gotoLabelRecursive,hide-rebuy",
           "status": "NETWORK_INFERRED",
           "wire": [
-            "command=spin",
-            "purchased_feature_level=e.level"
+            "command=spin"
           ]
         }
       ],
