@@ -1,8 +1,574 @@
 {
   "schema": "multiplay/bgaming-recovery-test/v1",
-  "run_id": "36337450359",
-  "generated_at": "2026-09-27T17:36:15.508615+00:00",
+  "run_id": "36337620286",
+  "generated_at": "2026-09-27T17:40:59.216486+00:00",
   "games": [
+    {
+      "id": "bgaming-recovery-big-atlantis-frenzy",
+      "family": "api-v2",
+      "enrichment": {
+        "attempted": true,
+        "success": true,
+        "kind": "base-spin",
+        "metadata": {
+          "requested_url": "https://demo.bgaming-network.com/play/BigAtlantisFrenzy/FUN",
+          "launch_url": "https://demo.bgaming-network.com/games/BigAtlantisFrenzy/FUN",
+          "identifier": "BigAtlantisFrenzy",
+          "family": "api-v2",
+          "wager": 30.0,
+          "line_count": 0,
+          "init_status": 200,
+          "spin_status": 200
+        }
+      },
+      "direct_executable_count": 2,
+      "blockers": [],
+      "handler_probe": {
+        "attempted": false,
+        "success": true,
+        "route_id": "",
+        "route_ids": [],
+        "outcomes": [],
+        "results": [
+          {
+            "route_id": "R18088DBE",
+            "semantic": "BUY_BONUS",
+            "control": "buy-bonus-popup-buy",
+            "handler": "all.buy-features.buyBonusClick`freespin_buy",
+            "kind": "direct-inferred-api-v2-purchase",
+            "success": true,
+            "outcomes": [],
+            "status": 200,
+            "request": {
+              "command": "spin",
+              "options": {
+                "rows": 5,
+                "bet": 30,
+                "purchased_feature": "freespin_buy"
+              },
+              "extra_data": {
+                "round_series_id": 1790530699908
+              }
+            }
+          }
+        ]
+      },
+      "routes": [
+        {
+          "semantic": "BUY_BONUS",
+          "status": "NETWORK_OBSERVED",
+          "control": "buy-bonus-popup-buy",
+          "handler": "all.buy-features.buyBonusClick`freespin_buy",
+          "wire_markers": [
+            "command=spin",
+            "purchased_feature=freespin_buy"
+          ],
+          "direct_executable": true,
+          "direct_reason": ""
+        },
+        {
+          "semantic": "SPIN",
+          "status": "NETWORK_OBSERVED",
+          "control": "spin-button",
+          "handler": "currentScene.spin`1",
+          "wire_markers": [
+            "command=spin"
+          ],
+          "direct_executable": true,
+          "direct_reason": ""
+        },
+        {
+          "semantic": "CHANCE",
+          "status": "CLIENT_OR_UNKNOWN",
+          "control": "double-chance-btn",
+          "handler": "all.buy-features.switchChance`freespin_chance",
+          "wire_markers": [],
+          "direct_executable": false,
+          "direct_reason": "no demonstrated replay action linked to route"
+        },
+        {
+          "semantic": "BUY_BONUS",
+          "status": "UI_ONLY",
+          "control": "bonus-btn",
+          "handler": "showModal`buy-bonus-popup",
+          "wire_markers": [],
+          "direct_executable": false,
+          "direct_reason": "no demonstrated replay action linked to route"
+        },
+        {
+          "semantic": "BUY_BONUS",
+          "status": "UI_ONLY",
+          "control": "buy-bonus-popup-close",
+          "handler": "hideModal",
+          "wire_markers": [],
+          "direct_executable": false,
+          "direct_reason": "no demonstrated replay action linked to route"
+        }
+      ]
+    },
+    {
+      "id": "bgaming-recovery-big-boat-big-catch",
+      "family": "api-v2",
+      "enrichment": {
+        "attempted": true,
+        "success": true,
+        "kind": "base-spin",
+        "metadata": {
+          "requested_url": "https://demo.bgaming-network.com/play/BigTunaBonanza/FUN",
+          "launch_url": "https://demo.bgaming-network.com/games/BigTunaBonanza/FUN",
+          "identifier": "BigTunaBonanza",
+          "family": "api-v2",
+          "wager": 200.0,
+          "line_count": 0,
+          "init_status": 200,
+          "spin_status": 200
+        }
+      },
+      "direct_executable_count": 2,
+      "blockers": [],
+      "handler_probe": {
+        "attempted": false,
+        "success": true,
+        "route_id": "",
+        "route_ids": [],
+        "outcomes": [],
+        "results": [
+          {
+            "route_id": "R24099066",
+            "semantic": "BUY_BONUS",
+            "control": "buy-btn",
+            "handler": "all.buy-features.buyBonusClick`freespin_buy,4",
+            "kind": "direct-inferred-api-v2-purchase",
+            "success": true,
+            "outcomes": [],
+            "status": 200,
+            "request": {
+              "command": "spin",
+              "options": {
+                "rows": "4",
+                "bet": 200,
+                "purchased_feature": "freespin_buy",
+                "purchased_feature_level": "4"
+              },
+              "extra_data": {
+                "round_series_id": 1790530704947
+              }
+            }
+          }
+        ]
+      },
+      "routes": [
+        {
+          "semantic": "BUY_BONUS",
+          "status": "NETWORK_OBSERVED",
+          "control": "buy-btn",
+          "handler": "all.buy-features.buyBonusClick`freespin_buy,4",
+          "wire_markers": [
+            "command=spin",
+            "purchased_feature=freespin_buy",
+            "purchased_feature_level=4"
+          ],
+          "direct_executable": true,
+          "direct_reason": ""
+        },
+        {
+          "semantic": "SPIN",
+          "status": "NETWORK_OBSERVED",
+          "control": "spin-button",
+          "handler": "currentScene.spin`1",
+          "wire_markers": [
+            "command=spin"
+          ],
+          "direct_executable": true,
+          "direct_reason": ""
+        },
+        {
+          "semantic": "CHANCE",
+          "status": "CLIENT_OR_UNKNOWN",
+          "control": "double-chance-btn",
+          "handler": "currentScene.switchChance",
+          "wire_markers": [],
+          "direct_executable": false,
+          "direct_reason": "no demonstrated replay action linked to route"
+        }
+      ]
+    },
+    {
+      "id": "bgaming-recovery-derby-rush",
+      "family": "api-v2",
+      "enrichment": {
+        "attempted": true,
+        "success": true,
+        "kind": "base-spin",
+        "metadata": {
+          "requested_url": "https://demo.bgaming-network.com/play/DerbyRush/FUN",
+          "launch_url": "https://demo.bgaming-network.com/games/DerbyRush/FUN",
+          "identifier": "DerbyRush",
+          "family": "api-v2",
+          "wager": 200.0,
+          "line_count": 0,
+          "init_status": 200,
+          "spin_status": 200
+        }
+      },
+      "direct_executable_count": 4,
+      "blockers": [],
+      "handler_probe": {
+        "attempted": false,
+        "success": true,
+        "route_id": "",
+        "route_ids": [],
+        "outcomes": [],
+        "results": [
+          {
+            "route_id": "RFD89C615",
+            "semantic": "BUY_BONUS",
+            "control": "buy-btn",
+            "handler": "currentScene.buyBonusClick`1",
+            "kind": "direct-inferred-api-v2-purchase",
+            "success": true,
+            "outcomes": [],
+            "status": 200,
+            "request": {
+              "command": "spin",
+              "options": {
+                "bet": 200,
+                "purchased_feature": "freespin_buy",
+                "purchased_feature_level": "1"
+              },
+              "extra_data": {
+                "round_series_id": 1790530698789
+              }
+            }
+          },
+          {
+            "route_id": "RF80BFD22",
+            "semantic": "BUY_BONUS",
+            "control": "buy-btn",
+            "handler": "currentScene.buyBonusClick`0",
+            "kind": "direct-inferred-api-v2-purchase",
+            "success": true,
+            "outcomes": [],
+            "status": 200,
+            "request": {
+              "command": "spin",
+              "options": {
+                "bet": 200,
+                "purchased_feature": "freespin_buy",
+                "purchased_feature_level": "0"
+              },
+              "extra_data": {
+                "round_series_id": 1790530701023
+              }
+            }
+          },
+          {
+            "route_id": "RDC5D4860",
+            "semantic": "BUY_BONUS",
+            "control": "buy-btn",
+            "handler": "currentScene.buyBonusClick`2",
+            "kind": "direct-inferred-api-v2-purchase",
+            "success": true,
+            "outcomes": [],
+            "status": 200,
+            "request": {
+              "command": "spin",
+              "options": {
+                "bet": 200,
+                "purchased_feature": "freespin_buy",
+                "purchased_feature_level": "2"
+              },
+              "extra_data": {
+                "round_series_id": 1790530703216
+              }
+            }
+          }
+        ]
+      },
+      "routes": [
+        {
+          "semantic": "BUY_BONUS",
+          "status": "NETWORK_OBSERVED",
+          "control": "buy-btn",
+          "handler": "currentScene.buyBonusClick`1",
+          "wire_markers": [
+            "command=spin",
+            "purchased_feature=freespin_buy",
+            "purchased_feature_level=1"
+          ],
+          "direct_executable": true,
+          "direct_reason": ""
+        },
+        {
+          "semantic": "BUY_BONUS",
+          "status": "NETWORK_OBSERVED",
+          "control": "buy-btn",
+          "handler": "currentScene.buyBonusClick`2",
+          "wire_markers": [
+            "command=spin",
+            "purchased_feature=freespin_buy",
+            "purchased_feature_level=2"
+          ],
+          "direct_executable": true,
+          "direct_reason": ""
+        },
+        {
+          "semantic": "BUY_BONUS",
+          "status": "NETWORK_OBSERVED",
+          "control": "buy-btn",
+          "handler": "currentScene.buyBonusClick`0",
+          "wire_markers": [
+            "command=spin",
+            "purchased_feature=freespin_buy",
+            "purchased_feature_level=0"
+          ],
+          "direct_executable": true,
+          "direct_reason": ""
+        },
+        {
+          "semantic": "SPIN",
+          "status": "NETWORK_OBSERVED",
+          "control": "spin-button",
+          "handler": "currentScene.spin`1",
+          "wire_markers": [
+            "command=spin"
+          ],
+          "direct_executable": true,
+          "direct_reason": ""
+        },
+        {
+          "semantic": "CHANCE",
+          "status": "CLIENT_OR_UNKNOWN",
+          "control": "double-chance-btn",
+          "handler": "currentScene.switchChance",
+          "wire_markers": [],
+          "direct_executable": false,
+          "direct_reason": "no demonstrated replay action linked to route"
+        }
+      ]
+    },
+    {
+      "id": "bgaming-recovery-jewel-boom-super-drop",
+      "family": "hyperhive-jsonrpc",
+      "enrichment": {
+        "attempted": true,
+        "success": false,
+        "kind": "hyperhive-base-play",
+        "metadata": {
+          "requested_url": "https://demo.bgaming-network.com/play/JewelBoom/FUN",
+          "launch_url": "https://jewel-boom.demo.bgaming-network.com/hyperhive",
+          "inner_url": "https://jewel-boom.demo.bgaming-network.com/",
+          "default_bet": 200,
+          "init_status": 200,
+          "play_status": 200,
+          "play_success": false,
+          "profile": {
+            "rpc_id_zero": false,
+            "bet_type": "bet",
+            "req_action": false,
+            "state_lock_present": true,
+            "custom_req": true,
+            "custom_action": true,
+            "custom_exponent": true,
+            "custom_stake": true,
+            "custom_literals": {},
+            "script_count": 6,
+            "req_purchased_feature": true,
+            "req_balance": false,
+            "req_fe_exponent": false,
+            "req_buy_bonus_multiplier": false,
+            "base_buy_bonus_multiplier": null,
+            "buy_bonus_multiplier": null
+          }
+        }
+      },
+      "direct_executable_count": 0,
+      "blockers": [],
+      "handler_probe": {
+        "attempted": false,
+        "success": false,
+        "route_id": "",
+        "route_ids": [],
+        "outcomes": [],
+        "results": [
+          {
+            "route_id": "RA1DC5206",
+            "semantic": "SPIN",
+            "control": "spin-button",
+            "handler": "onSpinClicked",
+            "kind": "direct-inferred-hyperhive",
+            "success": false,
+            "outcomes": [],
+            "status": 200,
+            "request": {
+              "id": "6746c1d8-cc7b-4cd5-ba6c-ea619242a0dc",
+              "jsonrpc": "2.0",
+              "method": "play",
+              "params": {
+                "token": "<redacted>",
+                "req": {
+                  "bet": 200,
+                  "bet_type": "bet",
+                  "purchased_feature": null
+                },
+                "state_lock": "b6589fc6ab0dc82cf12099d1c2d40ab994e8410c"
+              }
+            }
+          }
+        ]
+      },
+      "routes": [
+        {
+          "semantic": "SPIN",
+          "status": "NETWORK_INFERRED",
+          "control": "spin-button",
+          "handler": "onSpinClicked",
+          "wire_markers": [
+            "method=play"
+          ],
+          "direct_executable": false,
+          "direct_reason": "no demonstrated replay action linked to route"
+        }
+      ]
+    },
+    {
+      "id": "bgaming-recovery-joker-vs-joker",
+      "family": "hyperhive-jsonrpc",
+      "enrichment": {
+        "attempted": true,
+        "success": true,
+        "kind": "hyperhive-base-play",
+        "metadata": {
+          "requested_url": "https://demo.bgaming-network.com/play/JokerVsJoker/FUN",
+          "launch_url": "https://joker-vs-joker.demo.bgaming-network.com/hyperhive",
+          "inner_url": "https://joker-vs-joker.demo.bgaming-network.com/",
+          "default_bet": 30,
+          "init_status": 200,
+          "play_status": 200,
+          "play_success": true,
+          "profile": {
+            "rpc_id_zero": true,
+            "bet_type": "default",
+            "req_action": false,
+            "state_lock_present": false,
+            "custom_req": false,
+            "custom_action": false,
+            "custom_exponent": false,
+            "custom_stake": false,
+            "custom_literals": {},
+            "script_count": 4,
+            "req_purchased_feature": true,
+            "req_balance": true,
+            "req_fe_exponent": true,
+            "req_buy_bonus_multiplier": true,
+            "base_buy_bonus_multiplier": 1,
+            "buy_bonus_multiplier": 60
+          }
+        }
+      },
+      "direct_executable_count": 3,
+      "blockers": [],
+      "handler_probe": {
+        "attempted": false,
+        "success": true,
+        "route_id": "",
+        "route_ids": [],
+        "outcomes": [],
+        "results": [
+          {
+            "route_id": "RE45AA7F5",
+            "semantic": "BUY_BONUS",
+            "control": "buy-bonus",
+            "handler": "onSpinClick",
+            "kind": "direct-inferred-hyperhive",
+            "success": true,
+            "outcomes": [],
+            "status": 200,
+            "request": {
+              "id": 0,
+              "jsonrpc": "2.0",
+              "method": "play",
+              "params": {
+                "token": "<redacted>",
+                "req": {
+                  "bet": 30,
+                  "bet_type": "default",
+                  "fe_exponent": 2,
+                  "purchased_feature": "buy_bonus",
+                  "balance": 100000,
+                  "buyBonusModeMultiplier": 60
+                }
+              }
+            }
+          },
+          {
+            "route_id": "RD22BFDC5",
+            "semantic": "SPIN",
+            "control": "clear-last-win",
+            "handler": "onSpinEnd",
+            "kind": "direct-inferred-hyperhive",
+            "success": true,
+            "outcomes": [],
+            "status": 200,
+            "request": {
+              "id": 0,
+              "jsonrpc": "2.0",
+              "method": "play",
+              "params": {
+                "token": "<redacted>",
+                "req": {
+                  "bet": 30,
+                  "bet_type": "default",
+                  "fe_exponent": 2,
+                  "purchased_feature": "buy_bonus",
+                  "balance": 100000,
+                  "buyBonusModeMultiplier": 60
+                }
+              }
+            }
+          }
+        ]
+      },
+      "routes": [
+        {
+          "semantic": "BUY_BONUS",
+          "status": "NETWORK_OBSERVED",
+          "control": "buy-bonus",
+          "handler": "onSpinClick",
+          "wire_markers": [
+            "method=play",
+            "purchased_feature=buy_bonus"
+          ],
+          "direct_executable": true,
+          "direct_reason": ""
+        },
+        {
+          "semantic": "SPIN",
+          "status": "NETWORK_OBSERVED",
+          "control": "clear-last-win",
+          "handler": "onSpinEnd",
+          "wire_markers": [
+            "bet_type=default",
+            "method=play",
+            "purchased_feature=buy_bonus"
+          ],
+          "direct_executable": true,
+          "direct_reason": ""
+        },
+        {
+          "semantic": "SPIN",
+          "status": "NETWORK_OBSERVED",
+          "control": "start-btn-start",
+          "handler": "onSpinClick",
+          "wire_markers": [
+            "bet_type=default",
+            "method=play"
+          ],
+          "direct_executable": true,
+          "direct_reason": ""
+        }
+      ]
+    },
     {
       "id": "bgaming-recovery-maneki-88-gold",
       "family": "api-v2",
@@ -204,11 +770,154 @@
       ]
     },
     {
-      "id": "bgaming-recovery-yommi-rush",
+      "id": "bgaming-recovery-multi-rush",
       "family": "hyperhive-jsonrpc",
       "enrichment": {
         "attempted": true,
         "success": true,
+        "kind": "hyperhive-base-play",
+        "metadata": {
+          "requested_url": "https://demo.bgaming-network.com/play/MultiRush/FUN",
+          "launch_url": "https://multi-rush.demo.bgaming-network.com/hyperhive",
+          "inner_url": "https://multi-rush.demo.bgaming-network.com/",
+          "default_bet": 200,
+          "init_status": 200,
+          "play_status": 200,
+          "play_success": true,
+          "profile": {
+            "rpc_id_zero": false,
+            "bet_type": "",
+            "req_action": false,
+            "state_lock_present": true,
+            "custom_req": false,
+            "custom_action": false,
+            "custom_exponent": false,
+            "custom_stake": false,
+            "custom_literals": {},
+            "script_count": 1,
+            "req_purchased_feature": false,
+            "req_balance": false,
+            "req_fe_exponent": false,
+            "req_buy_bonus_multiplier": false,
+            "base_buy_bonus_multiplier": null,
+            "buy_bonus_multiplier": null
+          }
+        }
+      },
+      "direct_executable_count": 1,
+      "blockers": [],
+      "handler_probe": {
+        "attempted": false,
+        "success": false,
+        "route_id": "",
+        "route_ids": [],
+        "outcomes": [],
+        "results": []
+      },
+      "routes": [
+        {
+          "semantic": "SPIN",
+          "status": "NETWORK_OBSERVED",
+          "control": "spin-button",
+          "handler": "v0",
+          "wire_markers": [
+            "method=play"
+          ],
+          "direct_executable": true,
+          "direct_reason": ""
+        }
+      ]
+    },
+    {
+      "id": "bgaming-recovery-rocket-eruption-triple-blast",
+      "family": "hyperhive-jsonrpc",
+      "enrichment": {
+        "attempted": true,
+        "success": false,
+        "kind": "hyperhive-base-play",
+        "metadata": {
+          "requested_url": "https://demo.bgaming-network.com/play/RocketEruptionTripleBlast/FUN",
+          "launch_url": "https://rocket-eruption-triple-blast.demo.bgaming-network.com/hyperhive",
+          "inner_url": "https://rocket-eruption-triple-blast.demo.bgaming-network.com/",
+          "default_bet": 200,
+          "init_status": 200,
+          "play_status": 200,
+          "play_success": false,
+          "profile": {
+            "rpc_id_zero": false,
+            "bet_type": "bet",
+            "req_action": false,
+            "state_lock_present": true,
+            "custom_req": true,
+            "custom_action": true,
+            "custom_exponent": true,
+            "custom_stake": false,
+            "custom_literals": {},
+            "script_count": 6,
+            "req_purchased_feature": true,
+            "req_balance": false,
+            "req_fe_exponent": false,
+            "req_buy_bonus_multiplier": false,
+            "base_buy_bonus_multiplier": null,
+            "buy_bonus_multiplier": null
+          }
+        }
+      },
+      "direct_executable_count": 0,
+      "blockers": [],
+      "handler_probe": {
+        "attempted": false,
+        "success": false,
+        "route_id": "",
+        "route_ids": [],
+        "outcomes": [],
+        "results": [
+          {
+            "route_id": "RA1DC5206",
+            "semantic": "SPIN",
+            "control": "spin-button",
+            "handler": "onSpinClicked",
+            "kind": "direct-inferred-hyperhive",
+            "success": false,
+            "outcomes": [],
+            "status": 200,
+            "request": {
+              "id": "4ab57047-1a8b-4021-a71e-230c07faf60e",
+              "jsonrpc": "2.0",
+              "method": "play",
+              "params": {
+                "token": "<redacted>",
+                "req": {
+                  "bet": 200,
+                  "bet_type": "bet",
+                  "purchased_feature": null
+                },
+                "state_lock": "b6589fc6ab0dc82cf12099d1c2d40ab994e8410c"
+              }
+            }
+          }
+        ]
+      },
+      "routes": [
+        {
+          "semantic": "SPIN",
+          "status": "NETWORK_INFERRED",
+          "control": "spin-button",
+          "handler": "onSpinClicked",
+          "wire_markers": [
+            "method=play"
+          ],
+          "direct_executable": false,
+          "direct_reason": "no demonstrated replay action linked to route"
+        }
+      ]
+    },
+    {
+      "id": "bgaming-recovery-yommi-rush",
+      "family": "hyperhive-jsonrpc",
+      "enrichment": {
+        "attempted": true,
+        "success": false,
         "kind": "hyperhive-base-play",
         "metadata": {
           "requested_url": "https://demo.bgaming-network.com/play/YommiRush/FUN",
@@ -257,7 +966,7 @@
             "outcomes": [],
             "status": 200,
             "request": {
-              "id": "09908327-7448-423a-82e4-b776557c5f61",
+              "id": "0d189c64-bf35-4f6d-9f17-c597114fcec6",
               "jsonrpc": "2.0",
               "method": "play",
               "params": {
