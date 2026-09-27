@@ -154,6 +154,73 @@ def analyze_bgaming_demo(
         handler_probe["success"] = True
         contract_bundle = _merge_evidence(contract_bundle, probe.evidence)
 
+    if family == HYPERHIVE_JSONRPC:
+        succeeded = {
+            str(row.get("route_id") or "")
+            for row in handler_probe["results"]
+            if row.get("success")
+        }
+        for index, candidate in enumerate(candidates, start=1):
+            route_id = str(candidate.get("route_id") or "")
+            markers = tuple(
+                str(item)
+                for item in candidate.get("wire_markers") or []
+            )
+            if route_id in succeeded or "method=play" not in markers:
+                continue
+
+            row: dict[str, Any] = {
+                "route_id": route_id,
+                "semantic": candidate.get("semantic"),
+                "control": candidate.get("control"),
+                "handler": candidate.get("handler"),
+                "kind": "direct-inferred-hyperhive",
+                "success": False,
+                "outcomes": [],
+            }
+            try:
+                direct_probe = BGamingDemoDirectSession(
+                    har_path=contract_har,
+                    url=url,
+                    timeout_s=timeout_s,
+                )
+                direct_probe.open()
+                direct_result = direct_probe.execute_inferred_hyperhive(markers)
+            except (OSError, RuntimeError, TypeError, ValueError) as exc:
+                row["error"] = f"{type(exc).__name__}: {exc}"
+                handler_probe["results"].append(row)
+                continue
+
+            row["status"] = direct_result.get("status")
+            row["request"] = direct_result.get("request")
+            row["success"] = bool(direct_result.get("success"))
+            if not row["success"]:
+                handler_probe["results"].append(row)
+                continue
+
+            inferred = EvidenceBundle(
+                http=[
+                    HttpExchange(
+                        evidence_id=f"hyperhive:inferred:{index}",
+                        method="POST",
+                        url=str(direct_result.get("endpoint") or ""),
+                        request_body=direct_result.get("request"),
+                        response_status=int(direct_result.get("status") or 0),
+                        response_body=direct_result.get("response"),
+                    )
+                ],
+                metadata={"source": "bgaming-hyperhive-direct-inferred"},
+            )
+            matched = _probe_matches_route(inferred, candidate)
+            row["success"] = matched
+            handler_probe["results"].append(row)
+            if not matched:
+                continue
+
+            handler_probe["success"] = True
+            succeeded.add(route_id)
+            contract_bundle = _merge_evidence(contract_bundle, inferred)
+
     if handler_probe["success"]:
         _write_safe_har(contract_bundle, contract_har)
         graph = build_action_graph(contract_har)
