@@ -1,0 +1,162 @@
+name: Repair BGaming worker aggregate
+
+on:
+  push:
+    branches: ["main"]
+    paths:
+      - ".github/workflows/repair-bgaming-worker-aggregate.yml"
+
+permissions:
+  actions: read
+  contents: write
+
+jobs:
+  repair:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/download-artifact@v4
+        with:
+          github-token: ${{ github.token }}
+          repository: ${{ github.repository }}
+          run-id: 36322623214
+          pattern: bgaming-worker-shard-*
+          path: downloaded
+          merge-multiple: false
+
+      - name: Rebuild all-shard state
+        run: |
+          python - <<'PY'
+          import json
+          from collections import Counter
+          from datetime import datetime, timezone
+          from pathlib import Path
+
+          run_id = "36322623214"
+          games = []
+          shard_summaries = []
+
+          for path in sorted(Path("downloaded").rglob("summary.json")):
+              payload = json.loads(path.read_text())
+              shard_summaries.append(payload)
+              games.extend(payload.get("games") or [])
+
+          by_slug = {}
+          for row in games:
+              by_slug[row["slug"]] = row
+          games = list(by_slug.values())
+
+          if len(shard_summaries) != 8:
+              raise SystemExit(
+                  f"expected 8 shard summaries, got {len(shard_summaries)}"
+              )
+          if len(games) != 215:
+              raise SystemExit(f"expected 215 unique games, got {len(games)}")
+
+          now = datetime.now(timezone.utc).isoformat()
+          status_counts = Counter(row["status"] for row in games)
+          family_counts = Counter(str(row.get("family")) for row in games)
+          unresolved = Counter()
+          for row in games:
+              for action in row.get("unresolved_actions") or []:
+                  unresolved[str(action.get("semantic"))] += 1
+
+          review = [row for row in games if row.get("status") != "COMPLETE"]
+          review.sort(
+              key=lambda row: (
+                  {"ERROR": 0, "NO_ROUTES": 1, "PARTIAL": 2}.get(
+                      row.get("status"),
+                      9,
+                  ),
+                  str(row.get("family")),
+                  row["slug"],
+              )
+          )
+
+          summary = {
+              "schema": "multiplay/bgaming-worker-summary/v1",
+              "run_id": run_id,
+              "generated_at": now,
+              "planned": 215,
+              "processed": 215,
+              "status_counts": dict(sorted(status_counts.items())),
+              "family_counts": dict(sorted(family_counts.items())),
+              "unresolved_semantic_counts": dict(
+                  sorted(
+                      unresolved.items(),
+                      key=lambda item: (-item[1], item[0]),
+                  )
+              ),
+              "complete": status_counts.get("COMPLETE", 0),
+              "needs_review": len(review),
+              "direct_executable_total": sum(
+                  int(row.get("direct_executable_count") or 0)
+                  for row in games
+              ),
+              "route_total": sum(
+                  int(row.get("route_count") or 0)
+                  for row in games
+              ),
+              "shards_recovered": len(shard_summaries),
+          }
+
+          state = {
+              "schema": "multiplay/bgaming-worker-state/v1",
+              "updated_at": now,
+              "last_run_id": run_id,
+              "games": {
+                  row["slug"]: {
+                      "name": row["name"],
+                      "status": row["status"],
+                      "family": row.get("family"),
+                      "route_count": row.get("route_count", 0),
+                      "direct_executable_count": row.get(
+                          "direct_executable_count",
+                          0,
+                      ),
+                      "unresolved_network_count": row.get(
+                          "unresolved_network_count",
+                          0,
+                      ),
+                      "attempts": 1,
+                      "last_run_id": run_id,
+                      "updated_at": now,
+                  }
+                  for row in sorted(games, key=lambda item: item["slug"])
+              },
+          }
+
+          review_doc = {
+              "schema": "multiplay/bgaming-worker-review/v1",
+              "run_id": run_id,
+              "generated_at": now,
+              "summary": summary,
+              "games": review,
+          }
+
+          base = Path("knowledge/providers/bgaming")
+          base.mkdir(parents=True, exist_ok=True)
+          (base / "worker-state.json").write_text(
+              json.dumps(state, ensure_ascii=False, indent=2) + "\n"
+          )
+          (base / "worker-last-summary.json").write_text(
+              json.dumps(summary, ensure_ascii=False, indent=2) + "\n"
+          )
+          (base / "worker-last-review.json").write_text(
+              json.dumps(review_doc, ensure_ascii=False, indent=2) + "\n"
+          )
+
+          print(json.dumps(summary, indent=2))
+          PY
+
+      - name: Commit repaired aggregate
+        run: |
+          git config user.name "MultiPlay Worker"
+          git config user.email "multiplay-worker@users.noreply.github.com"
+          git add             knowledge/providers/bgaming/worker-state.json             knowledge/providers/bgaming/worker-last-summary.json             knowledge/providers/bgaming/worker-last-review.json
+          git commit -m "Repair BGaming full-catalog aggregate"
+          git pull --rebase origin main
+          git push origin HEAD:main

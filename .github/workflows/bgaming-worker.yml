@@ -8,10 +8,6 @@ on:
         required: false
         type: boolean
         default: false
-  push:
-    branches: ["main"]
-    paths:
-      - ".github/workflows/bgaming-worker.yml"
 
 permissions:
   contents: write
@@ -353,7 +349,7 @@ jobs:
         with:
           pattern: bgaming-worker-shard-*
           path: downloaded
-          merge-multiple: true
+          merge-multiple: false
 
       - name: Aggregate worker results
         env:
