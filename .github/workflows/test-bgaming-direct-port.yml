@@ -6,6 +6,7 @@ on:
     paths:
       - ".github/workflows/test-bgaming-direct-port.yml"
       - "src/multiplay/providers/bgaming/direct_port.py"
+      - "src/multiplay/har_map.py"
 
 permissions:
   contents: read
