@@ -365,6 +365,17 @@ def api_v2_script_spin_option_hints(
             ):
                 values.append(str(call.group(1)))
 
+            # BGaming prefab handlers also encode method arguments after a
+            # backtick, e.g. currentScene.setSpecialSymbolsLevel\`3.
+            # These are explicit client literals and are safer than guessing
+            # the persisted/default state.
+            for call in re.finditer(
+                re.escape(setter)
+                + r'\x60\s*(-?\d+(?:\.\d+)?)\b',
+                source,
+            ):
+                values.append(str(call.group(1)))
+
             for value in values:
                 add(key, value)
 
