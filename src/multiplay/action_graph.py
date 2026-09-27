@@ -237,6 +237,8 @@ def _control_roots(report: dict[str, Any]) -> list[dict[str, Any]]:
             "declared_button",
             "event_control",
             "html_control",
+            "react_control",
+            "signal_control",
         }:
             continue
         label = str(item.get("label") or "").strip()
