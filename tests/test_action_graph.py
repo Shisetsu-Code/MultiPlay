@@ -614,3 +614,83 @@ def test_action_graph_keeps_protocol_play_without_ui_control(tmp_path):
     assert route["control"].startswith("protocol:")
     assert route["replay_action_id"]
     assert "method=play" in route["wire_markers"]
+
+
+
+def test_action_graph_resolves_static_buy_freespins_feature(tmp_path):
+    har = {
+        "log": {
+            "entries": [
+                {
+                    "request": {
+                        "method": "POST",
+                        "url": "https://game.example/api",
+                        "headers": [],
+                        "postData": {
+                            "mimeType": "application/json",
+                            "text": json.dumps(
+                                {
+                                    "command": "spin",
+                                    "options": {
+                                        "bet": 10,
+                                        "purchased_feature": "freespin_buy",
+                                    },
+                                    "extra_data": {"round_series_id": 1},
+                                }
+                            ),
+                        },
+                    },
+                    "response": {
+                        "status": 200,
+                        "headers": [],
+                        "content": {
+                            "mimeType": "application/json",
+                            "text": '{"ok":true}',
+                        },
+                    },
+                },
+                {
+                    "request": {
+                        "method": "GET",
+                        "url": "https://game.example/app.js",
+                        "headers": [],
+                    },
+                    "response": {
+                        "status": 200,
+                        "headers": [],
+                        "content": {
+                            "mimeType": "application/javascript",
+                            "text": (
+                                'const F="freespin_buy";'
+                                'const ui={c:"Button",p:{name:"buy",'
+                                'onClick:"currentScene.buyFreespins"}};'
+                                'class Game{buyFreespins(){'
+                                'this.setBoughtBonusParameter(F);'
+                                'this.isNeedToForceSpin=true}'
+                                'setBoughtBonusParameter(t,e=null){'
+                                'this.additionalSpinOptions.purchased_feature=t;'
+                                'this.additionalSpinOptions.purchased_feature_level=e.toString()'
+                                '}}'
+                            ),
+                        },
+                    },
+                },
+            ]
+        }
+    }
+    path = tmp_path / "buy-freespins.har"
+    path.write_text(json.dumps(har), encoding="utf-8")
+
+    graph = build_action_graph(path)
+    route = next(
+        item
+        for item in graph["routes"]
+        if item["control"] == "buy"
+    )
+
+    assert route["semantic"] == "BUY_BONUS"
+    assert route["status"] == "NETWORK_OBSERVED"
+    assert route["wire_markers"] == [
+        "command=spin",
+        "purchased_feature=freespin_buy",
+    ]
