@@ -1,0 +1,88 @@
+name: Test BGaming auto analyzer
+
+on:
+  push:
+    branches: ["main"]
+    paths:
+      - ".github/workflows/test-bgaming-auto-analyze.yml"
+      - "src/multiplay/providers/bgaming/auto_analyze.py"
+      - "src/multiplay/action_graph.py"
+      - "src/multiplay/har_map.py"
+      - "src/multiplay/providers/bgaming/direct_port.py"
+
+permissions:
+  contents: read
+
+jobs:
+  analyze:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - id: api-v2
+            url: https://demo.bgaming-network.com/play/AlienFruits3/FUN
+          - id: hyperhive
+            url: https://demo.bgaming-network.com/play/BigBucksSaloon/FUN
+
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - run: python -m pip install --upgrade pip
+      - run: pip install -e ".[browser,dev]"
+      - run: python -m playwright install --with-deps chromium
+
+      - name: Run one-shot analyzer
+        run: |
+          multiplay bgaming-analyze-demo "${{ matrix.url }}" \
+            --output-dir "artifacts/${{ matrix.id }}" \
+            --settle-ms 8000 \
+            --timeout 30 \
+            > "artifacts-${{ matrix.id }}.txt"
+          cat "artifacts-${{ matrix.id }}.txt"
+
+      - name: Verify sanitized outputs
+        run: |
+          test -f "artifacts/${{ matrix.id }}/analysis.json"
+          test -f "artifacts/${{ matrix.id }}/actions.json"
+          test -f "artifacts/${{ matrix.id }}/contract.har"
+          test ! -f "artifacts/${{ matrix.id }}/browser.raw.har"
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          root = Path("artifacts/${{ matrix.id }}")
+          report = json.loads((root / "analysis.json").read_text())
+          print("family:", report["family"])
+          print("routes:", report["route_count"])
+          print("direct:", report["direct_executable_count"])
+          for route in report["routes"]:
+              print(
+                  route["semantic"],
+                  route["interface_role"],
+                  route["status"],
+                  "DIRECT" if route.get("direct_executable") else "-",
+                  route["control"],
+                  route.get("wire_markers"),
+              )
+
+          contract = (root / "contract.har").read_text()
+          if "Cookie:" in contract:
+              raise SystemExit("raw Cookie header leaked into contract HAR")
+          PY
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: bgaming-auto-${{ matrix.id }}
+          path: |
+            artifacts/${{ matrix.id }}/analysis.json
+            artifacts/${{ matrix.id }}/actions.json
+            artifacts/${{ matrix.id }}/contract.har
+            artifacts/${{ matrix.id }}/initial.jpg
+            artifacts-${{ matrix.id }}.txt
+          if-no-files-found: error
+          retention-days: 3
