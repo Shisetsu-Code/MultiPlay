@@ -619,7 +619,6 @@ def _probe_matches_route(
 ) -> bool:
     wanted = set(route.get("wire_markers") or [])
     semantic = str(route.get("semantic") or "")
-    handler = str(route.get("handler") or "")
     specific = {
         marker
         for marker in wanted
