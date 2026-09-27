@@ -887,8 +887,9 @@ def _wire_markers_value(value: Any) -> set[str]:
 
 def _wire_markers_text(text: str) -> set[str]:
     markers: set[str] = set()
+    source = text or ""
     for name, pattern in _WIRE_PATTERNS:
-        for match in pattern.finditer(text or ""):
+        for match in pattern.finditer(source):
             value = str(match.group(1) or "").strip()
             if (
                 name == "purchased_feature_level"
@@ -897,6 +898,17 @@ def _wire_markers_text(text: str) -> set[str]:
                 continue
             if value:
                 markers.add(f"{name}={value}")
+
+    # Some HyperHive UIs pass the feature as a literal argument into their
+    # common spin handler instead of constructing the wire request inline.
+    for match in re.finditer(
+        r'onSpinClick\(\s*[^,)]{0,100},\s*["\']([^"\']+)["\']',
+        source,
+        flags=re.IGNORECASE,
+    ):
+        value = str(match.group(1) or "").strip()
+        if value and re.search(r"(?:buy|bonus|feature|free)", value, re.IGNORECASE):
+            markers.add(f"purchased_feature={value}")
     return markers
 
 
