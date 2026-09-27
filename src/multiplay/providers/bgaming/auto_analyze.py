@@ -615,6 +615,18 @@ def render_bgaming_analysis(report: dict[str, Any]) -> str:
     if report.get("direct_session_error"):
         lines.append(f"direct session: {report['direct_session_error']}")
 
+    children = report.get("switchable_children") or []
+    if children:
+        lines.extend(["", "SWITCHABLE CHILDREN"])
+        for child in children:
+            state = "DIRECT-SPIN" if child.get("success") else "FAILED"
+            lines.append(
+                f"{state:<11} "
+                f"{child.get('identifier', '')} "
+                f"init={child.get('init_status', '-')} "
+                f"spin={child.get('spin_status', '-')}"
+            )
+
     lines.extend(["", "ACTIONS"])
     for route in report.get("routes") or []:
         direct = "DIRECT" if route.get("direct_executable") else "-"
@@ -632,6 +644,12 @@ def render_bgaming_analysis(report: dict[str, Any]) -> str:
         lines.append(f"    handler: {handler}")
         lines.append(f"    chain:   {chain}")
         lines.append(f"    wire:    {wire}")
+        if route.get("child_identifier"):
+            lines.append(
+                "    child:   "
+                f"{route.get('child_identifier')} "
+                f"validated={bool(route.get('child_spin_validated'))}"
+            )
     return "\n".join(lines) + "\n"
 
 
