@@ -9,6 +9,8 @@ on:
 permissions:
   contents: read
 
+# regression: inferred purchases + legacy controls
+
 jobs:
   analyze:
     runs-on: ubuntu-latest
