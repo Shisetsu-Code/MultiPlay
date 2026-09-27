@@ -27,6 +27,8 @@ jobs:
         include:
           - id: api-v2
             url: https://demo.bgaming-network.com/play/AlienFruits3/FUN
+          - id: potion
+            url: https://demo.bgaming-network.com/play/PotionSpells/FUN
           - id: hyperhive
             url: https://demo.bgaming-network.com/play/BigBucksSaloon/FUN
 
