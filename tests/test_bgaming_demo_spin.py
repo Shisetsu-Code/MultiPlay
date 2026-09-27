@@ -1,4 +1,5 @@
 from multiplay.providers.bgaming.demo_spin import (
+    api_v2_provable_fair_extra_data,
     api_v2_spin_retry_options,
     legacy_spin_options,
     resolve_base_bet,
@@ -56,3 +57,19 @@ def test_api_v2_spin_retry_options_does_not_invent_rows():
         {"bet": 20},
     )
     assert retries == [{"bet": 20, "mode": "0"}]
+
+
+def test_api_v2_provable_fair_extra_data_adds_client_seed_only_when_declared():
+    assert api_v2_provable_fair_extra_data(
+        {"provable_fair": {"verify_url": "https://example.test/verify"}},
+        {"round_series_id": 7},
+        client_seed=12345,
+    ) == {
+        "round_series_id": 7,
+        "client_seed": 12345,
+    }
+    assert api_v2_provable_fair_extra_data(
+        {},
+        {"round_series_id": 7},
+        client_seed=12345,
+    ) is None
