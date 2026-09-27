@@ -374,6 +374,21 @@ _LEGACY_CREATE_BUTTON_RE = re.compile(
     re.IGNORECASE,
 )
 
+_SIGNAL_CONTROL_RE = re.compile(
+    r'(?:findAllById|findById)\(\s*["\']([^"\']{1,120})["\']\s*\)'
+    r'[\s\S]{0,650}?(?:touchEvent|clicked)\.listen\('
+    r'[\s\S]{0,320}?this\.([A-Za-z_$][A-Za-z0-9_$]*)\s*\(',
+    re.IGNORECASE,
+)
+_REACT_TYPED_CONTROL_RE = re.compile(
+    r'(?:createElement|\.createElement)\(\s*[^,]{1,180},\s*\{'
+    r'[\s\S]{0,520}?\btype\s*:\s*["\']'
+    r'(spin|buy[-_ ]?bonus|bonus|collect|gamble)'
+    r'["\']',
+    re.IGNORECASE,
+)
+
+
 
 def _javascript_declared_buttons(text: str, source: str) -> list[dict[str, Any]]:
     rows: list[dict[str, Any]] = []
@@ -443,6 +458,49 @@ def _javascript_declared_buttons(text: str, source: str) -> list[dict[str, Any]]
                 "confidence": "HIGH",
             }
         )
+    for match in _SIGNAL_CONTROL_RE.finditer(text):
+        label = str(match.group(1))
+        handler = str(match.group(2))
+        start = max(0, match.start() - 180)
+        end = min(len(text), match.end() + 420)
+        window = text[start:end]
+        rows.append(
+            {
+                "kind": "signal_control",
+                "source": source,
+                "event": "signal",
+                "label": label,
+                "handler": handler,
+                "element": label,
+                "handler_hint": " ".join(window.split())[:1000],
+                "wire_markers": sorted(_wire_markers_text(window)),
+                "endpoint_ids": [],
+                "confidence": "HIGH",
+            }
+        )
+
+    for match in _REACT_TYPED_CONTROL_RE.finditer(text):
+        control_type = str(match.group(1)).casefold().replace("_", "-").replace(" ", "-")
+        label = control_type
+        handler = control_type
+        start = max(0, match.start() - 160)
+        end = min(len(text), match.end() + 320)
+        window = text[start:end]
+        rows.append(
+            {
+                "kind": "react_control",
+                "source": source,
+                "event": "component",
+                "label": label,
+                "handler": handler,
+                "element": label,
+                "handler_hint": " ".join(window.split())[:1000],
+                "wire_markers": sorted(_wire_markers_text(window)),
+                "endpoint_ids": [],
+                "confidence": "HIGH",
+            }
+        )
+
     return rows
 
 
