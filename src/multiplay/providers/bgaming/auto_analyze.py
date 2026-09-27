@@ -118,7 +118,7 @@ def analyze_bgaming_demo(
                 f"{type(exc).__name__}: {exc}"
             )
         else:
-            enrichment["success"] = 200 <= base.metadata.play_status < 400
+            enrichment["success"] = bool(base.metadata.play_success)
             enrichment["metadata"] = base.metadata.to_dict()
             extra = base.evidence
     elif family == SWITCHABLE_CONTAINER:
