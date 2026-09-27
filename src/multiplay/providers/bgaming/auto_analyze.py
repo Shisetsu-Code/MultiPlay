@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import re
 from pathlib import Path
 from typing import Any
 from urllib.parse import urlsplit
@@ -693,7 +694,7 @@ def _seed_hyperhive_spin_routes(
         if route.get("status") == "NETWORK_OBSERVED":
             continue
         text = f"{route.get('control') or ''} {route.get('handler') or ''}"
-        if not __import__("re").search(r"spin", text, __import__("re").IGNORECASE):
+        if not re.search(r"spin", text, re.IGNORECASE):
             continue
 
         markers = {
