@@ -361,6 +361,12 @@ _ONCLICK_RE = re.compile(
     r'(\[[^\]]{1,500}\]|["\'][^"\']{1,500}["\'])',
     re.IGNORECASE,
 )
+_EVENT_MANAGER_LISTENER_RE = re.compile(
+    r'eventManager\.addListener\(\s*["\']([^"\']{1,120})["\']\s*,\s*'
+    r'(?:\([^)]*\)|[A-Za-z_$][A-Za-z0-9_$]*)\s*=>\s*\{?'
+    r'[\s\S]{0,240}?this\.([A-Za-z_$][A-Za-z0-9_$]*)\s*\(',
+    re.IGNORECASE,
+)
 _LEGACY_CREATE_BUTTON_RE = re.compile(
     r'addListener\(\s*[^;]{0,160}?createButton\(\s*["\']'
     r'([^"\']{1,120})["\'][^)]{0,220}\)\s*,\s*'
@@ -411,6 +417,26 @@ def _javascript_declared_buttons(text: str, source: str) -> list[dict[str, Any]]
                 "label": label,
                 "handler": handler,
                 "element": label,
+                "handler_hint": " ".join(window.split())[:1000],
+                "wire_markers": sorted(_wire_markers_text(window)),
+                "endpoint_ids": [],
+                "confidence": "HIGH",
+            }
+        )
+    for match in _EVENT_MANAGER_LISTENER_RE.finditer(text):
+        event_name = str(match.group(1))
+        handler = str(match.group(2))
+        start = max(0, match.start() - 180)
+        end = min(len(text), match.end() + 360)
+        window = text[start:end]
+        rows.append(
+            {
+                "kind": "event_control",
+                "source": source,
+                "event": event_name,
+                "label": event_name,
+                "handler": handler,
+                "element": event_name,
                 "handler_hint": " ".join(window.split())[:1000],
                 "wire_markers": sorted(_wire_markers_text(window)),
                 "endpoint_ids": [],
