@@ -88,7 +88,7 @@ def analyze_current_wire(
             )
         ),
         bet_type=bet_type,
-        req_action=bool(_request_literals(compact, "action")),
+        req_action=_play_req_action_present(compact),
         state_lock_present=_play_has_state_lock(compact),
         custom_req=custom_req,
         custom_action=custom_req and "formattedRequest.params.action" in compact,
@@ -97,13 +97,25 @@ def analyze_current_wire(
         custom_literals=literals,
         script_count=max(0, int(script_count)),
         req_purchased_feature=_req_field_present(play_window, "purchased_feature"),
-        req_purchased_feature_always=_req_literal_field_present(
-            play_window,
-            "purchased_feature",
+        req_purchased_feature_always=(
+            _req_literal_field_present(
+                play_window,
+                "purchased_feature",
+            )
+            and not _req_field_is_conditional_spread(
+                play_window,
+                "purchased_feature",
+            )
         ),
-        req_purchased_feature_omit_empty=_req_field_uses_void_zero(
-            play_window,
-            "purchased_feature",
+        req_purchased_feature_omit_empty=(
+            _req_field_uses_void_zero(
+                play_window,
+                "purchased_feature",
+            )
+            or _req_field_is_conditional_spread(
+                play_window,
+                "purchased_feature",
+            )
         ),
         req_balance=_req_field_present(play_window, "balance"),
         req_fe_exponent=_req_field_present(play_window, "fe_exponent"),
@@ -224,6 +236,38 @@ def _play_request_window(text: str) -> str:
         + int("buyBonusModeMultiplier" in item),
         len(item),
     ))
+
+
+def _play_req_action_present(text: str) -> bool:
+    """Detect req.action only inside a play payload, never from init."""
+    source = text or ""
+    candidates: list[str] = []
+    for match in re.finditer(
+        r'(?:\bmethod\s*:\s*["\']play["\']|\.invoke\(["\']play["\'])',
+        source,
+    ):
+        window = source[match.start() : min(len(source), match.start() + 2800)]
+        if re.search(r'\breq\s*:', window) or ".req." in window:
+            candidates.append(window)
+    return any(_request_literals(window, "action") for window in candidates)
+
+
+def _req_field_is_conditional_spread(window: str, key: str) -> bool:
+    if not window:
+        return False
+    escaped = re.escape(key)
+    return bool(
+        re.search(
+            rf'\.\.\.[^,{{}}]{{0,180}}\?\s*\{{'
+            rf'[^{{}}]{{0,320}}\b{escaped}\s*:',
+            window,
+        )
+        or re.search(
+            rf'\.\.\.[^,{{}}]{{0,180}}&&\s*\{{'
+            rf'[^{{}}]{{0,320}}\b{escaped}\s*:',
+            window,
+        )
+    )
 
 
 def _req_numeric_literal(window: str, key: str) -> int | float | None:
