@@ -18,6 +18,8 @@ class HyperHiveWireProfile:
     custom_literals: dict[str, Any]
     script_count: int
     req_purchased_feature: bool = False
+    req_purchased_feature_always: bool = False
+    req_purchased_feature_omit_empty: bool = False
     req_balance: bool = False
     req_fe_exponent: bool = False
     req_buy_bonus_multiplier: bool = False
@@ -92,6 +94,14 @@ def analyze_current_wire(
         custom_literals=literals,
         script_count=max(0, int(script_count)),
         req_purchased_feature=_req_field_present(play_window, "purchased_feature"),
+        req_purchased_feature_always=_req_literal_field_present(
+            play_window,
+            "purchased_feature",
+        ),
+        req_purchased_feature_omit_empty=_req_field_uses_void_zero(
+            play_window,
+            "purchased_feature",
+        ),
         req_balance=_req_field_present(play_window, "balance"),
         req_fe_exponent=_req_field_present(play_window, "fe_exponent"),
         req_buy_bonus_multiplier=_req_field_present(
@@ -116,7 +126,13 @@ def build_profile_request(
         request["bet_type"] = profile.bet_type
     if profile.req_fe_exponent:
         request["fe_exponent"] = resolve_hyperhive_fe_exponent(init_result)
-    if profile.req_purchased_feature:
+    if profile.req_purchased_feature and (
+        purchased_feature is not None
+        or (
+            profile.req_purchased_feature_always
+            and not profile.req_purchased_feature_omit_empty
+        )
+    ):
         request["purchased_feature"] = purchased_feature
     if profile.req_balance:
         balance = init_result.get("balance")
@@ -197,6 +213,33 @@ def _play_request_window(text: str) -> str:
         + int("buyBonusModeMultiplier" in item),
         len(item),
     ))
+
+
+def _req_literal_field_present(window: str, key: str) -> bool:
+    if not window:
+        return False
+    escaped = re.escape(key)
+    return bool(re.search(rf'\b{escaped}\s*:', window))
+
+
+def _req_field_uses_void_zero(window: str, key: str) -> bool:
+    if not window:
+        return False
+    escaped = re.escape(key)
+    field = re.search(
+        rf'\b{escaped}\s*:\s*([A-Za-z_$][A-Za-z0-9_$]*)',
+        window,
+    )
+    if field is None:
+        return False
+    variable = re.escape(field.group(1))
+    prior = window[: field.start()][-2200:]
+    return bool(
+        re.search(
+            rf'(?<![A-Za-z0-9_$]){variable}\s*=\s*void\s+0',
+            prior,
+        )
+    )
 
 
 def _req_field_present(window: str, key: str) -> bool:
