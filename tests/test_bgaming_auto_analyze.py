@@ -1,7 +1,11 @@
 import json
 
 from multiplay.models import EvidenceBundle, HttpExchange, ScriptEvidence
-from multiplay.providers.bgaming.auto_analyze import _merge_evidence, _write_safe_har
+from multiplay.providers.bgaming.auto_analyze import (
+    _merge_evidence,
+    _require_runtime_identity,
+    _write_safe_har,
+)
 
 
 def test_safe_contract_har_strips_query_and_redacts_loaded_shapes(tmp_path):
@@ -60,3 +64,53 @@ def test_merge_evidence_deduplicates_same_exchange():
         EvidenceBundle(http=[exchange]),
     )
     assert len(merged.http) == 1
+
+
+
+def test_runtime_identity_rejects_wrong_public_game():
+    evidence = EvidenceBundle(
+        http=[
+            HttpExchange(
+                evidence_id="x",
+                method="POST",
+                url=(
+                    "https://demo.bgaming-network.com/api/"
+                    "MagicMummyMegaways/123/session"
+                ),
+                request_body={"command": "init"},
+                response_status=200,
+            )
+        ]
+    )
+
+    try:
+        _require_runtime_identity(
+            "https://bgaming.com/games/sweet-royale-megaways",
+            evidence,
+        )
+    except ValueError as exc:
+        assert "does not match requested public game" in str(exc)
+    else:
+        raise AssertionError("wrong embedded runtime must be rejected")
+
+
+def test_runtime_identity_accepts_matching_public_game():
+    evidence = EvidenceBundle(
+        http=[
+            HttpExchange(
+                evidence_id="x",
+                method="POST",
+                url=(
+                    "https://demo.bgaming-network.com/api/"
+                    "SweetRoyaleMegaways/123/session"
+                ),
+                request_body={"command": "init"},
+                response_status=200,
+            )
+        ]
+    )
+
+    _require_runtime_identity(
+        "https://bgaming.com/games/sweet-royale-megaways",
+        evidence,
+    )
