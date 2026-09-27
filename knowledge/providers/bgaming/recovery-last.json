@@ -1,7 +1,7 @@
 {
   "schema": "multiplay/bgaming-recovery-test/v1",
-  "run_id": "36338132547",
-  "generated_at": "2026-09-27T17:47:33.030469+00:00",
+  "run_id": "36338340979",
+  "generated_at": "2026-09-27T17:50:57.516624+00:00",
   "games": [
     {
       "id": "bgaming-recovery-big-atlantis-frenzy",
@@ -47,7 +47,7 @@
                 "purchased_feature": "freespin_buy"
               },
               "extra_data": {
-                "round_series_id": 1790531216133
+                "round_series_id": 1790531402779
               }
             }
           }
@@ -151,7 +151,7 @@
                 "purchased_feature_level": "4"
               },
               "extra_data": {
-                "round_series_id": 1790531206196
+                "round_series_id": 1790531408737
               }
             }
           }
@@ -237,7 +237,7 @@
                 "purchased_feature_level": "1"
               },
               "extra_data": {
-                "round_series_id": 1790531207371
+                "round_series_id": 1790531422361
               }
             }
           },
@@ -258,7 +258,7 @@
                 "purchased_feature_level": "0"
               },
               "extra_data": {
-                "round_series_id": 1790531210150
+                "round_series_id": 1790531426104
               }
             }
           },
@@ -279,7 +279,7 @@
                 "purchased_feature_level": "2"
               },
               "extra_data": {
-                "round_series_id": 1790531212850
+                "round_series_id": 1790531428671
               }
             }
           }
@@ -436,7 +436,7 @@
             "outcomes": [],
             "status": 200,
             "request": {
-              "id": "4964a83a-6a30-4e94-bf56-84213c8612a5",
+              "id": "988f8d7f-ff8b-4801-81a1-bae5196ad678",
               "jsonrpc": "2.0",
               "method": "play",
               "params": {
@@ -444,7 +444,12 @@
                 "req": {
                   "bet": 200,
                   "bet_type": "bet",
-                  "purchased_feature": null
+                  "purchased_feature": null,
+                  "custom_req": {
+                    "action": "spin",
+                    "exponent": 2,
+                    "stake": 200
+                  }
                 },
                 "state_lock": "b6589fc6ab0dc82cf12099d1c2d40ab994e8410c"
               }
@@ -501,7 +506,7 @@
           }
         }
       },
-      "direct_executable_count": 1,
+      "direct_executable_count": 3,
       "blockers": [],
       "handler_probe": {
         "attempted": false,
@@ -520,7 +525,7 @@
             "outcomes": [],
             "status": 200,
             "request": {
-              "id": "4f0544cb-77fb-4fa0-9936-e1e44f8e6859",
+              "id": 0,
               "jsonrpc": "2.0",
               "method": "play",
               "params": {
@@ -546,7 +551,7 @@
             "outcomes": [],
             "status": 200,
             "request": {
-              "id": "24e44f6f-067b-44e0-a3f0-b806f0f7172a",
+              "id": 0,
               "jsonrpc": "2.0",
               "method": "play",
               "params": {
@@ -574,21 +579,8 @@
             "method=play",
             "purchased_feature=buy_bonus"
           ],
-          "direct_executable": false,
-          "direct_reason": "matched replay shape is not executable in this session"
-        },
-        {
-          "semantic": "BUY_BONUS",
-          "status": "NETWORK_OBSERVED",
-          "control": "protocol:play",
-          "handler": "",
-          "wire_markers": [
-            "bet_type=default",
-            "method=play",
-            "purchased_feature=buy_bonus"
-          ],
-          "direct_executable": false,
-          "direct_reason": "matched replay shape is not executable in this session"
+          "direct_executable": true,
+          "direct_reason": ""
         },
         {
           "semantic": "SPIN",
@@ -600,8 +592,8 @@
             "method=play",
             "purchased_feature=buy_bonus"
           ],
-          "direct_executable": false,
-          "direct_reason": "matched replay shape is not executable in this session"
+          "direct_executable": true,
+          "direct_reason": ""
         },
         {
           "semantic": "SPIN",
@@ -965,7 +957,7 @@
             "outcomes": [],
             "status": 200,
             "request": {
-              "id": "cc1781b1-45d5-4b1a-a67f-9df3f2ad9869",
+              "id": "bcf095b1-ecba-4d62-ab3d-1e22a5259cef",
               "jsonrpc": "2.0",
               "method": "play",
               "params": {
@@ -973,7 +965,11 @@
                 "req": {
                   "bet": 200,
                   "bet_type": "bet",
-                  "purchased_feature": null
+                  "purchased_feature": null,
+                  "custom_req": {
+                    "action": "spin",
+                    "exponent": 2
+                  }
                 },
                 "state_lock": "b6589fc6ab0dc82cf12099d1c2d40ab994e8410c"
               }
@@ -1084,7 +1080,7 @@
             "outcomes": [],
             "status": 200,
             "request": {
-              "id": "7d97f67c-9152-4655-9d1f-a36e7f59af1d",
+              "id": "dad1b132-a3e7-4e65-946f-979c9b7e5077",
               "jsonrpc": "2.0",
               "method": "play",
               "params": {
