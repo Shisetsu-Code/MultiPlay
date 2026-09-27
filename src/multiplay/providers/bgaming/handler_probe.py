@@ -21,6 +21,8 @@ class HandlerProbeOutcome:
     called: bool
     resolved_path: str = ""
     frame_url: str = ""
+    request_start: int = 0
+    request_end: int = 0
     error: str = ""
 
     def to_dict(self) -> dict[str, Any]:
@@ -207,6 +209,8 @@ def probe_bgaming_handlers(
                         called=True,
                         resolved_path=resolved_path,
                         frame_url=resolved_frame,
+                        request_start=route_http_start,
+                        request_end=len(captured_http),
                     )
                 )
 
@@ -217,6 +221,8 @@ def probe_bgaming_handlers(
                         route_id=route_id,
                         handler=handler,
                         called=False,
+                        request_start=route_http_start,
+                        request_end=len(captured_http),
                         error=last_error or "handler not found in loaded frames",
                     )
                 )
