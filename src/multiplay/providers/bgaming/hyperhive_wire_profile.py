@@ -220,24 +220,24 @@ def _play_request_window(text: str) -> str:
     # Keep method/invoke candidates tight enough that adjacent bonus/wheel
     # requests do not contaminate the normal-spin profile.
     for match in re.finditer(
-        r'(?:\\.invoke\\(["\\\']play["\\\']|\\bmethod\\s*:\\s*["\\\']play["\\\'])',
+        r'(?:\.invoke\(["\']play["\']|\bmethod\s*:\s*["\']play["\'])',
         source,
     ):
         start = max(0, match.start() - 500)
         end = min(len(source), match.start() + 2600)
         window = source[start:end]
-        if re.search(r'\\breq\\s*:', window) or ".req." in window:
+        if re.search(r'\breq\s*:', window) or ".req." in window:
             candidates.append(("play", window))
 
     # Intercom-style clients materialize req in a variable before action().
     for match in re.finditer(
-        r'\\.action\\(\\{[^{}]{0,300}\\bstate_lock\\s*:',
+        r'\.action\(\{[^{}]{0,300}\bstate_lock\s*:',
         source,
     ):
         start = max(0, match.start() - 1600)
         end = min(len(source), match.start() + 2600)
         window = source[start:end]
-        if re.search(r'\\breq\\s*:', window) or ".req." in window:
+        if re.search(r'\breq\s*:', window) or ".req." in window:
             candidates.append(("action", window))
 
     if not candidates:
@@ -248,11 +248,11 @@ def _play_request_window(text: str) -> str:
         score = 0
         prefix = window[:900]
 
-        if re.search(r'(?:^|[,;{])play\\s*:\\s*(?:async)?', prefix):
+        if re.search(r'(?:^|[,;{])play\s*:\s*(?:async)?', prefix):
             score += 30
-        if re.search(r'\\baction\\s*:\\s*["\\\']spin["\\\']', window):
+        if re.search(r'\baction\s*:\s*["\']spin["\']', window):
             score += 20
-        if re.search(r'\\bbet_type\\s*:', window):
+        if re.search(r'\bbet_type\s*:', window):
             score += 3
         if "purchased_feature" not in window:
             score += 8
@@ -261,7 +261,7 @@ def _play_request_window(text: str) -> str:
         if "formattedRequest.params" in window:
             score += 6
         if re.search(
-            r'\\baction\\s*:\\s*["\\\'](?:bonus|wheel|collect)["\\\']',
+            r'\baction\s*:\s*["\'](?:bonus|wheel|collect)["\']',
             window,
         ):
             score -= 15
