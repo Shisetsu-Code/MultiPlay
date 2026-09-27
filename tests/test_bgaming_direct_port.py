@@ -128,7 +128,7 @@ def test_inferred_api_purchase_rejects_ambiguous_features(tmp_path):
 
 
 
-def test_inferred_api_purchase_preserves_static_play_command(tmp_path):
+def test_inferred_api_purchase_keeps_observed_spin_command(tmp_path):
     path = tmp_path / "game.har"
     _write_har(path)
     session = BGamingDemoDirectSession(
@@ -158,6 +158,6 @@ def test_inferred_api_purchase_preserves_static_play_command(tmp_path):
     )
 
     assert result["success"] is True
-    assert captured["payload"]["command"] == "play"
+    assert captured["payload"]["command"] == "spin"
     assert captured["payload"]["options"]["bet"] == 100
     assert captured["payload"]["options"]["purchased_feature"] == "freespin_buy"
