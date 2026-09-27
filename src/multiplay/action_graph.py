@@ -771,7 +771,7 @@ def _relevant_markers(semantic: str, markers: set[str]) -> set[str]:
                 ("command=pick", "command=select", "command=choose", "action=")
             )
         }
-    if semantic in {"BET", "AUTOSPIN", "GAME_VARIANT"}:
+    if semantic in {"BET", "AUTOSPIN", "GAME_VARIANT", "CHANCE", "SKIP"}:
         return set()
     return markers
 
@@ -934,12 +934,12 @@ def _interface_role(
 ) -> str:
     if _ui_opener(handler, chain):
         return "opener"
-    if status in {"NETWORK_OBSERVED", "NETWORK_INFERRED"}:
-        return "network_action"
     if semantic in {"BET", "AUTOSPIN", "CHANCE"}:
         return "client_state"
     if semantic == "SKIP":
         return "client_control"
+    if status in {"NETWORK_OBSERVED", "NETWORK_INFERRED"}:
+        return "network_action"
     return "client_control"
 
 def _keep_route(route: dict[str, Any]) -> bool:
