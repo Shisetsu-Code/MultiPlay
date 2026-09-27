@@ -103,6 +103,23 @@ def probe_bgaming_handlers(
         page.goto(target, wait_until="domcontentloaded", timeout=60_000)
         page.wait_for_timeout(max(1000, int(settle_ms)))
 
+        for _round in range(4):
+            advanced = False
+            for frame in page.frames:
+                try:
+                    result = frame.evaluate(
+                        _CALL_CONTROL_JS,
+                        {"control": "__multiplay_advance_only__"},
+                    )
+                except Exception:  # noqa: BLE001
+                    continue
+                if isinstance(result, dict) and result.get("advanced"):
+                    advanced = True
+                    page.wait_for_timeout(1200)
+                    break
+            if not advanced:
+                break
+
         for route in routes:
             route_id = str(route.get("route_id") or "")
             control = str(route.get("control") or "").strip()
@@ -131,7 +148,7 @@ def probe_bgaming_handlers(
                 attempt_called = False
                 for frame in page.frames:
                     result = None
-                    if control:
+                    if control and not paths:
                         for _advance in range(3):
                             try:
                                 result = frame.evaluate(
