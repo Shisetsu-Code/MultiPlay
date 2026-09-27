@@ -229,3 +229,33 @@ def test_play_profile_ignores_init_action_and_omits_conditional_purchase():
     )
     assert bought["purchased_feature"] == "buy_bonus"
 
+def test_profile_prefers_normal_spin_when_bundle_has_multiple_play_requests():
+    profile = analyze_current_wire(
+        'bonus={jsonrpc:"2.0",method:"play",params:{req:{'
+        'bet:b,bet_type:"betting",action:"bonus"},state_lock:s,token:t}};'
+        'normal={jsonrpc:"2.0",method:"play",params:{req:{'
+        'bet:b,bet_type:"betting",action:"spin"},state_lock:s,token:t}};'
+        'purchase={jsonrpc:"2.0",method:"play",params:{req:{'
+        'bet:b,bet_type:"betting",purchased_feature:"buy_bonus"},'
+        'state_lock:s,token:t}};'
+    )
+    assert profile.req_action is True
+    assert profile.req_purchased_feature is False
+    assert profile.bet_type == "betting"
+    assert profile.state_lock_present is True
+
+    req = build_profile_request(
+        profile,
+        {
+            "config": {"default_bet": 100, "bet_limits": [20, 100]},
+            "currency_attributes": {"subunits": 100, "exponent": 2},
+        },
+        bet=100,
+    )
+    req["action"] = "spin"
+    assert req == {
+        "bet": 100,
+        "bet_type": "betting",
+        "action": "spin",
+    }
+
