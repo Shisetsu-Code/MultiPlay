@@ -1,0 +1,62 @@
+name: Test BGaming Hot Chilli
+
+on:
+  push:
+    branches: ["main"]
+    paths:
+      - ".github/workflows/test-bgaming-hot-chilli.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  analyze:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install --upgrade pip
+      - run: pip install -e ".[browser,dev]"
+      - run: python -m playwright install --with-deps chromium
+      - name: Analyze
+        run: |
+          mkdir -p artifacts/hot-chilli-bells-100
+          set +e
+          multiplay bgaming-analyze-demo             "https://demo.bgaming-network.com/play/HotChilliBells100/FUN"             --output-dir artifacts/hot-chilli-bells-100             --settle-ms 12000             --timeout 30             > artifacts/hot-chilli-bells-100/stdout.txt             2> artifacts/hot-chilli-bells-100/stderr.txt
+          RC=$?
+          set -e
+          echo "$RC" > artifacts/hot-chilli-bells-100/returncode.txt
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          root = Path("artifacts/hot-chilli-bells-100")
+          p = root / "analysis.json"
+          if p.exists():
+              d = json.loads(p.read_text())
+              print("family:", d.get("family"))
+              print("routes:", d.get("route_count", 0))
+              print("direct:", d.get("direct_executable_count", 0))
+              for b in d.get("blockers") or []:
+                  print("blocker:", b)
+              for r in d.get("routes") or []:
+                  print(
+                      r.get("semantic"),
+                      r.get("interface_role"),
+                      r.get("status"),
+                      "DIRECT" if r.get("direct_executable") else "-",
+                      r.get("control"),
+                      r.get("wire_markers") or [],
+                  )
+          else:
+              print("analysis.json missing")
+              print((root / "stderr.txt").read_text()[-4000:])
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: bgaming-random-hot-chilli-bells-100
+          path: artifacts/hot-chilli-bells-100
+          if-no-files-found: warn
+          retention-days: 3
