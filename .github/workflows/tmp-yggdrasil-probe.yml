@@ -13,19 +13,19 @@ jobs:
         with: {python-version: '3.12'}
       - run: pip install playwright
       - run: python -m playwright install --with-deps chromium
-      - name: Reach live game canvas
+      - name: Enter real Yggdrasil game
         env:
           TARGET_URL: 'https://yggdrasilgaming.com/games/vikings-go-to-hollywood-wildfight-rushingwilds#tryit'
         run: |
-          cat > /tmp/reach.py <<'PY'
+          cat > /tmp/enter.py <<'PY'
           import asyncio, os, json, re
           from pathlib import Path
           from playwright.async_api import async_playwright
-          O=Path("ygg-probe4");O.mkdir(exist_ok=True)
+          O=Path("ygg-probe5");O.mkdir(exist_ok=True)
           ev=[]
           def cl(s):
             if not s:return s
-            return re.sub(r'(?i)(token|session|sid|jwt|auth|key)=([^&\s]+)',r'\1=<redacted>',s)[:10000]
+            return re.sub(r'(?i)(token|session|sid|jwt|auth|key)=([^&\s]+)',r'\1=<redacted>',s)[:12000]
           async def main():
             async with async_playwright() as p:
               b=await p.chromium.launch(headless=True)
@@ -43,25 +43,40 @@ jobs:
                 q=pg.get_by_text("PLAY",exact=True)
                 if await q.count(): await q.first.click(timeout=4000)
               except: pass
-              await pg.wait_for_timeout(9000)
+              await pg.wait_for_timeout(12000)
               gf=next(f for f in pg.frames if "staticdemo.yggdrasilgaming.com/10964/" in f.url)
-              for i in range(18):
-                try: await gf.locator("body").click(position={"x":400,"y":515},force=True)
+              # click actual rendered CONTINUE coordinates; repeat until splash exits
+              for i in range(12):
+                try: await gf.locator("body").click(position={"x":648,"y":624},force=True)
                 except: pass
-                await pg.wait_for_timeout(1800)
-                if i in (4,8,12,17):
-                  try: await gf.locator("body").screenshot(path=str(O/f"stage-{i}.png"))
-                  except: pass
+                await pg.wait_for_timeout(2000)
               await pg.wait_for_timeout(5000)
-              await gf.locator("body").screenshot(path=str(O/"final.png"))
-              svc=[e for e in ev if "demo.yggdrasilgaming.com/game.web/service" in e["url"]]
-              (O/"service.json").write_text(json.dumps(svc,indent=2),encoding="utf-8")
-              print(json.dumps(svc[-20:],indent=2))
+              await gf.locator("body").screenshot(path=str(O/"game.png"))
+              # broad coarse scan along lower/side UI, recording service calls
+              pts=[]
+              for y in [430,480,530,580,640]:
+                for x in [50,120,200,280,360,440,520,600,680,760,840,920,1000,1080,1160,1240]:
+                  pts.append((x,y))
+              hits=[]
+              for x,y in pts:
+                before=len(ev)
+                try: await gf.locator("body").click(position={"x":x,"y":y},force=True)
+                except: continue
+                await pg.wait_for_timeout(350)
+                ds=[e for e in ev[before:] if "demo.yggdrasilgaming.com/game.web/service" in e["url"]]
+                if ds:
+                  hits.append({"x":x,"y":y,"events":ds})
+                  try: await gf.locator("body").screenshot(path=str(O/f"hit-{x}-{y}.png"))
+                  except: pass
+              (O/"hits.json").write_text(json.dumps(hits,indent=2),encoding="utf-8")
+              (O/"service.json").write_text(json.dumps([e for e in ev if "demo.yggdrasilgaming.com/game.web/service" in e["url"]],indent=2),encoding="utf-8")
+              print("=== HITS ===")
+              print(json.dumps(hits,indent=2))
               await b.close()
           asyncio.run(main())
           PY
-          python /tmp/reach.py
+          python /tmp/enter.py
       - uses: actions/upload-artifact@v4
         with:
-          name: yggdrasil-probe4
-          path: ygg-probe4
+          name: yggdrasil-probe5
+          path: ygg-probe5
