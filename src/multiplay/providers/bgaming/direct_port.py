@@ -418,6 +418,7 @@ class BGamingDemoDirectSession:
             "balance",
             "bet",
             "bet_type",
+            "bid",
             "bonus_buy",
             "bonus_multiplier_type",
             "buyBonusModeMultiplier",
@@ -450,6 +451,8 @@ class BGamingDemoDirectSession:
                 req[key] = self.current_init.get("balance")
             elif raw == "$BASE_BET":
                 req[key] = bet
+            elif raw == "$BASE_BET_STRING":
+                req[key] = str(int(bet) if float(bet).is_integer() else bet)
             elif raw == "$BASE_BET_DIV_100":
                 req[key] = bet / 100
             elif raw == "$BASE_BET_MUL_2_DIV_3":
