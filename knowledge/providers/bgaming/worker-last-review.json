@@ -1,189 +1,25 @@
 {
   "schema": "multiplay/bgaming-worker-review/v1",
-  "run_id": "36370302242",
-  "generated_at": "2026-09-28T02:40:54.461228+00:00",
+  "run_id": "36370516566",
+  "generated_at": "2026-09-28T02:43:53.537438+00:00",
   "summary": {
     "schema": "multiplay/bgaming-worker-summary/v1",
-    "run_id": "36370302242",
-    "generated_at": "2026-09-28T02:40:54.461228+00:00",
-    "planned": 5,
-    "processed": 5,
+    "run_id": "36370516566",
+    "generated_at": "2026-09-28T02:43:53.537438+00:00",
+    "planned": 6,
+    "processed": 6,
     "status_counts": {
-      "COMPLETE": 1,
-      "NO_ROUTES": 3,
-      "PARTIAL": 1
+      "COMPLETE": 3,
+      "UNAVAILABLE": 3
     },
     "family_counts": {
-      "hyperhive-jsonrpc": 2,
+      "hyperhive-jsonrpc": 3,
       "unresolved": 3
     },
-    "unresolved_semantic_counts": {
-      "BUY_BONUS": 1
-    },
-    "complete": 1,
-    "needs_review": 4
+    "unresolved_semantic_counts": {},
+    "complete": 3,
+    "unavailable": 3,
+    "needs_review": 0
   },
-  "games": [
-    {
-      "slug": "princess-of-sky",
-      "name": "Princess of Sky",
-      "url": "https://bgaming.com/games/princess-of-sky",
-      "availability": "DEMO",
-      "returncode": 0,
-      "status": "NO_ROUTES",
-      "family": "unresolved",
-      "route_count": 0,
-      "direct_executable_count": 0,
-      "unresolved_network_count": 0,
-      "blockers": [
-        "no resolvable BGaming runtime family: RuntimeError: BGaming probe HTTP 404: https://demo.bgaming-network.com/play/PrincessOfSky/FUN"
-      ],
-      "direct_actions": [],
-      "unresolved_actions": [],
-      "switchable_children": [],
-      "error": ""
-    },
-    {
-      "slug": "princess-royal",
-      "name": "Princess Royal",
-      "url": "https://bgaming.com/games/princess-royal",
-      "availability": "DEMO",
-      "returncode": 0,
-      "status": "NO_ROUTES",
-      "family": "unresolved",
-      "route_count": 0,
-      "direct_executable_count": 0,
-      "unresolved_network_count": 0,
-      "blockers": [
-        "no resolvable BGaming runtime family: RuntimeError: BGaming probe HTTP 404: https://demo.bgaming-network.com/play/PrincessRoyal/FUN"
-      ],
-      "direct_actions": [],
-      "unresolved_actions": [],
-      "switchable_children": [],
-      "error": ""
-    },
-    {
-      "slug": "scroll-of-adventure",
-      "name": "Scroll of Adventure new",
-      "url": "https://bgaming.com/games/scroll-of-adventure",
-      "availability": "DEMO",
-      "returncode": 0,
-      "status": "NO_ROUTES",
-      "family": "unresolved",
-      "route_count": 0,
-      "direct_executable_count": 0,
-      "unresolved_network_count": 0,
-      "blockers": [
-        "no resolvable BGaming runtime family: RuntimeError: BGaming probe HTTP 404: https://demo.bgaming-network.com/play/ScrollOfAdventure/FUN"
-      ],
-      "direct_actions": [],
-      "unresolved_actions": [],
-      "switchable_children": [],
-      "error": ""
-    },
-    {
-      "slug": "clash-of-gods-power-duel",
-      "name": "Clash of Gods Power Duel",
-      "url": "https://demo.bgaming-network.com/play/ClashofGodsAnubisvsHades/FUN",
-      "availability": "DEMO",
-      "returncode": 0,
-      "status": "PARTIAL",
-      "family": "hyperhive-jsonrpc",
-      "route_count": 8,
-      "direct_executable_count": 6,
-      "unresolved_network_count": 1,
-      "blockers": [],
-      "direct_actions": [
-        {
-          "semantic": "SPIN",
-          "control": "start-btn-start",
-          "handler": "onSpinClick",
-          "wire": [
-            "bet_type=default",
-            "method=play"
-          ],
-          "role": "network_action"
-        },
-        {
-          "semantic": "BUY_BONUS",
-          "control": "protocol:ante_1",
-          "handler": "static:client_static_feature_buy_map",
-          "wire": [
-            "bet_type=default",
-            "buyBonusModeMultiplier=1",
-            "feature_buy=ante_1",
-            "method=play",
-            "purchased_feature=buy_chance"
-          ],
-          "role": "network_action"
-        },
-        {
-          "semantic": "BUY_BONUS",
-          "control": "protocol:ante_0",
-          "handler": "static:client_static_feature_buy_map",
-          "wire": [
-            "bet_type=default",
-            "buyBonusModeMultiplier=1",
-            "feature_buy=ante_0",
-            "method=play",
-            "purchased_feature=buy_chance"
-          ],
-          "role": "network_action"
-        },
-        {
-          "semantic": "BUY_BONUS",
-          "control": "protocol:ante_2",
-          "handler": "static:client_static_feature_buy_map",
-          "wire": [
-            "bet_type=default",
-            "buyBonusModeMultiplier=1",
-            "feature_buy=ante_2",
-            "method=play",
-            "purchased_feature=buy_chance"
-          ],
-          "role": "network_action"
-        },
-        {
-          "semantic": "BUY_BONUS",
-          "control": "protocol:buy_bonus",
-          "handler": "static:client_static_feature_buy_map",
-          "wire": [
-            "bet_type=default",
-            "buyBonusModeMultiplier=100",
-            "feature_buy=buy_bonus",
-            "method=play",
-            "purchased_feature=buy_bonus"
-          ],
-          "role": "network_action"
-        },
-        {
-          "semantic": "BUY_BONUS",
-          "control": "protocol:super_buy_bonus",
-          "handler": "static:client_static_feature_buy_map",
-          "wire": [
-            "bet_type=default",
-            "buyBonusModeMultiplier=300",
-            "feature_buy=super_buy_bonus",
-            "method=play",
-            "purchased_feature=buy_bonus"
-          ],
-          "role": "network_action"
-        }
-      ],
-      "unresolved_actions": [
-        {
-          "semantic": "BUY_BONUS",
-          "control": "buy-bonus",
-          "handler": "onSpinClick",
-          "status": "NETWORK_OBSERVED",
-          "wire": [
-            "method=play",
-            "purchased_feature=buy_chance"
-          ]
-        }
-      ],
-      "switchable_children": [],
-      "error": ""
-    }
-  ]
+  "games": []
 }

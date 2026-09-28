@@ -1,7 +1,7 @@
 {
   "schema": "multiplay/bgaming-worker-state/v1",
-  "updated_at": "2026-09-28T02:40:54.461228+00:00",
-  "last_run_id": "36370302242",
+  "updated_at": "2026-09-28T02:43:53.537438+00:00",
+  "last_run_id": "36370516566",
   "games": {
     "3-lucky-monkeys-hold-win": {
       "name": "3 Lucky Monkeys Hold & Win",
@@ -511,14 +511,15 @@
     },
     "clash-of-gods-power-duel": {
       "name": "Clash of Gods Power Duel",
-      "status": "PARTIAL",
+      "status": "COMPLETE",
       "family": "hyperhive-jsonrpc",
+      "runtime_status": null,
       "route_count": 8,
       "direct_executable_count": 6,
-      "unresolved_network_count": 1,
-      "attempts": 11,
-      "last_run_id": "36370302242",
-      "updated_at": "2026-09-28T02:40:54.461228+00:00"
+      "unresolved_network_count": 0,
+      "attempts": 12,
+      "last_run_id": "36370516566",
+      "updated_at": "2026-09-28T02:43:53.537438+00:00"
     },
     "clover-bonanza": {
       "name": "Clover Bonanza",
@@ -1050,14 +1051,15 @@
     },
     "grand-patron": {
       "name": "Grand Patron",
-      "status": "PARTIAL",
+      "status": "COMPLETE",
       "family": "hyperhive-jsonrpc",
+      "runtime_status": null,
       "route_count": 1,
-      "direct_executable_count": 0,
-      "unresolved_network_count": 1,
-      "attempts": 10,
-      "last_run_id": "36369625441",
-      "updated_at": "2026-09-28T02:26:09.391559+00:00"
+      "direct_executable_count": 1,
+      "unresolved_network_count": 0,
+      "attempts": 12,
+      "last_run_id": "36370516566",
+      "updated_at": "2026-09-28T02:43:53.537438+00:00"
     },
     "halloween-bonanza": {
       "name": "Halloween Bonanza",
@@ -1611,14 +1613,15 @@
     },
     "mystic-reels": {
       "name": "Mystic Reels",
-      "status": "PARTIAL",
+      "status": "COMPLETE",
       "family": "hyperhive-jsonrpc",
-      "route_count": 3,
-      "direct_executable_count": 1,
-      "unresolved_network_count": 2,
-      "attempts": 10,
-      "last_run_id": "36369625441",
-      "updated_at": "2026-09-28T02:26:09.391559+00:00"
+      "runtime_status": null,
+      "route_count": 4,
+      "direct_executable_count": 4,
+      "unresolved_network_count": 0,
+      "attempts": 12,
+      "last_run_id": "36370516566",
+      "updated_at": "2026-09-28T02:43:53.537438+00:00"
     },
     "olympustrueways": {
       "name": "Olympus TRUEWAYS™",
@@ -1710,25 +1713,27 @@
     },
     "princess-of-sky": {
       "name": "Princess of Sky",
-      "status": "NO_ROUTES",
+      "status": "UNAVAILABLE",
       "family": "unresolved",
+      "runtime_status": "NO_RESOLVABLE_DEMO",
+      "route_count": 0,
+      "direct_executable_count": 0,
+      "unresolved_network_count": 0,
+      "attempts": 9,
+      "last_run_id": "36370516566",
+      "updated_at": "2026-09-28T02:43:53.537438+00:00"
+    },
+    "princess-royal": {
+      "name": "Princess Royal",
+      "status": "UNAVAILABLE",
+      "family": "unresolved",
+      "runtime_status": "NO_RESOLVABLE_DEMO",
       "route_count": 0,
       "direct_executable_count": 0,
       "unresolved_network_count": 0,
       "attempts": 8,
-      "last_run_id": "36370302242",
-      "updated_at": "2026-09-28T02:40:54.461228+00:00"
-    },
-    "princess-royal": {
-      "name": "Princess Royal",
-      "status": "NO_ROUTES",
-      "family": "unresolved",
-      "route_count": 0,
-      "direct_executable_count": 0,
-      "unresolved_network_count": 0,
-      "attempts": 7,
-      "last_run_id": "36370302242",
-      "updated_at": "2026-09-28T02:40:54.461228+00:00"
+      "last_run_id": "36370516566",
+      "updated_at": "2026-09-28T02:43:53.537438+00:00"
     },
     "recycle-riches": {
       "name": "Recycle Riches",
@@ -1875,14 +1880,15 @@
     },
     "scroll-of-adventure": {
       "name": "Scroll of Adventure new",
-      "status": "NO_ROUTES",
+      "status": "UNAVAILABLE",
       "family": "unresolved",
+      "runtime_status": "NO_RESOLVABLE_DEMO",
       "route_count": 0,
       "direct_executable_count": 0,
       "unresolved_network_count": 0,
-      "attempts": 8,
-      "last_run_id": "36370302242",
-      "updated_at": "2026-09-28T02:40:54.461228+00:00"
+      "attempts": 9,
+      "last_run_id": "36370516566",
+      "updated_at": "2026-09-28T02:43:53.537438+00:00"
     },
     "secret-bar-multidice-x": {
       "name": "Secret Bar Multidice X",
@@ -2007,14 +2013,14 @@
     },
     "sweet-samurai": {
       "name": "Sweet Samurai",
-      "status": "COMPLETE",
+      "status": "PARTIAL",
       "family": "hyperhive-jsonrpc",
-      "route_count": 1,
+      "route_count": 3,
       "direct_executable_count": 1,
-      "unresolved_network_count": 0,
+      "unresolved_network_count": 2,
       "attempts": 11,
-      "last_run_id": "36370302242",
-      "updated_at": "2026-09-28T02:40:54.461228+00:00"
+      "last_run_id": "36370150283",
+      "updated_at": "2026-09-28T02:34:18.031322+00:00"
     },
     "temple-of-power": {
       "name": "Temple of Power",
