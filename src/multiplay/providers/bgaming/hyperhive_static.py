@@ -135,6 +135,10 @@ def discover_hyperhive_static_sources(
     if merged is not None:
         profiles.append(merged)
 
+    disabled_legacy = _merge_legacy_buy_disabled(profiles)
+    if disabled_legacy is not None:
+        profiles.append(disabled_legacy)
+
     profiles.sort(key=_score, reverse=True)
     return profiles[0]
 
@@ -189,6 +193,45 @@ def _merge_legacy_bet_slots(
         modes=tuple(modes),
         evidence_urls=tuple(
             dict.fromkeys([*legacy.evidence_urls, *slots.evidence_urls])
+        ),
+    )
+
+
+def _merge_legacy_buy_disabled(
+    profiles: list[HyperHiveStaticProfile],
+) -> HyperHiveStaticProfile | None:
+    """Keep the proven 7RST base serializer when purchases are explicitly disabled."""
+    legacy = next(
+        (
+            item
+            for item in profiles
+            if item.source == "client_static_legacy_rpc_manager"
+        ),
+        None,
+    )
+    disabled = next(
+        (
+            item
+            for item in profiles
+            if item.source == "client_json_buy_disabled"
+        ),
+        None,
+    )
+    if legacy is None or disabled is None:
+        return None
+    if not legacy.base_wire_complete:
+        return None
+
+    return HyperHiveStaticProfile(
+        source="client_json_buy_disabled+legacy_rpc_manager",
+        catalog_complete=True,
+        wire_complete=True,
+        base_request_fields=legacy.base_request_fields,
+        base_wire_complete=True,
+        state_lock_required=legacy.state_lock_required,
+        modes=(),
+        evidence_urls=tuple(
+            dict.fromkeys([*legacy.evidence_urls, *disabled.evidence_urls])
         ),
     )
 
