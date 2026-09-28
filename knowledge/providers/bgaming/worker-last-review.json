@@ -1,24 +1,22 @@
 {
   "schema": "multiplay/bgaming-worker-review/v1",
-  "run_id": "36370516566",
-  "generated_at": "2026-09-28T02:43:53.537438+00:00",
+  "run_id": "36370832237",
+  "generated_at": "2026-09-28T02:46:07.986685+00:00",
   "summary": {
     "schema": "multiplay/bgaming-worker-summary/v1",
-    "run_id": "36370516566",
-    "generated_at": "2026-09-28T02:43:53.537438+00:00",
-    "planned": 6,
-    "processed": 6,
+    "run_id": "36370832237",
+    "generated_at": "2026-09-28T02:46:07.986685+00:00",
+    "planned": 1,
+    "processed": 1,
     "status_counts": {
-      "COMPLETE": 3,
-      "UNAVAILABLE": 3
+      "COMPLETE": 1
     },
     "family_counts": {
-      "hyperhive-jsonrpc": 3,
-      "unresolved": 3
+      "hyperhive-jsonrpc": 1
     },
     "unresolved_semantic_counts": {},
-    "complete": 3,
-    "unavailable": 3,
+    "complete": 1,
+    "unavailable": 0,
     "needs_review": 0
   },
   "games": []

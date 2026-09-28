@@ -1,7 +1,7 @@
 {
   "schema": "multiplay/bgaming-worker-state/v1",
-  "updated_at": "2026-09-28T02:43:53.537438+00:00",
-  "last_run_id": "36370516566",
+  "updated_at": "2026-09-28T02:46:07.986685+00:00",
+  "last_run_id": "36370832237",
   "games": {
     "3-lucky-monkeys-hold-win": {
       "name": "3 Lucky Monkeys Hold & Win",
@@ -2013,14 +2013,15 @@
     },
     "sweet-samurai": {
       "name": "Sweet Samurai",
-      "status": "PARTIAL",
+      "status": "COMPLETE",
       "family": "hyperhive-jsonrpc",
-      "route_count": 3,
+      "runtime_status": null,
+      "route_count": 1,
       "direct_executable_count": 1,
-      "unresolved_network_count": 2,
-      "attempts": 11,
-      "last_run_id": "36370150283",
-      "updated_at": "2026-09-28T02:34:18.031322+00:00"
+      "unresolved_network_count": 0,
+      "attempts": 12,
+      "last_run_id": "36370832237",
+      "updated_at": "2026-09-28T02:46:07.986685+00:00"
     },
     "temple-of-power": {
       "name": "Temple of Power",
