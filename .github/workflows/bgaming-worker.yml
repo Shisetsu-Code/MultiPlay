@@ -1,5 +1,7 @@
 name: BGaming analyzer worker
 
+# rerun: static HyperHive recovery 2026-09-28
+
 # rerun: protocol recovery batch 2026-09-27
 
 # rerun: post-recovery full catalog
