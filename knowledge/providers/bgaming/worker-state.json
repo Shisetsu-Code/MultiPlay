@@ -1,7 +1,7 @@
 {
   "schema": "multiplay/bgaming-worker-state/v1",
-  "updated_at": "2026-09-28T02:16:53.099083+00:00",
-  "last_run_id": "36368980697",
+  "updated_at": "2026-09-28T02:26:09.391559+00:00",
+  "last_run_id": "36369625441",
   "games": {
     "3-lucky-monkeys-hold-win": {
       "name": "3 Lucky Monkeys Hold & Win",
@@ -516,9 +516,9 @@
       "route_count": 8,
       "direct_executable_count": 5,
       "unresolved_network_count": 2,
-      "attempts": 9,
-      "last_run_id": "36368980697",
-      "updated_at": "2026-09-28T02:16:53.099083+00:00"
+      "attempts": 10,
+      "last_run_id": "36369625441",
+      "updated_at": "2026-09-28T02:26:09.391559+00:00"
     },
     "clover-bonanza": {
       "name": "Clover Bonanza",
@@ -1050,14 +1050,14 @@
     },
     "grand-patron": {
       "name": "Grand Patron",
-      "status": "NO_ROUTES",
+      "status": "PARTIAL",
       "family": "hyperhive-jsonrpc",
-      "route_count": 0,
+      "route_count": 1,
       "direct_executable_count": 0,
-      "unresolved_network_count": 0,
-      "attempts": 9,
-      "last_run_id": "36368980697",
-      "updated_at": "2026-09-28T02:16:53.099083+00:00"
+      "unresolved_network_count": 1,
+      "attempts": 10,
+      "last_run_id": "36369625441",
+      "updated_at": "2026-09-28T02:26:09.391559+00:00"
     },
     "halloween-bonanza": {
       "name": "Halloween Bonanza",
@@ -1237,14 +1237,14 @@
     },
     "keepers-of-the-secret": {
       "name": "Keepers Of The Secret",
-      "status": "NO_ROUTES",
+      "status": "COMPLETE",
       "family": "hyperhive-jsonrpc",
-      "route_count": 0,
-      "direct_executable_count": 0,
+      "route_count": 1,
+      "direct_executable_count": 1,
       "unresolved_network_count": 0,
-      "attempts": 9,
-      "last_run_id": "36368980697",
-      "updated_at": "2026-09-28T02:16:53.099083+00:00"
+      "attempts": 10,
+      "last_run_id": "36369625441",
+      "updated_at": "2026-09-28T02:26:09.391559+00:00"
     },
     "krakens-hunger": {
       "name": "Kraken's Hunger",
@@ -1616,9 +1616,9 @@
       "route_count": 3,
       "direct_executable_count": 1,
       "unresolved_network_count": 2,
-      "attempts": 9,
-      "last_run_id": "36368980697",
-      "updated_at": "2026-09-28T02:16:53.099083+00:00"
+      "attempts": 10,
+      "last_run_id": "36369625441",
+      "updated_at": "2026-09-28T02:26:09.391559+00:00"
     },
     "olympustrueways": {
       "name": "Olympus TRUEWAYS™",
@@ -1715,9 +1715,9 @@
       "route_count": 0,
       "direct_executable_count": 0,
       "unresolved_network_count": 0,
-      "attempts": 6,
-      "last_run_id": "36368980697",
-      "updated_at": "2026-09-28T02:16:53.099083+00:00"
+      "attempts": 7,
+      "last_run_id": "36369625441",
+      "updated_at": "2026-09-28T02:26:09.391559+00:00"
     },
     "princess-royal": {
       "name": "Princess Royal",
@@ -1726,9 +1726,9 @@
       "route_count": 0,
       "direct_executable_count": 0,
       "unresolved_network_count": 0,
-      "attempts": 5,
-      "last_run_id": "36368980697",
-      "updated_at": "2026-09-28T02:16:53.099083+00:00"
+      "attempts": 6,
+      "last_run_id": "36369625441",
+      "updated_at": "2026-09-28T02:26:09.391559+00:00"
     },
     "recycle-riches": {
       "name": "Recycle Riches",
@@ -1880,9 +1880,9 @@
       "route_count": 0,
       "direct_executable_count": 0,
       "unresolved_network_count": 0,
-      "attempts": 6,
-      "last_run_id": "36368980697",
-      "updated_at": "2026-09-28T02:16:53.099083+00:00"
+      "attempts": 7,
+      "last_run_id": "36369625441",
+      "updated_at": "2026-09-28T02:26:09.391559+00:00"
     },
     "secret-bar-multidice-x": {
       "name": "Secret Bar Multidice X",
@@ -2010,11 +2010,11 @@
       "status": "PARTIAL",
       "family": "hyperhive-jsonrpc",
       "route_count": 3,
-      "direct_executable_count": 0,
-      "unresolved_network_count": 3,
-      "attempts": 9,
-      "last_run_id": "36368980697",
-      "updated_at": "2026-09-28T02:16:53.099083+00:00"
+      "direct_executable_count": 1,
+      "unresolved_network_count": 2,
+      "attempts": 10,
+      "last_run_id": "36369625441",
+      "updated_at": "2026-09-28T02:26:09.391559+00:00"
     },
     "temple-of-power": {
       "name": "Temple of Power",

@@ -1,24 +1,22 @@
 {
   "schema": "multiplay/bgaming-worker-summary/v1",
-  "run_id": "36368980697",
-  "generated_at": "2026-09-28T02:16:53.099083+00:00",
-  "planned": 17,
-  "processed": 17,
+  "run_id": "36369625441",
+  "generated_at": "2026-09-28T02:26:09.391559+00:00",
+  "planned": 8,
+  "processed": 8,
   "status_counts": {
-    "COMPLETE": 9,
+    "COMPLETE": 1,
     "ERROR": 3,
-    "NO_ROUTES": 2,
-    "PARTIAL": 3
+    "PARTIAL": 4
   },
   "family_counts": {
     "None": 3,
-    "api-v2": 2,
-    "hyperhive-jsonrpc": 12
+    "hyperhive-jsonrpc": 5
   },
   "unresolved_semantic_counts": {
     "BUY_BONUS": 5,
     "SPIN": 2
   },
-  "complete": 9,
-  "needs_review": 8
+  "complete": 1,
+  "needs_review": 7
 }
