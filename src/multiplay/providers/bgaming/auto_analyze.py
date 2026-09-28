@@ -24,6 +24,10 @@ from .demo_spin import run_demo_base_spin
 from .direct_port import BGamingDemoDirectSession
 from .handler_probe import probe_bgaming_handlers
 from .hyperhive_demo import run_demo_hyperhive
+from .hyperhive_static import (
+    HyperHiveStaticProfile,
+    discover_hyperhive_static_profile,
+)
 from .probe import _identity_key, _public_game_slug, probe_bgaming_demo
 from .switchable import (
     extract_switchable_variants,
@@ -84,6 +88,11 @@ def analyze_bgaming_demo(
     browser_evidence = load_har(raw_har)
     _require_runtime_identity(url, browser_evidence)
     family = _detect_family(browser_evidence, url=execution_url, timeout_s=timeout_s)
+    static_profile = (
+        discover_hyperhive_static_profile(browser_evidence)
+        if family == HYPERHIVE_JSONRPC
+        else None
+    )
 
     blockers: list[str] = []
     hyperhive_base_error = ""
@@ -205,6 +214,7 @@ def analyze_bgaming_demo(
     routes = [dict(item) for item in graph.get("routes", [])]
     if family == HYPERHIVE_JSONRPC:
         _seed_hyperhive_spin_routes(routes)
+        _seed_hyperhive_static_routes(routes, static_profile)
     elif family == API_V2:
         _seed_api_v2_buy_feature_routes(routes, browser_evidence)
 
@@ -252,6 +262,8 @@ def analyze_bgaming_demo(
 
     browser_candidates: list[dict[str, Any]] = []
     for candidate in candidates:
+        if "static_request_fields" in candidate:
+            continue
         markers = {
             str(item)
             for item in candidate.get("wire_markers") or []
@@ -444,7 +456,15 @@ def analyze_bgaming_demo(
                     timeout_s=timeout_s,
                 )
                 direct_probe.open()
-                direct_result = direct_probe.execute_inferred_hyperhive(markers)
+                if "static_request_fields" in candidate:
+                    direct_result = direct_probe.execute_inferred_hyperhive_fields(
+                        dict(candidate.get("static_request_fields") or {}),
+                        state_lock_required=bool(
+                            candidate.get("static_state_lock_required")
+                        ),
+                    )
+                else:
+                    direct_result = direct_probe.execute_inferred_hyperhive(markers)
             except (OSError, RuntimeError, TypeError, ValueError) as exc:
                 row["error"] = f"{type(exc).__name__}: {exc}"
                 handler_probe["results"].append(row)
@@ -536,6 +556,15 @@ def analyze_bgaming_demo(
             direct_state = direct.open()
             route_state = {item["route_id"]: item for item in direct.routes()}
             for route in routes:
+                if "static_request_fields" in route:
+                    observed = _probe_matches_route(contract_bundle, route)
+                    route["direct_executable"] = observed
+                    route["direct_reason"] = (
+                        ""
+                        if observed
+                        else "static HyperHive wire was not accepted by the provider"
+                    )
+                    continue
                 resolved = route_state.get(str(route.get("route_id") or ""))
                 route["direct_executable"] = bool(
                     resolved is not None and resolved.get("executable")
@@ -556,6 +585,11 @@ def analyze_bgaming_demo(
         "url": _strip_query(requested_url),
         "execution_url": _strip_query(execution_url),
         "family": family,
+        "static_profile": (
+            static_profile.to_dict()
+            if static_profile is not None
+            else None
+        ),
         "enrichment": enrichment,
         "handler_probe": handler_probe,
         "blockers": blockers,
@@ -715,6 +749,105 @@ def render_bgaming_analysis(report: dict[str, Any]) -> str:
             )
     return "\n".join(lines) + "\n"
 
+
+
+def _seed_hyperhive_static_routes(
+    routes: list[dict[str, Any]],
+    profile: HyperHiveStaticProfile | None,
+) -> None:
+    if profile is None:
+        return
+
+    existing_ids = {
+        str(route.get("route_id") or "")
+        for route in routes
+    }
+
+    if profile.base_wire_complete:
+        has_observed_spin = any(
+            route.get("semantic") == "SPIN"
+            and route.get("status") == "NETWORK_OBSERVED"
+            for route in routes
+        )
+        route_id = "static-hyperhive:spin"
+        if not has_observed_spin and route_id not in existing_ids:
+            fields = dict(profile.base_request_fields or {})
+            routes.append(
+                {
+                    "route_id": route_id,
+                    "semantic": "SPIN",
+                    "status": "NETWORK_INFERRED",
+                    "interface_role": "network_action",
+                    "control": "protocol:static-spin",
+                    "handler": f"static:{profile.source}",
+                    "wire_markers": _static_wire_markers(fields),
+                    "confidence": "HIGH",
+                    "static_request_fields": fields,
+                    "static_state_lock_required": profile.state_lock_required,
+                    "static_wire_complete": True,
+                }
+            )
+            existing_ids.add(route_id)
+
+    for mode in profile.modes:
+        route_id = f"static-hyperhive:{mode.mode_id}"
+        if route_id in existing_ids:
+            continue
+        fields = (
+            dict(mode.request_fields)
+            if isinstance(mode.request_fields, dict)
+            else None
+        )
+        routes.append(
+            {
+                "route_id": route_id,
+                "semantic": "BUY_BONUS",
+                "status": (
+                    "NETWORK_INFERRED"
+                    if mode.wire_complete
+                    else "CLIENT_STATIC_DECLARED"
+                ),
+                "interface_role": "network_action",
+                "control": f"protocol:{mode.mode_id}",
+                "handler": f"static:{mode.source}",
+                "wire_markers": (
+                    _static_wire_markers(fields)
+                    if fields is not None
+                    else ["method=play"]
+                ),
+                "confidence": "HIGH",
+                "static_request_fields": fields,
+                "static_state_lock_required": profile.state_lock_required,
+                "static_wire_complete": mode.wire_complete,
+                "declared_multiplier": mode.multiplier,
+                "wire_requirements": list(mode.requirements),
+            }
+        )
+        existing_ids.add(route_id)
+
+
+def _static_wire_markers(
+    fields: dict[str, Any] | None,
+) -> list[str]:
+    markers = {"method=play"}
+    if fields is None:
+        return sorted(markers)
+
+    for key, value in fields.items():
+        if isinstance(value, str) and value.startswith("$"):
+            continue
+        if value is True:
+            marker_value = "true"
+        elif value is False:
+            marker_value = "false"
+        elif value is None:
+            marker_value = "null"
+        elif isinstance(value, (str, int, float)):
+            marker_value = str(value)
+        else:
+            continue
+        markers.add(f"{key}={marker_value}")
+    return sorted(markers)
 
 
 def _seed_api_v2_buy_feature_routes(
@@ -935,6 +1068,7 @@ def _select_handler_probe_routes(
         and str(route.get("control") or "").strip()
         and route.get("interface_role") == "network_action"
         and route.get("status") != "NETWORK_OBSERVED"
+        and route.get("static_wire_complete") is not False
         and route.get("semantic")
         in {
             "SPIN",
@@ -1011,6 +1145,21 @@ def _probe_matches_route(
     evidence: EvidenceBundle,
     route: dict[str, Any],
 ) -> bool:
+    static_fields = route.get("static_request_fields")
+    if isinstance(static_fields, dict):
+        for exchange in evidence.http:
+            if (
+                exchange.response_status is None
+                or not 200 <= exchange.response_status < 400
+            ):
+                continue
+            if _static_request_matches(
+                exchange.request_body,
+                static_fields,
+            ):
+                return True
+        return False
+
     wanted = set(route.get("wire_markers") or [])
     semantic = str(route.get("semantic") or "")
     specific = {
@@ -1058,6 +1207,27 @@ def _probe_matches_route(
         if wanted and wanted <= observed:
             return True
     return False
+
+
+def _static_request_matches(
+    value: Any,
+    expected: dict[str, Any],
+) -> bool:
+    if not isinstance(value, dict):
+        return False
+    params = value.get("params")
+    req = params.get("req") if isinstance(params, dict) else None
+    if not isinstance(req, dict):
+        return False
+
+    for key, wanted in expected.items():
+        if isinstance(wanted, str) and wanted.startswith("$"):
+            if key not in req:
+                return False
+            continue
+        if req.get(key) != wanted:
+            return False
+    return True
 
 
 def _request_markers(value: Any) -> set[str]:
