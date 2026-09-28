@@ -1,5 +1,7 @@
 name: BGaming analyzer worker
 
+# rerun: close covered routes and unavailable demos 2026-09-28
+
 # rerun: final BGaming endpoint validation pass 2026-09-28
 
 # rerun: exact HyperHive wire shapes 2026-09-28
@@ -106,7 +108,7 @@ jobs:
               if (
                   not refresh
                   and isinstance(previous, dict)
-                  and previous.get("status") == "COMPLETE"
+                  and previous.get("status") in {"COMPLETE", "UNAVAILABLE"}
               ):
                   continue
               eligible.append(
@@ -239,6 +241,7 @@ jobs:
                   "availability": game["availability"],
                   "returncode": returncode,
                   "status": "ERROR",
+                  "runtime_status": None,
                   "family": None,
                   "route_count": 0,
                   "direct_executable_count": 0,
@@ -257,21 +260,42 @@ jobs:
                       row["error"] = f"analysis read: {type(exc).__name__}: {exc}"
                   else:
                       routes = report.get("routes") or []
+                      direct = [
+                          r for r in routes
+                          if r.get("direct_executable")
+                      ]
+
+                      def coverage_markers(route):
+                          return {
+                              str(marker)
+                              for marker in route.get("wire_markers") or []
+                              if "=" in str(marker)
+                              and not str(marker).startswith("method=")
+                          }
+
+                      def covered_by_direct(route):
+                          wanted = coverage_markers(route)
+                          if not wanted:
+                              return False
+                          return any(
+                              d.get("semantic") == route.get("semantic")
+                              and bool(wanted & coverage_markers(d))
+                              for d in direct
+                          )
+
                       unresolved = [
                           r for r in routes
                           if r.get("interface_role") == "network_action"
                           and r.get("semantic") in NETWORK_SEMANTICS
                           and not r.get("direct_executable")
-                      ]
-                      direct = [
-                          r for r in routes
-                          if r.get("direct_executable")
+                          and not covered_by_direct(r)
                       ]
                       children = report.get("switchable_children") or []
 
                       row.update(
                           {
                               "family": report.get("family"),
+                              "runtime_status": report.get("runtime_status"),
                               "route_count": report.get("route_count", len(routes)),
                               "direct_executable_count": report.get(
                                   "direct_executable_count",
@@ -315,6 +339,11 @@ jobs:
                           bool(child.get("success")) for child in children
                       )
                       if (
+                          returncode == 0
+                          and row.get("runtime_status") == "NO_RESOLVABLE_DEMO"
+                      ):
+                          row["status"] = "UNAVAILABLE"
+                      elif (
                           returncode == 0
                           and not unresolved
                           and (
@@ -433,6 +462,7 @@ jobs:
                   "name": row["name"],
                   "status": row["status"],
                   "family": row.get("family"),
+                  "runtime_status": row.get("runtime_status"),
                   "route_count": row.get("route_count", 0),
                   "direct_executable_count": row.get("direct_executable_count", 0),
                   "unresolved_network_count": row.get("unresolved_network_count", 0),
@@ -450,7 +480,7 @@ jobs:
 
           review = [
               row for row in games
-              if row.get("status") != "COMPLETE"
+              if row.get("status") not in {"COMPLETE", "UNAVAILABLE"}
           ]
           review.sort(
               key=lambda r: (
@@ -482,6 +512,7 @@ jobs:
                   )
               ),
               "complete": sum(1 for row in games if row.get("status") == "COMPLETE"),
+              "unavailable": sum(1 for row in games if row.get("status") == "UNAVAILABLE"),
               "needs_review": len(review),
           }
 
