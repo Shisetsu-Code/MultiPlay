@@ -200,3 +200,32 @@ def test_legacy_bet_slots_use_numeric_bid_serializer():
         "bet": "$BASE_BET_STRING",
         "bid": 4,
     }
+
+def test_merges_disabled_buy_catalog_with_legacy_7rst_base_serializer():
+    sources = [
+        (
+            "https://game.demo.bgaming-network.com/bs_lib/src/BS_lib.js",
+            (
+                "_bgCallRpcMethod mConnectUrl bet_type 'play' "
+                "createEmptyObject freebet bet_slots"
+            ),
+        ),
+        (
+            "https://game.demo.bgaming-network.com/res/data/resdb/slot_parameters.json",
+            {"bg_gaming": {"buy_btn": False}},
+        ),
+    ]
+
+    profile = discover_hyperhive_static_sources(sources)
+
+    assert profile is not None
+    assert profile.source == "client_json_buy_disabled+legacy_rpc_manager"
+    assert profile.catalog_complete is True
+    assert profile.wire_complete is True
+    assert profile.base_wire_complete is True
+    assert profile.base_request_fields == {
+        "bet": "$BASE_BET_STRING",
+        "bid": 0,
+    }
+    assert profile.modes == ()
+
