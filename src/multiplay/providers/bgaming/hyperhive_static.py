@@ -661,6 +661,23 @@ def _sweet_profile(
     if "deep_spin" not in text or "deep_bonanza" not in text:
         return None
 
+    # Sweet Samurai currently bundles a DeepOceanMockServer catalog, but its
+    # live GameServiceGateWay.getNewRound() serializes only bet + bet_type.
+    # Do not promote mock-only bonus costs into network actions.
+    if (
+        "DeepOceanMockServer" in text
+        and "GameServiceGateWay" in text
+        and "purchased_feature" not in text
+    ):
+        return _profile(
+            "client_static_base_gateway",
+            url,
+            base={"bet_type": "bet"},
+            base_complete=True,
+            state_lock=True,
+            modes=(),
+        )
+
     return _profile(
         "client_static_buy_bonus_costs",
         url,
