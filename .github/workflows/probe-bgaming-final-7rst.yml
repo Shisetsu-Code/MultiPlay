@@ -1,0 +1,176 @@
+name: Probe final BGaming 7RST
+
+on:
+  workflow_dispatch:
+  push:
+    branches: ["main"]
+    paths:
+      - ".github/workflows/probe-bgaming-final-7rst.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install --upgrade pip
+      - run: pip install -e ".[browser,dev]"
+      - run: python -m playwright install --with-deps chromium
+      - name: Run focused 7RST analysis and wire probes
+        run: |
+          python - <<'PY'
+          from __future__ import annotations
+
+          import json
+          import urllib.request
+          from pathlib import Path
+          from urllib.parse import urlsplit
+
+          from multiplay.providers.bgaming.auto_analyze import analyze_bgaming_demo
+          from multiplay.providers.bgaming.direct_port import BGamingDemoDirectSession
+
+          root = Path("final-7rst")
+          root.mkdir(parents=True, exist_ok=True)
+
+          urls = {
+              "grand-patron": "https://demo.bgaming-network.com/play/GrandPatron7rst/FUN",
+              "keepers-of-the-secret": "https://demo.bgaming-network.com/play/KeepersOfTheSecret7rst/FUN",
+          }
+
+          reports = {}
+          for slug, url in urls.items():
+              out = root / slug
+              report = analyze_bgaming_demo(
+                  url,
+                  output_dir=out,
+                  settle_ms=9000,
+                  timeout_s=30,
+                  keep_raw_har=True,
+                  screenshot=False,
+              )
+              reports[slug] = report
+
+          grand = reports["grand-patron"]
+          direct = grand.get("direct_session") or {}
+          launch = str(direct.get("launch_url") or "")
+          parsed = urlsplit(launch)
+          if not parsed.scheme or not parsed.netloc:
+              raise RuntimeError("Grand Patron launch host was not resolved")
+          origin = f"{parsed.scheme}://{parsed.netloc}"
+
+          assets = {}
+          for name in ("bets_data.json", "slot_parameters.json"):
+              url = origin + "/res/data/resdb/" + name
+              request = urllib.request.Request(
+                  url,
+                  headers={
+                      "User-Agent": "Mozilla/5.0",
+                      "Referer": launch,
+                      "Accept": "application/json,text/plain,*/*",
+                  },
+              )
+              with urllib.request.urlopen(request, timeout=30) as response:
+                  raw = response.read().decode("utf-8")
+              assets[name] = json.loads(raw)
+              (root / "grand-patron" / name).write_text(
+                  json.dumps(assets[name], ensure_ascii=False, indent=2) + "\n",
+                  encoding="utf-8",
+              )
+
+          def find_bet_slots(value):
+              if isinstance(value, dict):
+                  slots = value.get("bet_slots")
+                  if isinstance(slots, list):
+                      return slots
+                  for child in value.values():
+                      found = find_bet_slots(child)
+                      if found is not None:
+                          return found
+              elif isinstance(value, list):
+                  for child in value:
+                      found = find_bet_slots(child)
+                      if found is not None:
+                          return found
+              return None
+
+          slots = find_bet_slots(assets["bets_data.json"])
+          if not slots:
+              raise RuntimeError("Grand Patron bets_data.json exposed no bet_slots")
+
+          probes = []
+          for slot in slots:
+              if not isinstance(slot, dict):
+                  continue
+              raw_id = slot.get("id")
+              if isinstance(raw_id, bool) or not isinstance(raw_id, int):
+                  continue
+              session = BGamingDemoDirectSession(
+                  har_path=root / "grand-patron" / "contract.har",
+                  url=urls["grand-patron"],
+                  timeout_s=30,
+              )
+              session.open()
+              result = session.execute_inferred_hyperhive_fields(
+                  {"bet": "$BASE_BET_STRING", "bid": raw_id},
+                  state_lock_required=False,
+              )
+              response = result.get("response")
+              round_bet = None
+              if isinstance(response, dict):
+                  current = response.get("result")
+                  if isinstance(current, dict):
+                      resp = current.get("resp")
+                      if isinstance(resp, dict):
+                          round_info = resp.get("round")
+                          if isinstance(round_info, dict):
+                              round_bet = round_info.get("bet")
+              probes.append(
+                  {
+                      "id": raw_id,
+                      "rmid": slot.get("rmid"),
+                      "type": slot.get("type"),
+                      "cmx": slot.get("cmx"),
+                      "tb": slot.get("tb"),
+                      "tbvs": slot.get("tbvs"),
+                      "success": bool(result.get("success")),
+                      "status": result.get("status"),
+                      "round_bet": round_bet,
+                      "request": result.get("request"),
+                  }
+              )
+
+          output = {
+              "grand_patron_static_profile": grand.get("static_profile"),
+              "grand_patron_slots": slots,
+              "grand_patron_probes": probes,
+              "keepers_static_profile": reports["keepers-of-the-secret"].get("static_profile"),
+              "keepers_routes": reports["keepers-of-the-secret"].get("routes"),
+              "keepers_direct_executable_count": reports["keepers-of-the-secret"].get(
+                  "direct_executable_count"
+              ),
+              "keepers_blockers": reports["keepers-of-the-secret"].get("blockers"),
+          }
+          (root / "report.json").write_text(
+              json.dumps(output, ensure_ascii=False, indent=2) + "\n",
+              encoding="utf-8",
+          )
+          print(json.dumps(output, ensure_ascii=False, indent=2))
+          if not all(item["success"] for item in probes):
+              raise SystemExit("one or more Grand Patron bid probes failed")
+          if not reports["keepers-of-the-secret"].get("direct_executable_count"):
+              raise SystemExit("Keepers base spin did not validate")
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: bgaming-final-7rst
+          path: final-7rst
+          retention-days: 7
