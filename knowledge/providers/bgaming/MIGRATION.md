@@ -129,11 +129,39 @@ Important rules retained:
 This mechanism is migration evidence. MultiPlay must not make it a default generic command
 until a current BGaming capture demonstrates the corresponding action/setup wire.
 
-## Known incomplete historical evidence
+## Final Play-Ci recovery imported into MultiPlay
 
-The Play-Ci sweep covered 215 BGaming catalogue games but the old complete run left all
-215 at REQUIRES_REVIEW. At least 149 exposed useful bootstrap/API structures, but the
-complete run predated later JSON-RPC/legacy/canonical-demo fixes.
+The later Play-Ci BGaming work used a 215-target catalogue and moved beyond the earlier
+all-review sweep. It established structural handling for modern API-v2, legacy line-bet,
+HyperHive JSON-RPC and the All Lucky Clovers fixed-line launcher.
+
+The useful final JSON-RPC work is now migrated as static protocol evidence instead of
+canvas/UI automation. The imported detector can recover client-declared purchase catalogs
+and request fields for patterns including Yommi Rush, Sugar Mix, Big Bucks, Blazing Fire
+Pots, Mystic Reels, Clash of Gods, Red Hot Chilli Chickens, Joker vs Joker, Jungle Queen,
+Recycle Riches and Star Trek: The Next Generation.
+
+Important validation boundaries retained from Play-Ci:
+
+- Recycle Riches directly accepted the chance, buy_random and buy_max request selectors.
+- Star Trek directly accepted the feature-buy flag structure. The later purchase-cost wager
+  transform still requires MultiPlay runtime revalidation before it is promoted as live-safe.
+- Grand Patron exposes SHOP x100, SHOP2 x250, SHOP3 x1000 and ANTE x1.3 in bet_slots, but
+  its round-mode wire remains unresolved; synthetic selector guesses returned provider 51100.
+- Rocket Eruption: Triple Blast and The Godfather: 3 Pillars of Power expose normal/super
+  buy costs (100/200), but the exact transport selector remains unresolved.
+- Sweet Samurai exposes deep_spin x100 and deep_bonanza x150, but its game-specific buy
+  wire remains unresolved.
+- Bling Blitz Diamond Drop, Hot Rocket and Jewel Boom showed OGA definitions without a
+  game-specific feature-buy definition; Zeus Goes Wild matched a plain spin-only client.
+- The final Play-Ci visual worker run added no new wire evidence for the remaining hard
+  cases because their canvas startup states prevented reaching the economic controls.
+
+Static evidence must never silently become runtime proof. MultiPlay records complete
+client-declared wires as NETWORK_INFERRED pending direct demo validation, and known catalogs
+without a complete serializer as CLIENT_DECLARED_WIRE_UNRESOLVED.
+
+## Known incomplete historical evidence
 
 Repeated HAR captures were bootstrap-only/network-only for some games, so no actual spin or
 purchase request existed to validate.
