@@ -169,8 +169,10 @@ def test_legacy_bet_slots_use_numeric_bid_serializer():
         [
             (
                 "https://example.bgaming-network.com/bs_lib.js",
-                "_bgCallRpcMethod mConnectUrl bet_type 'play' "
-                "createEmptyObject freebet bet_slots eBetsIDs",
+                (
+                    "_bgCallRpcMethod mConnectUrl bet_type 'play' "
+                    "createEmptyObject freebet bet_slots eBetsIDs"
+                ),
             ),
             (
                 "https://example.bgaming-network.com/init.json",
@@ -223,9 +225,6 @@ def test_merges_disabled_buy_catalog_with_legacy_7rst_base_serializer():
     assert profile.catalog_complete is True
     assert profile.wire_complete is True
     assert profile.base_wire_complete is True
-    assert profile.base_request_fields == {
-        "bet": "$BASE_BET_STRING",
-        "bid": 0,
-    }
+    assert profile.base_request_fields == {"bet": "$BASE_BET_STRING"}
     assert profile.modes == ()
 
