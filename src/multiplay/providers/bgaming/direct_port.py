@@ -416,6 +416,7 @@ class BGamingDemoDirectSession:
         allowed = {
             "action",
             "balance",
+            "bet",
             "bet_type",
             "bonus_buy",
             "bonus_multiplier_type",
@@ -449,6 +450,10 @@ class BGamingDemoDirectSession:
                 req[key] = self.current_init.get("balance")
             elif raw == "$BASE_BET":
                 req[key] = bet
+            elif raw == "$BASE_BET_DIV_100":
+                req[key] = bet / 100
+            elif raw == "$BASE_BET_MUL_2_DIV_3":
+                req[key] = (bet * 2) / 3
             else:
                 req[key] = deepcopy(raw)
 
