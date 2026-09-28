@@ -1,5 +1,7 @@
 name: BGaming analyzer worker
 
+# rerun: preserve validated protocol routes + legacy settle recovery 2026-09-28
+
 # rerun: static HyperHive recovery 2026-09-28
 
 # rerun: protocol recovery batch 2026-09-27
@@ -188,7 +190,7 @@ jobs:
                   "--output-dir",
                   str(out),
                   "--settle-ms",
-                  "7000",
+                  "15000",
                   "--timeout",
                   "25",
               ]
@@ -251,10 +253,6 @@ jobs:
                           r for r in routes
                           if r.get("direct_executable")
                       ]
-                      ui_direct = [
-                          r for r in direct
-                          if r.get("interface_role") != "protocol_action"
-                      ]
                       children = report.get("switchable_children") or []
 
                       row.update(
@@ -306,7 +304,7 @@ jobs:
                           returncode == 0
                           and not unresolved
                           and (
-                              len(ui_direct) > 0
+                              len(direct) > 0
                               or switchable_ok
                           )
                       ):
