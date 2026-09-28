@@ -1,0 +1,142 @@
+name: tmp-yggdrasil-probe
+
+on:
+  push:
+    paths:
+      - '.github/workflows/tmp-yggdrasil-probe.yml'
+  workflow_dispatch:
+
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install playwright
+      - run: python -m playwright install --with-deps chromium
+      - name: Probe game and purchase controls
+        env:
+          TARGET_URL: 'https://yggdrasilgaming.com/games/vikings-go-to-hollywood-wildfight-rushingwilds#tryit'
+        run: |
+          cat > /tmp/probe.py <<'PY'
+          import asyncio, json, os, re
+          from pathlib import Path
+          from playwright.async_api import async_playwright
+
+          OUT = Path('ygg-probe')
+          OUT.mkdir(exist_ok=True)
+          logs = []
+
+          def scrub(s):
+              if not s: return s
+              s = re.sub(r'(?i)(token|session|sid|jwt|auth|key)=([^&\\s]+)', r'\\1=<redacted>', s)
+              return s[:8000]
+
+          async def main():
+              async with async_playwright() as p:
+                  browser = await p.chromium.launch(headless=True)
+                  ctx = await browser.new_context(viewport={'width': 1440, 'height': 1000})
+                  page = await ctx.new_page()
+
+                  async def on_request(req):
+                      if req.resource_type in ('xhr','fetch','websocket','document'):
+                          try:
+                              post = req.post_data
+                          except: post = None
+                          logs.append({
+                              'kind':'request','method':req.method,'url':scrub(req.url),
+                              'resource_type':req.resource_type,'post_data':scrub(post)
+                          })
+                  async def on_response(resp):
+                      req = resp.request
+                      if req.resource_type in ('xhr','fetch','document'):
+                          logs.append({'kind':'response','status':resp.status,'url':scrub(resp.url),'method':req.method})
+
+                  page.on('request', on_request)
+                  page.on('response', on_response)
+
+                  await page.goto(os.environ['TARGET_URL'], wait_until='domcontentloaded', timeout=90000)
+                  await page.wait_for_timeout(4000)
+
+                  # age gate
+                  for txt in ['Yes, I am over 18','Yes, I’m over 18','I am over 18','Yes']:
+                      try:
+                          loc = page.get_by_text(txt, exact=False)
+                          if await loc.count():
+                              await loc.first.click(timeout=3000)
+                              await page.wait_for_timeout(1500)
+                              break
+                      except: pass
+
+                  # click public Play control
+                  for sel in ["a:has-text('Play')", "button:has-text('Play')", "text=Play"]:
+                      try:
+                          loc = page.locator(sel)
+                          if await loc.count():
+                              await loc.first.click(timeout=4000)
+                              await page.wait_for_timeout(8000)
+                              break
+                      except: pass
+
+                  await page.screenshot(path=str(OUT/'page.png'), full_page=True)
+
+                  # inspect all frames; capture text
+                  frame_texts=[]
+                  for i,f in enumerate(page.frames):
+                      try:
+                          txt = (await f.locator('body').inner_text(timeout=3000))[:20000]
+                      except: txt=''
+                      frame_texts.append({'i':i,'url':scrub(f.url),'text':txt})
+                  (OUT/'frames.json').write_text(json.dumps(frame_texts, indent=2), encoding='utf-8')
+
+                  candidates = ['BUY BONUS','BONUS BUY','BUY FEATURE','BUY FREE SPINS','FEATURE BUY','BUY']
+                  click_results=[]
+                  for fi,f in enumerate(page.frames):
+                      for txt in candidates:
+                          try:
+                              loc=f.get_by_text(txt, exact=False)
+                              n=await loc.count()
+                          except:
+                              n=0
+                          for idx in range(min(n,3)):
+                              try:
+                                  before=len(logs)
+                                  await loc.nth(idx).click(timeout=4000, force=True)
+                                  await page.wait_for_timeout(2500)
+                                  click_results.append({'frame':fi,'text':txt,'index':idx,'new_events':len(logs)-before,'frame_url':scrub(f.url)})
+                                  try:
+                                      await page.screenshot(path=str(OUT/f'click-{fi}-{txt.replace(" ","_")}-{idx}.png'))
+                                  except: pass
+                              except Exception as e:
+                                  click_results.append({'frame':fi,'text':txt,'index':idx,'error':str(e)[:500],'frame_url':scrub(f.url)})
+
+                  (OUT/'clicks.json').write_text(json.dumps(click_results, indent=2), encoding='utf-8')
+                  (OUT/'network.json').write_text(json.dumps(logs, indent=2), encoding='utf-8')
+
+                  # compact likely API requests
+                  likely=[]
+                  for e in logs:
+                      if e.get('kind')!='request': continue
+                      u=e.get('url','').lower()
+                      pd=(e.get('post_data') or '').lower()
+                      if e.get('resource_type') in ('xhr','fetch','websocket') or any(k in u+pd for k in ['spin','bet','bonus','feature','game','round','api']):
+                          likely.append(e)
+                  (OUT/'likely.json').write_text(json.dumps(likely, indent=2), encoding='utf-8')
+                  await browser.close()
+
+          asyncio.run(main())
+          PY
+          python /tmp/probe.py
+          echo '=== frames ==='
+          cat ygg-probe/frames.json
+          echo '=== clicks ==='
+          cat ygg-probe/clicks.json
+          echo '=== likely ==='
+          cat ygg-probe/likely.json
+      - uses: actions/upload-artifact@v4
+        with:
+          name: yggdrasil-probe
+          path: ygg-probe
