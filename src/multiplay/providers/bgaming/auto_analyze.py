@@ -507,6 +507,9 @@ def analyze_bgaming_demo(
         routes = [dict(item) for item in graph.get("routes", [])]
         if family == HYPERHIVE_JSONRPC:
             _seed_hyperhive_spin_routes(routes)
+            # Re-seed static protocol routes after graph reconstruction so
+            # successful direct validation is not discarded.
+            _seed_hyperhive_static_routes(routes, static_profile)
         elif family == API_V2:
             _seed_api_v2_buy_feature_routes(routes, contract_bundle)
         if family == HYPERHIVE_JSONRPC and not enrichment["success"]:
