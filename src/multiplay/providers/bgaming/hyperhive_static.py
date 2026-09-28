@@ -183,12 +183,22 @@ def _merge_legacy_bet_slots(
     if not modes or not all(mode.wire_complete for mode in modes):
         return None
 
+    base_request_fields = (
+        slots.base_request_fields
+        if slots.base_wire_complete
+        else legacy.base_request_fields
+    )
+    base_wire_complete = bool(
+        slots.base_wire_complete
+        or legacy.base_wire_complete
+    )
+
     return HyperHiveStaticProfile(
         source="client_json_bet_slots+legacy_bid_serializer",
         catalog_complete=slots.catalog_complete,
         wire_complete=True,
-        base_request_fields=legacy.base_request_fields,
-        base_wire_complete=legacy.base_wire_complete,
+        base_request_fields=base_request_fields,
+        base_wire_complete=base_wire_complete,
         state_lock_required=legacy.state_lock_required,
         modes=tuple(modes),
         evidence_urls=tuple(
@@ -735,11 +745,25 @@ def _legacy_obfuscated_rpc_profile(
     if "freebet" not in text:
         return None
 
+    default_match = re.search(
+        r"eBetsIDs\s*=\s*\{[^}]{0,500}?"
+        r"['\"]?DEFAULT['\"]?\s*:\s*(0x[0-9a-fA-F]+|\d+)",
+        text,
+    )
+    default_bid = (
+        int(default_match.group(1), 0)
+        if default_match is not None
+        else None
+    )
+    base: dict[str, Any] = {"bet": "$BASE_BET_STRING"}
+    if default_bid is not None:
+        base["bid"] = default_bid
+
     return _profile(
         "client_static_legacy_rpc_manager",
         url,
-        base={"bet": "$BASE_BET_STRING"},
-        base_complete=True,
+        base=base,
+        base_complete=default_bid is not None,
         state_lock=False,
         modes=(),
         catalog_complete=not (
@@ -900,6 +924,7 @@ def _bet_slots_profile(
     _collect_key(value, "bet_slots", groups)
 
     modes: list[HyperHiveStaticMode] = []
+    base_fields: dict[str, Any] | None = None
     for slots in groups:
         if not isinstance(slots, list):
             continue
@@ -910,24 +935,38 @@ def _bet_slots_profile(
             rmid = slot.get("rmid")
             cmx = slot.get("cmx")
             slot_id = slot.get("id")
+            if isinstance(slot_id, bool) or not isinstance(slot_id, int):
+                continue
+
+            if (
+                slot_type in {"", "base", "default"}
+                and str(rmid or "").casefold() in {"def", "default"}
+            ):
+                base_fields = {
+                    "bet": "$BASE_BET_STRING",
+                    "bid": slot_id,
+                }
+                continue
+
             if rmid is None or not _number(cmx):
                 continue
 
             if slot_type == "bb":
                 feature = "buy_bonus"
+                fields = {
+                    "bet": "$BASE_BET_STRING",
+                    "bid": slot_id,
+                    "purchased_feature": "buy_bonus",
+                }
             elif slot_type == "ante":
                 feature = "buy_chance"
+                fields = {
+                    "bet": "$BASE_BET_STRING",
+                    "bid": slot_id,
+                }
             else:
                 continue
 
-            fields = (
-                {
-                    "bet": "$BASE_BET_STRING",
-                    "bid": int(slot_id),
-                }
-                if isinstance(slot_id, int) and not isinstance(slot_id, bool)
-                else None
-            )
             modes.append(
                 _mode(
                     str(rmid).casefold(),
@@ -940,15 +979,16 @@ def _bet_slots_profile(
                 )
             )
 
-    if not modes:
+    if not modes and base_fields is None:
         return None
     return _profile(
         "client_json_bet_slots",
         url,
         modes=_dedupe(modes),
+        base=base_fields,
+        base_complete=base_fields is not None,
         wire_complete=False,
     )
-
 
 def _buy_disabled_profile(
     value: Any,
