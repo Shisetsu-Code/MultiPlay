@@ -486,7 +486,8 @@ def _mystic_profile(
                 "buy_chance",
                 1.5,
                 {
-                    "bet": "$BASE_BET_MUL_2_DIV_3",
+                    "bet": "$BASE_BET",
+                    "bet_type": "bet",
                     "purchased_feature": "buy_chance",
                 },
                 "client_static_mode_transform",
@@ -496,7 +497,8 @@ def _mystic_profile(
                 "buy_bonus",
                 100,
                 {
-                    "bet": "$BASE_BET_DIV_100",
+                    "bet": "$BASE_BET",
+                    "bet_type": "bet",
                     "purchased_feature": "buy_bonus",
                 },
                 "client_static_mode_transform",
@@ -606,6 +608,7 @@ def _clash_profile(
         base={
             "bet_type": "default",
             "fe_exponent": "$FE_EXPONENT",
+            "feature_buy": None,
             "purchased_feature": None,
             "buyBonusModeMultiplier": 1,
         },
@@ -633,9 +636,12 @@ def _legacy_obfuscated_rpc_profile(
     return _profile(
         "client_static_legacy_rpc_manager",
         url,
-        base={},
+        base={
+            "bet": "$BASE_BET_STRING",
+            "bid": 0,
+        },
         base_complete=True,
-        state_lock=True,
+        state_lock=False,
         modes=(),
     )
 
