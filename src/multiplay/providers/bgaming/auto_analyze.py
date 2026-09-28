@@ -24,7 +24,7 @@ from .demo_spin import run_demo_base_spin
 from .direct_port import BGamingDemoDirectSession
 from .handler_probe import probe_bgaming_handlers
 from .hyperhive_demo import run_demo_hyperhive
-from .probe import _identity_key, _public_game_slug, probe_bgaming_demo
+from .hyperhive_static import (\n    extract_hyperhive_static_profile,\n    seed_hyperhive_static_routes,\n)\nfrom .probe import _identity_key, _public_game_slug, probe_bgaming_demo
 from .switchable import (
     extract_switchable_variants,
     route_child_index,
@@ -203,8 +203,11 @@ def analyze_bgaming_demo(
 
     graph = build_action_graph(contract_har)
     routes = [dict(item) for item in graph.get("routes", [])]
+    static_profile = None
     if family == HYPERHIVE_JSONRPC:
+        static_profile = extract_hyperhive_static_profile(contract_bundle)
         _seed_hyperhive_spin_routes(routes)
+        seed_hyperhive_static_routes(routes, static_profile)
     elif family == API_V2:
         _seed_api_v2_buy_feature_routes(routes, browser_evidence)
 
@@ -486,7 +489,9 @@ def analyze_bgaming_demo(
         graph = build_action_graph(contract_har)
         routes = [dict(item) for item in graph.get("routes", [])]
         if family == HYPERHIVE_JSONRPC:
+            static_profile = extract_hyperhive_static_profile(contract_bundle)
             _seed_hyperhive_spin_routes(routes)
+            seed_hyperhive_static_routes(routes, static_profile)
         elif family == API_V2:
             _seed_api_v2_buy_feature_routes(routes, contract_bundle)
         if family == HYPERHIVE_JSONRPC and not enrichment["success"]:
@@ -556,6 +561,11 @@ def analyze_bgaming_demo(
         "url": _strip_query(requested_url),
         "execution_url": _strip_query(execution_url),
         "family": family,
+        "static_profile": (
+            static_profile.to_dict()
+            if static_profile is not None
+            else None
+        ),
         "enrichment": enrichment,
         "handler_probe": handler_probe,
         "blockers": blockers,
@@ -629,6 +639,7 @@ def _write_unresolved_runtime_report(
         "url": _strip_query(requested_url),
         "execution_url": "",
         "family": "unresolved",
+        "static_profile": None,
         "enrichment": {
             "attempted": False,
             "success": False,
