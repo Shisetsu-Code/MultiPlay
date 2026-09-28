@@ -13,74 +13,80 @@ jobs:
         with: {python-version: '3.12'}
       - run: pip install playwright
       - run: python -m playwright install --with-deps chromium
-      - name: Capture Yggdrasil buy flow
+      - name: Capture both Yggdrasil bonus purchases
         env:
           TARGET_URL: 'https://yggdrasilgaming.com/games/vikings-go-to-hollywood-wildfight-rushingwilds#tryit'
         run: |
-          cat > /tmp/buy.py <<'PY'
+          cat > /tmp/two.py <<'PY'
           import asyncio,os,json,re
           from pathlib import Path
           from playwright.async_api import async_playwright
-          O=Path("ygg-probe6");O.mkdir(exist_ok=True)
-          ev=[]
-          def cl(s):
+          O=Path("ygg-probe7");O.mkdir(exist_ok=True)
+          def clean(s):
             if not s:return s
-            return re.sub(r'(?i)(token|session|sid|jwt|auth|key)=([^&\s]+)',r'\1=<redacted>',s)[:12000]
-          def svc(xs): return [e for e in xs if "demo.yggdrasilgaming.com/game.web/service" in e.get("url","")]
-          async def clickcap(gf,pg,name,x,y):
+            return re.sub(r'(?i)(token|session|sid|jwt|auth|key)=([^&\s]+)',r'\1=<redacted>',s)[:16000]
+
+          async def one(browser,label,buy_y):
+            ev=[]
+            c=await browser.new_context(viewport={"width":1440,"height":1000})
+            pg=await c.new_page()
+            pg.on("request",lambda r: ev.append({"method":r.method,"url":clean(r.url),"type":r.resource_type,"post":clean(r.post_data if r.method!="GET" else None)}) if r.resource_type in ("xhr","fetch","websocket","document") else None)
+            await pg.goto(os.environ["TARGET_URL"],wait_until="domcontentloaded",timeout=90000)
+            await pg.wait_for_timeout(2000)
+            for t in ["ACCEPT COOKIES","YES, I AM OVER 18"]:
+              try:
+                q=pg.get_by_text(t,exact=False)
+                if await q.count(): await q.first.click(timeout=3000)
+              except: pass
+            try:
+              q=pg.get_by_text("PLAY",exact=True)
+              if await q.count(): await q.first.click(timeout=4000)
+            except: pass
+            await pg.wait_for_timeout(17000)
+            gf=next(f for f in pg.frames if "staticdemo.yggdrasilgaming.com/10964/" in f.url)
+            for _ in range(5):
+              try: await gf.locator("body").click(position={"x":648,"y":624},force=True)
+              except: pass
+              await pg.wait_for_timeout(1600)
+            await pg.wait_for_timeout(5000)
+            # close collection modal and open buy dialog
+            await gf.locator("body").click(position={"x":648,"y":550},force=True)
+            await pg.wait_for_timeout(1200)
+            await gf.locator("body").click(position={"x":1210,"y":575},force=True)
+            await pg.wait_for_timeout(1200)
             before=len(ev)
-            await gf.locator("body").click(position={"x":x,"y":y},force=True)
+            await gf.locator("body").click(position={"x":785,"y":buy_y},force=True)
             await pg.wait_for_timeout(1800)
-            await gf.locator("body").screenshot(path=str(O/f"{name}.png"))
-            d=svc(ev[before:])
-            print("ACTION",name,x,y,json.dumps(d))
-            return d
+            await gf.locator("body").screenshot(path=str(O/f"{label}-after-buy.png"))
+            d1=ev[before:]
+            # confirmation candidate: center-lower and center
+            causal1=[e for e in d1 if "demo.yggdrasilgaming.com" in e["url"] and e["type"] in ("xhr","fetch")]
+            before2=len(ev)
+            for x,y in [(648,555),(648,600),(785,555),(785,600)]:
+              await gf.locator("body").click(position={"x":x,"y":y},force=True)
+              await pg.wait_for_timeout(800)
+            await pg.wait_for_timeout(1500)
+            await gf.locator("body").screenshot(path=str(O/f"{label}-after-confirm.png"))
+            d2=ev[before2:]
+            causal2=[e for e in d2 if "demo.yggdrasilgaming.com" in e["url"] and e["type"] in ("xhr","fetch")]
+            out={"label":label,"buy_click_events":causal1,"confirm_events":causal2}
+            (O/f"{label}.json").write_text(json.dumps(out,indent=2),encoding="utf-8")
+            print("=== "+label+" ===")
+            print(json.dumps(out,indent=2))
+            await c.close()
+            return out
+
           async def main():
             async with async_playwright() as p:
               b=await p.chromium.launch(headless=True)
-              c=await b.new_context(viewport={"width":1440,"height":1000})
-              pg=await c.new_page()
-              pg.on("request",lambda r: ev.append({"method":r.method,"url":cl(r.url),"type":r.resource_type,"post":cl(r.post_data if r.method!="GET" else None)}) if r.resource_type in ("xhr","fetch","websocket","document") else None)
-              await pg.goto(os.environ["TARGET_URL"],wait_until="domcontentloaded",timeout=90000)
-              await pg.wait_for_timeout(2000)
-              for t in ["ACCEPT COOKIES","YES, I AM OVER 18"]:
-                try:
-                  q=pg.get_by_text(t,exact=False)
-                  if await q.count(): await q.first.click(timeout=3000)
-                except: pass
-              try:
-                q=pg.get_by_text("PLAY",exact=True)
-                if await q.count(): await q.first.click(timeout=4000)
-              except: pass
-              await pg.wait_for_timeout(17000)
-              gf=next(f for f in pg.frames if "staticdemo.yggdrasilgaming.com/10964/" in f.url)
-              # continue splash using rendered coords
-              for _ in range(5):
-                try: await gf.locator("body").click(position={"x":648,"y":624},force=True)
-                except: pass
-                await pg.wait_for_timeout(1800)
-              await pg.wait_for_timeout(5000)
-              await gf.locator("body").screenshot(path=str(O/"pre-modal.png"))
-              actions=[]
-              actions.append(("modal-confirm",await clickcap(gf,pg,"01-modal-confirm",648,550)))
-              actions.append(("buy-open",await clickcap(gf,pg,"02-buy-open",1210,575)))
-              # probe likely option cards/confirm buttons in buy dialog
-              pts=[
-                ("opt-left",430,360),("opt-mid",648,360),("opt-right",865,360),
-                ("opt-left-low",430,470),("opt-mid-low",648,470),("opt-right-low",865,470),
-                ("dialog-confirm",648,585),("buy-right",1210,575)
-              ]
-              for n,x,y in pts:
-                actions.append((n,await clickcap(gf,pg,n,x,y)))
-              (O/"actions.json").write_text(json.dumps(actions,indent=2),encoding="utf-8")
-              (O/"all-service.json").write_text(json.dumps(svc(ev),indent=2),encoding="utf-8")
-              print("=== CAUSAL ===")
-              print(json.dumps([{"action":a,"events":d} for a,d in actions if d],indent=2))
+              a=await one(b,"upper-390",325)
+              b2=await one(b,"lower-65",532)
+              (O/"combined.json").write_text(json.dumps([a,b2],indent=2),encoding="utf-8")
               await b.close()
           asyncio.run(main())
           PY
-          python /tmp/buy.py
+          python /tmp/two.py
       - uses: actions/upload-artifact@v4
         with:
-          name: yggdrasil-probe6
-          path: ygg-probe6
+          name: yggdrasil-probe7
+          path: ygg-probe7
