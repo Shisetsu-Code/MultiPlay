@@ -4,7 +4,7 @@ import json
 import re
 from pathlib import Path
 from typing import Any
-from urllib.parse import urlsplit
+from urllib.parse import urljoin, urlsplit
 
 from ...action_graph import build_action_graph
 from ...browser import BrowserAction, capture_browser_evidence
@@ -28,7 +28,7 @@ from .hyperhive_static import (
     HyperHiveStaticProfile,
     discover_hyperhive_static_profile,
 )
-from .probe import _identity_key, _public_game_slug, probe_bgaming_demo
+from .probe import _HttpSession, _identity_key, _public_game_slug, probe_bgaming_demo
 from .switchable import (
     extract_switchable_variants,
     route_child_index,
@@ -109,6 +109,11 @@ def analyze_bgaming_demo(
                 "no resolvable BGaming runtime family: "
                 f"{type(exc).__name__}: {exc}"
             ),
+        )
+    if family == HYPERHIVE_JSONRPC:
+        browser_evidence = _enrich_hyperhive_static_assets(
+            browser_evidence,
+            timeout_s=timeout_s,
         )
     static_profile = (
         discover_hyperhive_static_profile(browser_evidence)
@@ -1395,6 +1400,102 @@ def _request_markers(value: Any) -> set[str]:
             out.update(_request_markers(child))
     return out
 
+
+def _enrich_hyperhive_static_assets(
+    evidence: EvidenceBundle,
+    *,
+    timeout_s: float,
+) -> EvidenceBundle:
+    additions: list[HttpExchange] = []
+    successful = {
+        str(item.url)
+        for item in evidence.http
+        if item.response_status is not None
+        and 200 <= item.response_status < 400
+        and item.response_body not in (None, "", {}, [])
+    }
+
+    for exchange in list(evidence.http):
+        body = exchange.response_body
+        if not isinstance(body, dict):
+            continue
+        bgaming = body.get("bg_gaming")
+        if not isinstance(bgaming, dict):
+            continue
+        relative = bgaming.get("bets_data")
+        if not isinstance(relative, str) or not relative.strip():
+            continue
+
+        asset_url = _versioned_7rst_asset_url(
+            exchange.url,
+            relative.strip(),
+        )
+        if not asset_url or asset_url in successful:
+            continue
+
+        session = _HttpSession()
+        try:
+            result = session.get(
+                asset_url,
+                timeout_s=timeout_s,
+                headers={"Referer": exchange.url},
+            )
+        except (OSError, RuntimeError, TypeError, ValueError):
+            continue
+        if not 200 <= result.status < 400:
+            continue
+        try:
+            payload = json.loads(result.text)
+        except json.JSONDecodeError:
+            continue
+
+        additions.append(
+            HttpExchange(
+                evidence_id=f"bgaming:static-asset:{len(additions)}",
+                method="GET",
+                url=asset_url,
+                response_status=result.status,
+                response_body=payload,
+            )
+        )
+        successful.add(asset_url)
+
+    if not additions:
+        return evidence
+    return _merge_evidence(
+        evidence,
+        EvidenceBundle(
+            http=additions,
+            metadata={"source": "bgaming-static-asset-enrichment"},
+        ),
+    )
+
+
+def _versioned_7rst_asset_url(
+    slot_parameters_url: str,
+    relative_asset: str,
+) -> str:
+    source = urlsplit(str(slot_parameters_url or ""))
+    if not source.scheme or not source.netloc:
+        return ""
+
+    origin = f"{source.scheme}://{source.netloc}/"
+    target = urljoin(origin, relative_asset.lstrip("/"))
+    hash_match = re.search(
+        r"/slot_parameters-([A-Za-z0-9]+)\.json$",
+        source.path,
+    )
+    if hash_match is None:
+        return target
+
+    parsed = urlsplit(target)
+    if not parsed.path.endswith(".json"):
+        return target
+    suffix = hash_match.group(1)
+    path = parsed.path[:-5] + f"-{suffix}.json"
+    return parsed._replace(path=path).geturl()
+
+
 def _require_runtime_identity(
     requested_url: str,
     evidence: EvidenceBundle,
@@ -1610,4 +1711,6 @@ def _keep_contract_exchange(exchange: HttpExchange) -> bool:
         or "/launch" in path
         or path.rstrip("/").endswith("/hyperhive")
         or "/games/" in path
+        or "/res/data/resdb/slot_parameters" in path
+        or "/res/data/resdb/bets_data" in path
     )
