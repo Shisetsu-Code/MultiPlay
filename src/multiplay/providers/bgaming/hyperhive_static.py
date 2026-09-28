@@ -681,9 +681,6 @@ def _sweet_profile(
     return _profile(
         "client_static_buy_bonus_costs",
         url,
-        base={"bet_type": "bet"},
-        base_complete=True,
-        state_lock=True,
         wire_complete=False,
         modes=(
             _mode(
