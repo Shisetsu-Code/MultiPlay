@@ -1,28 +1,27 @@
 {
   "schema": "multiplay/bgaming-worker-review/v1",
-  "run_id": "36369625441",
-  "generated_at": "2026-09-28T02:26:09.391559+00:00",
+  "run_id": "36370150283",
+  "generated_at": "2026-09-28T02:34:18.031322+00:00",
   "summary": {
     "schema": "multiplay/bgaming-worker-summary/v1",
-    "run_id": "36369625441",
-    "generated_at": "2026-09-28T02:26:09.391559+00:00",
-    "planned": 8,
-    "processed": 8,
+    "run_id": "36370150283",
+    "generated_at": "2026-09-28T02:34:18.031322+00:00",
+    "planned": 7,
+    "processed": 7,
     "status_counts": {
-      "COMPLETE": 1,
+      "COMPLETE": 2,
       "ERROR": 3,
-      "PARTIAL": 4
+      "PARTIAL": 2
     },
     "family_counts": {
       "None": 3,
-      "hyperhive-jsonrpc": 5
+      "hyperhive-jsonrpc": 4
     },
     "unresolved_semantic_counts": {
-      "BUY_BONUS": 5,
-      "SPIN": 2
+      "BUY_BONUS": 3
     },
-    "complete": 1,
-    "needs_review": 7
+    "complete": 2,
+    "needs_review": 5
   },
   "games": [
     {
@@ -85,10 +84,20 @@
       "status": "PARTIAL",
       "family": "hyperhive-jsonrpc",
       "route_count": 8,
-      "direct_executable_count": 5,
-      "unresolved_network_count": 2,
+      "direct_executable_count": 6,
+      "unresolved_network_count": 1,
       "blockers": [],
       "direct_actions": [
+        {
+          "semantic": "SPIN",
+          "control": "start-btn-start",
+          "handler": "onSpinClick",
+          "wire": [
+            "bet_type=default",
+            "method=play"
+          ],
+          "role": "network_action"
+        },
         {
           "semantic": "BUY_BONUS",
           "control": "protocol:ante_1",
@@ -164,93 +173,6 @@
           "wire": [
             "method=play",
             "purchased_feature=buy_chance"
-          ]
-        },
-        {
-          "semantic": "SPIN",
-          "control": "start-btn-start",
-          "handler": "onSpinClick",
-          "status": "NETWORK_OBSERVED",
-          "wire": [
-            "bet_type=default",
-            "method=play"
-          ]
-        }
-      ],
-      "switchable_children": [],
-      "error": ""
-    },
-    {
-      "slug": "grand-patron",
-      "name": "Grand Patron",
-      "url": "https://demo.bgaming-network.com/play/GrandPatron7rst/FUN",
-      "availability": "DEMO",
-      "returncode": 0,
-      "status": "PARTIAL",
-      "family": "hyperhive-jsonrpc",
-      "route_count": 1,
-      "direct_executable_count": 0,
-      "unresolved_network_count": 1,
-      "blockers": [
-        "HyperHive base-play enrichment failed: ValueError: BGaming HyperHive client scripts exposed no usable wire contract."
-      ],
-      "direct_actions": [],
-      "unresolved_actions": [
-        {
-          "semantic": "SPIN",
-          "control": "protocol:static-spin",
-          "handler": "static:client_static_legacy_rpc_manager",
-          "status": "NETWORK_INFERRED",
-          "wire": [
-            "method=play"
-          ]
-        }
-      ],
-      "switchable_children": [],
-      "error": ""
-    },
-    {
-      "slug": "mystic-reels",
-      "name": "Mystic Reels",
-      "url": "https://demo.bgaming-network.com/play/MysticReels/FUN",
-      "availability": "DEMO",
-      "returncode": 0,
-      "status": "PARTIAL",
-      "family": "hyperhive-jsonrpc",
-      "route_count": 3,
-      "direct_executable_count": 1,
-      "unresolved_network_count": 2,
-      "blockers": [],
-      "direct_actions": [
-        {
-          "semantic": "SPIN",
-          "control": "protocol:play",
-          "handler": "",
-          "wire": [
-            "method=play"
-          ],
-          "role": "protocol_action"
-        }
-      ],
-      "unresolved_actions": [
-        {
-          "semantic": "BUY_BONUS",
-          "control": "protocol:respin_buy",
-          "handler": "static:client_static_mode_transform",
-          "status": "NETWORK_INFERRED",
-          "wire": [
-            "method=play",
-            "purchased_feature=buy_chance"
-          ]
-        },
-        {
-          "semantic": "BUY_BONUS",
-          "control": "protocol:bonus_buy",
-          "handler": "static:client_static_mode_transform",
-          "status": "NETWORK_INFERRED",
-          "wire": [
-            "method=play",
-            "purchased_feature=buy_bonus"
           ]
         }
       ],
