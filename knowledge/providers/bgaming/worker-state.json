@@ -1,7 +1,7 @@
 {
   "schema": "multiplay/bgaming-worker-state/v1",
-  "updated_at": "2026-09-28T01:57:42.019726+00:00",
-  "last_run_id": "36367812953",
+  "updated_at": "2026-09-28T02:16:53.099083+00:00",
+  "last_run_id": "36368980697",
   "games": {
     "3-lucky-monkeys-hold-win": {
       "name": "3 Lucky Monkeys Hold & Win",
@@ -280,25 +280,25 @@
     },
     "blackbeards-bounty": {
       "name": "Blackbeard's Bounty",
-      "status": "PARTIAL",
+      "status": "COMPLETE",
       "family": "hyperhive-jsonrpc",
-      "route_count": 2,
-      "direct_executable_count": 2,
+      "route_count": 5,
+      "direct_executable_count": 5,
       "unresolved_network_count": 0,
-      "attempts": 8,
-      "last_run_id": "36367812953",
-      "updated_at": "2026-09-28T01:57:42.019726+00:00"
+      "attempts": 9,
+      "last_run_id": "36368980697",
+      "updated_at": "2026-09-28T02:16:53.099083+00:00"
     },
     "blazing-fire-pots-hold-spin": {
       "name": "Blazing Fire Pots Hold & Spin",
-      "status": "PARTIAL",
+      "status": "COMPLETE",
       "family": "hyperhive-jsonrpc",
-      "route_count": 2,
-      "direct_executable_count": 2,
+      "route_count": 4,
+      "direct_executable_count": 4,
       "unresolved_network_count": 0,
-      "attempts": 8,
-      "last_run_id": "36367812953",
-      "updated_at": "2026-09-28T01:57:42.019726+00:00"
+      "attempts": 9,
+      "last_run_id": "36368980697",
+      "updated_at": "2026-09-28T02:16:53.099083+00:00"
     },
     "bling-blitz-diamond-drop": {
       "name": "Bling Blitz Diamond Drop",
@@ -467,14 +467,14 @@
     },
     "cats-love-yummy": {
       "name": "Cats Love Yummy",
-      "status": "PARTIAL",
+      "status": "COMPLETE",
       "family": "hyperhive-jsonrpc",
-      "route_count": 2,
-      "direct_executable_count": 2,
+      "route_count": 3,
+      "direct_executable_count": 3,
       "unresolved_network_count": 0,
-      "attempts": 8,
-      "last_run_id": "36367812953",
-      "updated_at": "2026-09-28T01:57:42.019726+00:00"
+      "attempts": 9,
+      "last_run_id": "36368980697",
+      "updated_at": "2026-09-28T02:16:53.099083+00:00"
     },
     "cats-soup": {
       "name": "Cat's Soup",
@@ -489,14 +489,14 @@
     },
     "chicken-fire": {
       "name": "Chicken Fire",
-      "status": "PARTIAL",
+      "status": "COMPLETE",
       "family": "hyperhive-jsonrpc",
-      "route_count": 2,
-      "direct_executable_count": 2,
+      "route_count": 6,
+      "direct_executable_count": 6,
       "unresolved_network_count": 0,
-      "attempts": 8,
-      "last_run_id": "36367812953",
-      "updated_at": "2026-09-28T01:57:42.019726+00:00"
+      "attempts": 9,
+      "last_run_id": "36368980697",
+      "updated_at": "2026-09-28T02:16:53.099083+00:00"
     },
     "chicken-rush": {
       "name": "Chicken Rush",
@@ -513,12 +513,12 @@
       "name": "Clash of Gods Power Duel",
       "status": "PARTIAL",
       "family": "hyperhive-jsonrpc",
-      "route_count": 3,
-      "direct_executable_count": 0,
+      "route_count": 8,
+      "direct_executable_count": 5,
       "unresolved_network_count": 2,
-      "attempts": 8,
-      "last_run_id": "36367812953",
-      "updated_at": "2026-09-28T01:57:42.019726+00:00"
+      "attempts": 9,
+      "last_run_id": "36368980697",
+      "updated_at": "2026-09-28T02:16:53.099083+00:00"
     },
     "clover-bonanza": {
       "name": "Clover Bonanza",
@@ -973,14 +973,14 @@
     },
     "golden-avalon-hold-and-win": {
       "name": "Golden Avalon Hold and Win",
-      "status": "PARTIAL",
+      "status": "COMPLETE",
       "family": "api-v2",
       "route_count": 1,
       "direct_executable_count": 1,
       "unresolved_network_count": 0,
-      "attempts": 8,
-      "last_run_id": "36367812953",
-      "updated_at": "2026-09-28T01:57:42.019726+00:00"
+      "attempts": 9,
+      "last_run_id": "36368980697",
+      "updated_at": "2026-09-28T02:16:53.099083+00:00"
     },
     "golden-paw-hold-win": {
       "name": "Golden Paw: Hold & Win",
@@ -1055,9 +1055,9 @@
       "route_count": 0,
       "direct_executable_count": 0,
       "unresolved_network_count": 0,
-      "attempts": 8,
-      "last_run_id": "36367812953",
-      "updated_at": "2026-09-28T01:57:42.019726+00:00"
+      "attempts": 9,
+      "last_run_id": "36368980697",
+      "updated_at": "2026-09-28T02:16:53.099083+00:00"
     },
     "halloween-bonanza": {
       "name": "Halloween Bonanza",
@@ -1226,14 +1226,14 @@
     },
     "jungle-queen": {
       "name": "Jungle Queen",
-      "status": "PARTIAL",
+      "status": "COMPLETE",
       "family": "hyperhive-jsonrpc",
-      "route_count": 2,
-      "direct_executable_count": 2,
+      "route_count": 3,
+      "direct_executable_count": 3,
       "unresolved_network_count": 0,
-      "attempts": 8,
-      "last_run_id": "36367812953",
-      "updated_at": "2026-09-28T01:57:42.019726+00:00"
+      "attempts": 9,
+      "last_run_id": "36368980697",
+      "updated_at": "2026-09-28T02:16:53.099083+00:00"
     },
     "keepers-of-the-secret": {
       "name": "Keepers Of The Secret",
@@ -1242,9 +1242,9 @@
       "route_count": 0,
       "direct_executable_count": 0,
       "unresolved_network_count": 0,
-      "attempts": 8,
-      "last_run_id": "36367812953",
-      "updated_at": "2026-09-28T01:57:42.019726+00:00"
+      "attempts": 9,
+      "last_run_id": "36368980697",
+      "updated_at": "2026-09-28T02:16:53.099083+00:00"
     },
     "krakens-hunger": {
       "name": "Kraken's Hunger",
@@ -1616,9 +1616,9 @@
       "route_count": 3,
       "direct_executable_count": 1,
       "unresolved_network_count": 2,
-      "attempts": 8,
-      "last_run_id": "36367812953",
-      "updated_at": "2026-09-28T01:57:42.019726+00:00"
+      "attempts": 9,
+      "last_run_id": "36368980697",
+      "updated_at": "2026-09-28T02:16:53.099083+00:00"
     },
     "olympustrueways": {
       "name": "Olympus TRUEWAYS™",
@@ -1666,14 +1666,14 @@
     },
     "piggy-bank-holdwin": {
       "name": "Piggy Bank Hold&Win",
-      "status": "PARTIAL",
+      "status": "COMPLETE",
       "family": "api-v2",
       "route_count": 1,
       "direct_executable_count": 1,
       "unresolved_network_count": 0,
-      "attempts": 8,
-      "last_run_id": "36367812953",
-      "updated_at": "2026-09-28T01:57:42.019726+00:00"
+      "attempts": 9,
+      "last_run_id": "36368980697",
+      "updated_at": "2026-09-28T02:16:53.099083+00:00"
     },
     "platinum-lightning-deluxe": {
       "name": "Platinum Lightning Deluxe",
@@ -1715,9 +1715,9 @@
       "route_count": 0,
       "direct_executable_count": 0,
       "unresolved_network_count": 0,
-      "attempts": 5,
-      "last_run_id": "36367812953",
-      "updated_at": "2026-09-28T01:57:42.019726+00:00"
+      "attempts": 6,
+      "last_run_id": "36368980697",
+      "updated_at": "2026-09-28T02:16:53.099083+00:00"
     },
     "princess-royal": {
       "name": "Princess Royal",
@@ -1726,9 +1726,9 @@
       "route_count": 0,
       "direct_executable_count": 0,
       "unresolved_network_count": 0,
-      "attempts": 4,
-      "last_run_id": "36367812953",
-      "updated_at": "2026-09-28T01:57:42.019726+00:00"
+      "attempts": 5,
+      "last_run_id": "36368980697",
+      "updated_at": "2026-09-28T02:16:53.099083+00:00"
     },
     "recycle-riches": {
       "name": "Recycle Riches",
@@ -1743,14 +1743,14 @@
     },
     "red-hot-chilli-chickens": {
       "name": "Red Hot Chilli Chickens",
-      "status": "PARTIAL",
+      "status": "COMPLETE",
       "family": "hyperhive-jsonrpc",
-      "route_count": 2,
-      "direct_executable_count": 1,
+      "route_count": 4,
+      "direct_executable_count": 3,
       "unresolved_network_count": 0,
-      "attempts": 8,
-      "last_run_id": "36367812953",
-      "updated_at": "2026-09-28T01:57:42.019726+00:00"
+      "attempts": 9,
+      "last_run_id": "36368980697",
+      "updated_at": "2026-09-28T02:16:53.099083+00:00"
     },
     "reel-of-ra": {
       "name": "Reel of Ra",
@@ -1880,9 +1880,9 @@
       "route_count": 0,
       "direct_executable_count": 0,
       "unresolved_network_count": 0,
-      "attempts": 5,
-      "last_run_id": "36367812953",
-      "updated_at": "2026-09-28T01:57:42.019726+00:00"
+      "attempts": 6,
+      "last_run_id": "36368980697",
+      "updated_at": "2026-09-28T02:16:53.099083+00:00"
     },
     "secret-bar-multidice-x": {
       "name": "Secret Bar Multidice X",
@@ -2009,12 +2009,12 @@
       "name": "Sweet Samurai",
       "status": "PARTIAL",
       "family": "hyperhive-jsonrpc",
-      "route_count": 2,
+      "route_count": 3,
       "direct_executable_count": 0,
-      "unresolved_network_count": 2,
-      "attempts": 8,
-      "last_run_id": "36367812953",
-      "updated_at": "2026-09-28T01:57:42.019726+00:00"
+      "unresolved_network_count": 3,
+      "attempts": 9,
+      "last_run_id": "36368980697",
+      "updated_at": "2026-09-28T02:16:53.099083+00:00"
     },
     "temple-of-power": {
       "name": "Temple of Power",
@@ -2227,14 +2227,14 @@
     },
     "wild-clusters": {
       "name": "Wild Clusters",
-      "status": "PARTIAL",
+      "status": "COMPLETE",
       "family": "hyperhive-jsonrpc",
-      "route_count": 2,
-      "direct_executable_count": 1,
+      "route_count": 6,
+      "direct_executable_count": 5,
       "unresolved_network_count": 0,
-      "attempts": 8,
-      "last_run_id": "36367812953",
-      "updated_at": "2026-09-28T01:57:42.019726+00:00"
+      "attempts": 9,
+      "last_run_id": "36368980697",
+      "updated_at": "2026-09-28T02:16:53.099083+00:00"
     },
     "wild-heart": {
       "name": "Wild Heart",
