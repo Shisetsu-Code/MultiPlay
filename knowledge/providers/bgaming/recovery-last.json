@@ -1,7 +1,7 @@
 {
   "schema": "multiplay/bgaming-recovery-test/v1",
-  "run_id": "36370728017",
-  "generated_at": "2026-09-28T02:44:24.957630+00:00",
+  "run_id": "36375938011",
+  "generated_at": "2026-09-28T04:04:49.678438+00:00",
   "games": [
     {
       "id": "bgaming-recovery-big-atlantis-frenzy",
@@ -47,7 +47,7 @@
                 "purchased_feature": "freespin_buy"
               },
               "extra_data": {
-                "round_series_id": 1790563300630
+                "round_series_id": 1790568111417
               }
             },
             "response": {
@@ -59,64 +59,60 @@
                   "current_level": 1
                 },
                 "prizes": [],
-                "freespins_issued": 15,
-                "freespins_left": 15
+                "freespins_issued": 10,
+                "freespins_left": 10
               },
               "outcome": {
                 "screen": [
                   [
-                    "3",
-                    "6",
-                    "11",
                     "9",
+                    "1",
+                    "1",
+                    "7",
                     "7"
                   ],
                   [
                     "8",
-                    "11",
                     "5",
-                    "5",
+                    "2",
+                    "2",
                     "9"
                   ],
                   [
-                    "1",
-                    "1",
+                    "4",
                     "5",
                     "11",
-                    "8"
+                    "7",
+                    "2"
+                  ],
+                  [
+                    "5",
+                    "11",
+                    "9",
+                    "8",
+                    "3"
                   ],
                   [
                     "11",
-                    "6",
-                    "6",
                     "8",
+                    "4",
+                    "4",
                     "4"
-                  ],
-                  [
-                    "8",
-                    "3",
-                    "3",
-                    "7",
-                    "1"
                   ]
                 ],
                 "special_symbols": {
                   "scatter": {
                     "11": [
                       [
-                        0,
+                        2,
                         2
                       ],
                       [
-                        1,
+                        3,
                         1
                       ],
                       [
-                        2,
-                        3
-                      ],
-                      [
-                        3,
+                        4,
                         0
                       ]
                     ]
@@ -125,7 +121,7 @@
                 "bet": 30,
                 "win": 0,
                 "wins": [],
-                "freespins_issued": 15,
+                "freespins_issued": 10,
                 "storage": null
               },
               "balance": {
@@ -133,8 +129,8 @@
                 "wallet": 97600
               },
               "flow": {
-                "round_id": 17514694282,
-                "last_action_id": "17514694282_1",
+                "round_id": 17515294198,
+                "last_action_id": "17515294198_1",
                 "state": "freespins",
                 "command": "spin",
                 "available_actions": [
@@ -247,7 +243,7 @@
                 "purchased_feature_level": "4"
               },
               "extra_data": {
-                "round_series_id": 1790563298676
+                "round_series_id": 1790568108442
               }
             },
             "response": {
@@ -263,57 +259,57 @@
                 "freespins_issued": 10,
                 "freespins_left": 10,
                 "special_list_indexes": [
-                  1,
-                  7
+                  2,
+                  9
                 ]
               },
               "outcome": {
                 "screen": [
                   [
-                    "1",
-                    "12",
-                    "6",
-                    "6"
+                    "9",
+                    "9",
+                    "7",
+                    "3"
                   ],
                   [
-                    "4",
-                    "4",
-                    "6",
-                    "12"
+                    "2",
+                    "9",
+                    "12",
+                    "5"
                   ],
                   [
                     "5",
-                    "4",
+                    "5",
                     "8",
-                    "1"
+                    "12"
                   ],
                   [
-                    "7",
-                    "12",
                     "2",
-                    "2"
+                    "2",
+                    "12",
+                    "8"
                   ],
                   [
-                    "6",
-                    "1",
-                    "8",
-                    "3"
+                    "2",
+                    "2",
+                    "5",
+                    "5"
                   ]
                 ],
                 "special_symbols": {
                   "scatter": {
                     "12": [
                       [
-                        0,
-                        1
+                        1,
+                        2
                       ],
                       [
-                        1,
+                        2,
                         3
                       ],
                       [
                         3,
-                        1
+                        2
                       ]
                     ]
                   }
@@ -337,8 +333,8 @@
                 "wallet": 80000
               },
               "flow": {
-                "round_id": 17514693941,
-                "last_action_id": "17514693941_1",
+                "round_id": 17515293951,
+                "last_action_id": "17515293951_1",
                 "state": "freespins",
                 "command": "spin",
                 "available_actions": [
@@ -408,7 +404,7 @@
           "spin_status": 200
         }
       },
-      "direct_executable_count": 4,
+      "direct_executable_count": 5,
       "blockers": [],
       "handler_probe": {
         "attempted": false,
@@ -434,7 +430,7 @@
                 "purchased_feature_level": "1"
               },
               "extra_data": {
-                "round_series_id": 1790563296636
+                "round_series_id": 1790568135353
               }
             },
             "response": {
@@ -450,62 +446,62 @@
                 "freespins_issued": 10,
                 "freespins_left": 10,
                 "special_list_indexes": [
-                  3,
-                  9
+                  5,
+                  10
                 ]
               },
               "outcome": {
                 "screen": [
                   [
-                    "1",
-                    "1",
-                    "12",
-                    "1",
-                    "1"
-                  ],
-                  [
-                    "5",
-                    "4",
-                    "4",
+                    "6",
+                    "3",
+                    "7",
                     "9",
                     "9"
                   ],
                   [
-                    "5",
                     "8",
-                    "4",
-                    "4",
-                    "8"
-                  ],
-                  [
-                    "9",
                     "12",
-                    "5",
-                    "1",
-                    "6"
+                    "4",
+                    "9",
+                    "5"
                   ],
                   [
+                    "4",
+                    "12",
+                    "7",
+                    "7",
+                    "5"
+                  ],
+                  [
+                    "12",
+                    "4",
+                    "7",
+                    "7",
+                    "1"
+                  ],
+                  [
+                    "7",
+                    "7",
                     "6",
-                    "2",
-                    "8",
-                    "3",
-                    "12"
+                    "1",
+                    "8"
                   ]
                 ],
                 "special_symbols": {
                   "scatter": {
                     "12": [
                       [
-                        0,
-                        2
-                      ],
-                      [
-                        3,
+                        1,
                         1
                       ],
                       [
-                        4,
-                        4
+                        2,
+                        1
+                      ],
+                      [
+                        3,
+                        0
                       ]
                     ]
                   }
@@ -521,8 +517,8 @@
                 "wallet": 70000
               },
               "flow": {
-                "round_id": 17514693673,
-                "last_action_id": "17514693673_1",
+                "round_id": 17515296588,
+                "last_action_id": "17515296588_1",
                 "state": "freespins",
                 "command": "spin",
                 "available_actions": [
@@ -553,7 +549,7 @@
                 "purchased_feature_level": "0"
               },
               "extra_data": {
-                "round_series_id": 1790563299530
+                "round_series_id": 1790568138287
               }
             },
             "response": {
@@ -570,44 +566,44 @@
                 "freespins_left": 10,
                 "special_list_indexes": [
                   4,
-                  10
+                  8
                 ]
               },
               "outcome": {
                 "screen": [
                   [
+                    "1",
                     "12",
-                    "3",
-                    "3",
-                    "6",
+                    "9",
+                    "1",
                     "1"
                   ],
                   [
+                    "6",
+                    "6",
+                    "8",
+                    "12",
+                    "5"
+                  ],
+                  [
+                    "5",
+                    "1",
+                    "1",
+                    "5",
+                    "5"
+                  ],
+                  [
                     "5",
                     "12",
+                    "8",
                     "4",
-                    "9",
-                    "9"
+                    "4"
                   ],
                   [
-                    "5",
                     "7",
-                    "7",
-                    "12",
-                    "2"
-                  ],
-                  [
-                    "6",
+                    "2",
                     "8",
                     "8",
-                    "3",
-                    "6"
-                  ],
-                  [
-                    "3",
-                    "7",
-                    "6",
-                    "6",
                     "4"
                   ]
                 ],
@@ -616,15 +612,15 @@
                     "12": [
                       [
                         0,
-                        0
-                      ],
-                      [
-                        1,
                         1
                       ],
                       [
-                        2,
+                        1,
                         3
+                      ],
+                      [
+                        3,
+                        1
                       ]
                     ]
                   }
@@ -640,8 +636,8 @@
                 "wallet": 85000
               },
               "flow": {
-                "round_id": 17514694109,
-                "last_action_id": "17514694109_1",
+                "round_id": 17515296861,
+                "last_action_id": "17515296861_1",
                 "state": "freespins",
                 "command": "spin",
                 "available_actions": [
@@ -672,7 +668,7 @@
                 "purchased_feature_level": "2"
               },
               "extra_data": {
-                "round_series_id": 1790563302177
+                "round_series_id": 1790568141218
               }
             },
             "response": {
@@ -688,62 +684,62 @@
                 "freespins_issued": 10,
                 "freespins_left": 10,
                 "special_list_indexes": [
-                  3,
-                  9
+                  2,
+                  8
                 ]
               },
               "outcome": {
                 "screen": [
                   [
-                    "1",
-                    "9",
-                    "1",
-                    "1",
-                    "7"
-                  ],
-                  [
-                    "2",
+                    "3",
+                    "6",
+                    "6",
                     "12",
-                    "8",
-                    "8",
-                    "5"
-                  ],
-                  [
-                    "7",
-                    "4",
-                    "12",
-                    "8",
                     "1"
                   ],
                   [
-                    "9",
+                    "8",
                     "4",
-                    "12",
-                    "5",
-                    "6"
+                    "4",
+                    "6",
+                    "2"
                   ],
                   [
-                    "3",
-                    "7",
+                    "4",
+                    "12",
+                    "4",
+                    "4",
+                    "5"
+                  ],
+                  [
+                    "5",
+                    "1",
                     "6",
                     "6",
-                    "4"
+                    "8"
+                  ],
+                  [
+                    "9",
+                    "12",
+                    "6",
+                    "2",
+                    "8"
                   ]
                 ],
                 "special_symbols": {
                   "scatter": {
                     "12": [
                       [
-                        1,
-                        1
+                        0,
+                        3
                       ],
                       [
                         2,
-                        2
+                        1
                       ],
                       [
-                        3,
-                        2
+                        4,
+                        1
                       ]
                     ]
                   }
@@ -759,8 +755,8 @@
                 "wallet": 40000
               },
               "flow": {
-                "round_id": 17514694522,
-                "last_action_id": "17514694522_1",
+                "round_id": 17515297149,
+                "last_action_id": "17515297149_1",
                 "state": "freespins",
                 "command": "spin",
                 "available_actions": [
@@ -770,6 +766,189 @@
                 "purchased_feature": {
                   "name": "freespin_buy",
                   "level": "2"
+                }
+              }
+            }
+          },
+          {
+            "route_id": "static-api-v2:freespin_chance:fixed",
+            "semantic": "BUY_BONUS",
+            "control": "protocol:freespin_chance",
+            "handler": "static:init.feature_options",
+            "kind": "direct-inferred-api-v2-purchase",
+            "success": true,
+            "outcomes": [],
+            "status": 200,
+            "request": {
+              "command": "spin",
+              "options": {
+                "bet": 200,
+                "purchased_feature": "freespin_chance"
+              },
+              "extra_data": {
+                "round_series_id": 1790568144142
+              }
+            },
+            "response": {
+              "api_version": "2",
+              "features": {
+                "freespins_levels_state": {
+                  "wilds_count_before": 0,
+                  "wilds_count_current": 0,
+                  "current_level": 1
+                },
+                "prizes": [
+                  {
+                    "coords": [
+                      0,
+                      0
+                    ],
+                    "value": 200,
+                    "level": 2
+                  },
+                  {
+                    "coords": [
+                      0,
+                      1
+                    ],
+                    "value": 300,
+                    "level": 2
+                  },
+                  {
+                    "coords": [
+                      0,
+                      2
+                    ],
+                    "value": 100,
+                    "level": 1
+                  },
+                  {
+                    "coords": [
+                      0,
+                      3
+                    ],
+                    "value": 100,
+                    "level": 1
+                  },
+                  {
+                    "coords": [
+                      1,
+                      0
+                    ],
+                    "value": 200,
+                    "level": 2
+                  },
+                  {
+                    "coords": [
+                      1,
+                      3
+                    ],
+                    "value": 150,
+                    "level": 1
+                  },
+                  {
+                    "coords": [
+                      1,
+                      4
+                    ],
+                    "value": 100,
+                    "level": 1
+                  },
+                  {
+                    "coords": [
+                      4,
+                      0
+                    ],
+                    "value": 100,
+                    "level": 1
+                  },
+                  {
+                    "coords": [
+                      4,
+                      1
+                    ],
+                    "value": 100,
+                    "level": 1
+                  },
+                  {
+                    "coords": [
+                      4,
+                      2
+                    ],
+                    "value": 100,
+                    "level": 1
+                  }
+                ],
+                "freespin_type": "S"
+              },
+              "outcome": {
+                "screen": [
+                  [
+                    "11",
+                    "11",
+                    "11",
+                    "11",
+                    "6"
+                  ],
+                  [
+                    "11",
+                    "6",
+                    "8",
+                    "11",
+                    "11"
+                  ],
+                  [
+                    "6",
+                    "7",
+                    "4",
+                    "9",
+                    "12"
+                  ],
+                  [
+                    "2",
+                    "5",
+                    "3",
+                    "5",
+                    "8"
+                  ],
+                  [
+                    "11",
+                    "11",
+                    "11",
+                    "7",
+                    "7"
+                  ]
+                ],
+                "special_symbols": {
+                  "scatter": {
+                    "12": [
+                      [
+                        2,
+                        4
+                      ]
+                    ]
+                  }
+                },
+                "bet": 200,
+                "win": 0,
+                "wins": [],
+                "storage": null
+              },
+              "balance": {
+                "game": 0,
+                "wallet": 99700
+              },
+              "flow": {
+                "round_id": 17515297473,
+                "last_action_id": "17515297473_1",
+                "state": "closed",
+                "command": "spin",
+                "available_actions": [
+                  "init",
+                  "spin"
+                ],
+                "purchased_feature": {
+                  "name": "freespin_chance"
                 }
               }
             }
@@ -812,6 +991,18 @@
             "command=spin",
             "purchased_feature=freespin_buy",
             "purchased_feature_level=0"
+          ],
+          "direct_executable": true,
+          "direct_reason": ""
+        },
+        {
+          "semantic": "BUY_BONUS",
+          "status": "NETWORK_OBSERVED",
+          "control": "protocol:spin",
+          "handler": "",
+          "wire_markers": [
+            "command=spin",
+            "purchased_feature=freespin_chance"
           ],
           "direct_executable": true,
           "direct_reason": ""
@@ -903,7 +1094,7 @@
             "outcomes": [],
             "status": 200,
             "request": {
-              "id": "6549a28f-4f1e-435d-ba71-ae79f6edafb0",
+              "id": "0100f59a-8a59-43e6-bcd3-0a245803faae",
               "jsonrpc": "2.0",
               "method": "play",
               "params": {
@@ -922,7 +1113,7 @@
               }
             },
             "response": {
-              "id": "6549a28f-4f1e-435d-ba71-ae79f6edafb0",
+              "id": "0100f59a-8a59-43e6-bcd3-0a245803faae",
               "jsonrpc": "2.0",
               "result": {
                 "final": true,
@@ -932,32 +1123,32 @@
                   "engine": {
                     "gamestate": {
                       "stopList": [
-                        14,
-                        23,
-                        224,
-                        316,
-                        229
+                        83,
+                        266,
+                        254,
+                        175,
+                        261
                       ],
                       "view": [
                         [
-                          5,
-                          11,
-                          11,
                           9,
-                          1
-                        ],
-                        [
+                          9,
                           7,
-                          11,
-                          11,
-                          6,
-                          10
+                          8,
+                          7
                         ],
                         [
                           3,
-                          11,
-                          11,
+                          8,
+                          2,
+                          7,
+                          4
+                        ],
+                        [
+                          6,
                           3,
+                          8,
+                          4,
                           6
                         ]
                       ],
@@ -991,91 +1182,6 @@
                       "freespinTriggered": false,
                       "jackpotTriggered": false,
                       "respinTriggered": false,
-                      "bgCoinList": [
-                        {
-                          "column": 1,
-                          "row": 0,
-                          "coinIndex": 14
-                        }
-                      ],
-                      "mysteryDataListAfterReveal": [
-                        {
-                          "column": 1,
-                          "row": 0,
-                          "revealedSymbol": 8
-                        },
-                        {
-                          "column": 1,
-                          "row": 1,
-                          "revealedSymbol": 8
-                        },
-                        {
-                          "column": 1,
-                          "row": 2,
-                          "revealedSymbol": 8
-                        },
-                        {
-                          "column": 2,
-                          "row": 0,
-                          "revealedSymbol": 8
-                        },
-                        {
-                          "column": 2,
-                          "row": 1,
-                          "revealedSymbol": 8
-                        },
-                        {
-                          "column": 2,
-                          "row": 2,
-                          "revealedSymbol": 8
-                        }
-                      ],
-                      "symbolGridBeforeMysteryRevealed": [
-                        [
-                          5,
-                          11,
-                          11,
-                          9,
-                          1
-                        ],
-                        [
-                          7,
-                          11,
-                          11,
-                          6,
-                          10
-                        ],
-                        [
-                          3,
-                          11,
-                          11,
-                          3,
-                          6
-                        ]
-                      ],
-                      "symbolGridAfterMysteryRevealed": [
-                        [
-                          5,
-                          8,
-                          8,
-                          9,
-                          1
-                        ],
-                        [
-                          7,
-                          8,
-                          8,
-                          6,
-                          10
-                        ],
-                        [
-                          3,
-                          8,
-                          8,
-                          3,
-                          6
-                        ]
-                      ],
                       "sharedState": {
                         "coinBoxes": {
                           "100": {
@@ -1186,7 +1292,7 @@
             "outcomes": [],
             "status": 200,
             "request": {
-              "id": "9cec9724-2c14-44a2-a4b8-7b9f50d90023",
+              "id": "511a3013-1afc-4c24-ad1c-b3416edfb3c2",
               "jsonrpc": "2.0",
               "method": "play",
               "params": {
@@ -1216,12 +1322,12 @@
               }
             },
             "response": {
-              "id": "9cec9724-2c14-44a2-a4b8-7b9f50d90023",
+              "id": "511a3013-1afc-4c24-ad1c-b3416edfb3c2",
               "jsonrpc": "2.0",
               "result": {
                 "final": true,
                 "resp": {
-                  "win": 0.0,
+                  "win": 160.0,
                   "v": "0.0.10",
                   "data": {
                     "Completed": true,
@@ -1244,8 +1350,10 @@
                         "Passed": 1,
                         "Bet": 200
                       },
+                      "TotalWin": 160,
+                      "SpinWin": 160,
                       "VISData": {
-                        "SymbolKit": 2,
+                        "SymbolKit": 1,
                         "Grids": [
                           [
                             [
@@ -1259,55 +1367,82 @@
                               200
                             ],
                             [
-                              0,
                               300,
-                              0
+                              0,
+                              300
                             ]
                           ],
                           [
                             [
-                              6,
+                              5,
                               0,
-                              6
+                              4
                             ],
                             [
                               5,
                               0,
-                              6
+                              4
                             ],
                             [
+                              2,
                               0,
-                              1,
-                              0
+                              6
                             ]
                           ],
                           [
                             [
-                              62,
+                              52,
                               0,
-                              61
+                              42
                             ],
                             [
                               51,
                               0,
-                              61
+                              42
                             ],
                             [
+                              21,
                               0,
-                              12,
-                              0
+                              61
                             ]
                           ]
                         ],
-                        "Prizes": [],
+                        "Prizes": [
+                          {
+                            "PrizeType": 11,
+                            "Value": 160,
+                            "RawValue": 0.2,
+                            "Rule": 9,
+                            "Combination": 0,
+                            "Length": 3,
+                            "Line": 3,
+                            "Multiplier": 4,
+                            "Source": 1,
+                            "Pure": true,
+                            "Cells": [
+                              [
+                                0,
+                                2
+                              ],
+                              [
+                                1,
+                                2
+                              ],
+                              [
+                                2,
+                                2
+                              ]
+                            ]
+                          }
+                        ],
                         "Events": [
                           {
                             "Type": 10,
-                            "SymbolKit": 2,
+                            "SymbolKit": 1,
                             "ReelStops": [
                               1,
                               1,
-                              0
+                              1
                             ],
                             "Grids": [
                               0
@@ -1317,12 +1452,12 @@
                             "Type": 50,
                             "SwappedSymbols": [
                               [
-                                6,
+                                5,
                                 0,
                                 0
                               ],
                               [
-                                6,
+                                4,
                                 0,
                                 2
                               ],
@@ -1332,14 +1467,19 @@
                                 0
                               ],
                               [
-                                6,
+                                4,
                                 1,
                                 2
                               ],
                               [
-                                1,
                                 2,
-                                1
+                                2,
+                                0
+                              ],
+                              [
+                                6,
+                                2,
+                                2
                               ]
                             ],
                             "Grid": 1
@@ -1348,14 +1488,24 @@
                             "Type": 50,
                             "SwappedSymbols": [
                               [
-                                62,
+                                42,
                                 0,
-                                0
+                                2
+                              ],
+                              [
+                                42,
+                                1,
+                                2
                               ],
                               [
                                 61,
-                                0,
+                                2,
                                 2
+                              ],
+                              [
+                                52,
+                                0,
+                                0
                               ],
                               [
                                 51,
@@ -1363,14 +1513,9 @@
                                 0
                               ],
                               [
-                                61,
-                                1,
-                                2
-                              ],
-                              [
-                                12,
+                                21,
                                 2,
-                                1
+                                0
                               ]
                             ],
                             "Grid": 2
@@ -1388,13 +1533,28 @@
                               7,
                               8,
                               9
+                            ],
+                            "Prizes": [
+                              0,
+                              1
                             ]
+                          },
+                          {
+                            "Triggered": false,
+                            "Position": [
+                              2,
+                              0
+                            ],
+                            "Type": 10102
                           }
                         ],
                         "FEV": {
                           "50": [
                             1,
                             2
+                          ],
+                          "10102": [
+                            4
                           ]
                         }
                       }
@@ -1410,7 +1570,7 @@
                   },
                   "previousTotalWin": 0.0
                 },
-                "balance": 99800,
+                "balance": 99960,
                 "freebets": null,
                 "state_lock": "b6589fc6ab0dc82cf12099d1c2d40ab994e8410c"
               }
@@ -1498,7 +1658,7 @@
             "outcomes": [],
             "status": 200,
             "request": {
-              "id": "6179aa6d-fdf7-4f92-80b7-1ac14dc6138b",
+              "id": "659b0cb9-1ff3-4160-aff6-6bd934b9c3fe",
               "jsonrpc": "2.0",
               "method": "play",
               "params": {
@@ -1518,12 +1678,12 @@
               }
             },
             "response": {
-              "id": "6179aa6d-fdf7-4f92-80b7-1ac14dc6138b",
+              "id": "659b0cb9-1ff3-4160-aff6-6bd934b9c3fe",
               "jsonrpc": "2.0",
               "result": {
                 "final": true,
                 "resp": {
-                  "win": 40.0,
+                  "win": 400.0,
                   "v": "0.0.7",
                   "engine": {
                     "gamestate": {
@@ -1532,10 +1692,10 @@
                       "stopList": [],
                       "view": [
                         [
-                          4
+                          5
                         ],
                         [
-                          5
+                          3
                         ],
                         [
                           3
@@ -1547,12 +1707,12 @@
                       "baseStake": 200.0,
                       "totalStake": 200.0,
                       "wins": [],
-                      "win": 40.0,
+                      "win": 400.0,
                       "stakePerLine": 200.0,
                       "selectedWinLines": [],
-                      "currentWinnings": 40.0,
-                      "totalWinnings": 40.0,
-                      "baseGameWinnings": 40.0,
+                      "currentWinnings": 400.0,
+                      "totalWinnings": 400.0,
+                      "baseGameWinnings": 400.0,
                       "currentPlay": 0,
                       "freespinWinnings": 0.0,
                       "numFreeSpins": 0,
@@ -1562,8 +1722,8 @@
                       "detailedCollectedCashInfo": {
                         "0": [
                           {
-                            "pos": 1,
-                            "cash": 0.2
+                            "pos": 0,
+                            "cash": 2.0
                           }
                         ]
                       },
@@ -1573,7 +1733,7 @@
                     }
                   }
                 },
-                "balance": 99840,
+                "balance": 100200,
                 "freebets": null,
                 "state_lock": "b6589fc6ab0dc82cf12099d1c2d40ab994e8410c"
               }
@@ -1776,35 +1936,35 @@
                           "movements": null,
                           "board": [
                             [
-                              4,
+                              6,
                               6,
                               10
                             ],
                             [
                               7,
-                              1,
-                              10
+                              10,
+                              5
                             ],
                             [
                               10,
-                              6,
+                              5,
                               6
                             ]
                           ],
                           "initialBoard": [
                             [
-                              4,
+                              6,
                               6,
                               10
                             ],
                             [
                               7,
-                              1,
-                              10
+                              10,
+                              5
                             ],
                             [
                               10,
-                              6,
+                              5,
                               6
                             ]
                           ],
@@ -1843,35 +2003,35 @@
                         "movements": null,
                         "board": [
                           [
-                            4,
+                            6,
                             6,
                             10
                           ],
                           [
                             7,
-                            1,
-                            10
+                            10,
+                            5
                           ],
                           [
                             10,
-                            6,
+                            5,
                             6
                           ]
                         ],
                         "initialBoard": [
                           [
-                            4,
+                            6,
                             6,
                             10
                           ],
                           [
                             7,
-                            1,
-                            10
+                            10,
+                            5
                           ],
                           [
                             10,
-                            6,
+                            5,
                             6
                           ]
                         ],
@@ -1889,7 +2049,7 @@
                 },
                 "balance": 98200,
                 "freebets": null,
-                "state_lock": "cf0cddba5e066e01b1f28129f01896e7cfb88c14"
+                "state_lock": "19f2e8dd634ca2cdd9bd2f34df71f063b2f187d6"
               }
             }
           },
@@ -1956,34 +2116,34 @@
                           "board": [
                             [
                               10,
-                              2,
-                              2
+                              6,
+                              8
                             ],
                             [
                               10,
-                              7,
-                              5
+                              3,
+                              3
                             ],
                             [
-                              4,
                               10,
+                              8,
                               8
                             ]
                           ],
                           "initialBoard": [
                             [
                               10,
-                              2,
-                              2
+                              6,
+                              8
                             ],
                             [
                               10,
-                              7,
-                              5
+                              3,
+                              3
                             ],
                             [
-                              4,
                               10,
+                              8,
                               8
                             ]
                           ],
@@ -2023,34 +2183,34 @@
                         "board": [
                           [
                             10,
-                            2,
-                            2
+                            6,
+                            8
                           ],
                           [
                             10,
-                            7,
-                            5
+                            3,
+                            3
                           ],
                           [
-                            4,
                             10,
+                            8,
                             8
                           ]
                         ],
                         "initialBoard": [
                           [
                             10,
-                            2,
-                            2
+                            6,
+                            8
                           ],
                           [
                             10,
-                            7,
-                            5
+                            3,
+                            3
                           ],
                           [
-                            4,
                             10,
+                            8,
                             8
                           ]
                         ],
@@ -2068,7 +2228,7 @@
                 },
                 "balance": 98200,
                 "freebets": null,
-                "state_lock": "5b9386dc9917704d4bd71aa0ec3cb1df69c71582"
+                "state_lock": "41414377d66345d3c9b86f3f1dbf6a3c75fe4ac4"
               }
             }
           },
@@ -2192,8 +2352,8 @@
                 "purchased_feature_level": "1"
               },
               "extra_data": {
-                "client_seed": 11727,
-                "round_series_id": 1790563303642
+                "client_seed": 83628,
+                "round_series_id": 1790568114047
               }
             },
             "response": {
@@ -2206,29 +2366,29 @@
               "outcome": {
                 "screen": [
                   [
-                    "10",
-                    "9",
-                    "11"
+                    "5",
+                    "11",
+                    "10"
                   ],
                   [
-                    "7",
+                    "12",
+                    "8",
+                    "15"
+                  ],
+                  [
+                    "5",
                     "15",
-                    "12"
+                    "7"
                   ],
                   [
-                    "5",
-                    "9",
-                    "15"
-                  ],
-                  [
-                    "7",
                     "6",
+                    "5",
                     "11"
                   ],
                   [
-                    "7",
-                    "5",
-                    "15"
+                    "15",
+                    "9",
+                    "10"
                   ]
                 ],
                 "special_symbols": {
@@ -2236,15 +2396,15 @@
                     "15": [
                       [
                         1,
-                        1
+                        2
                       ],
                       [
                         2,
-                        2
+                        1
                       ],
                       [
                         4,
-                        2
+                        0
                       ]
                     ]
                   },
@@ -2261,15 +2421,15 @@
                     [
                       [
                         1,
-                        1
+                        2
                       ],
                       [
                         2,
-                        2
+                        1
                       ],
                       [
                         4,
-                        2
+                        0
                       ]
                     ]
                   ]
@@ -2292,8 +2452,8 @@
                 "wallet": 99560
               },
               "flow": {
-                "round_id": 17514694751,
-                "last_action_id": "17514694751_1",
+                "round_id": 17515294510,
+                "last_action_id": "17515294510_1",
                 "state": "freespins",
                 "command": "spin",
                 "available_actions": [
@@ -2390,8 +2550,8 @@
                 "purchased_feature_level": "5"
               },
               "extra_data": {
-                "client_seed": 51503,
-                "round_series_id": 1790563297864
+                "client_seed": 42627,
+                "round_series_id": 1790568114778
               }
             },
             "response": {
@@ -2421,8 +2581,8 @@
                 "purchased_feature_level": "4"
               },
               "extra_data": {
-                "client_seed": 51503,
-                "round_series_id": 1790563301001
+                "client_seed": 42627,
+                "round_series_id": 1790568117573
               }
             },
             "response": {
@@ -2452,8 +2612,8 @@
                 "purchased_feature_level": "3"
               },
               "extra_data": {
-                "client_seed": 51503,
-                "round_series_id": 1790563303913
+                "client_seed": 42627,
+                "round_series_id": 1790568120068
               }
             },
             "response": {
@@ -2483,8 +2643,8 @@
                 "purchased_feature_level": "1"
               },
               "extra_data": {
-                "client_seed": 51503,
-                "round_series_id": 1790563306791
+                "client_seed": 42627,
+                "round_series_id": 1790568122513
               }
             },
             "response": {
@@ -2497,24 +2657,24 @@
               "outcome": {
                 "screen": [
                   [
-                    "3",
                     "4",
-                    "0"
-                  ],
-                  [
-                    "5",
-                    "6",
-                    "7"
-                  ],
-                  [
                     "0",
-                    "1",
                     "2"
                   ],
                   [
+                    "6",
+                    "8",
+                    "5"
+                  ],
+                  [
+                    "0",
+                    "3",
+                    "10"
+                  ],
+                  [
                     "2",
-                    "5",
-                    "15"
+                    "4",
+                    "3"
                   ],
                   [
                     "2",
@@ -2527,7 +2687,7 @@
                     "0": [
                       [
                         0,
-                        2
+                        1
                       ],
                       [
                         2,
@@ -2540,12 +2700,7 @@
                     ]
                   },
                   "wild": {
-                    "15": [
-                      [
-                        3,
-                        2
-                      ]
-                    ]
+                    "15": []
                   }
                 },
                 "bet": 16,
@@ -2557,7 +2712,7 @@
                     [
                       [
                         0,
-                        2
+                        1
                       ],
                       [
                         2,
@@ -2588,8 +2743,8 @@
                 "wallet": 99272
               },
               "flow": {
-                "round_id": 17514695271,
-                "last_action_id": "17514695271_1",
+                "round_id": 17515295349,
+                "last_action_id": "17515295349_1",
                 "state": "freespins",
                 "command": "spin",
                 "available_actions": [
@@ -2621,8 +2776,8 @@
                 "purchased_feature_level": "2"
               },
               "extra_data": {
-                "client_seed": 51503,
-                "round_series_id": 1790563309750
+                "client_seed": 42627,
+                "round_series_id": 1790568125256
               }
             },
             "response": {
@@ -2787,7 +2942,7 @@
             "outcomes": [],
             "status": 200,
             "request": {
-              "id": "b0dfffdc-35f6-424d-9a1e-916af97414be",
+              "id": "d7038e59-8665-4bfa-9225-d9b7e420c571",
               "jsonrpc": "2.0",
               "method": "play",
               "params": {
@@ -2819,7 +2974,7 @@
             "outcomes": [],
             "status": 200,
             "request": {
-              "id": "702844c7-7bd8-43a9-87ce-adbd96e91b04",
+              "id": "fece924d-ebea-44d0-a87e-fb6fc7224f91",
               "jsonrpc": "2.0",
               "method": "play",
               "params": {
@@ -2948,7 +3103,7 @@
             "outcomes": [],
             "status": 200,
             "request": {
-              "id": "08cbdb77-fa60-4c1f-953b-068d23fd8730",
+              "id": "5f68e90f-7154-43b4-8f16-fa22afd5c167",
               "jsonrpc": "2.0",
               "method": "play",
               "params": {
@@ -2990,126 +3145,57 @@
               }
             },
             "response": {
-              "id": "08cbdb77-fa60-4c1f-953b-068d23fd8730",
+              "id": "5f68e90f-7154-43b4-8f16-fa22afd5c167",
               "jsonrpc": "2.0",
               "result": {
                 "final": true,
                 "resp": {
                   "v": "0.0.17",
-                  "win": 260.0,
+                  "win": 0.0,
                   "engine": {
                     "gamestate": {
                       "stopList": [
-                        120,
-                        8,
-                        63,
-                        128,
-                        47
+                        50,
+                        176,
+                        258,
+                        224,
+                        137
                       ],
                       "view": [
                         [
-                          1,
-                          8,
-                          7,
-                          1,
+                          9,
+                          11,
+                          0,
+                          11,
+                          1
+                        ],
+                        [
+                          5,
+                          11,
+                          9,
+                          11,
                           9
                         ],
                         [
                           8,
+                          11,
                           5,
-                          3,
-                          8,
-                          5
-                        ],
-                        [
-                          0,
-                          1,
-                          0,
-                          7,
-                          6
+                          11,
+                          7
                         ]
                       ],
                       "action": "spin",
-                      "reelType": "BaseGameReelset1",
-                      "wins": [
-                        {
-                          "id": "1:3",
-                          "type": "line",
-                          "payoutFactor": 10.0,
-                          "winnings": 100.0,
-                          "symbolPos": [
-                            10,
-                            11,
-                            12
-                          ],
-                          "symbols": [
-                            1,
-                            1,
-                            1
-                          ],
-                          "stake": 10.0
-                        },
-                        {
-                          "id": "1:3",
-                          "type": "line",
-                          "payoutFactor": 10.0,
-                          "winnings": 100.0,
-                          "symbolPos": [
-                            0,
-                            11,
-                            12
-                          ],
-                          "symbols": [
-                            1,
-                            1,
-                            1
-                          ],
-                          "stake": 10.0
-                        },
-                        {
-                          "id": "5:3",
-                          "type": "line",
-                          "payoutFactor": 4.0,
-                          "winnings": 40.0,
-                          "symbolPos": [
-                            10,
-                            6,
-                            12
-                          ],
-                          "symbols": [
-                            5,
-                            5,
-                            5
-                          ],
-                          "stake": 10.0
-                        },
-                        {
-                          "id": "8:3",
-                          "type": "line",
-                          "payoutFactor": 2.0,
-                          "winnings": 20.0,
-                          "symbolPos": [
-                            10,
-                            1,
-                            12
-                          ],
-                          "symbols": [
-                            8,
-                            8,
-                            8
-                          ],
-                          "stake": 10.0
-                        }
-                      ],
+                      "reelType": "BaseGameReelset2",
+                      "wins": [],
                       "previousRoundWin": 0.0,
                       "stake": 200.0,
                       "baseCost": 200.0,
                       "baseStake": 200.0,
-                      "win": 260.0,
-                      "currentWinnings": 260.0,
-                      "totalWinnings": 260.0,
+                      "win": 0.0,
+                      "currentWinnings": 0.0,
+                      "totalWinnings": 0.0,
                       "stakePerLine": 10.0,
-                      "baseGameWinnings": 260.0,
+                      "baseGameWinnings": 0.0,
                       "__original": {
                         "Completed": true,
                         "Bet": {
@@ -3131,153 +3217,119 @@
                             "Passed": 1,
                             "Bet": 200
                           },
-                          "TotalWin": 260,
-                          "SpinWin": 260,
                           "VISData": {
+                            "SymbolKit": 1,
                             "Grids": [
                               [
                                 [
-                                  2,
-                                  9,
-                                  1
-                                ],
-                                [
-                                  9,
+                                  10,
                                   6,
-                                  2
+                                  9
                                 ],
                                 [
-                                  8,
-                                  4,
-                                  1
+                                  12,
+                                  12,
+                                  12
+                                ],
+                                [
+                                  1,
+                                  10,
+                                  6
+                                ],
+                                [
+                                  12,
+                                  12,
+                                  12
                                 ],
                                 [
                                   2,
-                                  9,
+                                  10,
                                   8
-                                ],
+                                ]
+                              ],
+                              [
                                 [
                                   10,
                                   6,
-                                  7
+                                  9
+                                ],
+                                [
+                                  4,
+                                  4,
+                                  4
+                                ],
+                                [
+                                  1,
+                                  10,
+                                  6
+                                ],
+                                [
+                                  4,
+                                  4,
+                                  4
+                                ],
+                                [
+                                  2,
+                                  10,
+                                  8
                                 ]
                               ]
                             ],
-                            "Prizes": [
-                              {
-                                "PrizeType": 10,
-                                "Value": 100,
-                                "RawValue": 10,
-                                "Rule": 2,
-                                "Combination": 2,
-                                "Length": 3,
-                                "Line": 3,
-                                "Source": 1,
-                                "Cells": [
-                                  [
-                                    0,
-                                    2
-                                  ],
-                                  [
-                                    1,
-                                    2
-                                  ],
-                                  [
-                                    2,
-                                    2
-                                  ]
-                                ]
-                              },
-                              {
-                                "PrizeType": 10,
-                                "Value": 100,
-                                "RawValue": 10,
-                                "Rule": 2,
-                                "Combination": 2,
-                                "Length": 3,
-                                "Line": 14,
-                                "Source": 1,
-                                "Cells": [
-                                  [
-                                    0,
-                                    0
-                                  ],
-                                  [
-                                    1,
-                                    2
-                                  ],
-                                  [
-                                    2,
-                                    2
-                                  ]
-                                ]
-                              },
-                              {
-                                "PrizeType": 10,
-                                "Value": 40,
-                                "RawValue": 4,
-                                "Rule": 6,
-                                "Combination": 2,
-                                "Length": 3,
-                                "Line": 8,
-                                "Source": 1,
-                                "Cells": [
-                                  [
-                                    0,
-                                    2
-                                  ],
-                                  [
-                                    1,
-                                    1
-                                  ],
-                                  [
-                                    2,
-                                    2
-                                  ]
-                                ]
-                              },
-                              {
-                                "PrizeType": 10,
-                                "Value": 20,
-                                "RawValue": 2,
-                                "Rule": 9,
-                                "Combination": 2,
-                                "Length": 3,
-                                "Line": 19,
-                                "Source": 1,
-                                "Cells": [
-                                  [
-                                    0,
-                                    2
-                                  ],
-                                  [
-                                    1,
-                                    0
-                                  ],
-                                  [
-                                    2,
-                                    2
-                                  ]
-                                ]
-                              }
-                            ],
+                            "Prizes": [],
                             "Events": [
                               {
                                 "Type": 10,
-                                "SymbolKit": 0,
+                                "SymbolKit": 1,
                                 "ReelStops": [
-                                  120,
-                                  8,
-                                  63,
-                                  128,
-                                  47
+                                  50,
+                                  176,
+                                  258,
+                                  224,
+                                  137
                                 ],
                                 "Grids": [
                                   0
                                 ]
                               },
                               {
+                                "Type": 50,
+                                "SwappedSymbols": [
+                                  [
+                                    4,
+                                    3,
+                                    0
+                                  ],
+                                  [
+                                    4,
+                                    1,
+                                    1
+                                  ],
+                                  [
+                                    4,
+                                    1,
+                                    2
+                                  ],
+                                  [
+                                    4,
+                                    1,
+                                    0
+                                  ],
+                                  [
+                                    4,
+                                    3,
+                                    1
+                                  ],
+                                  [
+                                    4,
+                                    3,
+                                    2
+                                  ]
+                                ],
+                                "Grid": 1
+                              },
+                              {
                                 "Type": 20,
+                                "Grid": 1,
                                 "Rules": [
                                   1,
                                   2,
@@ -3290,13 +3342,31 @@
                                   9,
                                   10,
                                   11
-                                ],
-                                "Prizes": [
-                                  0,
-                                  4
                                 ]
+                              },
+                              {
+                                "Coins": [
+                                  {
+                                    "Type": 2,
+                                    "Prize": 0,
+                                    "ID": 0,
+                                    "Pos": [
+                                      3,
+                                      0
+                                    ]
+                                  }
+                                ],
+                                "Type": 10301
                               }
-                            ]
+                            ],
+                            "FEV": {
+                              "50": [
+                                1
+                              ],
+                              "10301": [
+                                3
+                              ]
+                            }
                           }
                         },
                         "Code": 2001
@@ -3362,6 +3432,91 @@
                       "freespinTriggered": false,
                       "jackpotTriggered": false,
                       "respinTriggered": false,
+                      "bgCoinList": [
+                        {
+                          "column": 3,
+                          "row": 0,
+                          "coinIndex": 14
+                        }
+                      ],
+                      "mysteryDataListAfterReveal": [
+                        {
+                          "column": 3,
+                          "row": 0,
+                          "revealedSymbol": 3
+                        },
+                        {
+                          "column": 1,
+                          "row": 1,
+                          "revealedSymbol": 3
+                        },
+                        {
+                          "column": 1,
+                          "row": 2,
+                          "revealedSymbol": 3
+                        },
+                        {
+                          "column": 1,
+                          "row": 0,
+                          "revealedSymbol": 3
+                        },
+                        {
+                          "column": 3,
+                          "row": 1,
+                          "revealedSymbol": 3
+                        },
+                        {
+                          "column": 3,
+                          "row": 2,
+                          "revealedSymbol": 3
+                        }
+                      ],
+                      "symbolGridBeforeMysteryRevealed": [
+                        [
+                          9,
+                          11,
+                          0,
+                          11,
+                          1
+                        ],
+                        [
+                          5,
+                          11,
+                          9,
+                          11,
+                          9
+                        ],
+                        [
+                          8,
+                          11,
+                          5,
+                          11,
+                          7
+                        ]
+                      ],
+                      "symbolGridAfterMysteryRevealed": [
+                        [
+                          9,
+                          3,
+                          0,
+                          3,
+                          1
+                        ],
+                        [
+                          5,
+                          3,
+                          9,
+                          3,
+                          9
+                        ],
+                        [
+                          8,
+                          3,
+                          5,
+                          3,
+                          7
+                        ]
+                      ],
                       "sharedState": {
                         "coinBoxes": {
                           "200": {
@@ -3384,7 +3539,7 @@
                     }
                   }
                 },
-                "balance": 100060,
+                "balance": 99800,
                 "freebets": null,
                 "state_lock": "b6589fc6ab0dc82cf12099d1c2d40ab994e8410c"
               }
