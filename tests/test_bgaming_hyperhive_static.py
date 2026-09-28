@@ -171,7 +171,8 @@ def test_legacy_bet_slots_use_numeric_bid_serializer():
                 "https://example.bgaming-network.com/bs_lib.js",
                 (
                     "_bgCallRpcMethod mConnectUrl bet_type 'play' "
-                    "createEmptyObject freebet bet_slots eBetsIDs"
+                    "createEmptyObject freebet bet_slots "
+                    "eBetsIDs={'DEFAULT':0x0,'SHOP':0x1}"
                 ),
             ),
             (
@@ -193,10 +194,16 @@ def test_legacy_bet_slots_use_numeric_bid_serializer():
     assert profile.source == "client_json_bet_slots+legacy_bid_serializer"
     assert profile.catalog_complete is True
     assert profile.wire_complete is True
+    assert profile.base_wire_complete is True
+    assert profile.base_request_fields == {
+        "bet": "$BASE_BET_STRING",
+        "bid": 0,
+    }
     assert [mode.mode_id for mode in profile.modes] == ["shop", "ante"]
     assert profile.modes[0].request_fields == {
         "bet": "$BASE_BET_STRING",
         "bid": 1,
+        "purchased_feature": "buy_bonus",
     }
     assert profile.modes[1].request_fields == {
         "bet": "$BASE_BET_STRING",
@@ -209,7 +216,8 @@ def test_merges_disabled_buy_catalog_with_legacy_7rst_base_serializer():
             "https://game.demo.bgaming-network.com/bs_lib/src/BS_lib.js",
             (
                 "_bgCallRpcMethod mConnectUrl bet_type 'play' "
-                "createEmptyObject freebet bet_slots"
+                "createEmptyObject freebet bet_slots "
+                "eBetsIDs={'DEFAULT':0x0,'SHOP':0x1}"
             ),
         ),
         (
@@ -225,6 +233,9 @@ def test_merges_disabled_buy_catalog_with_legacy_7rst_base_serializer():
     assert profile.catalog_complete is True
     assert profile.wire_complete is True
     assert profile.base_wire_complete is True
-    assert profile.base_request_fields == {"bet": "$BASE_BET_STRING"}
+    assert profile.base_request_fields == {
+        "bet": "$BASE_BET_STRING",
+        "bid": 0,
+    }
     assert profile.modes == ()
 
