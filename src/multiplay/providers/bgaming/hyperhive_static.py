@@ -738,10 +738,7 @@ def _legacy_obfuscated_rpc_profile(
     return _profile(
         "client_static_legacy_rpc_manager",
         url,
-        base={
-            "bet": "$BASE_BET_STRING",
-            "bid": 0,
-        },
+        base={"bet": "$BASE_BET_STRING"},
         base_complete=True,
         state_lock=False,
         modes=(),
