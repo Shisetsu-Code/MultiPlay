@@ -78,7 +78,21 @@ def analyze_bgaming_demo(
 
     browser_evidence = load_har(raw_har)
     _require_runtime_identity(url, browser_evidence)
-    family = _detect_family(browser_evidence, url=execution_url, timeout_s=timeout_s)
+    try:
+        family = _detect_family(
+            browser_evidence,
+            url=execution_url,
+            timeout_s=timeout_s,
+        )
+    except (OSError, RuntimeError, TypeError, ValueError) as exc:
+        return _write_unresolved_runtime_report(
+            root,
+            requested_url=requested_url,
+            reason=(
+                "no resolvable BGaming runtime family: "
+                f"{type(exc).__name__}: {exc}"
+            ),
+        )
     static_profile = (
         discover_hyperhive_static_profile(browser_evidence)
         if family == HYPERHIVE_JSONRPC
