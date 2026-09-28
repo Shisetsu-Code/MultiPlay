@@ -1,5 +1,7 @@
 name: BGaming analyzer worker
 
+# rerun: remaining HyperHive wire recovery + stale demo resolver 2026-09-28
+
 # rerun: preserve validated protocol routes + legacy settle recovery 2026-09-28
 
 # rerun: static HyperHive recovery 2026-09-28
@@ -80,15 +82,23 @@ jobs:
               if availability not in {"DEMO", "EPHEMERAL_DEMO"}:
                   continue
               slug = str(item.get("slug") or "").strip()
-              url = (
-                  item.get("execution_url")
-                  or item.get("demo_url")
-                  or item.get("public_url")
-                  or ""
+              previous = state.get(slug, {})
+              previous_status = (
+                  str(previous.get("status") or "")
+                  if isinstance(previous, dict)
+                  else ""
               )
+              if previous_status == "ERROR" and item.get("public_url"):
+                  url = item.get("public_url")
+              else:
+                  url = (
+                      item.get("execution_url")
+                      or item.get("demo_url")
+                      or item.get("public_url")
+                      or ""
+                  )
               if not slug or not url:
                   continue
-              previous = state.get(slug, {})
               if (
                   not refresh
                   and isinstance(previous, dict)
