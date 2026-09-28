@@ -64,6 +64,23 @@ def analyze_bgaming_demo(
                 requested_url,
                 timeout_s=timeout_s,
             )
+            resolved_host = (urlsplit(execution_url).hostname or "").casefold()
+            if resolved_host == "bgaming.com" or resolved_host.endswith(".bgaming.com"):
+                try:
+                    fallback_probe = probe_bgaming_demo(
+                        execution_url,
+                        timeout_s=timeout_s,
+                    )
+                except (OSError, RuntimeError, TypeError, ValueError) as exc:
+                    return _write_unresolved_runtime_report(
+                        root,
+                        requested_url=requested_url,
+                        reason=(
+                            "no matching BGaming demo runtime could be resolved: "
+                            f"{type(exc).__name__}: {exc}"
+                        ),
+                    )
+                execution_url = fallback_probe.metadata.launch_url
         else:
             execution_url = public_probe.metadata.launch_url
 
