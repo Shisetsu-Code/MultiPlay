@@ -110,6 +110,7 @@ def discover_hyperhive_static_sources(
             _blazing_profile,
             _blackbeard_profile,
             _clash_profile,
+            _legacy_obfuscated_rpc_profile,
             _sweet_profile,
             _zeus_profile,
         ):
@@ -484,14 +485,20 @@ def _mystic_profile(
                 "respin_buy",
                 "buy_chance",
                 1.5,
-                {"purchased_feature": "buy_chance"},
+                {
+                    "bet": "$BASE_BET_MUL_2_DIV_3",
+                    "purchased_feature": "buy_chance",
+                },
                 "client_static_mode_transform",
             ),
             _mode(
                 "bonus_buy",
                 "buy_bonus",
                 100,
-                {"purchased_feature": "buy_bonus"},
+                {
+                    "bet": "$BASE_BET_DIV_100",
+                    "purchased_feature": "buy_bonus",
+                },
                 "client_static_mode_transform",
             ),
         ),
@@ -599,10 +606,37 @@ def _clash_profile(
         base={
             "bet_type": "default",
             "fe_exponent": "$FE_EXPONENT",
+            "purchased_feature": None,
             "buyBonusModeMultiplier": 1,
         },
         base_complete=True,
         modes=modes,
+    )
+
+
+def _legacy_obfuscated_rpc_profile(
+    text: str,
+    url: str,
+) -> HyperHiveStaticProfile | None:
+    required = (
+        "_bgCallRpcMethod",
+        "mConnectUrl",
+        "bet_type",
+        "'play'",
+        "createEmptyObject",
+    )
+    if not all(marker in text for marker in required):
+        return None
+    if "freebet" not in text:
+        return None
+
+    return _profile(
+        "client_static_legacy_rpc_manager",
+        url,
+        base={},
+        base_complete=True,
+        state_lock=True,
+        modes=(),
     )
 
 
@@ -624,6 +658,9 @@ def _sweet_profile(
     return _profile(
         "client_static_buy_bonus_costs",
         url,
+        base={"bet_type": "bet"},
+        base_complete=True,
+        state_lock=True,
         wire_complete=False,
         modes=(
             _mode(
