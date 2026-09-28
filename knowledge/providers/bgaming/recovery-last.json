@@ -1,7 +1,7 @@
 {
   "schema": "multiplay/bgaming-recovery-test/v1",
-  "run_id": "36344709417",
-  "generated_at": "2026-09-27T19:35:39.704270+00:00",
+  "run_id": "36367568981",
+  "generated_at": "2026-09-28T01:53:18.301212+00:00",
   "games": [
     {
       "id": "bgaming-recovery-big-atlantis-frenzy",
@@ -47,7 +47,7 @@
                 "purchased_feature": "freespin_buy"
               },
               "extra_data": {
-                "round_series_id": 1790537597992
+                "round_series_id": 1790560344166
               }
             },
             "response": {
@@ -65,39 +65,39 @@
               "outcome": {
                 "screen": [
                   [
-                    "6",
-                    "9",
-                    "3",
                     "7",
-                    "11"
-                  ],
-                  [
-                    "4",
-                    "9",
-                    "9",
                     "11",
+                    "8",
+                    "3",
                     "6"
                   ],
                   [
-                    "7",
+                    "8",
+                    "8",
+                    "9",
                     "2",
-                    "2",
-                    "5",
-                    "5"
+                    "6"
                   ],
                   [
-                    "2",
                     "5",
-                    "11",
-                    "6",
+                    "5",
+                    "4",
+                    "8",
                     "1"
                   ],
                   [
+                    "5",
+                    "11",
+                    "6",
                     "1",
+                    "8"
+                  ],
+                  [
+                    "5",
+                    "5",
                     "6",
-                    "6",
-                    "9",
-                    "9"
+                    "11",
+                    "8"
                   ]
                 ],
                 "special_symbols": {
@@ -105,15 +105,15 @@
                     "11": [
                       [
                         0,
-                        4
-                      ],
-                      [
-                        1,
-                        3
+                        1
                       ],
                       [
                         3,
-                        2
+                        1
+                      ],
+                      [
+                        4,
+                        3
                       ]
                     ]
                   }
@@ -129,8 +129,8 @@
                 "wallet": 97600
               },
               "flow": {
-                "round_id": 17510256788,
-                "last_action_id": "17510256788_1",
+                "round_id": 17514217891,
+                "last_action_id": "17514217891_1",
                 "state": "freespins",
                 "command": "spin",
                 "available_actions": [
@@ -243,7 +243,7 @@
                 "purchased_feature_level": "4"
               },
               "extra_data": {
-                "round_series_id": 1790537633261
+                "round_series_id": 1790560348851
               }
             },
             "response": {
@@ -256,60 +256,65 @@
                 },
                 "prizes": [],
                 "freespin_type": "S",
-                "freespins_issued": 10,
-                "freespins_left": 10,
+                "freespins_issued": 15,
+                "freespins_left": 15,
                 "special_list_indexes": [
-                  2,
-                  10
+                  1,
+                  9,
+                  11
                 ]
               },
               "outcome": {
                 "screen": [
                   [
-                    "6",
-                    "1",
-                    "1",
-                    "9"
-                  ],
-                  [
-                    "5",
-                    "5",
+                    "12",
                     "9",
-                    "2"
-                  ],
-                  [
-                    "1",
-                    "5",
-                    "12",
-                    "8"
-                  ],
-                  [
-                    "8",
-                    "8",
-                    "12",
-                    "6"
-                  ],
-                  [
-                    "6",
-                    "12",
-                    "8",
+                    "7",
                     "3"
+                  ],
+                  [
+                    "12",
+                    "2",
+                    "2",
+                    "5"
+                  ],
+                  [
+                    "5",
+                    "1",
+                    "1",
+                    "5"
+                  ],
+                  [
+                    "2",
+                    "9",
+                    "4",
+                    "12"
+                  ],
+                  [
+                    "4",
+                    "4",
+                    "6",
+                    "12"
                   ]
                 ],
                 "special_symbols": {
                   "scatter": {
                     "12": [
                       [
-                        2,
-                        2
+                        0,
+                        0
+                      ],
+                      [
+                        1,
+                        0
                       ],
                       [
                         3,
-                        2
+                        3
                       ],
                       [
                         4,
-                        1
+                        3
                       ]
                     ]
                   }
@@ -317,7 +322,7 @@
                 "bet": 200,
                 "win": 0,
                 "wins": [],
-                "freespins_issued": 10,
+                "freespins_issued": 15,
                 "storage": {
                   "hidden_screen": [
                     [],
@@ -333,8 +338,8 @@
                 "wallet": 80000
               },
               "flow": {
-                "round_id": 17510264277,
-                "last_action_id": "17510264277_1",
+                "round_id": 17514218503,
+                "last_action_id": "17514218503_1",
                 "state": "freespins",
                 "command": "spin",
                 "available_actions": [
@@ -430,7 +435,7 @@
                 "purchased_feature_level": "1"
               },
               "extra_data": {
-                "round_series_id": 1790537607884
+                "round_series_id": 1790560343169
               }
             },
             "response": {
@@ -443,49 +448,50 @@
                 },
                 "prizes": [],
                 "freespin_type": "S",
-                "freespins_issued": 10,
-                "freespins_left": 10,
+                "freespins_issued": 15,
+                "freespins_left": 15,
                 "special_list_indexes": [
-                  1,
-                  10
+                  4,
+                  8,
+                  12
                 ]
               },
               "outcome": {
                 "screen": [
                   [
                     "12",
-                    "7",
                     "9",
                     "9",
-                    "3"
+                    "3",
+                    "6"
                   ],
                   [
-                    "4",
-                    "4",
-                    "12",
+                    "8",
+                    "8",
                     "9",
+                    "2",
+                    "12"
+                  ],
+                  [
+                    "5",
+                    "7",
+                    "7",
+                    "2",
                     "2"
                   ],
                   [
-                    "4",
-                    "8",
-                    "1",
-                    "8",
-                    "4"
-                  ],
-                  [
                     "12",
                     "6",
-                    "6",
-                    "8",
-                    "8"
+                    "7",
+                    "7",
+                    "2"
                   ],
                   [
-                    "2",
-                    "2",
+                    "8",
+                    "4",
                     "5",
-                    "5",
-                    "6"
+                    "12",
+                    "4"
                   ]
                 ],
                 "special_symbols": {
@@ -497,11 +503,15 @@
                       ],
                       [
                         1,
-                        2
+                        4
                       ],
                       [
                         3,
                         0
+                      ],
+                      [
+                        4,
+                        3
                       ]
                     ]
                   }
@@ -509,7 +519,7 @@
                 "bet": 200,
                 "win": 0,
                 "wins": [],
-                "freespins_issued": 10,
+                "freespins_issued": 15,
                 "storage": null
               },
               "balance": {
@@ -517,8 +527,8 @@
                 "wallet": 70000
               },
               "flow": {
-                "round_id": 17510258896,
-                "last_action_id": "17510258896_1",
+                "round_id": 17514217641,
+                "last_action_id": "17514217641_1",
                 "state": "freespins",
                 "command": "spin",
                 "available_actions": [
@@ -549,7 +559,7 @@
                 "purchased_feature_level": "0"
               },
               "extra_data": {
-                "round_series_id": 1790537610166
+                "round_series_id": 1790560346011
               }
             },
             "response": {
@@ -565,61 +575,61 @@
                 "freespins_issued": 10,
                 "freespins_left": 10,
                 "special_list_indexes": [
-                  1,
-                  10
+                  2,
+                  9
                 ]
               },
               "outcome": {
                 "screen": [
                   [
+                    "9",
+                    "1",
+                    "1",
+                    "6",
+                    "6"
+                  ],
+                  [
+                    "9",
                     "12",
-                    "7",
-                    "6",
-                    "3",
-                    "9"
-                  ],
-                  [
-                    "6",
-                    "8",
-                    "8",
                     "5",
-                    "2"
+                    "5",
+                    "6"
                   ],
                   [
-                    "4",
-                    "8",
-                    "7",
-                    "7",
-                    "12"
-                  ],
-                  [
-                    "6",
+                    "5",
                     "7",
                     "7",
                     "2",
                     "12"
                   ],
                   [
+                    "4",
+                    "5",
+                    "6",
+                    "6",
+                    "8"
+                  ],
+                  [
                     "8",
-                    "3",
+                    "4",
+                    "5",
                     "7",
-                    "7",
-                    "6"
+                    "12"
                   ]
                 ],
                 "special_symbols": {
                   "scatter": {
                     "12": [
                       [
-                        0,
-                        0
+                        1,
+                        1
                       ],
                       [
                         2,
                         4
                       ],
                       [
-                        3,
+                        4,
                         4
                       ]
                     ]
@@ -636,8 +646,8 @@
                 "wallet": 85000
               },
               "flow": {
-                "round_id": 17510259384,
-                "last_action_id": "17510259384_1",
+                "round_id": 17514218020,
+                "last_action_id": "17514218020_1",
                 "state": "freespins",
                 "command": "spin",
                 "available_actions": [
@@ -668,7 +678,7 @@
                 "purchased_feature_level": "2"
               },
               "extra_data": {
-                "round_series_id": 1790537612442
+                "round_series_id": 1790560348690
               }
             },
             "response": {
@@ -684,46 +694,46 @@
                 "freespins_issued": 10,
                 "freespins_left": 10,
                 "special_list_indexes": [
-                  1,
-                  10
+                  5,
+                  7
                 ]
               },
               "outcome": {
                 "screen": [
                   [
-                    "3",
-                    "7",
-                    "7",
-                    "3",
+                    "1",
+                    "1",
+                    "6",
+                    "6",
                     "3"
                   ],
                   [
-                    "8",
-                    "5",
-                    "5",
                     "12",
-                    "2"
-                  ],
-                  [
-                    "12",
-                    "5",
-                    "4",
-                    "4",
-                    "8"
-                  ],
-                  [
-                    "4",
-                    "12",
-                    "8",
                     "9",
+                    "5",
+                    "5",
                     "4"
                   ],
                   [
+                    "7",
+                    "12",
+                    "2",
+                    "5",
+                    "5"
+                  ],
+                  [
+                    "12",
                     "4",
+                    "5",
                     "6",
+                    "6"
+                  ],
+                  [
+                    "7",
                     "6",
-                    "1",
-                    "8"
+                    "2",
+                    "8",
+                    "3"
                   ]
                 ],
                 "special_symbols": {
@@ -731,15 +741,15 @@
                     "12": [
                       [
                         1,
-                        3
-                      ],
-                      [
-                        2,
                         0
                       ],
                       [
-                        3,
+                        2,
                         1
+                      ],
+                      [
+                        3,
+                        0
                       ]
                     ]
                   }
@@ -755,8 +765,8 @@
                 "wallet": 40000
               },
               "flow": {
-                "round_id": 17510259896,
-                "last_action_id": "17510259896_1",
+                "round_id": 17514218477,
+                "last_action_id": "17514218477_1",
                 "state": "freespins",
                 "command": "spin",
                 "available_actions": [
@@ -835,1409 +845,6 @@
       ]
     },
     {
-      "id": "bgaming-recovery-godfather-3-pillars",
-      "family": "hyperhive-jsonrpc",
-      "enrichment": {
-        "attempted": true,
-        "success": true,
-        "kind": "handler-probe",
-        "metadata": {
-          "route_ids": [
-            "RA1DC5206"
-          ]
-        }
-      },
-      "direct_executable_count": 1,
-      "blockers": [],
-      "handler_probe": {
-        "attempted": true,
-        "success": true,
-        "route_id": "RA1DC5206",
-        "route_ids": [
-          "RA1DC5206"
-        ],
-        "outcomes": [
-          {
-            "route_id": "RA1DC5206",
-            "handler": "onSpinClicked",
-            "called": false,
-            "resolved_path": "",
-            "frame_url": "",
-            "request_start": 0,
-            "request_end": 0,
-            "error": "not found"
-          }
-        ],
-        "results": [
-          {
-            "route_id": "RA1DC5206",
-            "semantic": "SPIN",
-            "control": "spin-button",
-            "handler": "onSpinClicked",
-            "success": false,
-            "outcomes": [
-              {
-                "route_id": "RA1DC5206",
-                "handler": "onSpinClicked",
-                "called": false,
-                "resolved_path": "",
-                "frame_url": "",
-                "request_start": 0,
-                "request_end": 0,
-                "error": "not found"
-              }
-            ],
-            "request_count": 0
-          },
-          {
-            "route_id": "RA1DC5206",
-            "semantic": "SPIN",
-            "control": "spin-button",
-            "handler": "onSpinClicked",
-            "kind": "direct-inferred-hyperhive",
-            "success": true,
-            "outcomes": [],
-            "status": 200,
-            "request": {
-              "id": "6a8c8487-8753-4f00-99aa-9e3f05cd0d04",
-              "jsonrpc": "2.0",
-              "method": "play",
-              "params": {
-                "token": "<redacted>",
-                "req": {
-                  "bet": 100,
-                  "bet_type": "bet",
-                  "custom_req": {
-                    "isNormalBuy": false,
-                    "isSuperBuy": false,
-                    "action": "spin",
-                    "exponent": 2
-                  }
-                },
-                "state_lock": "b6589fc6ab0dc82cf12099d1c2d40ab994e8410c"
-              }
-            },
-            "response": {
-              "id": "6a8c8487-8753-4f00-99aa-9e3f05cd0d04",
-              "jsonrpc": "2.0",
-              "result": {
-                "final": true,
-                "resp": {
-                  "win": 0.0,
-                  "v": "0.0.18",
-                  "engine": {
-                    "gamestate": {
-                      "stopList": [
-                        16,
-                        14,
-                        172,
-                        65,
-                        169
-                      ],
-                      "view": [
-                        [
-                          3,
-                          7,
-                          8,
-                          3,
-                          2
-                        ],
-                        [
-                          6,
-                          5,
-                          4,
-                          7,
-                          6
-                        ],
-                        [
-                          8,
-                          11,
-                          7,
-                          2,
-                          5
-                        ]
-                      ],
-                      "action": "spin",
-                      "reelType": "BaseGameReelset2",
-                      "wins": [],
-                      "previousRoundWin": 0.0,
-                      "stake": 100.0,
-                      "baseCost": 100.0,
-                      "baseStake": 100.0,
-                      "win": 0.0,
-                      "currentWinnings": 0.0,
-                      "totalWinnings": 0.0,
-                      "stakePerLine": 5.0,
-                      "baseGameWinnings": 0.0,
-                      "coinBox": {
-                        "bronzeBox": 12,
-                        "silverBox": 12,
-                        "goldBox": {
-                          "currentJackpotValues": {
-                            "major": 75.0,
-                            "max": 5000.0,
-                            "mega": 1000.0,
-                            "mini": 10.0,
-                            "minor": 25.0
-                          },
-                          "jackpotIncrementMultiplier": 0,
-                          "updatedJackpotType": ""
-                        }
-                      },
-                      "freespinTriggered": false,
-                      "jackpotTriggered": false,
-                      "respinTriggered": false,
-                      "bgCoinList": [],
-                      "mysteryDataListAfterReveal": [
-                        {
-                          "column": 1,
-                          "row": 2,
-                          "revealedSymbol": 5
-                        }
-                      ],
-                      "symbolGridBeforeMysteryRevealed": [
-                        [
-                          3,
-                          7,
-                          8,
-                          3,
-                          2
-                        ],
-                        [
-                          6,
-                          5,
-                          4,
-                          7,
-                          6
-                        ],
-                        [
-                          8,
-                          11,
-                          7,
-                          2,
-                          5
-                        ]
-                      ],
-                      "symbolGridAfterMysteryRevealed": [
-                        [
-                          3,
-                          7,
-                          8,
-                          3,
-                          2
-                        ],
-                        [
-                          6,
-                          5,
-                          4,
-                          7,
-                          6
-                        ],
-                        [
-                          8,
-                          5,
-                          7,
-                          2,
-                          5
-                        ]
-                      ],
-                      "sharedState": {
-                        "coinBoxes": {
-                          "100": {
-                            "bronzeBox": 12,
-                            "silverBox": 12,
-                            "goldBox": {
-                              "currentJackpotValues": {
-                                "major": 75.0,
-                                "max": 5000.0,
-                                "mega": 1000.0,
-                                "mini": 10.0,
-                                "minor": 25.0
-                              },
-                              "jackpotIncrementMultiplier": 0,
-                              "updatedJackpotType": ""
-                            }
-                          }
-                        }
-                      }
-                    }
-                  }
-                },
-                "balance": 99900,
-                "freebets": null,
-                "state_lock": "b6589fc6ab0dc82cf12099d1c2d40ab994e8410c"
-              }
-            }
-          }
-        ]
-      },
-      "routes": [
-        {
-          "semantic": "SPIN",
-          "status": "NETWORK_OBSERVED",
-          "control": "spin-button",
-          "handler": "onSpinClicked",
-          "wire_markers": [
-            "bet_type=bet",
-            "method=play"
-          ],
-          "direct_executable": true,
-          "direct_reason": ""
-        }
-      ]
-    },
-    {
-      "id": "bgaming-recovery-hot-rocket-5x-3x-2x",
-      "family": "hyperhive-jsonrpc",
-      "enrichment": {
-        "attempted": true,
-        "success": true,
-        "kind": "handler-probe",
-        "metadata": {
-          "route_ids": [
-            "RA1DC5206"
-          ]
-        }
-      },
-      "direct_executable_count": 1,
-      "blockers": [],
-      "handler_probe": {
-        "attempted": true,
-        "success": true,
-        "route_id": "RA1DC5206",
-        "route_ids": [
-          "RA1DC5206"
-        ],
-        "outcomes": [
-          {
-            "route_id": "RA1DC5206",
-            "handler": "onSpinClicked",
-            "called": false,
-            "resolved_path": "",
-            "frame_url": "",
-            "request_start": 0,
-            "request_end": 0,
-            "error": "not found"
-          }
-        ],
-        "results": [
-          {
-            "route_id": "RA1DC5206",
-            "semantic": "SPIN",
-            "control": "spin-button",
-            "handler": "onSpinClicked",
-            "success": false,
-            "outcomes": [
-              {
-                "route_id": "RA1DC5206",
-                "handler": "onSpinClicked",
-                "called": false,
-                "resolved_path": "",
-                "frame_url": "",
-                "request_start": 0,
-                "request_end": 0,
-                "error": "not found"
-              }
-            ],
-            "request_count": 0
-          },
-          {
-            "route_id": "RA1DC5206",
-            "semantic": "SPIN",
-            "control": "spin-button",
-            "handler": "onSpinClicked",
-            "kind": "direct-inferred-hyperhive",
-            "success": true,
-            "outcomes": [],
-            "status": 200,
-            "request": {
-              "id": "4d4e316b-c3fe-4212-8203-7b47d01af1d1",
-              "jsonrpc": "2.0",
-              "method": "play",
-              "params": {
-                "token": "<redacted>",
-                "req": {
-                  "bet": 200,
-                  "bet_type": "bet",
-                  "custom_req": {
-                    "selectedWinLines": [
-                      0,
-                      1,
-                      2,
-                      3,
-                      4,
-                      5,
-                      6,
-                      7,
-                      8
-                    ],
-                    "perLine": true,
-                    "action": "spin",
-                    "exponent": 2,
-                    "stake": 200
-                  }
-                },
-                "state_lock": "b6589fc6ab0dc82cf12099d1c2d40ab994e8410c"
-              }
-            },
-            "response": {
-              "id": "4d4e316b-c3fe-4212-8203-7b47d01af1d1",
-              "jsonrpc": "2.0",
-              "result": {
-                "final": true,
-                "resp": {
-                  "win": 400.0,
-                  "v": "0.0.10",
-                  "data": {
-                    "Completed": true,
-                    "Bet": {
-                      "Lines": 9,
-                      "FeeMultiplier": 1.0,
-                      "Amount": 22.22222222222222,
-                      "GameMode": 0,
-                      "Scale": 1.0,
-                      "TotalBet": 200.0
-                    },
-                    "Round": {
-                      "Info": {
-                        "RID": 1,
-                        "SRC": 1,
-                        "IDX": 0,
-                        "GameMode": 0,
-                        "RoundType": 0,
-                        "Count": 0,
-                        "Passed": 1,
-                        "Bet": 200
-                      },
-                      "TotalWin": 400,
-                      "SpinWin": 400,
-                      "VISData": {
-                        "Grids": [
-                          [
-                            [
-                              100,
-                              0,
-                              100
-                            ],
-                            [
-                              0,
-                              200,
-                              0
-                            ],
-                            [
-                              300,
-                              0,
-                              300
-                            ]
-                          ],
-                          [
-                            [
-                              5,
-                              0,
-                              1
-                            ],
-                            [
-                              0,
-                              6,
-                              0
-                            ],
-                            [
-                              6,
-                              0,
-                              5
-                            ]
-                          ],
-                          [
-                            [
-                              51,
-                              0,
-                              11
-                            ],
-                            [
-                              0,
-                              61,
-                              0
-                            ],
-                            [
-                              61,
-                              0,
-                              52
-                            ]
-                          ]
-                        ],
-                        "Prizes": [
-                          {
-                            "PrizeType": 11,
-                            "Value": 200,
-                            "RawValue": 1,
-                            "Rule": 8,
-                            "Combination": 0,
-                            "Length": 3,
-                            "Line": 5,
-                            "Source": 1,
-                            "Cells": [
-                              [
-                                0,
-                                2
-                              ],
-                              [
-                                1,
-                                1
-                              ],
-                              [
-                                2,
-                                0
-                              ]
-                            ]
-                          },
-                          {
-                            "PrizeType": 11,
-                            "Value": 80,
-                            "RawValue": 0.2,
-                            "Rule": 9,
-                            "Combination": 0,
-                            "Length": 3,
-                            "Line": 4,
-                            "Multiplier": 2,
-                            "Source": 1,
-                            "Pure": true,
-                            "Cells": [
-                              [
-                                0,
-                                0
-                              ],
-                              [
-                                1,
-                                1
-                              ],
-                              [
-                                2,
-                                2
-                              ]
-                            ]
-                          },
-                          {
-                            "PrizeType": 11,
-                            "Value": 40,
-                            "RawValue": 0.2,
-                            "Rule": 9,
-                            "Combination": 0,
-                            "Length": 3,
-                            "Line": 6,
-                            "Source": 1,
-                            "Pure": true,
-                            "Cells": [
-                              [
-                                0,
-                                0
-                              ],
-                              [
-                                1,
-                                1
-                              ],
-                              [
-                                2,
-                                0
-                              ]
-                            ]
-                          },
-                          {
-                            "PrizeType": 11,
-                            "Value": 80,
-                            "RawValue": 0.2,
-                            "Rule": 9,
-                            "Combination": 0,
-                            "Length": 3,
-                            "Line": 7,
-                            "Multiplier": 2,
-                            "Source": 1,
-                            "Cells": [
-                              [
-                                0,
-                                2
-                              ],
-                              [
-                                1,
-                                1
-                              ],
-                              [
-                                2,
-                                2
-                              ]
-                            ]
-                          }
-                        ],
-                        "Events": [
-                          {
-                            "Type": 10,
-                            "SymbolKit": 0,
-                            "ReelStops": [
-                              1,
-                              0,
-                              1
-                            ],
-                            "Grids": [
-                              0
-                            ]
-                          },
-                          {
-                            "Type": 50,
-                            "SwappedSymbols": [
-                              [
-                                5,
-                                0,
-                                0
-                              ],
-                              [
-                                1,
-                                0,
-                                2
-                              ],
-                              [
-                                6,
-                                1,
-                                1
-                              ],
-                              [
-                                6,
-                                2,
-                                0
-                              ],
-                              [
-                                5,
-                                2,
-                                2
-                              ]
-                            ],
-                            "Grid": 1
-                          },
-                          {
-                            "Type": 50,
-                            "SwappedSymbols": [
-                              [
-                                11,
-                                0,
-                                2
-                              ],
-                              [
-                                61,
-                                1,
-                                1
-                              ],
-                              [
-                                61,
-                                2,
-                                0
-                              ],
-                              [
-                                51,
-                                0,
-                                0
-                              ],
-                              [
-                                52,
-                                2,
-                                2
-                              ]
-                            ],
-                            "Grid": 2
-                          },
-                          {
-                            "Type": 20,
-                            "Grid": 2,
-                            "Rules": [
-                              1,
-                              2,
-                              3,
-                              4,
-                              5,
-                              6,
-                              7,
-                              8,
-                              9
-                            ],
-                            "Prizes": [
-                              0,
-                              4
-                            ]
-                          },
-                          {
-                            "Triggered": false,
-                            "Position": [
-                              0,
-                              0
-                            ],
-                            "Type": 10102
-                          }
-                        ],
-                        "FEV": {
-                          "50": [
-                            1,
-                            2
-                          ],
-                          "10102": [
-                            4
-                          ]
-                        }
-                      }
-                    },
-                    "Code": 2001
-                  },
-                  "state": {
-                    "game": {
-                      "30300": {
-                        "Type": 30300
-                      }
-                    }
-                  },
-                  "previousTotalWin": 0.0
-                },
-                "balance": 100200,
-                "freebets": null,
-                "state_lock": "b6589fc6ab0dc82cf12099d1c2d40ab994e8410c"
-              }
-            }
-          }
-        ]
-      },
-      "routes": [
-        {
-          "semantic": "SPIN",
-          "status": "NETWORK_OBSERVED",
-          "control": "spin-button",
-          "handler": "onSpinClicked",
-          "wire_markers": [
-            "bet_type=bet",
-            "method=play"
-          ],
-          "direct_executable": true,
-          "direct_reason": ""
-        }
-      ]
-    },
-    {
-      "id": "bgaming-recovery-jewel-boom-super-drop",
-      "family": "hyperhive-jsonrpc",
-      "enrichment": {
-        "attempted": true,
-        "success": true,
-        "kind": "handler-probe",
-        "metadata": {
-          "route_ids": [
-            "RA1DC5206"
-          ]
-        }
-      },
-      "direct_executable_count": 1,
-      "blockers": [],
-      "handler_probe": {
-        "attempted": true,
-        "success": true,
-        "route_id": "RA1DC5206",
-        "route_ids": [
-          "RA1DC5206"
-        ],
-        "outcomes": [
-          {
-            "route_id": "RA1DC5206",
-            "handler": "onSpinClicked",
-            "called": false,
-            "resolved_path": "",
-            "frame_url": "",
-            "request_start": 0,
-            "request_end": 0,
-            "error": "not found"
-          }
-        ],
-        "results": [
-          {
-            "route_id": "RA1DC5206",
-            "semantic": "SPIN",
-            "control": "spin-button",
-            "handler": "onSpinClicked",
-            "success": false,
-            "outcomes": [
-              {
-                "route_id": "RA1DC5206",
-                "handler": "onSpinClicked",
-                "called": false,
-                "resolved_path": "",
-                "frame_url": "",
-                "request_start": 0,
-                "request_end": 0,
-                "error": "not found"
-              }
-            ],
-            "request_count": 0
-          },
-          {
-            "route_id": "RA1DC5206",
-            "semantic": "SPIN",
-            "control": "spin-button",
-            "handler": "onSpinClicked",
-            "kind": "direct-inferred-hyperhive",
-            "success": true,
-            "outcomes": [],
-            "status": 200,
-            "request": {
-              "id": "b8c8efa2-29d9-491a-99a1-6036861303fd",
-              "jsonrpc": "2.0",
-              "method": "play",
-              "params": {
-                "token": "<redacted>",
-                "req": {
-                  "bet": 200,
-                  "bet_type": "bet",
-                  "custom_req": {
-                    "selectedWinLines": [],
-                    "perLine": true,
-                    "action": "spin",
-                    "exponent": 2,
-                    "stake": 200
-                  }
-                },
-                "state_lock": "b6589fc6ab0dc82cf12099d1c2d40ab994e8410c"
-              }
-            },
-            "response": {
-              "id": "b8c8efa2-29d9-491a-99a1-6036861303fd",
-              "jsonrpc": "2.0",
-              "result": {
-                "final": true,
-                "resp": {
-                  "win": 0.0,
-                  "v": "0.0.7",
-                  "engine": {
-                    "gamestate": {
-                      "reelType": "bg1_reels",
-                      "reelSetIndex": 0,
-                      "stopList": [],
-                      "view": [
-                        [
-                          3
-                        ],
-                        [
-                          3
-                        ],
-                        [
-                          3
-                        ]
-                      ],
-                      "action": "spin",
-                      "previousRoundWin": 0.0,
-                      "stake": 200.0,
-                      "baseStake": 200.0,
-                      "totalStake": 200.0,
-                      "wins": [],
-                      "win": 0.0,
-                      "stakePerLine": 200.0,
-                      "selectedWinLines": [],
-                      "currentWinnings": 0.0,
-                      "totalWinnings": 0.0,
-                      "baseGameWinnings": 0.0,
-                      "currentPlay": 0,
-                      "freespinWinnings": 0.0,
-                      "numFreeSpins": 0,
-                      "collectorType": null,
-                      "collectedCashSum": 0.0,
-                      "collectedMulFactor": 0.0,
-                      "detailedCollectedCashInfo": {
-                        "0": []
-                      },
-                      "detailedCollectorMulInfo": {
-                        "0": []
-                      }
-                    }
-                  }
-                },
-                "balance": 99800,
-                "freebets": null,
-                "state_lock": "b6589fc6ab0dc82cf12099d1c2d40ab994e8410c"
-              }
-            }
-          }
-        ]
-      },
-      "routes": [
-        {
-          "semantic": "SPIN",
-          "status": "NETWORK_OBSERVED",
-          "control": "spin-button",
-          "handler": "onSpinClicked",
-          "wire_markers": [
-            "bet_type=bet",
-            "method=play"
-          ],
-          "direct_executable": true,
-          "direct_reason": ""
-        }
-      ]
-    },
-    {
-      "id": "bgaming-recovery-joker-vs-joker",
-      "family": "hyperhive-jsonrpc",
-      "enrichment": {
-        "attempted": true,
-        "success": true,
-        "kind": "handler-probe",
-        "metadata": {
-          "route_ids": [
-            "RE45AA7F5",
-            "RD22BFDC5"
-          ]
-        }
-      },
-      "direct_executable_count": 0,
-      "blockers": [],
-      "handler_probe": {
-        "attempted": true,
-        "success": true,
-        "route_id": "RE45AA7F5",
-        "route_ids": [
-          "RE45AA7F5",
-          "RD22BFDC5",
-          "R0C2AE216"
-        ],
-        "outcomes": [
-          {
-            "route_id": "RE45AA7F5",
-            "handler": "onSpinClick",
-            "called": false,
-            "resolved_path": "",
-            "frame_url": "",
-            "request_start": 0,
-            "request_end": 0,
-            "error": "not found"
-          },
-          {
-            "route_id": "RD22BFDC5",
-            "handler": "onSpinEnd",
-            "called": false,
-            "resolved_path": "",
-            "frame_url": "",
-            "request_start": 0,
-            "request_end": 0,
-            "error": "not found"
-          },
-          {
-            "route_id": "R0C2AE216",
-            "handler": "onSpinClick",
-            "called": false,
-            "resolved_path": "",
-            "frame_url": "",
-            "request_start": 0,
-            "request_end": 0,
-            "error": "not found"
-          }
-        ],
-        "results": [
-          {
-            "route_id": "RE45AA7F5",
-            "semantic": "BUY_BONUS",
-            "control": "buy-bonus",
-            "handler": "onSpinClick",
-            "success": false,
-            "outcomes": [
-              {
-                "route_id": "RE45AA7F5",
-                "handler": "onSpinClick",
-                "called": false,
-                "resolved_path": "",
-                "frame_url": "",
-                "request_start": 0,
-                "request_end": 0,
-                "error": "not found"
-              }
-            ],
-            "request_count": 0
-          },
-          {
-            "route_id": "RD22BFDC5",
-            "semantic": "SPIN",
-            "control": "clear-last-win",
-            "handler": "onSpinEnd",
-            "success": false,
-            "outcomes": [
-              {
-                "route_id": "RD22BFDC5",
-                "handler": "onSpinEnd",
-                "called": false,
-                "resolved_path": "",
-                "frame_url": "",
-                "request_start": 0,
-                "request_end": 0,
-                "error": "not found"
-              }
-            ],
-            "request_count": 0
-          },
-          {
-            "route_id": "R0C2AE216",
-            "semantic": "SPIN",
-            "control": "start-btn-start",
-            "handler": "onSpinClick",
-            "success": false,
-            "outcomes": [
-              {
-                "route_id": "R0C2AE216",
-                "handler": "onSpinClick",
-                "called": false,
-                "resolved_path": "",
-                "frame_url": "",
-                "request_start": 0,
-                "request_end": 0,
-                "error": "not found"
-              }
-            ],
-            "request_count": 0
-          },
-          {
-            "route_id": "RE45AA7F5",
-            "semantic": "BUY_BONUS",
-            "control": "buy-bonus",
-            "handler": "onSpinClick",
-            "kind": "direct-inferred-hyperhive",
-            "success": true,
-            "outcomes": [],
-            "status": 200,
-            "request": {
-              "id": "b7f708c0-f769-4edc-97ee-652afac2cde0",
-              "jsonrpc": "2.0",
-              "method": "play",
-              "params": {
-                "token": "<redacted>",
-                "req": {
-                  "bet": 30,
-                  "bet_type": "default",
-                  "fe_exponent": 2,
-                  "purchased_feature": "buy_bonus",
-                  "balance": 100000,
-                  "buyBonusModeMultiplier": 60
-                }
-              }
-            },
-            "response": {
-              "id": "b7f708c0-f769-4edc-97ee-652afac2cde0",
-              "jsonrpc": "2.0",
-              "result": {
-                "final": false,
-                "resp": {
-                  "player_message": null,
-                  "bets_count": 0,
-                  "super_spin": {
-                    "round": {
-                      "win": 0,
-                      "stages": [
-                        {
-                          "wildFights": [],
-                          "win": 0,
-                          "totalWin": 0,
-                          "totalBaseWin": 0,
-                          "totalFreespinWin": 0,
-                          "pureBaseWin": 0,
-                          "feature1Win": 0,
-                          "feature2Win": 0,
-                          "winSequences": [],
-                          "freespinCount": 5,
-                          "initialFreespinCount": 5,
-                          "additionalFreespinCount": 5,
-                          "isFreespin": false,
-                          "isRespin": false,
-                          "isFree": false,
-                          "isFeature1": false,
-                          "isFeature2": false,
-                          "isNextFree": true,
-                          "isNextIndependent": true,
-                          "consecutiveWinsCount": 0,
-                          "multiplier": 1,
-                          "movements": null,
-                          "board": [
-                            [
-                              10,
-                              2,
-                              2
-                            ],
-                            [
-                              5,
-                              10,
-                              7
-                            ],
-                            [
-                              8,
-                              8,
-                              10
-                            ]
-                          ],
-                          "initialBoard": [
-                            [
-                              10,
-                              2,
-                              2
-                            ],
-                            [
-                              5,
-                              10,
-                              7
-                            ],
-                            [
-                              8,
-                              8,
-                              10
-                            ]
-                          ],
-                          "deletedCells": null,
-                          "stickyCells": null,
-                          "expandingCells": null,
-                          "isGoldenBet": false,
-                          "isBuyBonus": true
-                        }
-                      ],
-                      "isFreespin": false,
-                      "isNextFreespin": true,
-                      "ended": false,
-                      "currentStage": {
-                        "wildFights": [],
-                        "win": 0,
-                        "totalWin": 0,
-                        "totalBaseWin": 0,
-                        "totalFreespinWin": 0,
-                        "pureBaseWin": 0,
-                        "feature1Win": 0,
-                        "feature2Win": 0,
-                        "winSequences": [],
-                        "freespinCount": 5,
-                        "initialFreespinCount": 5,
-                        "additionalFreespinCount": 5,
-                        "isFreespin": false,
-                        "isRespin": false,
-                        "isFree": false,
-                        "isFeature1": false,
-                        "isFeature2": false,
-                        "isNextFree": true,
-                        "isNextIndependent": true,
-                        "consecutiveWinsCount": 0,
-                        "multiplier": 1,
-                        "movements": null,
-                        "board": [
-                          [
-                            10,
-                            2,
-                            2
-                          ],
-                          [
-                            5,
-                            10,
-                            7
-                          ],
-                          [
-                            8,
-                            8,
-                            10
-                          ]
-                        ],
-                        "initialBoard": [
-                          [
-                            10,
-                            2,
-                            2
-                          ],
-                          [
-                            5,
-                            10,
-                            7
-                          ],
-                          [
-                            8,
-                            8,
-                            10
-                          ]
-                        ],
-                        "deletedCells": null,
-                        "stickyCells": null,
-                        "expandingCells": null,
-                        "isGoldenBet": false,
-                        "isBuyBonus": true
-                      }
-                    },
-                    "finished": false,
-                    "bets_count": 0,
-                    "bet": 30
-                  }
-                },
-                "balance": 98200,
-                "freebets": null,
-                "state_lock": "9ec4b865867f8bf5109cda3b84e4cf0b28b8310d"
-              }
-            }
-          },
-          {
-            "route_id": "RD22BFDC5",
-            "semantic": "SPIN",
-            "control": "clear-last-win",
-            "handler": "onSpinEnd",
-            "kind": "direct-inferred-hyperhive",
-            "success": true,
-            "outcomes": [],
-            "status": 200,
-            "request": {
-              "id": "111e5ac8-d3fb-4180-9c24-5df0c761f955",
-              "jsonrpc": "2.0",
-              "method": "play",
-              "params": {
-                "token": "<redacted>",
-                "req": {
-                  "bet": 30,
-                  "bet_type": "default",
-                  "fe_exponent": 2,
-                  "purchased_feature": "buy_bonus",
-                  "balance": 100000,
-                  "buyBonusModeMultiplier": 60
-                }
-              }
-            },
-            "response": {
-              "id": "111e5ac8-d3fb-4180-9c24-5df0c761f955",
-              "jsonrpc": "2.0",
-              "result": {
-                "final": false,
-                "resp": {
-                  "player_message": null,
-                  "bets_count": 0,
-                  "super_spin": {
-                    "round": {
-                      "win": 0,
-                      "stages": [
-                        {
-                          "wildFights": [],
-                          "win": 0,
-                          "totalWin": 0,
-                          "totalBaseWin": 0,
-                          "totalFreespinWin": 0,
-                          "pureBaseWin": 0,
-                          "feature1Win": 0,
-                          "feature2Win": 0,
-                          "winSequences": [],
-                          "freespinCount": 5,
-                          "initialFreespinCount": 5,
-                          "additionalFreespinCount": 5,
-                          "isFreespin": false,
-                          "isRespin": false,
-                          "isFree": false,
-                          "isFeature1": false,
-                          "isFeature2": false,
-                          "isNextFree": true,
-                          "isNextIndependent": true,
-                          "consecutiveWinsCount": 0,
-                          "multiplier": 1,
-                          "movements": null,
-                          "board": [
-                            [
-                              10,
-                              7,
-                              7
-                            ],
-                            [
-                              10,
-                              3,
-                              3
-                            ],
-                            [
-                              6,
-                              6,
-                              10
-                            ]
-                          ],
-                          "initialBoard": [
-                            [
-                              10,
-                              7,
-                              7
-                            ],
-                            [
-                              10,
-                              3,
-                              3
-                            ],
-                            [
-                              6,
-                              6,
-                              10
-                            ]
-                          ],
-                          "deletedCells": null,
-                          "stickyCells": null,
-                          "expandingCells": null,
-                          "isGoldenBet": false,
-                          "isBuyBonus": true
-                        }
-                      ],
-                      "isFreespin": false,
-                      "isNextFreespin": true,
-                      "ended": false,
-                      "currentStage": {
-                        "wildFights": [],
-                        "win": 0,
-                        "totalWin": 0,
-                        "totalBaseWin": 0,
-                        "totalFreespinWin": 0,
-                        "pureBaseWin": 0,
-                        "feature1Win": 0,
-                        "feature2Win": 0,
-                        "winSequences": [],
-                        "freespinCount": 5,
-                        "initialFreespinCount": 5,
-                        "additionalFreespinCount": 5,
-                        "isFreespin": false,
-                        "isRespin": false,
-                        "isFree": false,
-                        "isFeature1": false,
-                        "isFeature2": false,
-                        "isNextFree": true,
-                        "isNextIndependent": true,
-                        "consecutiveWinsCount": 0,
-                        "multiplier": 1,
-                        "movements": null,
-                        "board": [
-                          [
-                            10,
-                            7,
-                            7
-                          ],
-                          [
-                            10,
-                            3,
-                            3
-                          ],
-                          [
-                            6,
-                            6,
-                            10
-                          ]
-                        ],
-                        "initialBoard": [
-                          [
-                            10,
-                            7,
-                            7
-                          ],
-                          [
-                            10,
-                            3,
-                            3
-                          ],
-                          [
-                            6,
-                            6,
-                            10
-                          ]
-                        ],
-                        "deletedCells": null,
-                        "stickyCells": null,
-                        "expandingCells": null,
-                        "isGoldenBet": false,
-                        "isBuyBonus": true
-                      }
-                    },
-                    "finished": false,
-                    "bets_count": 0,
-                    "bet": 30
-                  }
-                },
-                "balance": 98200,
-                "freebets": null,
-                "state_lock": "505dab58bc4aba55553a38c53547d455d5ffc7a2"
-              }
-            }
-          },
-          {
-            "route_id": "R0C2AE216",
-            "semantic": "SPIN",
-            "control": "start-btn-start",
-            "handler": "onSpinClick",
-            "kind": "direct-inferred-hyperhive",
-            "success": false,
-            "outcomes": [],
-            "status": 200,
-            "request": {
-              "id": "5dd07eef-9953-4699-afd5-92d99be9991a",
-              "jsonrpc": "2.0",
-              "method": "play",
-              "params": {
-                "token": "<redacted>",
-                "req": {
-                  "bet": 30,
-                  "bet_type": "default",
-                  "fe_exponent": 2,
-                  "balance": 100000,
-                  "buyBonusModeMultiplier": 1
-                }
-              }
-            },
-            "response": {
-              "id": "x",
-              "jsonrpc": "2.0",
-              "error": {
-                "code": 51100,
-                "message": "Something went wrong. Refresh the page."
-              }
-            }
-          }
-        ]
-      },
-      "routes": [
-        {
-          "semantic": "BUY_BONUS",
-          "status": "NETWORK_OBSERVED",
-          "control": "buy-bonus",
-          "handler": "onSpinClick",
-          "wire_markers": [
-            "method=play",
-            "purchased_feature=buy_bonus"
-          ],
-          "direct_executable": false,
-          "direct_reason": "matched replay shape is not executable in this session"
-        },
-        {
-          "semantic": "BUY_BONUS",
-          "status": "NETWORK_OBSERVED",
-          "control": "protocol:play",
-          "handler": "",
-          "wire_markers": [
-            "bet_type=default",
-            "method=play",
-            "purchased_feature=buy_bonus"
-          ],
-          "direct_executable": false,
-          "direct_reason": "matched replay shape is not executable in this session"
-        },
-        {
-          "semantic": "SPIN",
-          "status": "NETWORK_OBSERVED",
-          "control": "clear-last-win",
-          "handler": "onSpinEnd",
-          "wire_markers": [
-            "bet_type=default",
-            "method=play",
-            "purchased_feature=buy_bonus"
-          ],
-          "direct_executable": false,
-          "direct_reason": "matched replay shape is not executable in this session"
-        },
-        {
-          "semantic": "SPIN",
-          "status": "NETWORK_OBSERVED",
-          "control": "start-btn-start",
-          "handler": "onSpinClick",
-          "wire_markers": [
-            "bet_type=default",
-            "method=play"
-          ],
-          "direct_executable": false,
-          "direct_reason": "matched replay shape is not executable in this session"
-        }
-      ]
-    },
-    {
       "id": "bgaming-recovery-maneki-88-fortunes",
       "family": "api-v2",
       "enrichment": {
@@ -2282,8 +889,8 @@
                 "purchased_feature_level": "1"
               },
               "extra_data": {
-                "client_seed": 50006,
-                "round_series_id": 1790537605128
+                "client_seed": 8687,
+                "round_series_id": 1790560351264
               }
             },
             "response": {
@@ -2296,37 +903,37 @@
               "outcome": {
                 "screen": [
                   [
-                    "15",
-                    "6",
-                    "9"
+                    "13",
+                    "9",
+                    "10"
                   ],
                   [
-                    "6",
-                    "10",
-                    "14"
-                  ],
-                  [
-                    "12",
                     "8",
-                    "11"
+                    "7",
+                    "13"
                   ],
                   [
+                    "8",
                     "15",
-                    "10",
                     "9"
                   ],
                   [
                     "15",
                     "10",
                     "6"
+                  ],
+                  [
+                    "8",
+                    "10",
+                    "15"
                   ]
                 ],
                 "special_symbols": {
                   "scatter": {
                     "15": [
                       [
-                        0,
-                        0
+                        2,
+                        1
                       ],
                       [
                         3,
@@ -2334,7 +941,7 @@
                       ],
                       [
                         4,
-                        0
+                        2
                       ]
                     ]
                   },
@@ -2350,8 +957,8 @@
                     40,
                     [
                       [
-                        0,
-                        0
+                        2,
+                        1
                       ],
                       [
                         3,
@@ -2359,7 +966,7 @@
                       ],
                       [
                         4,
-                        0
+                        2
                       ]
                     ]
                   ]
@@ -2382,8 +989,8 @@
                 "wallet": 99560
               },
               "flow": {
-                "round_id": 17510258250,
-                "last_action_id": "17510258250_1",
+                "round_id": 17514218822,
+                "last_action_id": "17514218822_1",
                 "state": "freespins",
                 "command": "spin",
                 "available_actions": [
@@ -2480,8 +1087,8 @@
                 "purchased_feature_level": "5"
               },
               "extra_data": {
-                "client_seed": 81905,
-                "round_series_id": 1790537598572
+                "client_seed": 95153,
+                "round_series_id": 1790560356024
               }
             },
             "response": {
@@ -2511,8 +1118,8 @@
                 "purchased_feature_level": "4"
               },
               "extra_data": {
-                "client_seed": 81905,
-                "round_series_id": 1790537601212
+                "client_seed": 95153,
+                "round_series_id": 1790560358613
               }
             },
             "response": {
@@ -2542,8 +1149,8 @@
                 "purchased_feature_level": "3"
               },
               "extra_data": {
-                "client_seed": 81905,
-                "round_series_id": 1790537603785
+                "client_seed": 95153,
+                "round_series_id": 1790560361269
               }
             },
             "response": {
@@ -2573,8 +1180,8 @@
                 "purchased_feature_level": "1"
               },
               "extra_data": {
-                "client_seed": 81905,
-                "round_series_id": 1790537606228
+                "client_seed": 95153,
+                "round_series_id": 1790560363951
               }
             },
             "response": {
@@ -2587,29 +1194,29 @@
               "outcome": {
                 "screen": [
                   [
-                    "3",
                     "0",
-                    "4"
+                    "4",
+                    "1"
                   ],
                   [
-                    "8",
-                    "6",
-                    "8"
-                  ],
-                  [
-                    "0",
                     "5",
-                    "3"
+                    "6",
+                    "7"
                   ],
                   [
+                    "3",
+                    "10",
+                    "0"
+                  ],
+                  [
+                    "15",
                     "7",
-                    "2",
-                    "4"
+                    "2"
                   ],
                   [
+                    "6",
                     "8",
-                    "0",
-                    "9"
+                    "0"
                   ]
                 ],
                 "special_symbols": {
@@ -2617,20 +1224,25 @@
                     "0": [
                       [
                         0,
-                        1
-                      ],
-                      [
-                        2,
                         0
                       ],
                       [
+                        2,
+                        2
+                      ],
+                      [
                         4,
-                        1
+                        2
                       ]
                     ]
                   },
                   "wild": {
-                    "15": []
+                    "15": [
+                      [
+                        3,
+                        0
+                      ]
+                    ]
                   }
                 },
                 "bet": 16,
@@ -2642,15 +1254,15 @@
                     [
                       [
                         0,
-                        1
-                      ],
-                      [
-                        2,
                         0
                       ],
                       [
+                        2,
+                        2
+                      ],
+                      [
                         4,
-                        1
+                        2
                       ]
                     ]
                   ]
@@ -2673,8 +1285,8 @@
                 "wallet": 99272
               },
               "flow": {
-                "round_id": 17510258441,
-                "last_action_id": "17510258441_1",
+                "round_id": 17514220552,
+                "last_action_id": "17514220552_1",
                 "state": "freespins",
                 "command": "spin",
                 "available_actions": [
@@ -2706,8 +1318,8 @@
                 "purchased_feature_level": "2"
               },
               "extra_data": {
-                "client_seed": 81905,
-                "round_series_id": 1790537608731
+                "client_seed": 95153,
+                "round_series_id": 1790560366579
               }
             },
             "response": {
@@ -2870,358 +1482,6 @@
           "control": "spin-button",
           "handler": "v0",
           "wire_markers": [
-            "method=play"
-          ],
-          "direct_executable": true,
-          "direct_reason": ""
-        }
-      ]
-    },
-    {
-      "id": "bgaming-recovery-rocket-eruption-triple-blast",
-      "family": "hyperhive-jsonrpc",
-      "enrichment": {
-        "attempted": true,
-        "success": true,
-        "kind": "handler-probe",
-        "metadata": {
-          "route_ids": [
-            "RA1DC5206"
-          ]
-        }
-      },
-      "direct_executable_count": 1,
-      "blockers": [],
-      "handler_probe": {
-        "attempted": true,
-        "success": true,
-        "route_id": "RA1DC5206",
-        "route_ids": [
-          "RA1DC5206"
-        ],
-        "outcomes": [
-          {
-            "route_id": "RA1DC5206",
-            "handler": "onSpinClicked",
-            "called": false,
-            "resolved_path": "",
-            "frame_url": "",
-            "request_start": 0,
-            "request_end": 0,
-            "error": "not found"
-          }
-        ],
-        "results": [
-          {
-            "route_id": "RA1DC5206",
-            "semantic": "SPIN",
-            "control": "spin-button",
-            "handler": "onSpinClicked",
-            "success": false,
-            "outcomes": [
-              {
-                "route_id": "RA1DC5206",
-                "handler": "onSpinClicked",
-                "called": false,
-                "resolved_path": "",
-                "frame_url": "",
-                "request_start": 0,
-                "request_end": 0,
-                "error": "not found"
-              }
-            ],
-            "request_count": 0
-          },
-          {
-            "route_id": "RA1DC5206",
-            "semantic": "SPIN",
-            "control": "spin-button",
-            "handler": "onSpinClicked",
-            "kind": "direct-inferred-hyperhive",
-            "success": true,
-            "outcomes": [],
-            "status": 200,
-            "request": {
-              "id": "491f9682-7b17-4979-b96a-aa9a2f1ad49f",
-              "jsonrpc": "2.0",
-              "method": "play",
-              "params": {
-                "token": "<redacted>",
-                "req": {
-                  "bet": 200,
-                  "bet_type": "bet",
-                  "custom_req": {
-                    "selectedWinLines": [
-                      0,
-                      1,
-                      2,
-                      3,
-                      4,
-                      5,
-                      6,
-                      7,
-                      8,
-                      9,
-                      10,
-                      11,
-                      12,
-                      13,
-                      14,
-                      15,
-                      16,
-                      17,
-                      18,
-                      19
-                    ],
-                    "perLine": true,
-                    "isNormalBuy": false,
-                    "isSuperBuy": false,
-                    "action": "spin",
-                    "exponent": 2
-                  }
-                },
-                "state_lock": "b6589fc6ab0dc82cf12099d1c2d40ab994e8410c"
-              }
-            },
-            "response": {
-              "id": "491f9682-7b17-4979-b96a-aa9a2f1ad49f",
-              "jsonrpc": "2.0",
-              "result": {
-                "final": true,
-                "resp": {
-                  "v": "0.0.17",
-                  "win": 0.0,
-                  "engine": {
-                    "gamestate": {
-                      "stopList": [
-                        105,
-                        5,
-                        164,
-                        64,
-                        7
-                      ],
-                      "view": [
-                        [
-                          5,
-                          6,
-                          8,
-                          7,
-                          4
-                        ],
-                        [
-                          6,
-                          7,
-                          10,
-                          4,
-                          6
-                        ],
-                        [
-                          10,
-                          3,
-                          4,
-                          1,
-                          7
-                        ]
-                      ],
-                      "action": "spin",
-                      "reelType": "BaseGameReelset1",
-                      "wins": [],
-                      "previousRoundWin": 0.0,
-                      "stake": 200.0,
-                      "baseCost": 200.0,
-                      "baseStake": 200.0,
-                      "win": 0.0,
-                      "currentWinnings": 0.0,
-                      "totalWinnings": 0.0,
-                      "stakePerLine": 10.0,
-                      "baseGameWinnings": 0.0,
-                      "__original": {
-                        "Completed": true,
-                        "Bet": {
-                          "Lines": 20,
-                          "FeeMultiplier": 1.0,
-                          "Amount": 10.0,
-                          "GameMode": 0,
-                          "Scale": 1.0,
-                          "TotalBet": 200.0
-                        },
-                        "Round": {
-                          "Info": {
-                            "RID": 1,
-                            "SRC": 1,
-                            "IDX": 0,
-                            "GameMode": 0,
-                            "RoundType": 0,
-                            "Count": 0,
-                            "Passed": 1,
-                            "Bet": 200
-                          },
-                          "VISData": {
-                            "Grids": [
-                              [
-                                [
-                                  6,
-                                  7,
-                                  11
-                                ],
-                                [
-                                  7,
-                                  8,
-                                  4
-                                ],
-                                [
-                                  9,
-                                  11,
-                                  5
-                                ],
-                                [
-                                  8,
-                                  5,
-                                  2
-                                ],
-                                [
-                                  5,
-                                  7,
-                                  8
-                                ]
-                              ]
-                            ],
-                            "Prizes": [],
-                            "Events": [
-                              {
-                                "Type": 10,
-                                "SymbolKit": 0,
-                                "ReelStops": [
-                                  105,
-                                  5,
-                                  164,
-                                  64,
-                                  7
-                                ],
-                                "Grids": [
-                                  0
-                                ]
-                              },
-                              {
-                                "Type": 20,
-                                "Rules": [
-                                  1,
-                                  2,
-                                  3,
-                                  4,
-                                  5,
-                                  6,
-                                  7,
-                                  8,
-                                  9,
-                                  10,
-                                  11
-                                ]
-                              }
-                            ]
-                          }
-                        },
-                        "Code": 2001
-                      },
-                      "__state": {
-                        "ExtensionStates": {
-                          "20300": {
-                            "CoinStates": {
-                              "200": {
-                                "Bronze": {
-                                  "Spins": 12,
-                                  "JPIncrements": 0,
-                                  "Triggered": false
-                                },
-                                "Gold": {
-                                  "Spins": 12,
-                                  "JPs": {
-                                    "10010": 10,
-                                    "10020": 25,
-                                    "10050": 75,
-                                    "11000": 1000,
-                                    "15000": 5000
-                                  },
-                                  "JPIncrements": 0,
-                                  "Triggered": false
-                                },
-                                "Silver": {
-                                  "Spins": 12,
-                                  "JPIncrements": 0,
-                                  "Triggered": false
-                                }
-                              }
-                            },
-                            "Type": 20300
-                          }
-                        }
-                      },
-                      "__round": {
-                        "PlayerCurrency": "",
-                        "Limits": [
-                          10.0
-                        ],
-                        "BaseCurrency": "",
-                        "CapLimitType": 1,
-                        "CapWinLimitCurrency": "",
-                        "CapWinLimit": 5000
-                      },
-                      "coinBox": {
-                        "bronzeBox": 12,
-                        "silverBox": 12,
-                        "goldBox": {
-                          "currentJackpotValues": {
-                            "major": 75.0,
-                            "max": 5000.0,
-                            "mega": 1000.0,
-                            "mini": 10.0,
-                            "minor": 25.0
-                          },
-                          "jackpotIncrementMultiplier": 0,
-                          "updatedJackpotType": ""
-                        }
-                      },
-                      "freespinTriggered": false,
-                      "jackpotTriggered": false,
-                      "respinTriggered": false,
-                      "sharedState": {
-                        "coinBoxes": {
-                          "200": {
-                            "bronzeBox": 12,
-                            "silverBox": 12,
-                            "goldBox": {
-                              "currentJackpotValues": {
-                                "major": 75.0,
-                                "max": 5000.0,
-                                "mega": 1000.0,
-                                "mini": 10.0,
-                                "minor": 25.0
-                              },
-                              "jackpotIncrementMultiplier": 0,
-                              "updatedJackpotType": ""
-                            }
-                          }
-                        }
-                      }
-                    }
-                  }
-                },
-                "balance": 99800,
-                "freebets": null,
-                "state_lock": "b6589fc6ab0dc82cf12099d1c2d40ab994e8410c"
-              }
-            }
-          }
-        ]
-      },
-      "routes": [
-        {
-          "semantic": "SPIN",
-          "status": "NETWORK_OBSERVED",
-          "control": "spin-button",
-          "handler": "onSpinClicked",
-          "wire_markers": [
-            "bet_type=bet",
             "method=play"
           ],
           "direct_executable": true,
