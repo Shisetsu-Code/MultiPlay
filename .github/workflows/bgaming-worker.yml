@@ -1,5 +1,7 @@
 name: BGaming analyzer worker
 
+# rerun: merge against latest worker state 2026-09-28
+
 # rerun: close covered routes and unavailable demos 2026-09-28
 
 # rerun: final BGaming endpoint validation pass 2026-09-28
@@ -422,6 +424,14 @@ jobs:
           PLANNED_TOTAL: ${{ needs.plan.outputs.total }}
           RUN_ID: ${{ github.run_id }}
         run: |
+          # Merge this run into the newest persisted state, not the workflow
+          # trigger commit. This prevents queued runs from regressing games
+          # completed by an earlier run.
+          git fetch origin main
+          mkdir -p knowledge/providers/bgaming
+          git show origin/main:knowledge/providers/bgaming/worker-state.json \
+            > knowledge/providers/bgaming/worker-state.json 2>/dev/null || true
+
           python - <<'PY'
           import json
           import os
