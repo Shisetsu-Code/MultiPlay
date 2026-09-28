@@ -1,23 +1,75 @@
 {
   "schema": "multiplay/bgaming-worker-review/v1",
-  "run_id": "36370832237",
-  "generated_at": "2026-09-28T02:46:07.986685+00:00",
+  "run_id": "36375938013",
+  "generated_at": "2026-09-28T04:03:27.365632+00:00",
   "summary": {
     "schema": "multiplay/bgaming-worker-summary/v1",
-    "run_id": "36370832237",
-    "generated_at": "2026-09-28T02:46:07.986685+00:00",
-    "planned": 1,
-    "processed": 1,
+    "run_id": "36375938013",
+    "generated_at": "2026-09-28T04:03:27.365632+00:00",
+    "planned": 6,
+    "processed": 6,
     "status_counts": {
-      "COMPLETE": 1
+      "COMPLETE": 4,
+      "NO_ROUTES": 1,
+      "PARTIAL": 1
     },
     "family_counts": {
-      "hyperhive-jsonrpc": 1
+      "api-v2": 2,
+      "hyperhive-jsonrpc": 4
     },
     "unresolved_semantic_counts": {},
-    "complete": 1,
+    "complete": 4,
     "unavailable": 0,
-    "needs_review": 0
+    "needs_review": 2
   },
-  "games": []
+  "games": [
+    {
+      "slug": "keepers-of-the-secret",
+      "name": "Keepers Of The Secret",
+      "url": "https://demo.bgaming-network.com/play/KeepersOfTheSecret7rst/FUN",
+      "availability": "DEMO",
+      "returncode": 0,
+      "status": "NO_ROUTES",
+      "runtime_status": null,
+      "family": "hyperhive-jsonrpc",
+      "route_count": 0,
+      "direct_executable_count": 0,
+      "unresolved_network_count": 0,
+      "blockers": [
+        "HyperHive base-play enrichment failed: ValueError: BGaming HyperHive client scripts exposed no usable wire contract."
+      ],
+      "direct_actions": [],
+      "unresolved_actions": [],
+      "switchable_children": [],
+      "error": ""
+    },
+    {
+      "slug": "grand-patron",
+      "name": "Grand Patron",
+      "url": "https://demo.bgaming-network.com/play/GrandPatron7rst/FUN",
+      "availability": "DEMO",
+      "returncode": 0,
+      "status": "PARTIAL",
+      "runtime_status": null,
+      "family": "hyperhive-jsonrpc",
+      "route_count": 1,
+      "direct_executable_count": 1,
+      "unresolved_network_count": 0,
+      "blockers": [],
+      "direct_actions": [
+        {
+          "semantic": "SPIN",
+          "control": "protocol:play",
+          "handler": "",
+          "wire": [
+            "method=play"
+          ],
+          "role": "protocol_action"
+        }
+      ],
+      "unresolved_actions": [],
+      "switchable_children": [],
+      "error": ""
+    }
+  ]
 }
