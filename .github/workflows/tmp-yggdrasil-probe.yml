@@ -17,7 +17,7 @@ jobs:
           python-version: '3.12'
       - run: pip install playwright
       - run: python -m playwright install --with-deps chromium
-      - name: Probe game and purchase controls
+      - name: Probe in-game purchase controls
         env:
           TARGET_URL: 'https://yggdrasilgaming.com/games/vikings-go-to-hollywood-wildfight-rushingwilds#tryit'
         run: |
@@ -26,117 +26,92 @@ jobs:
           from pathlib import Path
           from playwright.async_api import async_playwright
 
-          OUT = Path('ygg-probe')
-          OUT.mkdir(exist_ok=True)
-          logs = []
-
-          def scrub(s):
+          OUT=Path('ygg-probe2'); OUT.mkdir(exist_ok=True)
+          events=[]
+          def clean(s):
               if not s: return s
-              s = re.sub(r'(?i)(token|session|sid|jwt|auth|key)=([^&\\s]+)', r'\\1=<redacted>', s)
-              return s[:8000]
+              s=re.sub(r'(?i)(token|session|sid|jwt|auth|key)=([^&\\s]+)',r'\\1=<redacted>',s)
+              return s[:12000]
 
           async def main():
               async with async_playwright() as p:
-                  browser = await p.chromium.launch(headless=True)
-                  ctx = await browser.new_context(viewport={'width': 1440, 'height': 1000})
-                  page = await ctx.new_page()
-
-                  async def on_request(req):
-                      if req.resource_type in ('xhr','fetch','websocket','document'):
-                          try:
-                              post = req.post_data
-                          except: post = None
-                          logs.append({
-                              'kind':'request','method':req.method,'url':scrub(req.url),
-                              'resource_type':req.resource_type,'post_data':scrub(post)
-                          })
-                  async def on_response(resp):
-                      req = resp.request
-                      if req.resource_type in ('xhr','fetch','document'):
-                          logs.append({'kind':'response','status':resp.status,'url':scrub(resp.url),'method':req.method})
-
-                  page.on('request', on_request)
-                  page.on('response', on_response)
-
-                  await page.goto(os.environ['TARGET_URL'], wait_until='domcontentloaded', timeout=90000)
-                  await page.wait_for_timeout(4000)
-
-                  # age gate
-                  for txt in ['Yes, I am over 18','Yes, I’m over 18','I am over 18','Yes']:
+                  b=await p.chromium.launch(headless=True)
+                  c=await b.new_context(viewport={'width':1440,'height':1000})
+                  page=await c.new_page()
+                  page.on('request', lambda req: events.append({
+                      'method':req.method,'url':clean(req.url),'type':req.resource_type,
+                      'post':clean(req.post_data if req.method!='GET' else None)
+                  }) if req.resource_type in ('xhr','fetch','websocket','document') else None)
+                  await page.goto(os.environ['TARGET_URL'],wait_until='domcontentloaded',timeout=90000)
+                  await page.wait_for_timeout(2500)
+                  for txt in ['ACCEPT COOKIES','YES, I AM OVER 18','Yes, I am over 18']:
                       try:
-                          loc = page.get_by_text(txt, exact=False)
-                          if await loc.count():
-                              await loc.first.click(timeout=3000)
-                              await page.wait_for_timeout(1500)
-                              break
+                          q=page.get_by_text(txt,exact=False)
+                          if await q.count(): await q.first.click(timeout=3000)
                       except: pass
+                  try:
+                      q=page.get_by_text('PLAY',exact=True)
+                      if await q.count(): await q.first.click(timeout=4000)
+                  except: pass
+                  await page.wait_for_timeout(9000)
 
-                  # click public Play control
-                  for sel in ["a:has-text('Play')", "button:has-text('Play')", "text=Play"]:
+                  game=None
+                  for f in page.frames:
+                      if 'staticdemo.yggdrasilgaming.com/10964/' in f.url:
+                          game=f; break
+                  if not game:
+                      raise RuntimeError('game frame not found')
+
+                  # click splash/start in center
+                  try:
+                      await game.locator('body').click(position={'x':400,'y':300},force=True,timeout=5000)
+                  except Exception:
+                      pass
+                  await page.wait_for_timeout(4500)
+
+                  # snapshot DOM buttons/text
+                  dom=await game.evaluate("""() => [...document.querySelectorAll('button,[role=button],a,div,span')].map(e=>{const r=e.getBoundingClientRect(); const t=(e.innerText||e.textContent||'').trim(); return {tag:e.tagName,cls:e.className,text:t.slice(0,180),x:r.x,y:r.y,w:r.width,h:r.height,vis:!!(r.width&&r.height)};}).filter(x=>x.vis && x.text).slice(0,1500)""")
+                  (OUT/'dom.json').write_text(json.dumps(dom,indent=2),encoding='utf-8')
+                  try: await game.locator('body').screenshot(path=str(OUT/'game-ready.png'))
+                  except: pass
+
+                  # probe likely UI zones on 800x600 game coordinates.
+                  pts=[
+                    ('left-mid',70,300),('left-low',70,430),('left-bottom',70,520),
+                    ('bottom-left',160,540),('bottom-mid',400,545),
+                    ('right-low',710,430),('right-bottom',720,520),
+                    ('buy-likely-1',120,420),('buy-likely-2',120,480),
+                    ('modal-left',280,360),('modal-mid',400,360),('modal-right',520,360),
+                    ('modal-confirm',400,470)
+                  ]
+                  clicks=[]
+                  for name,x,y in pts:
+                      before=len(events)
                       try:
-                          loc = page.locator(sel)
-                          if await loc.count():
-                              await loc.first.click(timeout=4000)
-                              await page.wait_for_timeout(8000)
-                              break
-                      except: pass
+                          await game.locator('body').click(position={'x':x,'y':y},force=True,timeout=3000)
+                          await page.wait_for_timeout(1800)
+                          clicks.append({'name':name,'x':x,'y':y,'delta':events[before:]})
+                          try: await game.locator('body').screenshot(path=str(OUT/f'{name}.png'))
+                          except: pass
+                      except Exception as e:
+                          clicks.append({'name':name,'x':x,'y':y,'error':str(e)[:300]})
 
-                  await page.screenshot(path=str(OUT/'page.png'), full_page=True)
-
-                  # inspect all frames; capture text
-                  frame_texts=[]
-                  for i,f in enumerate(page.frames):
-                      try:
-                          txt = (await f.locator('body').inner_text(timeout=3000))[:20000]
-                      except: txt=''
-                      frame_texts.append({'i':i,'url':scrub(f.url),'text':txt})
-                  (OUT/'frames.json').write_text(json.dumps(frame_texts, indent=2), encoding='utf-8')
-
-                  candidates = ['BUY BONUS','BONUS BUY','BUY FEATURE','BUY FREE SPINS','FEATURE BUY','BUY']
-                  click_results=[]
-                  for fi,f in enumerate(page.frames):
-                      for txt in candidates:
-                          try:
-                              loc=f.get_by_text(txt, exact=False)
-                              n=await loc.count()
-                          except:
-                              n=0
-                          for idx in range(min(n,3)):
-                              try:
-                                  before=len(logs)
-                                  await loc.nth(idx).click(timeout=4000, force=True)
-                                  await page.wait_for_timeout(2500)
-                                  click_results.append({'frame':fi,'text':txt,'index':idx,'new_events':len(logs)-before,'frame_url':scrub(f.url)})
-                                  try:
-                                      await page.screenshot(path=str(OUT/f'click-{fi}-{txt.replace(" ","_")}-{idx}.png'))
-                                  except: pass
-                              except Exception as e:
-                                  click_results.append({'frame':fi,'text':txt,'index':idx,'error':str(e)[:500],'frame_url':scrub(f.url)})
-
-                  (OUT/'clicks.json').write_text(json.dumps(click_results, indent=2), encoding='utf-8')
-                  (OUT/'network.json').write_text(json.dumps(logs, indent=2), encoding='utf-8')
-
-                  # compact likely API requests
-                  likely=[]
-                  for e in logs:
-                      if e.get('kind')!='request': continue
-                      u=e.get('url','').lower()
-                      pd=(e.get('post_data') or '').lower()
-                      if e.get('resource_type') in ('xhr','fetch','websocket') or any(k in u+pd for k in ['spin','bet','bonus','feature','game','round','api']):
-                          likely.append(e)
-                  (OUT/'likely.json').write_text(json.dumps(likely, indent=2), encoding='utf-8')
-                  await browser.close()
-
+                  (OUT/'clicks.json').write_text(json.dumps(clicks,indent=2),encoding='utf-8')
+                  api=[e for e in events if 'demo.yggdrasilgaming.com/game.web/service' in e.get('url','')]
+                  (OUT/'api.json').write_text(json.dumps(api,indent=2),encoding='utf-8')
+                  print('=== DOM BUY MATCHES ===')
+                  print(json.dumps([x for x in dom if re.search(r'buy|bonus|free spin|feature',x['text'],re.I)],indent=2))
+                  print('=== API EVENTS ===')
+                  print(json.dumps(api,indent=2))
+                  print('=== CLICK API DELTAS ===')
+                  for cl in clicks:
+                      ds=[e for e in cl.get('delta',[]) if 'demo.yggdrasilgaming.com/game.web/service' in e.get('url','')]
+                      if ds: print(json.dumps({'click':cl['name'],'events':ds},indent=2))
+                  await b.close()
           asyncio.run(main())
           PY
           python /tmp/probe.py
-          echo '=== frames ==='
-          cat ygg-probe/frames.json
-          echo '=== clicks ==='
-          cat ygg-probe/clicks.json
-          echo '=== likely ==='
-          cat ygg-probe/likely.json
       - uses: actions/upload-artifact@v4
         with:
-          name: yggdrasil-probe
-          path: ygg-probe
+          name: yggdrasil-probe2
+          path: ygg-probe2
