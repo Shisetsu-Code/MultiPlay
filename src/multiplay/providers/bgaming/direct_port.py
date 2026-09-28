@@ -10,7 +10,7 @@ from dataclasses import dataclass
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 from typing import Any
-from urllib.parse import quote, urlsplit
+from urllib.parse import quote, urljoin, urlsplit
 
 from ...action_graph import build_action_graph
 from ...evidence import load_har, redact
@@ -105,6 +105,7 @@ class BGamingDemoDirectSession:
         self.api_templates: list[ApiV2Template] = []
         self.hyper_templates: list[HyperHiveTemplate] = []
         self.hyper_profile: HyperHiveWireProfile | None = None
+        self.hyper_legacy_rpc = False
 
     def open(self) -> dict[str, Any]:
         launch = _resolve_demo(self.http, self.url, timeout_s=self.timeout_s)
@@ -363,7 +364,7 @@ class BGamingDemoDirectSession:
             params["state_lock"] = "" if self.state_lock is None else self.state_lock
 
         payload = {
-            "id": _fresh_rpc_id(self.rpc_id_sample),
+            "id": self._fresh_hyper_rpc_id(),
             "jsonrpc": "2.0",
             "method": "play",
             "params": params,
@@ -465,7 +466,8 @@ class BGamingDemoDirectSession:
             "req": req,
         }
         profile_state_lock = bool(
-            self.hyper_profile is not None
+            not self.hyper_legacy_rpc
+            and self.hyper_profile is not None
             and self.hyper_profile.state_lock_present
         )
         if state_lock_required or profile_state_lock:
@@ -474,7 +476,7 @@ class BGamingDemoDirectSession:
             )
 
         payload = {
-            "id": _fresh_rpc_id(self.rpc_id_sample),
+            "id": self._fresh_hyper_rpc_id(),
             "jsonrpc": "2.0",
             "method": "play",
             "params": params,
@@ -503,6 +505,11 @@ class BGamingDemoDirectSession:
             "request": redact(payload),
             "response": redact(response),
         }
+
+    def _fresh_hyper_rpc_id(self) -> int | str:
+        if self.hyper_legacy_rpc:
+            return "0"
+        return _fresh_rpc_id(self.rpc_id_sample)
 
     def _open_classic(self, html: str) -> None:
         bootstrap = extract_bootstrap_options(html)
@@ -574,6 +581,70 @@ class BGamingDemoDirectSession:
             timeout_s=self.timeout_s,
             headers={"Referer": self.launch_url},
         )
+        self.headers = {
+            "Origin": origin,
+            "Referer": inner_url,
+            "Cache-Control": "no-cache",
+            "Pragma": "no-cache",
+        }
+
+        legacy_runner = _legacy_7rst_runner(self.evidence)
+        if legacy_runner:
+            self.hyper_legacy_rpc = True
+            self.endpoint_url = urljoin(origin + "/", legacy_runner)
+            self.rpc_id_sample = "0"
+
+            info_payload = {
+                "id": "0",
+                "jsonrpc": "2.0",
+                "method": "info",
+                "params": {"token": token},
+            }
+            info = self.http.post_json(
+                self.endpoint_url,
+                info_payload,
+                timeout_s=self.timeout_s,
+                headers=self.headers,
+                allow_http_error=True,
+            )
+            info_data = _json_object(info.text, "info")
+            _require_rpc_success(info_data, "info", info.status)
+
+            init_payload = {
+                "id": "0",
+                "jsonrpc": "2.0",
+                "method": "init",
+                "params": {"token": token},
+            }
+            init = self.http.post_json(
+                self.endpoint_url,
+                init_payload,
+                timeout_s=self.timeout_s,
+                headers=self.headers,
+                allow_http_error=True,
+            )
+            payload = _json_object(init.text, "init")
+            _require_rpc_success(payload, "init", init.status)
+            current = payload.get("result")
+            if not isinstance(current, dict):
+                raise TypeError("7RST init result is not an object")
+            self.current_init = current
+            self.state_lock = None
+            self.default_bet = resolve_hyperhive_bet(current)
+
+            script_texts = [
+                item.text
+                for item in self.evidence.scripts
+                if str(item.text or "").strip()
+            ]
+            if script_texts:
+                self.hyper_profile = analyze_current_wire(
+                    "\n".join(script_texts),
+                    script_count=len(script_texts),
+                )
+            self.hyper_templates = extract_hyperhive_templates(self.evidence)
+            return
+
         observed_init = _observed_hyperhive_init(self.evidence)
         if observed_init is None:
             raise ValueError(
@@ -590,12 +661,6 @@ class BGamingDemoDirectSession:
         init_payload["id"] = _fresh_rpc_id(init_payload.get("id"))
         self.rpc_id_sample = init_payload.get("id")
 
-        self.headers = {
-            "Origin": origin,
-            "Referer": inner_url,
-            "Cache-Control": "no-cache",
-            "Pragma": "no-cache",
-        }
         result = self.http.post_json(
             self.endpoint_url,
             init_payload,
@@ -773,7 +838,7 @@ class BGamingDemoDirectSession:
 
         rebuilt = apply_hyperhive_template(params, template)
         payload = {
-            "id": _fresh_rpc_id(self.rpc_id_sample),
+            "id": self._fresh_hyper_rpc_id(),
             "jsonrpc": "2.0",
             "method": "play",
             "params": rebuilt,
@@ -961,6 +1026,27 @@ def serve_bgaming_demo_port(
         server.serve_forever()
     finally:
         server.server_close()
+
+
+
+def _legacy_7rst_runner(evidence) -> str:
+    has_serializer = any(
+        "_bgCallRpcMethod" in str(item.text or "")
+        and "mConnectUrl" in str(item.text or "")
+        and "createEmptyObject" in str(item.text or "")
+        for item in evidence.scripts
+    )
+    if not has_serializer:
+        return ""
+
+    for exchange in evidence.http:
+        body = exchange.response_body
+        if not isinstance(body, dict):
+            continue
+        runner = body.get("runner_address")
+        if isinstance(runner, str) and runner.strip():
+            return runner.strip()
+    return ""
 
 
 def _observed_hyperhive_init(evidence) -> tuple[str, dict[str, Any]] | None:
