@@ -3,6 +3,7 @@ import json
 import multiplay.providers.bgaming.auto_analyze as auto_module
 from multiplay.models import EvidenceBundle, HttpExchange, ScriptEvidence
 from multiplay.providers.bgaming.auto_analyze import (
+    _api_v2_declared_feature_rows,
     _api_v2_static_buy_features,
     _merge_evidence,
     _require_runtime_identity,
@@ -233,3 +234,66 @@ def test_static_buy_feature_table_enriches_matching_popup_controls():
         "purchased_feature_level=1",
     ]
 
+
+
+def test_api_v2_init_feature_options_seed_all_purchase_levels():
+    evidence = EvidenceBundle(
+        http=[
+            HttpExchange(
+                evidence_id="init",
+                method="POST",
+                url="https://demo.bgaming-network.com/api/Foo/1/session",
+                request_body={"command": "init", "extra_data": {"round_series_id": 1}},
+                response_status=200,
+                response_body={
+                    "options": {
+                        "feature_options": {
+                            "feature_multipliers": {
+                                "base_bet": 10,
+                                "bonus_buy": {"0": 750, "1": 2000},
+                                "bonus_chance": 20,
+                            },
+                            "disabled_features": [],
+                        }
+                    }
+                },
+            )
+        ]
+    )
+
+    rows = _api_v2_declared_feature_rows(evidence)
+    assert rows == [
+        {
+            "name": "bonus_buy",
+            "request_name": "bonus_buy",
+            "level": "0",
+            "multiplier": 75.0,
+        },
+        {
+            "name": "bonus_buy",
+            "request_name": "bonus_buy",
+            "level": "1",
+            "multiplier": 200.0,
+        },
+        {
+            "name": "bonus_chance",
+            "request_name": "bonus_chance",
+            "level": "",
+            "multiplier": 2.0,
+        },
+    ]
+
+    routes = []
+    _seed_api_v2_buy_feature_routes(routes, evidence)
+
+    assert len(routes) == 3
+    assert all(route["static_api_v2"] is True for route in routes)
+    assert routes[0]["wire_markers"] == [
+        "command=spin",
+        "purchased_feature=bonus_buy",
+        "purchased_feature_level=0",
+    ]
+    assert routes[2]["wire_markers"] == [
+        "command=spin",
+        "purchased_feature=bonus_chance",
+    ]

@@ -3,7 +3,7 @@ from __future__ import annotations
 import json
 import re
 from collections.abc import Iterable
-from dataclasses import asdict, dataclass
+from dataclasses import asdict, dataclass, replace
 from typing import Any
 
 from ...models import EvidenceBundle
@@ -130,8 +130,67 @@ def discover_hyperhive_static_sources(
 
     if not profiles:
         return None
+
+    merged = _merge_legacy_bet_slots(profiles)
+    if merged is not None:
+        profiles.append(merged)
+
     profiles.sort(key=_score, reverse=True)
     return profiles[0]
+
+
+def _merge_legacy_bet_slots(
+    profiles: list[HyperHiveStaticProfile],
+) -> HyperHiveStaticProfile | None:
+    legacy = next(
+        (
+            item
+            for item in profiles
+            if item.source == "client_static_legacy_rpc_manager"
+        ),
+        None,
+    )
+    slots = next(
+        (
+            item
+            for item in profiles
+            if item.source == "client_json_bet_slots"
+        ),
+        None,
+    )
+    if legacy is None or slots is None:
+        return None
+
+    modes: list[HyperHiveStaticMode] = []
+    for mode in slots.modes:
+        fields = mode.request_fields
+        if not isinstance(fields, dict) or "bid" not in fields:
+            modes.append(mode)
+            continue
+        modes.append(
+            replace(
+                mode,
+                source="client_json_bet_slots+legacy_bid_serializer",
+                wire_complete=True,
+                requirements=(),
+            )
+        )
+
+    if not modes or not all(mode.wire_complete for mode in modes):
+        return None
+
+    return HyperHiveStaticProfile(
+        source="client_json_bet_slots+legacy_bid_serializer",
+        catalog_complete=slots.catalog_complete,
+        wire_complete=True,
+        base_request_fields=legacy.base_request_fields,
+        base_wire_complete=legacy.base_wire_complete,
+        state_lock_required=legacy.state_lock_required,
+        modes=tuple(modes),
+        evidence_urls=tuple(
+            dict.fromkeys([*legacy.evidence_urls, *slots.evidence_urls])
+        ),
+    )
 
 
 def _score(profile: HyperHiveStaticProfile) -> tuple[int, int, int, int]:
@@ -643,6 +702,10 @@ def _legacy_obfuscated_rpc_profile(
         base_complete=True,
         state_lock=False,
         modes=(),
+        catalog_complete=not (
+            "bet_slots" in text
+            or "eBetsIDs" in text
+        ),
     )
 
 
@@ -806,6 +869,7 @@ def _bet_slots_profile(
             slot_type = str(slot.get("type") or "").casefold()
             rmid = slot.get("rmid")
             cmx = slot.get("cmx")
+            slot_id = slot.get("id")
             if rmid is None or not _number(cmx):
                 continue
 
@@ -816,15 +880,23 @@ def _bet_slots_profile(
             else:
                 continue
 
+            fields = (
+                {
+                    "bet": "$BASE_BET_STRING",
+                    "bid": int(slot_id),
+                }
+                if isinstance(slot_id, int) and not isinstance(slot_id, bool)
+                else None
+            )
             modes.append(
                 _mode(
                     str(rmid).casefold(),
                     feature,
                     _clean_number(float(cmx)),
-                    None,
+                    fields,
                     "client_json_bet_slots",
                     complete=False,
-                    requirements=("round_mode_id",),
+                    requirements=("legacy_bid_serializer",),
                 )
             )
 

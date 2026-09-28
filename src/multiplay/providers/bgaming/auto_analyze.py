@@ -229,6 +229,13 @@ def analyze_bgaming_demo(
             )
 
     contract_bundle = _merge_evidence(browser_evidence, extra)
+    if family == HYPERHIVE_JSONRPC:
+        enriched_static_profile = discover_hyperhive_static_profile(
+            contract_bundle
+        )
+        if enriched_static_profile is not None:
+            static_profile = enriched_static_profile
+
     contract_har = root / "contract.har"
     _write_safe_har(contract_bundle, contract_har)
 
@@ -581,6 +588,15 @@ def analyze_bgaming_demo(
             direct_state = direct.open()
             route_state = {item["route_id"]: item for item in direct.routes()}
             for route in routes:
+                if route.get("static_api_v2"):
+                    observed = _probe_matches_route(contract_bundle, route)
+                    route["direct_executable"] = observed
+                    route["direct_reason"] = (
+                        ""
+                        if observed
+                        else "declared API-v2 purchase was not accepted by the provider"
+                    )
+                    continue
                 if "static_request_fields" in route:
                     observed = _probe_matches_route(contract_bundle, route)
                     route["direct_executable"] = observed
@@ -879,10 +895,8 @@ def _seed_api_v2_buy_feature_routes(
     routes: list[dict[str, Any]],
     evidence: EvidenceBundle,
 ) -> None:
-    """Link generic BuyFeaturePopupItem controls to client-declared feature rows."""
+    """Map UI purchases and seed every purchase declared by API-v2 init."""
     features = _api_v2_static_buy_features(evidence)
-    if not features:
-        return
 
     for route in routes:
         if route.get("semantic") != "BUY_BONUS":
@@ -920,6 +934,112 @@ def _seed_api_v2_buy_feature_routes(
         route["status"] = "NETWORK_INFERRED"
         route["interface_role"] = "network_action"
         route["confidence"] = "HIGH"
+
+    existing = {
+        (
+            next(
+                (
+                    marker.split("=", 1)[1]
+                    for marker in route.get("wire_markers") or []
+                    if str(marker).startswith("purchased_feature=")
+                ),
+                "",
+            ),
+            next(
+                (
+                    marker.split("=", 1)[1]
+                    for marker in route.get("wire_markers") or []
+                    if str(marker).startswith("purchased_feature_level=")
+                ),
+                "",
+            ),
+        )
+        for route in routes
+    }
+
+    for row in _api_v2_declared_feature_rows(evidence):
+        feature = str(row["request_name"])
+        level = str(row.get("level") or "")
+        key = (feature, level)
+        if key in existing:
+            continue
+        markers = ["command=spin", f"purchased_feature={feature}"]
+        if level:
+            markers.append(f"purchased_feature_level={level}")
+        route_id = f"static-api-v2:{feature}:{level or 'fixed'}"
+        routes.append(
+            {
+                "route_id": route_id,
+                "semantic": "BUY_BONUS",
+                "status": "NETWORK_INFERRED",
+                "interface_role": "network_action",
+                "control": (
+                    f"protocol:{feature}:{level}"
+                    if level
+                    else f"protocol:{feature}"
+                ),
+                "handler": "static:init.feature_options",
+                "wire_markers": sorted(markers),
+                "confidence": "HIGH",
+                "static_api_v2": True,
+                "declared_multiplier": row.get("multiplier"),
+            }
+        )
+        existing.add(key)
+
+
+def _api_v2_declared_feature_rows(
+    evidence: EvidenceBundle,
+) -> list[dict[str, Any]]:
+    rows: list[dict[str, Any]] = []
+    seen: set[tuple[str, str]] = set()
+
+    for exchange in evidence.http:
+        body = exchange.response_body
+        if not isinstance(body, dict):
+            continue
+        options = body.get("options")
+        if not isinstance(options, dict):
+            continue
+        feature_options = options.get("feature_options")
+        if not isinstance(feature_options, dict):
+            continue
+        multipliers = feature_options.get("feature_multipliers")
+        if not isinstance(multipliers, dict):
+            continue
+        disabled = {
+            str(item)
+            for item in feature_options.get("disabled_features") or []
+        }
+        base = multipliers.get("base_bet", options.get("base_bet"))
+        if not isinstance(base, (int, float)) or isinstance(base, bool) or base <= 0:
+            continue
+
+        for feature, raw in multipliers.items():
+            feature = str(feature)
+            if feature == "base_bet" or feature in disabled:
+                continue
+            variants = raw.items() if isinstance(raw, dict) else [("", raw)]
+            for level, value in variants:
+                if (
+                    not isinstance(value, (int, float))
+                    or isinstance(value, bool)
+                    or value <= 0
+                ):
+                    continue
+                key = (feature, str(level))
+                if key in seen:
+                    continue
+                seen.add(key)
+                rows.append(
+                    {
+                        "name": feature,
+                        "request_name": feature,
+                        "level": str(level),
+                        "multiplier": float(value) / float(base),
+                    }
+                )
+    return rows
 
 
 def _api_v2_static_buy_features(

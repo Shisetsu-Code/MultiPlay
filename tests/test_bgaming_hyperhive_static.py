@@ -6,6 +6,7 @@ from multiplay.providers.bgaming.auto_analyze import (
 )
 from multiplay.providers.bgaming.hyperhive_static import (
     discover_hyperhive_static_profile,
+    discover_hyperhive_static_sources,
 )
 
 
@@ -161,3 +162,41 @@ def test_profile_serialization_is_json_safe():
     assert profile is not None
 
     json.dumps(profile.to_dict())
+
+
+def test_legacy_bet_slots_use_numeric_bid_serializer():
+    profile = discover_hyperhive_static_sources(
+        [
+            (
+                "https://example.bgaming-network.com/bs_lib.js",
+                "_bgCallRpcMethod mConnectUrl bet_type 'play' "
+                "createEmptyObject freebet bet_slots eBetsIDs",
+            ),
+            (
+                "https://example.bgaming-network.com/init.json",
+                {
+                    "settings": {
+                        "bet_slots": [
+                            {"id": 0, "type": "base", "rmid": "DEF", "cmx": 1},
+                            {"id": 1, "type": "bb", "rmid": "SHOP", "cmx": 100},
+                            {"id": 4, "type": "ante", "rmid": "ANTE", "cmx": 1.3},
+                        ]
+                    }
+                },
+            ),
+        ]
+    )
+
+    assert profile is not None
+    assert profile.source == "client_json_bet_slots+legacy_bid_serializer"
+    assert profile.catalog_complete is True
+    assert profile.wire_complete is True
+    assert [mode.mode_id for mode in profile.modes] == ["shop", "ante"]
+    assert profile.modes[0].request_fields == {
+        "bet": "$BASE_BET_STRING",
+        "bid": 1,
+    }
+    assert profile.modes[1].request_fields == {
+        "bet": "$BASE_BET_STRING",
+        "bid": 4,
+    }

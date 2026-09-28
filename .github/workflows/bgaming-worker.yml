@@ -1,5 +1,7 @@
 name: BGaming analyzer worker
 
+# rerun: strict economic-variant coverage 2026-09-28
+
 # rerun: merge against latest worker state 2026-09-28
 
 # rerun: close covered routes and unavailable demos 2026-09-28
@@ -84,6 +86,14 @@ jobs:
               state = {}
 
           refresh = os.environ.get("REFRESH_COMPLETE", "false").casefold() == "true"
+          forced_recheck = {
+              "golden-avalon-hold-and-win",
+              "grand-patron",
+              "keepers-of-the-secret",
+              "piggy-bank-holdwin",
+              "red-hot-chilli-chickens",
+              "wild-clusters",
+          }
           eligible = []
           for item in records:
               availability = str(item.get("availability") or "")
@@ -109,6 +119,7 @@ jobs:
                   continue
               if (
                   not refresh
+                  and slug not in forced_recheck
                   and isinstance(previous, dict)
                   and previous.get("status") in {"COMPLETE", "UNAVAILABLE"}
               ):
@@ -277,12 +288,15 @@ jobs:
 
                       def covered_by_direct(route):
                           wanted = coverage_markers(route)
+                          matches = [
+                              d for d in direct
+                              if d.get("semantic") == route.get("semantic")
+                          ]
                           if not wanted:
-                              return False
+                              return bool(matches)
                           return any(
-                              d.get("semantic") == route.get("semantic")
-                              and bool(wanted & coverage_markers(d))
-                              for d in direct
+                              wanted <= coverage_markers(d)
+                              for d in matches
                           )
 
                       unresolved = [
@@ -340,6 +354,14 @@ jobs:
                       switchable_ok = bool(children) and all(
                           bool(child.get("success")) for child in children
                       )
+                      static_profile = report.get("static_profile")
+                      static_complete = (
+                          not isinstance(static_profile, dict)
+                          or (
+                              static_profile.get("catalog_complete") is True
+                              and static_profile.get("wire_complete") is True
+                          )
+                      )
                       if (
                           returncode == 0
                           and row.get("runtime_status") == "NO_RESOLVABLE_DEMO"
@@ -348,6 +370,7 @@ jobs:
                       elif (
                           returncode == 0
                           and not unresolved
+                          and static_complete
                           and (
                               len(direct) > 0
                               or switchable_ok
