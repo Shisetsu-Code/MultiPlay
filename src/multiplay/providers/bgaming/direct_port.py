@@ -35,6 +35,7 @@ from .hyperhive_wire_profile import (
     HyperHiveWireProfile,
     analyze_current_wire,
     build_profile_request,
+    resolve_hyperhive_fe_exponent,
 )
 from .probe import _allowed_source, _HttpSession, _is_hyperhive_url, _resolve_demo
 from .wire import is_legacy_init
@@ -360,6 +361,109 @@ class BGamingDemoDirectSession:
             and self.hyper_profile.state_lock_present
         ):
             params["state_lock"] = "" if self.state_lock is None else self.state_lock
+
+        payload = {
+            "id": _fresh_rpc_id(self.rpc_id_sample),
+            "jsonrpc": "2.0",
+            "method": "play",
+            "params": params,
+        }
+        result = self.http.post_json(
+            self.endpoint_url,
+            payload,
+            timeout_s=self.timeout_s,
+            headers=self.headers,
+            allow_http_error=True,
+        )
+        response = _json_object(result.text, "play")
+        success = (
+            200 <= result.status < 400
+            and response.get("error") in (None, {}, [])
+        )
+        if success:
+            current = response.get("result")
+            if isinstance(current, dict) and "state_lock" in current:
+                self.state_lock = current.get("state_lock")
+
+        return {
+            "status": result.status,
+            "success": success,
+            "endpoint": sanitize_session_url(self.endpoint_url),
+            "request": redact(payload),
+            "response": redact(response),
+        }
+
+    def execute_inferred_hyperhive_fields(
+        self,
+        request_fields: dict[str, Any],
+        *,
+        state_lock_required: bool = False,
+        overrides: dict[str, Any] | None = None,
+    ) -> dict[str, Any]:
+        """Execute one statically demonstrated HyperHive req shape.
+
+        Only a narrow set of protocol fields is accepted. Dynamic placeholders
+        are resolved from the fresh init response, never from captured session
+        values.
+        """
+        if self.family != HYPERHIVE_JSONRPC:
+            raise ValueError(
+                "static HyperHive execution requires a HyperHive session"
+            )
+        if not isinstance(request_fields, dict):
+            raise TypeError("static HyperHive request fields must be an object")
+
+        allowed = {
+            "action",
+            "balance",
+            "bet_type",
+            "bonus_buy",
+            "bonus_multiplier_type",
+            "buyBonusModeMultiplier",
+            "buy_feature_id",
+            "custom_field",
+            "feature_buy",
+            "feature_id",
+            "fe_exponent",
+            "id",
+            "isSuperBonus",
+            "minExponent",
+            "modelRev",
+            "purchased_feature",
+            "purchased_feature_level",
+        }
+        unknown = sorted(set(request_fields) - allowed)
+        if unknown:
+            raise ValueError(
+                "unsupported static HyperHive request fields: "
+                + ", ".join(unknown)
+            )
+
+        values = dict(overrides or {})
+        bet = values.get("bet", self.default_bet)
+        req: dict[str, Any] = {"bet": bet}
+        for key, raw in request_fields.items():
+            if raw == "$FE_EXPONENT":
+                req[key] = resolve_hyperhive_fe_exponent(self.current_init)
+            elif raw == "$BALANCE":
+                req[key] = self.current_init.get("balance")
+            elif raw == "$BASE_BET":
+                req[key] = bet
+            else:
+                req[key] = deepcopy(raw)
+
+        params: dict[str, Any] = {
+            "token": self.token,
+            "req": req,
+        }
+        profile_state_lock = bool(
+            self.hyper_profile is not None
+            and self.hyper_profile.state_lock_present
+        )
+        if state_lock_required or profile_state_lock:
+            params["state_lock"] = (
+                "" if self.state_lock is None else self.state_lock
+            )
 
         payload = {
             "id": _fresh_rpc_id(self.rpc_id_sample),
