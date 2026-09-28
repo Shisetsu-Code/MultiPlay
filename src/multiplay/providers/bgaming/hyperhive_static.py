@@ -2,8 +2,9 @@ from __future__ import annotations
 
 import json
 import re
+from collections.abc import Iterable
 from dataclasses import asdict, dataclass
-from typing import Any, Iterable
+from typing import Any
 
 from ...models import EvidenceBundle
 
@@ -13,7 +14,7 @@ class HyperHiveStaticMode:
     mode_id: str
     kind: str
     feature: str
-    multiplier: int | float | None
+    multiplier: float | None
     request_fields: dict[str, Any] | None
     source: str
     wire_complete: bool = True
@@ -144,7 +145,7 @@ def _score(profile: HyperHiveStaticProfile) -> tuple[int, int, int, int]:
 def _mode(
     mode_id: str,
     feature: str,
-    multiplier: int | float | None,
+    multiplier: float | None,
     fields: dict[str, Any] | None,
     source: str,
     *,
