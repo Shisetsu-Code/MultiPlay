@@ -1,5 +1,7 @@
 name: BGaming analyzer worker
 
+# rerun: exact HyperHive wire shapes 2026-09-28
+
 # rerun: remaining HyperHive wire recovery + stale demo resolver 2026-09-28
 
 # rerun: preserve validated protocol routes + legacy settle recovery 2026-09-28
