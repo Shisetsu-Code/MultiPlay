@@ -24,156 +24,104 @@ jobs:
       - run: python -m pip install --upgrade pip
       - run: pip install -e ".[browser,dev]"
       - run: python -m playwright install --with-deps chromium
-      - name: Run focused 7RST analysis and wire probes
+      - name: Validate final 7RST contracts
         run: |
           python - <<'PY'
           from __future__ import annotations
 
-          import base64
           import json
           from pathlib import Path
 
           from multiplay.providers.bgaming.auto_analyze import analyze_bgaming_demo
-          from multiplay.providers.bgaming.direct_port import BGamingDemoDirectSession
 
           root = Path("final-7rst")
           root.mkdir(parents=True, exist_ok=True)
 
           urls = {
               "grand-patron": "https://demo.bgaming-network.com/play/GrandPatron7rst/FUN",
-              "keepers-of-the-secret": "https://demo.bgaming-network.com/play/KeepersOfTheSecret7rst/FUN",
+              "keepers-of-the-secret": (
+                  "https://demo.bgaming-network.com/play/KeepersOfTheSecret7rst/FUN"
+              ),
           }
 
           reports = {}
           for slug, url in urls.items():
-              out = root / slug
-              report = analyze_bgaming_demo(
+              reports[slug] = analyze_bgaming_demo(
                   url,
-                  output_dir=out,
+                  output_dir=root / slug,
                   settle_ms=9000,
                   timeout_s=30,
-                  keep_raw_har=True,
+                  keep_raw_har=False,
                   screenshot=False,
               )
-              reports[slug] = report
 
           grand = reports["grand-patron"]
+          keepers = reports["keepers-of-the-secret"]
 
-          def find_bet_slots(value):
-              if isinstance(value, dict):
-                  slots = value.get("bet_slots")
-                  if isinstance(slots, list):
-                      return slots
-                  for child in value.values():
-                      found = find_bet_slots(child)
-                      if found is not None:
-                          return found
-              elif isinstance(value, list):
-                  for child in value:
-                      found = find_bet_slots(child)
-                      if found is not None:
-                          return found
-              return None
+          def static_routes(report):
+              return {
+                  str(row.get("route_id") or ""): row
+                  for row in report.get("routes") or []
+                  if str(row.get("route_id") or "").startswith("static-hyperhive:")
+              }
 
-          raw_har = json.loads(
-              (root / "grand-patron" / "browser.raw.har").read_text(encoding="utf-8")
-          )
-          slots = None
-          asset_payload = None
-          asset_url = ""
-          for entry in raw_har.get("log", {}).get("entries", []):
-              request = entry.get("request") or {}
-              url = str(request.get("url") or "")
-              if "bets_data-" not in url or ".json" not in url:
-                  continue
-              body = (entry.get("response") or {}).get("content") or {}
-              raw = body.get("text")
-              if not isinstance(raw, str):
-                  continue
-              if body.get("encoding") == "base64":
-                  raw = base64.b64decode(raw).decode("utf-8")
-              try:
-                  candidate = json.loads(raw)
-              except json.JSONDecodeError:
-                  continue
-              found = find_bet_slots(candidate)
-              if found:
-                  slots = found
-                  asset_payload = candidate
-                  asset_url = url
-                  break
+          grand_routes = static_routes(grand)
+          keepers_routes = static_routes(keepers)
+          expected_grand = {
+              "static-hyperhive:spin",
+              "static-hyperhive:shop",
+              "static-hyperhive:shop2",
+              "static-hyperhive:shop3",
+              "static-hyperhive:ante",
+          }
 
-          if not slots:
-              raise RuntimeError("Grand Patron captured HAR exposed no bet_slots")
-
-          (root / "grand-patron" / "bets_data.captured.json").write_text(
-              json.dumps(asset_payload, ensure_ascii=False, indent=2) + "\n",
-              encoding="utf-8",
-          )
-
-          probes = []
-          for slot in slots:
-              if not isinstance(slot, dict):
-                  continue
-              raw_id = slot.get("id")
-              if isinstance(raw_id, bool) or not isinstance(raw_id, int):
-                  continue
-              session = BGamingDemoDirectSession(
-                  har_path=root / "grand-patron" / "contract.har",
-                  url=urls["grand-patron"],
-                  timeout_s=30,
-              )
-              session.open()
-              result = session.execute_inferred_hyperhive_fields(
-                  {"bet": "$BASE_BET_STRING", "bid": raw_id},
-                  state_lock_required=False,
-              )
-              response = result.get("response")
-              round_bet = None
-              if isinstance(response, dict):
-                  current = response.get("result")
-                  if isinstance(current, dict):
-                      resp = current.get("resp")
-                      if isinstance(resp, dict):
-                          round_info = resp.get("round")
-                          if isinstance(round_info, dict):
-                              round_bet = round_info.get("bet")
-              probes.append(
-                  {
-                      "id": raw_id,
-                      "rmid": slot.get("rmid"),
-                      "type": slot.get("type"),
-                      "cmx": slot.get("cmx"),
-                      "tb": slot.get("tb"),
-                      "tbvs": slot.get("tbvs"),
-                      "success": bool(result.get("success")),
-                      "status": result.get("status"),
-                      "round_bet": round_bet,
-                      "request": result.get("request"),
-                  }
-              )
-
-          output = {
-              "grand_patron_static_profile": grand.get("static_profile"),
-              "grand_patron_slots_asset": asset_url,
-              "grand_patron_slots": slots,
-              "grand_patron_probes": probes,
-              "keepers_static_profile": reports["keepers-of-the-secret"].get("static_profile"),
-              "keepers_routes": reports["keepers-of-the-secret"].get("routes"),
-              "keepers_direct_executable_count": reports["keepers-of-the-secret"].get(
-                  "direct_executable_count"
-              ),
-              "keepers_blockers": reports["keepers-of-the-secret"].get("blockers"),
+          summary = {
+              "grand_patron": {
+                  "family": grand.get("family"),
+                  "static_profile": grand.get("static_profile"),
+                  "direct_session": grand.get("direct_session"),
+                  "direct_executable_count": grand.get("direct_executable_count"),
+                  "static_routes": list(grand_routes.values()),
+                  "blockers": grand.get("blockers"),
+              },
+              "keepers_of_the_secret": {
+                  "family": keepers.get("family"),
+                  "static_profile": keepers.get("static_profile"),
+                  "direct_session": keepers.get("direct_session"),
+                  "direct_executable_count": keepers.get("direct_executable_count"),
+                  "static_routes": list(keepers_routes.values()),
+                  "blockers": keepers.get("blockers"),
+              },
           }
           (root / "report.json").write_text(
-              json.dumps(output, ensure_ascii=False, indent=2) + "\n",
+              json.dumps(summary, ensure_ascii=False, indent=2) + "\n",
               encoding="utf-8",
           )
-          print(json.dumps(output, ensure_ascii=False, indent=2))
-          if not all(item["success"] for item in probes):
-              raise SystemExit("one or more Grand Patron bid probes failed")
-          if not reports["keepers-of-the-secret"].get("direct_executable_count"):
-              raise SystemExit("Keepers base spin did not validate")
+          print(json.dumps(summary, ensure_ascii=False, indent=2))
+
+          if set(grand_routes) != expected_grand:
+              raise SystemExit(
+                  "Grand Patron did not expose the expected base + 4 economic routes"
+              )
+          if not all(
+              bool(grand_routes[route_id].get("direct_executable"))
+              for route_id in expected_grand
+          ):
+              raise SystemExit("Grand Patron 7RST routes did not all validate")
+          grand_endpoint = str((grand.get("direct_session") or {}).get("endpoint") or "")
+          if not grand_endpoint.endswith("/api/api"):
+              raise SystemExit(f"Grand Patron used unexpected endpoint: {grand_endpoint}")
+
+          keepers_spin = keepers_routes.get("static-hyperhive:spin")
+          if not keepers_spin or not keepers_spin.get("direct_executable"):
+              raise SystemExit("Keepers of the Secret base spin did not validate")
+          if len(keepers_routes) != 1:
+              raise SystemExit("Keepers unexpectedly exposed economic routes")
+          keepers_endpoint = str(
+              (keepers.get("direct_session") or {}).get("endpoint") or ""
+          )
+          if not keepers_endpoint.endswith("/api/api"):
+              raise SystemExit(f"Keepers used unexpected endpoint: {keepers_endpoint}")
           PY
       - uses: actions/upload-artifact@v4
         if: always()
