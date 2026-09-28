@@ -52,28 +52,19 @@ def analyze_bgaming_demo(
     execution_url = requested_url
     source_host = (urlsplit(requested_url).hostname or "").casefold()
     if source_host == "bgaming.com" or source_host.endswith(".bgaming.com"):
-        execution_url = resolve_catalog_execution_url(
-            requested_url,
-            timeout_s=timeout_s,
-        )
-
-    if source_host == "bgaming.com" or source_host.endswith(".bgaming.com"):
-        resolved_host = (urlsplit(execution_url).hostname or "").casefold()
-        if resolved_host == "bgaming.com" or resolved_host.endswith(".bgaming.com"):
-            try:
-                public_probe = probe_bgaming_demo(
-                    requested_url,
-                    timeout_s=timeout_s,
-                )
-            except (OSError, RuntimeError, TypeError, ValueError) as exc:
-                return _write_unresolved_runtime_report(
-                    root,
-                    requested_url=requested_url,
-                    reason=(
-                        "no matching BGaming demo runtime could be resolved: "
-                        f"{type(exc).__name__}: {exc}"
-                    ),
-                )
+        # Detail pages are a better recovery source than a stale catalog demo URL:
+        # they can expose the provider's current launch target at execution time.
+        try:
+            public_probe = probe_bgaming_demo(
+                requested_url,
+                timeout_s=timeout_s,
+            )
+        except (OSError, RuntimeError, TypeError, ValueError):
+            execution_url = resolve_catalog_execution_url(
+                requested_url,
+                timeout_s=timeout_s,
+            )
+        else:
             execution_url = public_probe.metadata.launch_url
 
     raw_har = root / "browser.raw.har"
