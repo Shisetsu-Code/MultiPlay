@@ -794,3 +794,91 @@ def test_scene_buy_bonus_wrapper_resolves_feature_and_level_separately():
         "purchased_feature=freespin_buy",
         "purchased_feature_level=4",
     }
+
+
+
+def test_action_graph_does_not_cross_match_purchase_levels(tmp_path):
+    tick = chr(96)
+
+    def purchase(level: str) -> dict:
+        return {
+            "request": {
+                "method": "POST",
+                "url": "https://game.example/api/Foo/1/session",
+                "headers": [],
+                "postData": {
+                    "mimeType": "application/json",
+                    "text": json.dumps(
+                        {
+                            "command": "spin",
+                            "options": {
+                                "bet": 2,
+                                "purchased_feature": "freespin_buy",
+                                "purchased_feature_level": level,
+                            },
+                        }
+                    ),
+                },
+            },
+            "response": {
+                "status": 200,
+                "headers": [],
+                "content": {
+                    "mimeType": "application/json",
+                    "text": '{"ok":true}',
+                },
+            },
+        }
+
+    har = {
+        "log": {
+            "entries": [
+                purchase("1"),
+                {
+                    "request": {
+                        "method": "GET",
+                        "url": "https://game.example/app.js",
+                        "headers": [],
+                    },
+                    "response": {
+                        "status": 200,
+                        "headers": [],
+                        "content": {
+                            "mimeType": "application/javascript",
+                            "text": (
+                                'const a={c:"Button",p:{name:"1",onClick:'
+                                '"all.buy-features.buyBonusClick'
+                                + tick
+                                + 'freespin_buy,1"}};'
+                                'const b={c:"Button",p:{name:"2",onClick:'
+                                '"all.buy-features.buyBonusClick'
+                                + tick
+                                + 'freespin_buy,2"}};'
+                            ),
+                        },
+                    },
+                },
+            ]
+        }
+    }
+    path = tmp_path / "purchase-levels.har"
+    path.write_text(json.dumps(har), encoding="utf-8")
+
+    graph = build_action_graph(path, include_all=True)
+    level1 = next(
+        item
+        for item in graph["routes"]
+        if item["handler"].endswith("freespin_buy,1")
+    )
+    level2 = next(
+        item
+        for item in graph["routes"]
+        if item["handler"].endswith("freespin_buy,2")
+    )
+
+    assert level1["status"] == "NETWORK_OBSERVED"
+    assert "purchased_feature_level=1" in level1["wire_markers"]
+
+    assert level2["status"] != "NETWORK_OBSERVED"
+    assert "purchased_feature_level=2" in level2["wire_markers"]
+    assert "purchased_feature_level=1" not in level2["wire_markers"]
