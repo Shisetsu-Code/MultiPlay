@@ -4,15 +4,8 @@ import re
 from typing import Any
 from urllib.parse import parse_qs, urlsplit, urlunsplit
 
-from multiplay.endpoints import template_payload
-from multiplay.models import (
-    AnalysisResult,
-    EndpointRecord,
-    EvidenceBundle,
-    ProtocolContract,
-    ValidationState,
-)
-from multiplay.providers.base import ProviderAdapter, ProviderDecision
+from ...models import AnalysisResult, EndpointRecord, EvidenceBundle, ProtocolContract, ValidationState
+from ..base import ProviderAdapter, ProviderDecision
 
 
 _PURCHASE_COMMAND_RE = re.compile(r"^BB_[A-Za-z0-9_-]+$", re.IGNORECASE)
@@ -170,10 +163,7 @@ class YggdrasilProviderAdapter(ProviderAdapter):
             seen.add(key)
 
             request_format = _request_template(exchange.request_body)
-            response_format = template_payload(
-                exchange.response_body,
-                request_side=False,
-            )
+            response_format = _response_template(exchange.response_body)
 
             demo_state = ValidationState.OBSERVED
             live_state = ValidationState.UNKNOWN
@@ -229,12 +219,9 @@ def _play_endpoint_template(url: str) -> str:
 
 def _request_template(value: Any) -> Any:
     if not isinstance(value, dict):
-        return template_payload(value, request_side=True)
+        return value
 
-    out = template_payload(value, request_side=True)
-    if not isinstance(out, dict):
-        return out
-
+    out = dict(value)
     for key in ("gameHistorySessionId", "gameHistoryTicketId"):
         if key in out:
             out[key] = "<redacted>"
@@ -242,6 +229,22 @@ def _request_template(value: Any) -> Any:
         if key in out:
             out[key] = f"<dynamic:{key}>"
     return out
+
+
+def _response_template(value: Any) -> Any:
+    if isinstance(value, dict):
+        return {str(key): _response_template(child) for key, child in value.items()}
+    if isinstance(value, list):
+        return [_response_template(child) for child in value[:4]]
+    if value is None:
+        return None
+    if isinstance(value, bool):
+        return "<bool>"
+    if isinstance(value, (int, float)):
+        return "<number>"
+    if isinstance(value, str):
+        return "<string>"
+    return f"<{type(value).__name__}>"
 
 
 __all__ = [
