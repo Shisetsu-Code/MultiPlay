@@ -938,6 +938,15 @@ def _match_observed(
         if semantic in {"SKIP", "CHANCE"}:
             continue
 
+        # A route that already constrains a wire field must never borrow
+        # evidence from an observed request that proves a different value for
+        # that same field. This is especially important for purchase variants:
+        # e.g. purchased_feature_level=2 must not be promoted by a successful
+        # purchased_feature_level=1 request merely because both share
+        # command=spin and purchased_feature=freespin_buy.
+        if _wire_markers_conflict(markers, observed_markers):
+            continue
+
         shared = markers & observed_markers
         score = len(shared) * 100
 
@@ -986,6 +995,38 @@ def _match_observed(
         reverse=True,
     )
     return candidates[0][1]
+
+
+def _wire_markers_conflict(
+    expected: set[str],
+    observed: set[str],
+) -> bool:
+    """Return True when both sides prove different values for one wire field."""
+    constrained = {
+        "command",
+        "method",
+        "purchased_feature",
+        "purchased_feature_level",
+        "action",
+        "bet_type",
+    }
+
+    def values(markers: set[str]) -> dict[str, set[str]]:
+        out: dict[str, set[str]] = defaultdict(set)
+        for marker in markers:
+            if "=" not in marker:
+                continue
+            key, value = marker.split("=", 1)
+            if key in constrained and value != "":
+                out[key].add(value)
+        return out
+
+    left = values(expected)
+    right = values(observed)
+    for key in left.keys() & right.keys():
+        if left[key].isdisjoint(right[key]):
+            return True
+    return False
 
 
 def _route_status(
