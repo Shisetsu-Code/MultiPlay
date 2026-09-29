@@ -4,15 +4,15 @@ import re
 from typing import Any
 from urllib.parse import parse_qs, urlsplit, urlunsplit
 
-from ...endpoints import template_payload
-from ...models import (
+from multiplay.endpoints import template_payload
+from multiplay.models import (
     AnalysisResult,
     EndpointRecord,
     EvidenceBundle,
     ProtocolContract,
     ValidationState,
 )
-from ..base import ProviderAdapter, ProviderDecision
+from multiplay.providers.base import ProviderAdapter, ProviderDecision
 
 
 _PURCHASE_COMMAND_RE = re.compile(r"^BB_[A-Za-z0-9_-]+$", re.IGNORECASE)
