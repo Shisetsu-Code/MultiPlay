@@ -22,6 +22,10 @@ _SENSITIVE_KEY_RE = re.compile(
     re.IGNORECASE,
 )
 _SCRIPT_MIMES = ("javascript", "ecmascript")
+_SENSITIVE_EXACT_KEYS = {
+    "gamehistorysessionid",
+    "gamehistoryticketid",
+}
 
 
 class HarError(ValueError):
@@ -34,7 +38,11 @@ def redact(value: Any) -> Any:
         out: dict[str, Any] = {}
         for key, child in value.items():
             name = str(key)
-            out[name] = "<redacted>" if _SENSITIVE_KEY_RE.search(name) else redact(child)
+            out[name] = (
+                "<redacted>"
+                if _SENSITIVE_KEY_RE.search(name) or name.casefold() in _SENSITIVE_EXACT_KEYS
+                else redact(child)
+            )
         return out
     if isinstance(value, list):
         return [redact(item) for item in value]
