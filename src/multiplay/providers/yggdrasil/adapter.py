@@ -4,8 +4,8 @@ import re
 from typing import Any
 from urllib.parse import parse_qs, urlsplit, urlunsplit
 
-from ... import models
 from ..base import ProviderAdapter, ProviderDecision
+from ... import models
 
 
 _PURCHASE_COMMAND_RE = re.compile(r"^BB_[A-Za-z0-9_-]+$", re.IGNORECASE)
