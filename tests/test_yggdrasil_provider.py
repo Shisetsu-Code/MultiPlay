@@ -42,8 +42,10 @@ def test_yggdrasil_purchase_variants_are_provider_recognized_but_not_base_spin()
     assert result.provider_decision.confidence >= 0.99
     assert result.analysis.status.value == "PARTIAL_REQUIRES_REVIEW"
     assert result.provider_blockers == [
-        "yggdrasil: purchase wire is demonstrated, but base spin/play command "
-        "is not demonstrated by current evidence."
+        (
+            "yggdrasil: purchase wire is demonstrated, but base spin/play command "
+            "is not demonstrated by current evidence."
+        )
     ]
 
     actions = {
