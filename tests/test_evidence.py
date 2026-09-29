@@ -68,3 +68,45 @@ def test_urlencoded_payload_still_parses_when_mime_declares_it(tmp_path):
     evidence = load_har(path)
 
     assert evidence.http[0].request_body == {"a": "b", "c": "d"}
+
+
+
+def test_urlencoded_yggdrasil_session_fields_are_redacted(tmp_path):
+    har = {
+        "log": {
+            "entries": [
+                {
+                    "request": {
+                        "method": "POST",
+                        "url": "https://demo.yggdrasilgaming.com/game.web/service?fn=play",
+                        "headers": [],
+                        "postData": {
+                            "mimeType": "application/x-www-form-urlencoded",
+                            "text": (
+                                "gameid=10964&gameHistorySessionId=session-secret&"
+                                "gameHistoryTicketId=ticket-secret&amount=65&coin=0.1&cmd=BB_2"
+                            ),
+                        },
+                    },
+                    "response": {
+                        "status": 200,
+                        "headers": [],
+                        "content": {
+                            "mimeType": "application/json",
+                            "text": '{"ok":true}',
+                        },
+                    },
+                }
+            ]
+        }
+    }
+    path = tmp_path / "yggdrasil.har"
+    path.write_text(json.dumps(har), encoding="utf-8")
+
+    evidence = load_har(path)
+    body = evidence.http[0].request_body
+
+    assert body["gameHistorySessionId"] == "<redacted>"
+    assert body["gameHistoryTicketId"] == "<redacted>"
+    assert body["cmd"] == "BB_2"
+    assert body["amount"] == "65"
