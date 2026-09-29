@@ -5,7 +5,13 @@ from typing import Any
 from urllib.parse import parse_qs, urlsplit, urlunsplit
 
 from ...endpoints import template_payload
-from ...models import AnalysisResult, EndpointRecord, EvidenceBundle, ProtocolContract, ValidationState
+from ...models import (
+    AnalysisResult,
+    EndpointRecord,
+    EvidenceBundle,
+    ProtocolContract,
+    ValidationState,
+)
 from ..base import ProviderAdapter, ProviderDecision
 
 
