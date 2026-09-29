@@ -4,7 +4,7 @@ import re
 from typing import Any
 from urllib.parse import parse_qs, urlsplit, urlunsplit
 
-from ...models import AnalysisResult, EndpointRecord, EvidenceBundle, ProtocolContract, ValidationState
+from ... import models
 from ..base import ProviderAdapter, ProviderDecision
 
 
@@ -44,8 +44,8 @@ class YggdrasilProviderAdapter(ProviderAdapter):
 
     def recognize(
         self,
-        evidence: EvidenceBundle,
-        contracts: list[ProtocolContract],
+        evidence: models.EvidenceBundle,
+        contracts: list[models.ProtocolContract],
     ) -> ProviderDecision:
         del contracts
         hosts = {
@@ -80,8 +80,8 @@ class YggdrasilProviderAdapter(ProviderAdapter):
 
     def validate(
         self,
-        evidence: EvidenceBundle,
-        contracts: list[ProtocolContract],
+        evidence: models.EvidenceBundle,
+        contracts: list[models.ProtocolContract],
     ) -> list[str]:
         decision = self.recognize(evidence, contracts)
         if not decision.recognized:
@@ -136,14 +136,14 @@ class YggdrasilProviderAdapter(ProviderAdapter):
 
     def endpoint_records(
         self,
-        evidence: EvidenceBundle,
-        analysis: AnalysisResult,
+        evidence: models.EvidenceBundle,
+        analysis: models.AnalysisResult,
         *,
         source_ref: str,
         environment: str,
-    ) -> list[EndpointRecord]:
+    ) -> list[models.EndpointRecord]:
         del analysis
-        records: list[EndpointRecord] = []
+        records: list[models.EndpointRecord] = []
         seen: set[tuple[str, str]] = set()
 
         for exchange in evidence.http:
@@ -165,17 +165,17 @@ class YggdrasilProviderAdapter(ProviderAdapter):
             request_format = _request_template(exchange.request_body)
             response_format = _response_template(exchange.response_body)
 
-            demo_state = ValidationState.OBSERVED
-            live_state = ValidationState.UNKNOWN
+            demo_state = models.ValidationState.OBSERVED
+            live_state = models.ValidationState.UNKNOWN
             if environment == "live":
-                live_state = ValidationState.OBSERVED
+                live_state = models.ValidationState.OBSERVED
 
             notes = ["Yggdrasil form-encoded fn=play command observed."]
             if is_purchase_command(command):
                 notes.append("Observed buy-bonus command; do not infer base spin from this request.")
 
             records.append(
-                EndpointRecord(
+                models.EndpointRecord(
                     provider=self.key,
                     protocol_family="http-command",
                     action=command,
