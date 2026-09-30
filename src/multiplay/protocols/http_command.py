@@ -30,11 +30,20 @@ class HttpCommandProtocol(ProtocolAdapter):
             return ProtocolDetection(self.family, 0.0, ("no stateful HTTP exchange",))
 
         actionful = sum(1 for x in stateful if _action(x.request_body) is not None)
-        score = min(0.90, 0.35 + 0.55 * (actionful / len(stateful)))
+        endpoint_routed = sum(
+            1
+            for x in stateful
+            if _action(x.request_body) is None and _endpoint_action(x.url)
+        )
+        evidence_score = (actionful + 0.75 * endpoint_routed) / len(stateful)
+        score = min(0.90, 0.35 + 0.55 * evidence_score)
         return ProtocolDetection(
             self.family,
             score,
-            (f"{actionful}/{len(stateful)} stateful requests expose an action discriminator",),
+            (
+                f"{actionful}/{len(stateful)} requests expose a body action; "
+                f"{endpoint_routed} use an action-like endpoint leaf",
+            ),
         )
 
     def build(self, evidence: EvidenceBundle) -> ProtocolContract:
@@ -95,6 +104,24 @@ def _is_jsonrpc(body: Any) -> bool:
         and isinstance(body.get("method"), str)
         and ("id" in body or body.get("jsonrpc") == "2.0")
     )
+
+
+def _endpoint_action(url: str) -> str | None:
+    leaf = urlsplit(str(url or "")).path.rstrip("/").rsplit("/", 1)[-1].casefold()
+    if leaf in {
+        "spin",
+        "play",
+        "choice",
+        "settings",
+        "game",
+        "start",
+        "finish",
+        "enter",
+        "wager",
+        "action",
+    }:
+        return leaf
+    return None
 
 
 def _endpoint(url: str) -> str:
