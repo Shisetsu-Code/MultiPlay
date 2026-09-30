@@ -1,0 +1,60 @@
+name: Test migrated providers
+
+on:
+  workflow_dispatch:
+  push:
+    branches: ["main"]
+    paths:
+      - ".github/workflows/test-migrated-providers.yml"
+      - "tools/provider_smoke.py"
+      - "src/multiplay/evidence.py"
+      - "src/multiplay/pipeline.py"
+      - "src/multiplay/protocols/http_command.py"
+      - "src/multiplay/protocols/websocket.py"
+      - "src/multiplay/providers/**"
+      - "tests/test_migrated_providers.py"
+
+jobs:
+  unit-contracts:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install --upgrade pip
+      - run: pip install -e ".[dev]"
+      - run: pytest -q tests/test_migrated_providers.py
+
+  cli-smoke:
+    needs: unit-contracts
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        provider:
+          - pragmatic
+          - one_spin4win
+          - belatra
+          - rubyplay
+          - redtiger
+          - 3oaks
+
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install --upgrade pip
+      - run: pip install -e ".[dev]"
+      - name: Run CLI integration smoke
+        run: |
+          mkdir -p provider-smoke
+          python tools/provider_smoke.py "${{ matrix.provider }}"             | tee "provider-smoke/${{ matrix.provider }}.json"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: provider-smoke-${{ matrix.provider }}
+          path: provider-smoke
+          if-no-files-found: error
+          retention-days: 7
