@@ -1,0 +1,1374 @@
+{
+  "schema": "multiplay/passive-provider-sweep/v1",
+  "provider": "rubyplay",
+  "catalog_count": 49,
+  "shard_index": 0,
+  "shard_count": 1,
+  "processed": 49,
+  "recognized": 49,
+  "status_counts": {
+    "PARTIAL_REQUIRES_REVIEW": 49
+  },
+  "games": [
+    {
+      "provider": "rubyplay",
+      "slug": "diamond-explosion-777",
+      "name": "Diamond Explosion 777",
+      "url": "https://rubyplay.com/games/diamond-explosion-777/",
+      "browser_url": "https://rubyplay.com/games/diamond-explosion-777/",
+      "symbol": "",
+      "source": "live-catalog",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.88,
+      "protocol_families": [],
+      "blockers": [
+        "rubyplay: successful init action is not demonstrated.",
+        "rubyplay: successful spin action is not demonstrated."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "rubyplay: successful init action is not demonstrated.",
+        "rubyplay: successful spin action is not demonstrated."
+      ],
+      "http_count": 102,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 3502.8
+    },
+    {
+      "provider": "rubyplay",
+      "slug": "diamond-explosion-7s",
+      "name": "Diamond Explosion 7S",
+      "url": "https://rubyplay.com/games/diamond-explosion-7s/",
+      "browser_url": "https://rubyplay.com/games/diamond-explosion-7s/",
+      "symbol": "",
+      "source": "live-catalog",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.99,
+      "protocol_families": [
+        "http-command"
+      ],
+      "blockers": [
+        "rubyplay: successful spin action is not demonstrated."
+      ],
+      "reasons": [
+        "rubyplay: successful spin action is not demonstrated."
+      ],
+      "http_count": 98,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 4525.1
+    },
+    {
+      "provider": "rubyplay",
+      "slug": "diamond-explosion-7s-se",
+      "name": "Diamond Explosion 7S Se",
+      "url": "https://rubyplay.com/games/diamond-explosion-7s-se/",
+      "browser_url": "https://rubyplay.com/games/diamond-explosion-7s-se/",
+      "symbol": "",
+      "source": "live-catalog",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.88,
+      "protocol_families": [],
+      "blockers": [
+        "rubyplay: successful init action is not demonstrated.",
+        "rubyplay: successful spin action is not demonstrated."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "rubyplay: successful init action is not demonstrated.",
+        "rubyplay: successful spin action is not demonstrated."
+      ],
+      "http_count": 92,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 4394.0
+    },
+    {
+      "provider": "rubyplay",
+      "slug": "diamond-explosion-candy",
+      "name": "Diamond Explosion Candy",
+      "url": "https://rubyplay.com/games/diamond-explosion-candy/",
+      "browser_url": "https://rubyplay.com/games/diamond-explosion-candy/",
+      "symbol": "",
+      "source": "live-catalog",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.88,
+      "protocol_families": [],
+      "blockers": [
+        "rubyplay: successful init action is not demonstrated.",
+        "rubyplay: successful spin action is not demonstrated."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "rubyplay: successful init action is not demonstrated.",
+        "rubyplay: successful spin action is not demonstrated."
+      ],
+      "http_count": 92,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 2803.4
+    },
+    {
+      "provider": "rubyplay",
+      "slug": "diamond-explosion-christmas-tango",
+      "name": "Diamond Explosion Christmas Tango",
+      "url": "https://rubyplay.com/games/diamond-explosion-christmas-tango/",
+      "browser_url": "https://rubyplay.com/games/diamond-explosion-christmas-tango/",
+      "symbol": "",
+      "source": "live-catalog",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.99,
+      "protocol_families": [
+        "http-command"
+      ],
+      "blockers": [
+        "rubyplay: successful init action is not demonstrated.",
+        "rubyplay: successful spin action is not demonstrated.",
+        "rubyplay: unsuccessful init request at har:http:110."
+      ],
+      "reasons": [
+        "POST https://srv.prrpeu3.com/gameserver/demo action=action=init: unstable or unsuccessful evidence",
+        "rubyplay: successful init action is not demonstrated.",
+        "rubyplay: successful spin action is not demonstrated.",
+        "rubyplay: unsuccessful init request at har:http:110."
+      ],
+      "http_count": 111,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 2888.5
+    },
+    {
+      "provider": "rubyplay",
+      "slug": "diamond-explosion-patriots",
+      "name": "Diamond Explosion Patriots",
+      "url": "https://rubyplay.com/games/diamond-explosion-patriots/",
+      "browser_url": "https://rubyplay.com/games/diamond-explosion-patriots/",
+      "symbol": "",
+      "source": "live-catalog",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.99,
+      "protocol_families": [
+        "http-command"
+      ],
+      "blockers": [
+        "rubyplay: successful init action is not demonstrated.",
+        "rubyplay: successful spin action is not demonstrated.",
+        "rubyplay: unsuccessful init request at har:http:97."
+      ],
+      "reasons": [
+        "POST https://rubyplay.com/wp-admin/admin-ajax.php action=action=forminator_get_nonce: unstable or unsuccessful evidence",
+        "POST https://srv.prrpeu3.com/gameserver/demo action=action=init: unstable or unsuccessful evidence",
+        "rubyplay: successful init action is not demonstrated.",
+        "rubyplay: successful spin action is not demonstrated.",
+        "rubyplay: unsuccessful init request at har:http:97."
+      ],
+      "http_count": 98,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 3847.6
+    },
+    {
+      "provider": "rubyplay",
+      "slug": "diamond-explosion-sweet-love",
+      "name": "Diamond Explosion Sweet Love",
+      "url": "https://rubyplay.com/games/diamond-explosion-sweet-love/",
+      "browser_url": "https://rubyplay.com/games/diamond-explosion-sweet-love/",
+      "symbol": "",
+      "source": "live-catalog",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.99,
+      "protocol_families": [
+        "http-command"
+      ],
+      "blockers": [
+        "rubyplay: successful init action is not demonstrated.",
+        "rubyplay: successful spin action is not demonstrated.",
+        "rubyplay: unsuccessful init request at har:http:112."
+      ],
+      "reasons": [
+        "POST https://srv.prrpeu3.com/gameserver/demo action=action=init: unstable or unsuccessful evidence",
+        "rubyplay: successful init action is not demonstrated.",
+        "rubyplay: successful spin action is not demonstrated.",
+        "rubyplay: unsuccessful init request at har:http:112."
+      ],
+      "http_count": 113,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 2924.1
+    },
+    {
+      "provider": "rubyplay",
+      "slug": "elephant-stampede",
+      "name": "Elephant Stampede",
+      "url": "https://rubyplay.com/games/elephant-stampede/",
+      "browser_url": "https://rubyplay.com/games/elephant-stampede/",
+      "symbol": "",
+      "source": "live-catalog",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.99,
+      "protocol_families": [
+        "http-command"
+      ],
+      "blockers": [
+        "rubyplay: successful init action is not demonstrated.",
+        "rubyplay: successful spin action is not demonstrated.",
+        "rubyplay: unsuccessful init request at har:http:101."
+      ],
+      "reasons": [
+        "POST https://srv.prrpeu3.com/gameserver/demo action=action=init: unstable or unsuccessful evidence",
+        "rubyplay: successful init action is not demonstrated.",
+        "rubyplay: successful spin action is not demonstrated.",
+        "rubyplay: unsuccessful init request at har:http:101."
+      ],
+      "http_count": 102,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 3126.1
+    },
+    {
+      "provider": "rubyplay",
+      "slug": "elephant-stampede-se",
+      "name": "Elephant Stampede Se",
+      "url": "https://rubyplay.com/games/elephant-stampede-se/",
+      "browser_url": "https://rubyplay.com/games/elephant-stampede-se/",
+      "symbol": "",
+      "source": "live-catalog",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.99,
+      "protocol_families": [
+        "http-command"
+      ],
+      "blockers": [
+        "rubyplay: successful spin action is not demonstrated."
+      ],
+      "reasons": [
+        "rubyplay: successful spin action is not demonstrated."
+      ],
+      "http_count": 98,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 4834.2
+    },
+    {
+      "provider": "rubyplay",
+      "slug": "frankenstein-triple-volt",
+      "name": "Frankenstein Triple Volt",
+      "url": "https://rubyplay.com/games/frankenstein-triple-volt/",
+      "browser_url": "https://rubyplay.com/games/frankenstein-triple-volt/",
+      "symbol": "",
+      "source": "live-catalog",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.99,
+      "protocol_families": [
+        "http-command"
+      ],
+      "blockers": [
+        "rubyplay: successful init action is not demonstrated.",
+        "rubyplay: successful spin action is not demonstrated.",
+        "rubyplay: unsuccessful init request at har:http:109."
+      ],
+      "reasons": [
+        "POST https://srv.prrpeu3.com/gameserver/demo action=action=init: unstable or unsuccessful evidence",
+        "rubyplay: successful init action is not demonstrated.",
+        "rubyplay: successful spin action is not demonstrated.",
+        "rubyplay: unsuccessful init request at har:http:109."
+      ],
+      "http_count": 110,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 4564.9
+    },
+    {
+      "provider": "rubyplay",
+      "slug": "fu-double-luck-diamond-explosion",
+      "name": "Fu Double Luck Diamond Explosion",
+      "url": "https://rubyplay.com/games/fu-double-luck-diamond-explosion/",
+      "browser_url": "https://rubyplay.com/games/fu-double-luck-diamond-explosion/",
+      "symbol": "",
+      "source": "live-catalog",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.88,
+      "protocol_families": [],
+      "blockers": [
+        "rubyplay: successful init action is not demonstrated.",
+        "rubyplay: successful spin action is not demonstrated."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "rubyplay: successful init action is not demonstrated.",
+        "rubyplay: successful spin action is not demonstrated."
+      ],
+      "http_count": 88,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 4550.5
+    },
+    {
+      "provider": "rubyplay",
+      "slug": "go-high-fruit",
+      "name": "Go High Fruit",
+      "url": "https://rubyplay.com/games/go-high-fruit/",
+      "browser_url": "https://rubyplay.com/games/go-high-fruit/",
+      "symbol": "",
+      "source": "live-catalog",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.88,
+      "protocol_families": [],
+      "blockers": [
+        "rubyplay: successful init action is not demonstrated.",
+        "rubyplay: successful spin action is not demonstrated."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "rubyplay: successful init action is not demonstrated.",
+        "rubyplay: successful spin action is not demonstrated."
+      ],
+      "http_count": 94,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 4910.8
+    },
+    {
+      "provider": "rubyplay",
+      "slug": "go-high-gallina",
+      "name": "Go High Gallina",
+      "url": "https://rubyplay.com/games/go-high-gallina/",
+      "browser_url": "https://rubyplay.com/games/go-high-gallina/",
+      "symbol": "",
+      "source": "live-catalog",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.88,
+      "protocol_families": [],
+      "blockers": [
+        "rubyplay: successful init action is not demonstrated.",
+        "rubyplay: successful spin action is not demonstrated."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "rubyplay: successful init action is not demonstrated.",
+        "rubyplay: successful spin action is not demonstrated."
+      ],
+      "http_count": 109,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 2935.9
+    },
+    {
+      "provider": "rubyplay",
+      "slug": "go-high-gone-fishing",
+      "name": "Go High Gone Fishing",
+      "url": "https://rubyplay.com/games/go-high-gone-fishing/",
+      "browser_url": "https://rubyplay.com/games/go-high-gone-fishing/",
+      "symbol": "",
+      "source": "live-catalog",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.88,
+      "protocol_families": [],
+      "blockers": [
+        "rubyplay: successful init action is not demonstrated.",
+        "rubyplay: successful spin action is not demonstrated."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "rubyplay: successful init action is not demonstrated.",
+        "rubyplay: successful spin action is not demonstrated."
+      ],
+      "http_count": 112,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 2912.0
+    },
+    {
+      "provider": "rubyplay",
+      "slug": "go-high-harvest",
+      "name": "Go High Harvest",
+      "url": "https://rubyplay.com/games/go-high-harvest/",
+      "browser_url": "https://rubyplay.com/games/go-high-harvest/",
+      "symbol": "",
+      "source": "live-catalog",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.99,
+      "protocol_families": [
+        "http-command"
+      ],
+      "blockers": [
+        "rubyplay: successful init action is not demonstrated.",
+        "rubyplay: successful spin action is not demonstrated.",
+        "rubyplay: unsuccessful init request at har:http:96."
+      ],
+      "reasons": [
+        "POST https://srv.prrpeu3.com/gameserver/demo action=action=init: unstable or unsuccessful evidence",
+        "rubyplay: successful init action is not demonstrated.",
+        "rubyplay: successful spin action is not demonstrated.",
+        "rubyplay: unsuccessful init request at har:http:96."
+      ],
+      "http_count": 97,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 4363.7
+    },
+    {
+      "provider": "rubyplay",
+      "slug": "go-high-joker",
+      "name": "Go High Joker",
+      "url": "https://rubyplay.com/games/go-high-joker/",
+      "browser_url": "https://rubyplay.com/games/go-high-joker/",
+      "symbol": "",
+      "source": "live-catalog",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.99,
+      "protocol_families": [
+        "http-command"
+      ],
+      "blockers": [
+        "rubyplay: successful init action is not demonstrated.",
+        "rubyplay: successful spin action is not demonstrated.",
+        "rubyplay: unsuccessful init request at har:http:96."
+      ],
+      "reasons": [
+        "POST https://srv.prrpeu3.com/gameserver/demo action=action=init: unstable or unsuccessful evidence",
+        "rubyplay: successful init action is not demonstrated.",
+        "rubyplay: successful spin action is not demonstrated.",
+        "rubyplay: unsuccessful init request at har:http:96."
+      ],
+      "http_count": 97,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 3918.3
+    },
+    {
+      "provider": "rubyplay",
+      "slug": "go-high-olympus",
+      "name": "Go High Olympus",
+      "url": "https://rubyplay.com/games/go-high-olympus/",
+      "browser_url": "https://rubyplay.com/games/go-high-olympus/",
+      "symbol": "",
+      "source": "live-catalog",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.88,
+      "protocol_families": [],
+      "blockers": [
+        "rubyplay: successful init action is not demonstrated.",
+        "rubyplay: successful spin action is not demonstrated."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "rubyplay: successful init action is not demonstrated.",
+        "rubyplay: successful spin action is not demonstrated."
+      ],
+      "http_count": 107,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 4431.5
+    },
+    {
+      "provider": "rubyplay",
+      "slug": "go-high-panda",
+      "name": "Go High Panda",
+      "url": "https://rubyplay.com/games/go-high-panda/",
+      "browser_url": "https://rubyplay.com/games/go-high-panda/",
+      "symbol": "",
+      "source": "live-catalog",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.88,
+      "protocol_families": [],
+      "blockers": [
+        "rubyplay: successful init action is not demonstrated.",
+        "rubyplay: successful spin action is not demonstrated."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "rubyplay: successful init action is not demonstrated.",
+        "rubyplay: successful spin action is not demonstrated."
+      ],
+      "http_count": 109,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 4496.3
+    },
+    {
+      "provider": "rubyplay",
+      "slug": "go-high-puppy-love",
+      "name": "Go High Puppy Love",
+      "url": "https://rubyplay.com/games/go-high-puppy-love/",
+      "browser_url": "https://rubyplay.com/games/go-high-puppy-love/",
+      "symbol": "",
+      "source": "live-catalog",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.99,
+      "protocol_families": [
+        "http-command"
+      ],
+      "blockers": [
+        "rubyplay: successful init action is not demonstrated.",
+        "rubyplay: successful spin action is not demonstrated.",
+        "rubyplay: unsuccessful init request at har:http:107."
+      ],
+      "reasons": [
+        "POST https://srv.prrpeu3.com/gameserver/demo action=action=init: unstable or unsuccessful evidence",
+        "rubyplay: successful init action is not demonstrated.",
+        "rubyplay: successful spin action is not demonstrated.",
+        "rubyplay: unsuccessful init request at har:http:107."
+      ],
+      "http_count": 108,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 2877.5
+    },
+    {
+      "provider": "rubyplay",
+      "slug": "go-high-safari",
+      "name": "Go High Safari",
+      "url": "https://rubyplay.com/games/go-high-safari/",
+      "browser_url": "https://rubyplay.com/games/go-high-safari/",
+      "symbol": "",
+      "source": "live-catalog",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.88,
+      "protocol_families": [],
+      "blockers": [
+        "rubyplay: successful init action is not demonstrated.",
+        "rubyplay: successful spin action is not demonstrated."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "rubyplay: successful init action is not demonstrated.",
+        "rubyplay: successful spin action is not demonstrated."
+      ],
+      "http_count": 109,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 4468.1
+    },
+    {
+      "provider": "rubyplay",
+      "slug": "gummy-giga-match",
+      "name": "Gummy Giga Match",
+      "url": "https://rubyplay.com/games/gummy-giga-match/",
+      "browser_url": "https://rubyplay.com/games/gummy-giga-match/",
+      "symbol": "",
+      "source": "live-catalog",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.99,
+      "protocol_families": [
+        "http-command"
+      ],
+      "blockers": [
+        "rubyplay: successful init action is not demonstrated.",
+        "rubyplay: successful spin action is not demonstrated.",
+        "rubyplay: unsuccessful init request at har:http:113."
+      ],
+      "reasons": [
+        "POST https://srv.prrpeu3.com/gameserver/demo action=action=init: unstable or unsuccessful evidence",
+        "rubyplay: successful init action is not demonstrated.",
+        "rubyplay: successful spin action is not demonstrated.",
+        "rubyplay: unsuccessful init request at har:http:113."
+      ],
+      "http_count": 114,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 2850.4
+    },
+    {
+      "provider": "rubyplay",
+      "slug": "immortal-ways-88-charms",
+      "name": "Immortal Ways 88 Charms",
+      "url": "https://rubyplay.com/games/immortal-ways-88-charms/",
+      "browser_url": "https://rubyplay.com/games/immortal-ways-88-charms/",
+      "symbol": "",
+      "source": "live-catalog",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.99,
+      "protocol_families": [
+        "http-command"
+      ],
+      "blockers": [
+        "rubyplay: successful init action is not demonstrated.",
+        "rubyplay: successful spin action is not demonstrated.",
+        "rubyplay: unsuccessful init request at har:http:112."
+      ],
+      "reasons": [
+        "POST https://rubyplay.com/wp-admin/admin-ajax.php action=action=forminator_get_nonce: unstable or unsuccessful evidence",
+        "POST https://srv.prrpeu3.com/gameserver/demo action=action=init: unstable or unsuccessful evidence",
+        "rubyplay: successful init action is not demonstrated.",
+        "rubyplay: successful spin action is not demonstrated.",
+        "rubyplay: unsuccessful init request at har:http:112."
+      ],
+      "http_count": 113,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 2866.4
+    },
+    {
+      "provider": "rubyplay",
+      "slug": "immortal-ways-betano",
+      "name": "Immortal Ways Betano",
+      "url": "https://rubyplay.com/games/immortal-ways-betano/",
+      "browser_url": "https://rubyplay.com/games/immortal-ways-betano/",
+      "symbol": "",
+      "source": "live-catalog",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.88,
+      "protocol_families": [],
+      "blockers": [
+        "rubyplay: successful init action is not demonstrated.",
+        "rubyplay: successful spin action is not demonstrated."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "rubyplay: successful init action is not demonstrated.",
+        "rubyplay: successful spin action is not demonstrated."
+      ],
+      "http_count": 98,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 2900.9
+    },
+    {
+      "provider": "rubyplay",
+      "slug": "immortal-ways-champions",
+      "name": "Immortal Ways Champions",
+      "url": "https://rubyplay.com/games/immortal-ways-champions/",
+      "browser_url": "https://rubyplay.com/games/immortal-ways-champions/",
+      "symbol": "",
+      "source": "live-catalog",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.88,
+      "protocol_families": [],
+      "blockers": [
+        "rubyplay: successful init action is not demonstrated.",
+        "rubyplay: successful spin action is not demonstrated."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "rubyplay: successful init action is not demonstrated.",
+        "rubyplay: successful spin action is not demonstrated."
+      ],
+      "http_count": 108,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 2847.1
+    },
+    {
+      "provider": "rubyplay",
+      "slug": "immortal-ways-diamonds",
+      "name": "Immortal Ways Diamonds",
+      "url": "https://rubyplay.com/games/immortal-ways-diamonds/",
+      "browser_url": "https://rubyplay.com/games/immortal-ways-diamonds/",
+      "symbol": "",
+      "source": "live-catalog",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.88,
+      "protocol_families": [],
+      "blockers": [
+        "rubyplay: successful init action is not demonstrated.",
+        "rubyplay: successful spin action is not demonstrated."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "rubyplay: successful init action is not demonstrated.",
+        "rubyplay: successful spin action is not demonstrated."
+      ],
+      "http_count": 110,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 2870.7
+    },
+    {
+      "provider": "rubyplay",
+      "slug": "immortal-ways-lady-moon",
+      "name": "Immortal Ways Lady Moon",
+      "url": "https://rubyplay.com/games/immortal-ways-lady-moon/",
+      "browser_url": "https://rubyplay.com/games/immortal-ways-lady-moon/",
+      "symbol": "",
+      "source": "live-catalog",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.99,
+      "protocol_families": [
+        "http-command"
+      ],
+      "blockers": [
+        "rubyplay: successful init action is not demonstrated.",
+        "rubyplay: successful spin action is not demonstrated.",
+        "rubyplay: unsuccessful init request at har:http:96."
+      ],
+      "reasons": [
+        "POST https://srv.prrpeu3.com/gameserver/demo action=action=init: unstable or unsuccessful evidence",
+        "rubyplay: successful init action is not demonstrated.",
+        "rubyplay: successful spin action is not demonstrated.",
+        "rubyplay: unsuccessful init request at har:http:96."
+      ],
+      "http_count": 97,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 4264.3
+    },
+    {
+      "provider": "rubyplay",
+      "slug": "immortal-ways-luva",
+      "name": "Immortal Ways Luva",
+      "url": "https://rubyplay.com/games/immortal-ways-luva/",
+      "browser_url": "https://rubyplay.com/games/immortal-ways-luva/",
+      "symbol": "",
+      "source": "live-catalog",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.88,
+      "protocol_families": [],
+      "blockers": [
+        "rubyplay: successful init action is not demonstrated.",
+        "rubyplay: successful spin action is not demonstrated."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "rubyplay: successful init action is not demonstrated.",
+        "rubyplay: successful spin action is not demonstrated."
+      ],
+      "http_count": 110,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 4165.3
+    },
+    {
+      "provider": "rubyplay",
+      "slug": "immortal-ways-mr-first",
+      "name": "Immortal Ways Mr First",
+      "url": "https://rubyplay.com/games/immortal-ways-mr-first/",
+      "browser_url": "https://rubyplay.com/games/immortal-ways-mr-first/",
+      "symbol": "",
+      "source": "live-catalog",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.88,
+      "protocol_families": [],
+      "blockers": [
+        "rubyplay: successful init action is not demonstrated.",
+        "rubyplay: successful spin action is not demonstrated."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "rubyplay: successful init action is not demonstrated.",
+        "rubyplay: successful spin action is not demonstrated."
+      ],
+      "http_count": 99,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 4269.8
+    },
+    {
+      "provider": "rubyplay",
+      "slug": "immortal-ways-pinata",
+      "name": "Immortal Ways Pinata",
+      "url": "https://rubyplay.com/games/immortal-ways-pinata/",
+      "browser_url": "https://rubyplay.com/games/immortal-ways-pinata/",
+      "symbol": "",
+      "source": "live-catalog",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.88,
+      "protocol_families": [],
+      "blockers": [
+        "rubyplay: successful init action is not demonstrated.",
+        "rubyplay: successful spin action is not demonstrated."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "rubyplay: successful init action is not demonstrated.",
+        "rubyplay: successful spin action is not demonstrated."
+      ],
+      "http_count": 111,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 4623.2
+    },
+    {
+      "provider": "rubyplay",
+      "slug": "immortal-ways-spooktacular",
+      "name": "Immortal Ways Spooktacular",
+      "url": "https://rubyplay.com/games/immortal-ways-spooktacular/",
+      "browser_url": "https://rubyplay.com/games/immortal-ways-spooktacular/",
+      "symbol": "",
+      "source": "live-catalog",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.88,
+      "protocol_families": [],
+      "blockers": [
+        "rubyplay: successful init action is not demonstrated.",
+        "rubyplay: successful spin action is not demonstrated."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "rubyplay: successful init action is not demonstrated.",
+        "rubyplay: successful spin action is not demonstrated."
+      ],
+      "http_count": 112,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 2837.1
+    },
+    {
+      "provider": "rubyplay",
+      "slug": "immortal-ways-sweet-coin",
+      "name": "Immortal Ways Sweet Coin",
+      "url": "https://rubyplay.com/games/immortal-ways-sweet-coin/",
+      "browser_url": "https://rubyplay.com/games/immortal-ways-sweet-coin/",
+      "symbol": "",
+      "source": "live-catalog",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.99,
+      "protocol_families": [
+        "http-command"
+      ],
+      "blockers": [
+        "rubyplay: successful init action is not demonstrated.",
+        "rubyplay: successful spin action is not demonstrated.",
+        "rubyplay: unsuccessful init request at har:http:97."
+      ],
+      "reasons": [
+        "POST https://srv.prrpeu3.com/gameserver/demo action=action=init: unstable or unsuccessful evidence",
+        "rubyplay: successful init action is not demonstrated.",
+        "rubyplay: successful spin action is not demonstrated.",
+        "rubyplay: unsuccessful init request at har:http:97."
+      ],
+      "http_count": 98,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 3845.1
+    },
+    {
+      "provider": "rubyplay",
+      "slug": "mad-hit-bearhaus",
+      "name": "Mad Hit Bearhaus",
+      "url": "https://rubyplay.com/games/mad-hit-bearhaus/",
+      "browser_url": "https://rubyplay.com/games/mad-hit-bearhaus/",
+      "symbol": "",
+      "source": "live-catalog",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.88,
+      "protocol_families": [],
+      "blockers": [
+        "rubyplay: successful init action is not demonstrated.",
+        "rubyplay: successful spin action is not demonstrated."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "rubyplay: successful init action is not demonstrated.",
+        "rubyplay: successful spin action is not demonstrated."
+      ],
+      "http_count": 109,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 4310.9
+    },
+    {
+      "provider": "rubyplay",
+      "slug": "mad-hit-diamonds",
+      "name": "Mad Hit Diamonds",
+      "url": "https://rubyplay.com/games/mad-hit-diamonds/",
+      "browser_url": "https://rubyplay.com/games/mad-hit-diamonds/",
+      "symbol": "",
+      "source": "live-catalog",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.99,
+      "protocol_families": [
+        "http-command"
+      ],
+      "blockers": [
+        "rubyplay: successful init action is not demonstrated.",
+        "rubyplay: successful spin action is not demonstrated.",
+        "rubyplay: unsuccessful init request at har:http:96."
+      ],
+      "reasons": [
+        "POST https://srv.prrpeu3.com/gameserver/demo action=action=init: unstable or unsuccessful evidence",
+        "rubyplay: successful init action is not demonstrated.",
+        "rubyplay: successful spin action is not demonstrated.",
+        "rubyplay: unsuccessful init request at har:http:96."
+      ],
+      "http_count": 97,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 3851.3
+    },
+    {
+      "provider": "rubyplay",
+      "slug": "mad-hit-diamonds-extreme",
+      "name": "Mad Hit Diamonds Extreme",
+      "url": "https://rubyplay.com/games/mad-hit-diamonds-extreme/",
+      "browser_url": "https://rubyplay.com/games/mad-hit-diamonds-extreme/",
+      "symbol": "",
+      "source": "live-catalog",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.88,
+      "protocol_families": [],
+      "blockers": [
+        "rubyplay: successful init action is not demonstrated.",
+        "rubyplay: successful spin action is not demonstrated."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "rubyplay: successful init action is not demonstrated.",
+        "rubyplay: successful spin action is not demonstrated."
+      ],
+      "http_count": 104,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 4649.1
+    },
+    {
+      "provider": "rubyplay",
+      "slug": "mad-hit-full-steam",
+      "name": "Mad Hit Full Steam",
+      "url": "https://rubyplay.com/games/mad-hit-full-steam/",
+      "browser_url": "https://rubyplay.com/games/mad-hit-full-steam/",
+      "symbol": "",
+      "source": "live-catalog",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.99,
+      "protocol_families": [
+        "http-command"
+      ],
+      "blockers": [
+        "rubyplay: successful init action is not demonstrated.",
+        "rubyplay: successful spin action is not demonstrated.",
+        "rubyplay: unsuccessful init request at har:http:96."
+      ],
+      "reasons": [
+        "POST https://srv.prrpeu3.com/gameserver/demo action=action=init: unstable or unsuccessful evidence",
+        "rubyplay: successful init action is not demonstrated.",
+        "rubyplay: successful spin action is not demonstrated.",
+        "rubyplay: unsuccessful init request at har:http:96."
+      ],
+      "http_count": 97,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 3975.9
+    },
+    {
+      "provider": "rubyplay",
+      "slug": "mad-hit-gorillatron",
+      "name": "Mad Hit Gorillatron",
+      "url": "https://rubyplay.com/games/mad-hit-gorillatron/",
+      "browser_url": "https://rubyplay.com/games/mad-hit-gorillatron/",
+      "symbol": "",
+      "source": "live-catalog",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.88,
+      "protocol_families": [],
+      "blockers": [
+        "rubyplay: successful init action is not demonstrated.",
+        "rubyplay: successful spin action is not demonstrated."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "rubyplay: successful init action is not demonstrated.",
+        "rubyplay: successful spin action is not demonstrated."
+      ],
+      "http_count": 104,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 4061.1
+    },
+    {
+      "provider": "rubyplay",
+      "slug": "mad-hit-hidden-cities",
+      "name": "Mad Hit Hidden Cities",
+      "url": "https://rubyplay.com/games/mad-hit-hidden-cities/",
+      "browser_url": "https://rubyplay.com/games/mad-hit-hidden-cities/",
+      "symbol": "",
+      "source": "live-catalog",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.99,
+      "protocol_families": [
+        "http-command"
+      ],
+      "blockers": [
+        "rubyplay: successful spin action is not demonstrated.",
+        "rubyplay: har:http:96 response is not an object."
+      ],
+      "reasons": [
+        "rubyplay: successful spin action is not demonstrated.",
+        "rubyplay: har:http:96 response is not an object."
+      ],
+      "http_count": 97,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 3843.1
+    },
+    {
+      "provider": "rubyplay",
+      "slug": "mad-hit-marlin-bonanza",
+      "name": "Mad Hit Marlin Bonanza",
+      "url": "https://rubyplay.com/games/mad-hit-marlin-bonanza/",
+      "browser_url": "https://rubyplay.com/games/mad-hit-marlin-bonanza/",
+      "symbol": "",
+      "source": "live-catalog",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.88,
+      "protocol_families": [],
+      "blockers": [
+        "rubyplay: successful init action is not demonstrated.",
+        "rubyplay: successful spin action is not demonstrated."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "rubyplay: successful init action is not demonstrated.",
+        "rubyplay: successful spin action is not demonstrated."
+      ],
+      "http_count": 108,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 2921.2
+    },
+    {
+      "provider": "rubyplay",
+      "slug": "mad-hit-mr-coin-se",
+      "name": "Mad Hit Mr Coin Se",
+      "url": "https://rubyplay.com/games/mad-hit-mr-coin-se/",
+      "browser_url": "https://rubyplay.com/games/mad-hit-mr-coin-se/",
+      "symbol": "",
+      "source": "live-catalog",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.88,
+      "protocol_families": [],
+      "blockers": [
+        "rubyplay: successful init action is not demonstrated.",
+        "rubyplay: successful spin action is not demonstrated."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "rubyplay: successful init action is not demonstrated.",
+        "rubyplay: successful spin action is not demonstrated."
+      ],
+      "http_count": 100,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 2962.2
+    },
+    {
+      "provider": "rubyplay",
+      "slug": "mad-hit-oasis",
+      "name": "Mad Hit Oasis",
+      "url": "https://rubyplay.com/games/mad-hit-oasis/",
+      "browser_url": "https://rubyplay.com/games/mad-hit-oasis/",
+      "symbol": "",
+      "source": "live-catalog",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.99,
+      "protocol_families": [
+        "http-command"
+      ],
+      "blockers": [
+        "rubyplay: successful init action is not demonstrated.",
+        "rubyplay: successful spin action is not demonstrated.",
+        "rubyplay: unsuccessful init request at har:http:96."
+      ],
+      "reasons": [
+        "POST https://srv.prrpeu3.com/gameserver/demo action=action=init: unstable or unsuccessful evidence",
+        "rubyplay: successful init action is not demonstrated.",
+        "rubyplay: successful spin action is not demonstrated.",
+        "rubyplay: unsuccessful init request at har:http:96."
+      ],
+      "http_count": 97,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 3910.5
+    },
+    {
+      "provider": "rubyplay",
+      "slug": "mad-hit-savannah",
+      "name": "Mad Hit Savannah",
+      "url": "https://rubyplay.com/games/mad-hit-savannah/",
+      "browser_url": "https://rubyplay.com/games/mad-hit-savannah/",
+      "symbol": "",
+      "source": "live-catalog",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.99,
+      "protocol_families": [
+        "http-command"
+      ],
+      "blockers": [
+        "rubyplay: successful init action is not demonstrated.",
+        "rubyplay: successful spin action is not demonstrated.",
+        "rubyplay: unsuccessful init request at har:http:109."
+      ],
+      "reasons": [
+        "POST https://srv.prrpeu3.com/gameserver/demo action=action=init: unstable or unsuccessful evidence",
+        "rubyplay: successful init action is not demonstrated.",
+        "rubyplay: successful spin action is not demonstrated.",
+        "rubyplay: unsuccessful init request at har:http:109."
+      ],
+      "http_count": 110,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 2915.9
+    },
+    {
+      "provider": "rubyplay",
+      "slug": "mad-hit-supernova",
+      "name": "Mad Hit Supernova",
+      "url": "https://rubyplay.com/games/mad-hit-supernova/",
+      "browser_url": "https://rubyplay.com/games/mad-hit-supernova/",
+      "symbol": "",
+      "source": "live-catalog",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.88,
+      "protocol_families": [],
+      "blockers": [
+        "rubyplay: successful init action is not demonstrated.",
+        "rubyplay: successful spin action is not demonstrated."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "rubyplay: successful init action is not demonstrated.",
+        "rubyplay: successful spin action is not demonstrated."
+      ],
+      "http_count": 110,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 4837.7
+    },
+    {
+      "provider": "rubyplay",
+      "slug": "mad-hit-wild-alice",
+      "name": "Mad Hit Wild Alice",
+      "url": "https://rubyplay.com/games/mad-hit-wild-alice/",
+      "browser_url": "https://rubyplay.com/games/mad-hit-wild-alice/",
+      "symbol": "",
+      "source": "live-catalog",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.99,
+      "protocol_families": [
+        "http-command"
+      ],
+      "blockers": [
+        "rubyplay: successful init action is not demonstrated.",
+        "rubyplay: successful spin action is not demonstrated.",
+        "rubyplay: unsuccessful init request at har:http:96."
+      ],
+      "reasons": [
+        "POST https://srv.prrpeu3.com/gameserver/demo action=action=init: unstable or unsuccessful evidence",
+        "rubyplay: successful init action is not demonstrated.",
+        "rubyplay: successful spin action is not demonstrated.",
+        "rubyplay: unsuccessful init request at har:http:96."
+      ],
+      "http_count": 97,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 3884.3
+    },
+    {
+      "provider": "rubyplay",
+      "slug": "mayan-cache",
+      "name": "Mayan Cache",
+      "url": "https://rubyplay.com/games/mayan-cache/",
+      "browser_url": "https://rubyplay.com/games/mayan-cache/",
+      "symbol": "",
+      "source": "live-catalog",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.88,
+      "protocol_families": [],
+      "blockers": [
+        "rubyplay: successful init action is not demonstrated.",
+        "rubyplay: successful spin action is not demonstrated."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "rubyplay: successful init action is not demonstrated.",
+        "rubyplay: successful spin action is not demonstrated."
+      ],
+      "http_count": 95,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 3870.9
+    },
+    {
+      "provider": "rubyplay",
+      "slug": "stampede-rush-mighty-chang",
+      "name": "Stampede Rush Mighty Chang",
+      "url": "https://rubyplay.com/games/stampede-rush-mighty-chang/",
+      "browser_url": "https://rubyplay.com/games/stampede-rush-mighty-chang/",
+      "symbol": "",
+      "source": "live-catalog",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.99,
+      "protocol_families": [
+        "http-command"
+      ],
+      "blockers": [
+        "rubyplay: successful init action is not demonstrated.",
+        "rubyplay: successful spin action is not demonstrated.",
+        "rubyplay: unsuccessful init request at har:http:96."
+      ],
+      "reasons": [
+        "POST https://srv.prrpeu3.com/gameserver/demo action=action=init: unstable or unsuccessful evidence",
+        "rubyplay: successful init action is not demonstrated.",
+        "rubyplay: successful spin action is not demonstrated.",
+        "rubyplay: unsuccessful init request at har:http:96."
+      ],
+      "http_count": 97,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 3839.7
+    },
+    {
+      "provider": "rubyplay",
+      "slug": "stampede-rush-speedy-santa",
+      "name": "Stampede Rush Speedy Santa",
+      "url": "https://rubyplay.com/games/stampede-rush-speedy-santa/",
+      "browser_url": "https://rubyplay.com/games/stampede-rush-speedy-santa/",
+      "symbol": "",
+      "source": "live-catalog",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.99,
+      "protocol_families": [
+        "http-command"
+      ],
+      "blockers": [
+        "rubyplay: successful init action is not demonstrated.",
+        "rubyplay: successful spin action is not demonstrated.",
+        "rubyplay: unsuccessful init request at har:http:96."
+      ],
+      "reasons": [
+        "POST https://srv.prrpeu3.com/gameserver/demo action=action=init: unstable or unsuccessful evidence",
+        "rubyplay: successful init action is not demonstrated.",
+        "rubyplay: successful spin action is not demonstrated.",
+        "rubyplay: unsuccessful init request at har:http:96."
+      ],
+      "http_count": 97,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 4077.9
+    },
+    {
+      "provider": "rubyplay",
+      "slug": "stampede-rush-trident",
+      "name": "Stampede Rush Trident",
+      "url": "https://rubyplay.com/games/stampede-rush-trident/",
+      "browser_url": "https://rubyplay.com/games/stampede-rush-trident/",
+      "symbol": "",
+      "source": "live-catalog",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.99,
+      "protocol_families": [
+        "http-command"
+      ],
+      "blockers": [
+        "rubyplay: successful init action is not demonstrated.",
+        "rubyplay: successful spin action is not demonstrated.",
+        "rubyplay: unsuccessful init request at har:http:96."
+      ],
+      "reasons": [
+        "POST https://srv.prrpeu3.com/gameserver/demo action=action=init: unstable or unsuccessful evidence",
+        "rubyplay: successful init action is not demonstrated.",
+        "rubyplay: successful spin action is not demonstrated.",
+        "rubyplay: unsuccessful init request at har:http:96."
+      ],
+      "http_count": 97,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 3892.9
+    },
+    {
+      "provider": "rubyplay",
+      "slug": "stampede-rush-wicked",
+      "name": "Stampede Rush Wicked",
+      "url": "https://rubyplay.com/games/stampede-rush-wicked/",
+      "browser_url": "https://rubyplay.com/games/stampede-rush-wicked/",
+      "symbol": "",
+      "source": "live-catalog",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.99,
+      "protocol_families": [
+        "http-command"
+      ],
+      "blockers": [
+        "rubyplay: successful init action is not demonstrated.",
+        "rubyplay: successful spin action is not demonstrated.",
+        "rubyplay: unsuccessful init request at har:http:96."
+      ],
+      "reasons": [
+        "POST https://rubyplay.com/wp-admin/admin-ajax.php action=action=forminator_get_nonce: unstable or unsuccessful evidence",
+        "POST https://srv.prrpeu3.com/gameserver/demo action=action=init: unstable or unsuccessful evidence",
+        "rubyplay: successful init action is not demonstrated.",
+        "rubyplay: successful spin action is not demonstrated.",
+        "rubyplay: unsuccessful init request at har:http:96."
+      ],
+      "http_count": 97,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 3883.0
+    },
+    {
+      "provider": "rubyplay",
+      "slug": "volcano-rising-se",
+      "name": "Volcano Rising Se",
+      "url": "https://rubyplay.com/games/volcano-rising-se/",
+      "browser_url": "https://rubyplay.com/games/volcano-rising-se/",
+      "symbol": "",
+      "source": "live-catalog",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.88,
+      "protocol_families": [],
+      "blockers": [
+        "rubyplay: successful init action is not demonstrated.",
+        "rubyplay: successful spin action is not demonstrated."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "rubyplay: successful init action is not demonstrated.",
+        "rubyplay: successful spin action is not demonstrated."
+      ],
+      "http_count": 23,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 2964.0
+    }
+  ]
+}

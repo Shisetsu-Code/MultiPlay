@@ -1,0 +1,2654 @@
+{
+  "schema": "multiplay/passive-provider-sweep/v1",
+  "provider": "3oaks",
+  "catalog_count": 110,
+  "shard_index": 0,
+  "shard_count": 1,
+  "processed": 110,
+  "recognized": 110,
+  "status_counts": {
+    "PARTIAL_REQUIRES_REVIEW": 110
+  },
+  "games": [
+    {
+      "provider": "3oaks",
+      "slug": "15_dragon_pearls",
+      "name": "15 Dragon Pearls",
+      "url": "https://3oaks.com/api/v1/games/15_dragon_pearls/play?lang=en",
+      "browser_url": "https://3oaks.com/games/15_dragon_pearls",
+      "symbol": "",
+      "source": "targets.txt",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.88,
+      "protocol_families": [],
+      "blockers": [
+        "3oaks: successful command=spin request is not demonstrated."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "3oaks: successful command=spin request is not demonstrated."
+      ],
+      "http_count": 45,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 2423.6
+    },
+    {
+      "provider": "3oaks",
+      "slug": "3_african_drums",
+      "name": "3 African Drums",
+      "url": "https://3oaks.com/api/v1/games/3_african_drums/play?lang=en",
+      "browser_url": "https://3oaks.com/games/3_african_drums",
+      "symbol": "",
+      "source": "targets.txt",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.88,
+      "protocol_families": [],
+      "blockers": [
+        "3oaks: successful command=spin request is not demonstrated."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "3oaks: successful command=spin request is not demonstrated."
+      ],
+      "http_count": 50,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 2266.2
+    },
+    {
+      "provider": "3oaks",
+      "slug": "3_aztec_temples",
+      "name": "3 Aztec Temples",
+      "url": "https://3oaks.com/api/v1/games/3_aztec_temples/play?lang=en",
+      "browser_url": "https://3oaks.com/games/3_aztec_temples",
+      "symbol": "",
+      "source": "targets.txt",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.88,
+      "protocol_families": [],
+      "blockers": [
+        "3oaks: successful command=spin request is not demonstrated."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "3oaks: successful command=spin request is not demonstrated."
+      ],
+      "http_count": 45,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 2265.5
+    },
+    {
+      "provider": "3oaks",
+      "slug": "3_china_pots",
+      "name": "3 China Pots",
+      "url": "https://3oaks.com/api/v1/games/3_china_pots/play?lang=en",
+      "browser_url": "https://3oaks.com/games/3_china_pots",
+      "symbol": "",
+      "source": "targets.txt",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.88,
+      "protocol_families": [],
+      "blockers": [
+        "3oaks: successful command=spin request is not demonstrated."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "3oaks: successful command=spin request is not demonstrated."
+      ],
+      "http_count": 46,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 2249.5
+    },
+    {
+      "provider": "3oaks",
+      "slug": "3_clover_pots",
+      "name": "3 Clover Pots",
+      "url": "https://3oaks.com/api/v1/games/3_clover_pots/play?lang=en",
+      "browser_url": "https://3oaks.com/games/3_clover_pots",
+      "symbol": "",
+      "source": "targets.txt",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.88,
+      "protocol_families": [],
+      "blockers": [
+        "3oaks: successful command=spin request is not demonstrated."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "3oaks: successful command=spin request is not demonstrated."
+      ],
+      "http_count": 45,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 2325.3
+    },
+    {
+      "provider": "3oaks",
+      "slug": "3_clover_pots_extra",
+      "name": "3 Clover Pots Extra",
+      "url": "https://3oaks.com/api/v1/games/3_clover_pots_extra/play?lang=en",
+      "browser_url": "https://3oaks.com/games/3_clover_pots_extra",
+      "symbol": "",
+      "source": "targets.txt",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.88,
+      "protocol_families": [],
+      "blockers": [
+        "3oaks: successful command=spin request is not demonstrated."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "3oaks: successful command=spin request is not demonstrated."
+      ],
+      "http_count": 45,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 2261.4
+    },
+    {
+      "provider": "3oaks",
+      "slug": "3_coin_volcanoes",
+      "name": "3 Coin Volcanoes",
+      "url": "https://3oaks.com/api/v1/games/3_coin_volcanoes/play?lang=en",
+      "browser_url": "https://3oaks.com/games/3_coin_volcanoes",
+      "symbol": "",
+      "source": "targets.txt",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.88,
+      "protocol_families": [],
+      "blockers": [
+        "3oaks: successful command=spin request is not demonstrated."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "3oaks: successful command=spin request is not demonstrated."
+      ],
+      "http_count": 45,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 2267.4
+    },
+    {
+      "provider": "3oaks",
+      "slug": "3_coins",
+      "name": "3 Coins",
+      "url": "https://3oaks.com/api/v1/games/3_coins/play?lang=en",
+      "browser_url": "https://3oaks.com/games/3_coins",
+      "symbol": "",
+      "source": "targets.txt",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.88,
+      "protocol_families": [],
+      "blockers": [
+        "3oaks: successful command=spin request is not demonstrated."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "3oaks: successful command=spin request is not demonstrated."
+      ],
+      "http_count": 45,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 2261.7
+    },
+    {
+      "provider": "3oaks",
+      "slug": "3_egypt_chests",
+      "name": "3 Egypt Chests",
+      "url": "https://3oaks.com/api/v1/games/3_egypt_chests/play?lang=en",
+      "browser_url": "https://3oaks.com/games/3_egypt_chests",
+      "symbol": "",
+      "source": "targets.txt",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.88,
+      "protocol_families": [],
+      "blockers": [
+        "3oaks: successful command=spin request is not demonstrated."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "3oaks: successful command=spin request is not demonstrated."
+      ],
+      "http_count": 45,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 2267.3
+    },
+    {
+      "provider": "3oaks",
+      "slug": "3_hot_chillies",
+      "name": "3 Hot Chillies",
+      "url": "https://3oaks.com/api/v1/games/3_hot_chillies/play?lang=en",
+      "browser_url": "https://3oaks.com/games/3_hot_chillies",
+      "symbol": "",
+      "source": "targets.txt",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.88,
+      "protocol_families": [],
+      "blockers": [
+        "3oaks: successful command=spin request is not demonstrated."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "3oaks: successful command=spin request is not demonstrated."
+      ],
+      "http_count": 45,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 2265.0
+    },
+    {
+      "provider": "3oaks",
+      "slug": "3_hot_teapots",
+      "name": "3 Hot Teapots",
+      "url": "https://3oaks.com/api/v1/games/3_hot_teapots/play?lang=en",
+      "browser_url": "https://3oaks.com/games/3_hot_teapots",
+      "symbol": "",
+      "source": "targets.txt",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.88,
+      "protocol_families": [],
+      "blockers": [
+        "3oaks: successful command=spin request is not demonstrated."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "3oaks: successful command=spin request is not demonstrated."
+      ],
+      "http_count": 45,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 2257.2
+    },
+    {
+      "provider": "3oaks",
+      "slug": "3_jewel_crowns",
+      "name": "3 Jewel Crowns",
+      "url": "https://3oaks.com/api/v1/games/3_jewel_crowns/play?lang=en",
+      "browser_url": "https://3oaks.com/games/3_jewel_crowns",
+      "symbol": "",
+      "source": "targets.txt",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.88,
+      "protocol_families": [],
+      "blockers": [
+        "3oaks: successful command=spin request is not demonstrated."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "3oaks: successful command=spin request is not demonstrated."
+      ],
+      "http_count": 45,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 2274.6
+    },
+    {
+      "provider": "3oaks",
+      "slug": "3_lucky_sparks",
+      "name": "3 Lucky Sparks",
+      "url": "https://3oaks.com/api/v1/games/3_lucky_sparks/play?lang=en",
+      "browser_url": "https://3oaks.com/games/3_lucky_sparks",
+      "symbol": "",
+      "source": "targets.txt",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.88,
+      "protocol_families": [],
+      "blockers": [
+        "3oaks: successful command=spin request is not demonstrated."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "3oaks: successful command=spin request is not demonstrated."
+      ],
+      "http_count": 45,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 2313.3
+    },
+    {
+      "provider": "3oaks",
+      "slug": "3_olymp_fortunes",
+      "name": "3 Olymp Fortunes",
+      "url": "https://3oaks.com/api/v1/games/3_olymp_fortunes/play?lang=en",
+      "browser_url": "https://3oaks.com/games/3_olymp_fortunes",
+      "symbol": "",
+      "source": "targets.txt",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.88,
+      "protocol_families": [],
+      "blockers": [
+        "3oaks: successful command=spin request is not demonstrated."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "3oaks: successful command=spin request is not demonstrated."
+      ],
+      "http_count": 45,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 2308.1
+    },
+    {
+      "provider": "3oaks",
+      "slug": "3_pots_of_egypt",
+      "name": "3 Pots Of Egypt",
+      "url": "https://3oaks.com/api/v1/games/3_pots_of_egypt/play?lang=en",
+      "browser_url": "https://3oaks.com/games/3_pots_of_egypt",
+      "symbol": "",
+      "source": "targets.txt",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.88,
+      "protocol_families": [],
+      "blockers": [
+        "3oaks: successful command=spin request is not demonstrated."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "3oaks: successful command=spin request is not demonstrated."
+      ],
+      "http_count": 45,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 2264.1
+    },
+    {
+      "provider": "3oaks",
+      "slug": "3_super_coin_volcanoes",
+      "name": "3 Super Coin Volcanoes",
+      "url": "https://3oaks.com/api/v1/games/3_super_coin_volcanoes/play?lang=en",
+      "browser_url": "https://3oaks.com/games/3_super_coin_volcanoes",
+      "symbol": "",
+      "source": "targets.txt",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.88,
+      "protocol_families": [],
+      "blockers": [
+        "3oaks: successful command=spin request is not demonstrated."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "3oaks: successful command=spin request is not demonstrated."
+      ],
+      "http_count": 45,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 2266.1
+    },
+    {
+      "provider": "3oaks",
+      "slug": "3_super_hot_chillies",
+      "name": "3 Super Hot Chillies",
+      "url": "https://3oaks.com/api/v1/games/3_super_hot_chillies/play?lang=en",
+      "browser_url": "https://3oaks.com/games/3_super_hot_chillies",
+      "symbol": "",
+      "source": "targets.txt",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.88,
+      "protocol_families": [],
+      "blockers": [
+        "3oaks: successful command=spin request is not demonstrated."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "3oaks: successful command=spin request is not demonstrated."
+      ],
+      "http_count": 45,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 2253.7
+    },
+    {
+      "provider": "3oaks",
+      "slug": "3_super_hot_teapots",
+      "name": "3 Super Hot Teapots",
+      "url": "https://3oaks.com/api/v1/games/3_super_hot_teapots/play?lang=en",
+      "browser_url": "https://3oaks.com/games/3_super_hot_teapots",
+      "symbol": "",
+      "source": "targets.txt",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.88,
+      "protocol_families": [],
+      "blockers": [
+        "3oaks: successful command=spin request is not demonstrated."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "3oaks: successful command=spin request is not demonstrated."
+      ],
+      "http_count": 45,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 2257.0
+    },
+    {
+      "provider": "3oaks",
+      "slug": "3_superpower_diamonds",
+      "name": "3 Superpower Diamonds",
+      "url": "https://3oaks.com/api/v1/games/3_superpower_diamonds/play?lang=en",
+      "browser_url": "https://3oaks.com/games/3_superpower_diamonds",
+      "symbol": "",
+      "source": "targets.txt",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.88,
+      "protocol_families": [],
+      "blockers": [
+        "3oaks: successful command=spin request is not demonstrated."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "3oaks: successful command=spin request is not demonstrated."
+      ],
+      "http_count": 45,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 2253.1
+    },
+    {
+      "provider": "3oaks",
+      "slug": "4_african_drums",
+      "name": "4 African Drums",
+      "url": "https://3oaks.com/api/v1/games/4_african_drums/play?lang=en",
+      "browser_url": "https://3oaks.com/games/4_african_drums",
+      "symbol": "",
+      "source": "targets.txt",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.88,
+      "protocol_families": [],
+      "blockers": [
+        "3oaks: successful command=spin request is not demonstrated."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "3oaks: successful command=spin request is not demonstrated."
+      ],
+      "http_count": 45,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 2252.0
+    },
+    {
+      "provider": "3oaks",
+      "slug": "4_clover_pots",
+      "name": "4 Clover Pots",
+      "url": "https://3oaks.com/api/v1/games/4_clover_pots/play?lang=en",
+      "browser_url": "https://3oaks.com/games/4_clover_pots",
+      "symbol": "",
+      "source": "targets.txt",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.88,
+      "protocol_families": [],
+      "blockers": [
+        "3oaks: successful command=spin request is not demonstrated."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "3oaks: successful command=spin request is not demonstrated."
+      ],
+      "http_count": 45,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 2280.8
+    },
+    {
+      "provider": "3oaks",
+      "slug": "4_dragon_pearls",
+      "name": "4 Dragon Pearls",
+      "url": "https://3oaks.com/api/v1/games/4_dragon_pearls/play?lang=en",
+      "browser_url": "https://3oaks.com/games/4_dragon_pearls",
+      "symbol": "",
+      "source": "targets.txt",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.88,
+      "protocol_families": [],
+      "blockers": [
+        "3oaks: successful command=spin request is not demonstrated."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "3oaks: successful command=spin request is not demonstrated."
+      ],
+      "http_count": 45,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 2259.0
+    },
+    {
+      "provider": "3oaks",
+      "slug": "4_fairy_flowers",
+      "name": "4 Fairy Flowers",
+      "url": "https://3oaks.com/api/v1/games/4_fairy_flowers/play?lang=en",
+      "browser_url": "https://3oaks.com/games/4_fairy_flowers",
+      "symbol": "",
+      "source": "targets.txt",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.88,
+      "protocol_families": [],
+      "blockers": [
+        "3oaks: successful command=spin request is not demonstrated."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "3oaks: successful command=spin request is not demonstrated."
+      ],
+      "http_count": 45,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 2245.3
+    },
+    {
+      "provider": "3oaks",
+      "slug": "4_fortune_clovers",
+      "name": "4 Fortune Clovers",
+      "url": "https://3oaks.com/api/v1/games/4_fortune_clovers/play?lang=en",
+      "browser_url": "https://3oaks.com/games/4_fortune_clovers",
+      "symbol": "",
+      "source": "targets.txt",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.88,
+      "protocol_families": [],
+      "blockers": [
+        "3oaks: successful command=spin request is not demonstrated."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "3oaks: successful command=spin request is not demonstrated."
+      ],
+      "http_count": 45,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 2266.9
+    },
+    {
+      "provider": "3oaks",
+      "slug": "4_pots_of_egypt",
+      "name": "4 Pots Of Egypt",
+      "url": "https://3oaks.com/api/v1/games/4_pots_of_egypt/play?lang=en",
+      "browser_url": "https://3oaks.com/games/4_pots_of_egypt",
+      "symbol": "",
+      "source": "targets.txt",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.88,
+      "protocol_families": [],
+      "blockers": [
+        "3oaks: successful command=spin request is not demonstrated."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "3oaks: successful command=spin request is not demonstrated."
+      ],
+      "http_count": 45,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 2267.1
+    },
+    {
+      "provider": "3oaks",
+      "slug": "4_super_clover_pots",
+      "name": "4 Super Clover Pots",
+      "url": "https://3oaks.com/api/v1/games/4_super_clover_pots/play?lang=en",
+      "browser_url": "https://3oaks.com/games/4_super_clover_pots",
+      "symbol": "",
+      "source": "targets.txt",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.88,
+      "protocol_families": [],
+      "blockers": [
+        "3oaks: successful command=spin request is not demonstrated."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "3oaks: successful command=spin request is not demonstrated."
+      ],
+      "http_count": 45,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 2276.4
+    },
+    {
+      "provider": "3oaks",
+      "slug": "4_wolf_drums",
+      "name": "4 Wolf Drums",
+      "url": "https://3oaks.com/api/v1/games/4_wolf_drums/play?lang=en",
+      "browser_url": "https://3oaks.com/games/4_wolf_drums",
+      "symbol": "",
+      "source": "targets.txt",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.88,
+      "protocol_families": [],
+      "blockers": [
+        "3oaks: successful command=spin request is not demonstrated."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "3oaks: successful command=spin request is not demonstrated."
+      ],
+      "http_count": 45,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 2261.9
+    },
+    {
+      "provider": "3oaks",
+      "slug": "777_coins",
+      "name": "777 Coins",
+      "url": "https://3oaks.com/api/v1/games/777_coins/play?lang=en",
+      "browser_url": "https://3oaks.com/games/777_coins",
+      "symbol": "",
+      "source": "targets.txt",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.88,
+      "protocol_families": [],
+      "blockers": [
+        "3oaks: successful command=spin request is not demonstrated."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "3oaks: successful command=spin request is not demonstrated."
+      ],
+      "http_count": 45,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 2266.2
+    },
+    {
+      "provider": "3oaks",
+      "slug": "777_fruity_coins",
+      "name": "777 Fruity Coins",
+      "url": "https://3oaks.com/api/v1/games/777_fruity_coins/play?lang=en",
+      "browser_url": "https://3oaks.com/games/777_fruity_coins",
+      "symbol": "",
+      "source": "targets.txt",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.88,
+      "protocol_families": [],
+      "blockers": [
+        "3oaks: successful command=spin request is not demonstrated."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "3oaks: successful command=spin request is not demonstrated."
+      ],
+      "http_count": 45,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 2253.5
+    },
+    {
+      "provider": "3oaks",
+      "slug": "777_gems_respin",
+      "name": "777 Gems Respin",
+      "url": "https://3oaks.com/api/v1/games/777_gems_respin/play?lang=en",
+      "browser_url": "https://3oaks.com/games/777_gems_respin",
+      "symbol": "",
+      "source": "targets.txt",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.88,
+      "protocol_families": [],
+      "blockers": [
+        "3oaks: successful command=spin request is not demonstrated."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "3oaks: successful command=spin request is not demonstrated."
+      ],
+      "http_count": 45,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 2265.0
+    },
+    {
+      "provider": "3oaks",
+      "slug": "amazonia_wins",
+      "name": "Amazonia Wins",
+      "url": "https://3oaks.com/api/v1/games/amazonia_wins/play?lang=en",
+      "browser_url": "https://3oaks.com/games/amazonia_wins",
+      "symbol": "",
+      "source": "targets.txt",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.88,
+      "protocol_families": [],
+      "blockers": [
+        "3oaks: successful command=spin request is not demonstrated."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "3oaks: successful command=spin request is not demonstrated."
+      ],
+      "http_count": 45,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 2260.9
+    },
+    {
+      "provider": "3oaks",
+      "slug": "aztec_fire",
+      "name": "Aztec Fire",
+      "url": "https://3oaks.com/api/v1/games/aztec_fire/play?lang=en",
+      "browser_url": "https://3oaks.com/games/aztec_fire",
+      "symbol": "",
+      "source": "targets.txt",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.88,
+      "protocol_families": [],
+      "blockers": [
+        "3oaks: successful command=spin request is not demonstrated."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "3oaks: successful command=spin request is not demonstrated."
+      ],
+      "http_count": 45,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 2276.4
+    },
+    {
+      "provider": "3oaks",
+      "slug": "aztec_fire_2",
+      "name": "Aztec Fire 2",
+      "url": "https://3oaks.com/api/v1/games/aztec_fire_2/play?lang=en",
+      "browser_url": "https://3oaks.com/games/aztec_fire_2",
+      "symbol": "",
+      "source": "targets.txt",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.88,
+      "protocol_families": [],
+      "blockers": [
+        "3oaks: successful command=spin request is not demonstrated."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "3oaks: successful command=spin request is not demonstrated."
+      ],
+      "http_count": 45,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 2249.5
+    },
+    {
+      "provider": "3oaks",
+      "slug": "aztec_sun",
+      "name": "Aztec Sun",
+      "url": "https://3oaks.com/api/v1/games/aztec_sun/play?lang=en",
+      "browser_url": "https://3oaks.com/games/aztec_sun",
+      "symbol": "",
+      "source": "targets.txt",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.88,
+      "protocol_families": [],
+      "blockers": [
+        "3oaks: successful command=spin request is not demonstrated."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "3oaks: successful command=spin request is not demonstrated."
+      ],
+      "http_count": 45,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 2261.1
+    },
+    {
+      "provider": "3oaks",
+      "slug": "big_heist",
+      "name": "Big Heist",
+      "url": "https://3oaks.com/api/v1/games/big_heist/play?lang=en",
+      "browser_url": "https://3oaks.com/games/big_heist",
+      "symbol": "",
+      "source": "targets.txt",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.88,
+      "protocol_families": [],
+      "blockers": [
+        "3oaks: successful command=spin request is not demonstrated."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "3oaks: successful command=spin request is not demonstrated."
+      ],
+      "http_count": 45,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 2255.2
+    },
+    {
+      "provider": "3oaks",
+      "slug": "black_wolf",
+      "name": "Black Wolf",
+      "url": "https://3oaks.com/api/v1/games/black_wolf/play?lang=en",
+      "browser_url": "https://3oaks.com/games/black_wolf",
+      "symbol": "",
+      "source": "targets.txt",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.88,
+      "protocol_families": [],
+      "blockers": [
+        "3oaks: successful command=spin request is not demonstrated."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "3oaks: successful command=spin request is not demonstrated."
+      ],
+      "http_count": 45,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 2270.9
+    },
+    {
+      "provider": "3oaks",
+      "slug": "black_wolf_2",
+      "name": "Black Wolf 2",
+      "url": "https://3oaks.com/api/v1/games/black_wolf_2/play?lang=en",
+      "browser_url": "https://3oaks.com/games/black_wolf_2",
+      "symbol": "",
+      "source": "targets.txt",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.88,
+      "protocol_families": [],
+      "blockers": [
+        "3oaks: successful command=spin request is not demonstrated."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "3oaks: successful command=spin request is not demonstrated."
+      ],
+      "http_count": 45,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 2256.1
+    },
+    {
+      "provider": "3oaks",
+      "slug": "book_of_sun_multichance",
+      "name": "Book Of Sun Multichance",
+      "url": "https://3oaks.com/api/v1/games/book_of_sun_multichance/play?lang=en",
+      "browser_url": "https://3oaks.com/games/book_of_sun_multichance",
+      "symbol": "",
+      "source": "targets.txt",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.88,
+      "protocol_families": [],
+      "blockers": [
+        "3oaks: successful command=spin request is not demonstrated."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "3oaks: successful command=spin request is not demonstrated."
+      ],
+      "http_count": 45,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 2274.3
+    },
+    {
+      "provider": "3oaks",
+      "slug": "buddha_megaways",
+      "name": "Buddha Megaways",
+      "url": "https://3oaks.com/api/v1/games/buddha_megaways/play?lang=en",
+      "browser_url": "https://3oaks.com/games/buddha_megaways",
+      "symbol": "",
+      "source": "targets.txt",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.88,
+      "protocol_families": [],
+      "blockers": [
+        "3oaks: successful command=spin request is not demonstrated."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "3oaks: successful command=spin request is not demonstrated."
+      ],
+      "http_count": 45,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 2263.0
+    },
+    {
+      "provider": "3oaks",
+      "slug": "chili_coins",
+      "name": "Chili Coins",
+      "url": "https://3oaks.com/api/v1/games/chili_coins/play?lang=en",
+      "browser_url": "https://3oaks.com/games/chili_coins",
+      "symbol": "",
+      "source": "targets.txt",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.88,
+      "protocol_families": [],
+      "blockers": [
+        "3oaks: successful command=spin request is not demonstrated."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "3oaks: successful command=spin request is not demonstrated."
+      ],
+      "http_count": 45,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 2271.6
+    },
+    {
+      "provider": "3oaks",
+      "slug": "china_festival",
+      "name": "China Festival",
+      "url": "https://3oaks.com/api/v1/games/china_festival/play?lang=en",
+      "browser_url": "https://3oaks.com/games/china_festival",
+      "symbol": "",
+      "source": "targets.txt",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.88,
+      "protocol_families": [],
+      "blockers": [
+        "3oaks: successful command=spin request is not demonstrated."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "3oaks: successful command=spin request is not demonstrated."
+      ],
+      "http_count": 45,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 2285.7
+    },
+    {
+      "provider": "3oaks",
+      "slug": "coin_express",
+      "name": "Coin Express",
+      "url": "https://3oaks.com/api/v1/games/coin_express/play?lang=en",
+      "browser_url": "https://3oaks.com/games/coin_express",
+      "symbol": "",
+      "source": "targets.txt",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.88,
+      "protocol_families": [],
+      "blockers": [
+        "3oaks: successful command=spin request is not demonstrated."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "3oaks: successful command=spin request is not demonstrated."
+      ],
+      "http_count": 45,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 2256.1
+    },
+    {
+      "provider": "3oaks",
+      "slug": "coin_lamp",
+      "name": "Coin Lamp",
+      "url": "https://3oaks.com/api/v1/games/coin_lamp/play?lang=en",
+      "browser_url": "https://3oaks.com/games/coin_lamp",
+      "symbol": "",
+      "source": "targets.txt",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.88,
+      "protocol_families": [],
+      "blockers": [
+        "3oaks: successful command=spin request is not demonstrated."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "3oaks: successful command=spin request is not demonstrated."
+      ],
+      "http_count": 45,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 2269.3
+    },
+    {
+      "provider": "3oaks",
+      "slug": "coin_lightning",
+      "name": "Coin Lightning",
+      "url": "https://3oaks.com/api/v1/games/coin_lightning/play?lang=en",
+      "browser_url": "https://3oaks.com/games/coin_lightning",
+      "symbol": "",
+      "source": "targets.txt",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.88,
+      "protocol_families": [],
+      "blockers": [
+        "3oaks: successful command=spin request is not demonstrated."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "3oaks: successful command=spin request is not demonstrated."
+      ],
+      "http_count": 45,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 2270.3
+    },
+    {
+      "provider": "3oaks",
+      "slug": "coin_princess_x1000",
+      "name": "Coin Princess X1000",
+      "url": "https://3oaks.com/api/v1/games/coin_princess_x1000/play?lang=en",
+      "browser_url": "https://3oaks.com/games/coin_princess_x1000",
+      "symbol": "",
+      "source": "targets.txt",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.88,
+      "protocol_families": [],
+      "blockers": [
+        "3oaks: successful command=spin request is not demonstrated."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "3oaks: successful command=spin request is not demonstrated."
+      ],
+      "http_count": 45,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 2257.6
+    },
+    {
+      "provider": "3oaks",
+      "slug": "coin_up",
+      "name": "Coin Up",
+      "url": "https://3oaks.com/api/v1/games/coin_up/play?lang=en",
+      "browser_url": "https://3oaks.com/games/coin_up",
+      "symbol": "",
+      "source": "targets.txt",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.88,
+      "protocol_families": [],
+      "blockers": [
+        "3oaks: successful command=spin request is not demonstrated."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "3oaks: successful command=spin request is not demonstrated."
+      ],
+      "http_count": 45,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 2254.5
+    },
+    {
+      "provider": "3oaks",
+      "slug": "coin_volcano",
+      "name": "Coin Volcano",
+      "url": "https://3oaks.com/api/v1/games/coin_volcano/play?lang=en",
+      "browser_url": "https://3oaks.com/games/coin_volcano",
+      "symbol": "",
+      "source": "targets.txt",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.88,
+      "protocol_families": [],
+      "blockers": [
+        "3oaks: successful command=spin request is not demonstrated."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "3oaks: successful command=spin request is not demonstrated."
+      ],
+      "http_count": 46,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 2271.6
+    },
+    {
+      "provider": "3oaks",
+      "slug": "coin_volcano_2",
+      "name": "Coin Volcano 2",
+      "url": "https://3oaks.com/api/v1/games/coin_volcano_2/play?lang=en",
+      "browser_url": "https://3oaks.com/games/coin_volcano_2",
+      "symbol": "",
+      "source": "targets.txt",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.88,
+      "protocol_families": [],
+      "blockers": [
+        "3oaks: successful command=spin request is not demonstrated."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "3oaks: successful command=spin request is not demonstrated."
+      ],
+      "http_count": 45,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 2246.9
+    },
+    {
+      "provider": "3oaks",
+      "slug": "coinup_volcano",
+      "name": "Coinup Volcano",
+      "url": "https://3oaks.com/api/v1/games/coinup_volcano/play?lang=en",
+      "browser_url": "https://3oaks.com/games/coinup_volcano",
+      "symbol": "",
+      "source": "targets.txt",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.88,
+      "protocol_families": [],
+      "blockers": [
+        "3oaks: successful command=spin request is not demonstrated."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "3oaks: successful command=spin request is not demonstrated."
+      ],
+      "http_count": 45,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 2257.2
+    },
+    {
+      "provider": "3oaks",
+      "slug": "crystal_scarabs",
+      "name": "Crystal Scarabs",
+      "url": "https://3oaks.com/api/v1/games/crystal_scarabs/play?lang=en",
+      "browser_url": "https://3oaks.com/games/crystal_scarabs",
+      "symbol": "",
+      "source": "targets.txt",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.88,
+      "protocol_families": [],
+      "blockers": [
+        "3oaks: successful command=spin request is not demonstrated."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "3oaks: successful command=spin request is not demonstrated."
+      ],
+      "http_count": 45,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 2249.7
+    },
+    {
+      "provider": "3oaks",
+      "slug": "dancing_joker",
+      "name": "Dancing Joker",
+      "url": "https://3oaks.com/api/v1/games/dancing_joker/play?lang=en",
+      "browser_url": "https://3oaks.com/games/dancing_joker",
+      "symbol": "",
+      "source": "targets.txt",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.88,
+      "protocol_families": [],
+      "blockers": [
+        "3oaks: successful command=spin request is not demonstrated."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "3oaks: successful command=spin request is not demonstrated."
+      ],
+      "http_count": 45,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 2265.4
+    },
+    {
+      "provider": "3oaks",
+      "slug": "dj_tiger_x1000",
+      "name": "Dj Tiger X1000",
+      "url": "https://3oaks.com/api/v1/games/dj_tiger_x1000/play?lang=en",
+      "browser_url": "https://3oaks.com/games/dj_tiger_x1000",
+      "symbol": "",
+      "source": "targets.txt",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.88,
+      "protocol_families": [],
+      "blockers": [
+        "3oaks: successful command=spin request is not demonstrated."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "3oaks: successful command=spin request is not demonstrated."
+      ],
+      "http_count": 45,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 2283.3
+    },
+    {
+      "provider": "3oaks",
+      "slug": "dragon_pearls",
+      "name": "Dragon Pearls",
+      "url": "https://3oaks.com/api/v1/games/dragon_pearls/play?lang=en",
+      "browser_url": "https://3oaks.com/games/dragon_pearls",
+      "symbol": "",
+      "source": "targets.txt",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.88,
+      "protocol_families": [],
+      "blockers": [
+        "3oaks: successful command=spin request is not demonstrated."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "3oaks: successful command=spin request is not demonstrated."
+      ],
+      "http_count": 45,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 2248.3
+    },
+    {
+      "provider": "3oaks",
+      "slug": "egypt_fire",
+      "name": "Egypt Fire",
+      "url": "https://3oaks.com/api/v1/games/egypt_fire/play?lang=en",
+      "browser_url": "https://3oaks.com/games/egypt_fire",
+      "symbol": "",
+      "source": "targets.txt",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.88,
+      "protocol_families": [],
+      "blockers": [
+        "3oaks: successful command=spin request is not demonstrated."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "3oaks: successful command=spin request is not demonstrated."
+      ],
+      "http_count": 45,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 2253.6
+    },
+    {
+      "provider": "3oaks",
+      "slug": "egypt_fire_2",
+      "name": "Egypt Fire 2",
+      "url": "https://3oaks.com/api/v1/games/egypt_fire_2/play?lang=en",
+      "browser_url": "https://3oaks.com/games/egypt_fire_2",
+      "symbol": "",
+      "source": "targets.txt",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.88,
+      "protocol_families": [],
+      "blockers": [
+        "3oaks: successful command=spin request is not demonstrated."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "3oaks: successful command=spin request is not demonstrated."
+      ],
+      "http_count": 45,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 2265.3
+    },
+    {
+      "provider": "3oaks",
+      "slug": "egypt_power_x1000",
+      "name": "Egypt Power X1000",
+      "url": "https://3oaks.com/api/v1/games/egypt_power_x1000/play?lang=en",
+      "browser_url": "https://3oaks.com/games/egypt_power_x1000",
+      "symbol": "",
+      "source": "targets.txt",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.88,
+      "protocol_families": [],
+      "blockers": [
+        "3oaks: successful command=spin request is not demonstrated."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "3oaks: successful command=spin request is not demonstrated."
+      ],
+      "http_count": 45,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 2260.9
+    },
+    {
+      "provider": "3oaks",
+      "slug": "fishing_bear",
+      "name": "Fishing Bear",
+      "url": "https://3oaks.com/api/v1/games/fishing_bear/play?lang=en",
+      "browser_url": "https://3oaks.com/games/fishing_bear",
+      "symbol": "",
+      "source": "targets.txt",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.88,
+      "protocol_families": [],
+      "blockers": [
+        "3oaks: successful command=spin request is not demonstrated."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "3oaks: successful command=spin request is not demonstrated."
+      ],
+      "http_count": 45,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 2262.5
+    },
+    {
+      "provider": "3oaks",
+      "slug": "fortune_globe",
+      "name": "Fortune Globe",
+      "url": "https://3oaks.com/api/v1/games/fortune_globe/play?lang=en",
+      "browser_url": "https://3oaks.com/games/fortune_globe",
+      "symbol": "",
+      "source": "targets.txt",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.88,
+      "protocol_families": [],
+      "blockers": [
+        "3oaks: successful command=spin request is not demonstrated."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "3oaks: successful command=spin request is not demonstrated."
+      ],
+      "http_count": 45,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 2285.2
+    },
+    {
+      "provider": "3oaks",
+      "slug": "gold_express",
+      "name": "Gold Express",
+      "url": "https://3oaks.com/api/v1/games/gold_express/play?lang=en",
+      "browser_url": "https://3oaks.com/games/gold_express",
+      "symbol": "",
+      "source": "targets.txt",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.88,
+      "protocol_families": [],
+      "blockers": [
+        "3oaks: successful command=spin request is not demonstrated."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "3oaks: successful command=spin request is not demonstrated."
+      ],
+      "http_count": 45,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 2289.4
+    },
+    {
+      "provider": "3oaks",
+      "slug": "gold_nuggets",
+      "name": "Gold Nuggets",
+      "url": "https://3oaks.com/api/v1/games/gold_nuggets/play?lang=en",
+      "browser_url": "https://3oaks.com/games/gold_nuggets",
+      "symbol": "",
+      "source": "targets.txt",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.88,
+      "protocol_families": [],
+      "blockers": [
+        "3oaks: successful command=spin request is not demonstrated."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "3oaks: successful command=spin request is not demonstrated."
+      ],
+      "http_count": 45,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 2253.1
+    },
+    {
+      "provider": "3oaks",
+      "slug": "golden_teapot",
+      "name": "Golden Teapot",
+      "url": "https://3oaks.com/api/v1/games/golden_teapot/play?lang=en",
+      "browser_url": "https://3oaks.com/games/golden_teapot",
+      "symbol": "",
+      "source": "targets.txt",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.88,
+      "protocol_families": [],
+      "blockers": [
+        "3oaks: successful command=spin request is not demonstrated."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "3oaks: successful command=spin request is not demonstrated."
+      ],
+      "http_count": 45,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 2265.4
+    },
+    {
+      "provider": "3oaks",
+      "slug": "grab_more_gold",
+      "name": "Grab More Gold",
+      "url": "https://3oaks.com/api/v1/games/grab_more_gold/play?lang=en",
+      "browser_url": "https://3oaks.com/games/grab_more_gold",
+      "symbol": "",
+      "source": "targets.txt",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.88,
+      "protocol_families": [],
+      "blockers": [
+        "3oaks: successful command=spin request is not demonstrated."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "3oaks: successful command=spin request is not demonstrated."
+      ],
+      "http_count": 45,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 2262.1
+    },
+    {
+      "provider": "3oaks",
+      "slug": "grab_the_gold",
+      "name": "Grab The Gold",
+      "url": "https://3oaks.com/api/v1/games/grab_the_gold/play?lang=en",
+      "browser_url": "https://3oaks.com/games/grab_the_gold",
+      "symbol": "",
+      "source": "targets.txt",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.88,
+      "protocol_families": [],
+      "blockers": [
+        "3oaks: successful command=spin request is not demonstrated."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "3oaks: successful command=spin request is not demonstrated."
+      ],
+      "http_count": 45,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 2255.5
+    },
+    {
+      "provider": "3oaks",
+      "slug": "grand",
+      "name": "Grand",
+      "url": "https://3oaks.com/api/v1/games/grand/play?lang=en",
+      "browser_url": "https://3oaks.com/games/grand",
+      "symbol": "",
+      "source": "targets.txt",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.88,
+      "protocol_families": [],
+      "blockers": [
+        "3oaks: successful command=spin request is not demonstrated."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "3oaks: successful command=spin request is not demonstrated."
+      ],
+      "http_count": 45,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 2268.9
+    },
+    {
+      "provider": "3oaks",
+      "slug": "green_chilli",
+      "name": "Green Chilli",
+      "url": "https://3oaks.com/api/v1/games/green_chilli/play?lang=en",
+      "browser_url": "https://3oaks.com/games/green_chilli",
+      "symbol": "",
+      "source": "targets.txt",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.88,
+      "protocol_families": [],
+      "blockers": [
+        "3oaks: successful command=spin request is not demonstrated."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "3oaks: successful command=spin request is not demonstrated."
+      ],
+      "http_count": 45,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 2262.1
+    },
+    {
+      "provider": "3oaks",
+      "slug": "green_chilli_2",
+      "name": "Green Chilli 2",
+      "url": "https://3oaks.com/api/v1/games/green_chilli_2/play?lang=en",
+      "browser_url": "https://3oaks.com/games/green_chilli_2",
+      "symbol": "",
+      "source": "targets.txt",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.88,
+      "protocol_families": [],
+      "blockers": [
+        "3oaks: successful command=spin request is not demonstrated."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "3oaks: successful command=spin request is not demonstrated."
+      ],
+      "http_count": 45,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 2261.3
+    },
+    {
+      "provider": "3oaks",
+      "slug": "hit_more_gold",
+      "name": "Hit More Gold",
+      "url": "https://3oaks.com/api/v1/games/hit_more_gold/play?lang=en",
+      "browser_url": "https://3oaks.com/games/hit_more_gold",
+      "symbol": "",
+      "source": "targets.txt",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.88,
+      "protocol_families": [],
+      "blockers": [
+        "3oaks: successful command=spin request is not demonstrated."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "3oaks: successful command=spin request is not demonstrated."
+      ],
+      "http_count": 45,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 2250.2
+    },
+    {
+      "provider": "3oaks",
+      "slug": "hit_the_gold",
+      "name": "Hit The Gold",
+      "url": "https://3oaks.com/api/v1/games/hit_the_gold/play?lang=en",
+      "browser_url": "https://3oaks.com/games/hit_the_gold",
+      "symbol": "",
+      "source": "targets.txt",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.88,
+      "protocol_families": [],
+      "blockers": [
+        "3oaks: successful command=spin request is not demonstrated."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "3oaks: successful command=spin request is not demonstrated."
+      ],
+      "http_count": 45,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 2253.5
+    },
+    {
+      "provider": "3oaks",
+      "slug": "hot_fire_fruits",
+      "name": "Hot Fire Fruits",
+      "url": "https://3oaks.com/api/v1/games/hot_fire_fruits/play?lang=en",
+      "browser_url": "https://3oaks.com/games/hot_fire_fruits",
+      "symbol": "",
+      "source": "targets.txt",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.88,
+      "protocol_families": [],
+      "blockers": [
+        "3oaks: successful command=spin request is not demonstrated."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "3oaks: successful command=spin request is not demonstrated."
+      ],
+      "http_count": 45,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 2249.1
+    },
+    {
+      "provider": "3oaks",
+      "slug": "joker_glitz_x1000",
+      "name": "Joker Glitz X1000",
+      "url": "https://3oaks.com/api/v1/games/joker_glitz_x1000/play?lang=en",
+      "browser_url": "https://3oaks.com/games/joker_glitz_x1000",
+      "symbol": "",
+      "source": "targets.txt",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.88,
+      "protocol_families": [],
+      "blockers": [
+        "3oaks: successful command=spin request is not demonstrated."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "3oaks: successful command=spin request is not demonstrated."
+      ],
+      "http_count": 45,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 2260.3
+    },
+    {
+      "provider": "3oaks",
+      "slug": "jungle_volcano",
+      "name": "Jungle Volcano",
+      "url": "https://3oaks.com/api/v1/games/jungle_volcano/play?lang=en",
+      "browser_url": "https://3oaks.com/games/jungle_volcano",
+      "symbol": "",
+      "source": "targets.txt",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.88,
+      "protocol_families": [],
+      "blockers": [
+        "3oaks: successful command=spin request is not demonstrated."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "3oaks: successful command=spin request is not demonstrated."
+      ],
+      "http_count": 45,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 2290.5
+    },
+    {
+      "provider": "3oaks",
+      "slug": "lady_fortune",
+      "name": "Lady Fortune",
+      "url": "https://3oaks.com/api/v1/games/lady_fortune/play?lang=en",
+      "browser_url": "https://3oaks.com/games/lady_fortune",
+      "symbol": "",
+      "source": "targets.txt",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.88,
+      "protocol_families": [],
+      "blockers": [
+        "3oaks: successful command=spin request is not demonstrated."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "3oaks: successful command=spin request is not demonstrated."
+      ],
+      "http_count": 45,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 2266.4
+    },
+    {
+      "provider": "3oaks",
+      "slug": "lava_coins",
+      "name": "Lava Coins",
+      "url": "https://3oaks.com/api/v1/games/lava_coins/play?lang=en",
+      "browser_url": "https://3oaks.com/games/lava_coins",
+      "symbol": "",
+      "source": "targets.txt",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.88,
+      "protocol_families": [],
+      "blockers": [
+        "3oaks: successful command=spin request is not demonstrated."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "3oaks: successful command=spin request is not demonstrated."
+      ],
+      "http_count": 45,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 2256.2
+    },
+    {
+      "provider": "3oaks",
+      "slug": "lava_coins_2",
+      "name": "Lava Coins 2",
+      "url": "https://3oaks.com/api/v1/games/lava_coins_2/play?lang=en",
+      "browser_url": "https://3oaks.com/games/lava_coins_2",
+      "symbol": "",
+      "source": "targets.txt",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.88,
+      "protocol_families": [],
+      "blockers": [
+        "3oaks: successful command=spin request is not demonstrated."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "3oaks: successful command=spin request is not demonstrated."
+      ],
+      "http_count": 45,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 2277.6
+    },
+    {
+      "provider": "3oaks",
+      "slug": "little_farm",
+      "name": "Little Farm",
+      "url": "https://3oaks.com/api/v1/games/little_farm/play?lang=en",
+      "browser_url": "https://3oaks.com/games/little_farm",
+      "symbol": "",
+      "source": "targets.txt",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.88,
+      "protocol_families": [],
+      "blockers": [
+        "3oaks: successful command=spin request is not demonstrated."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "3oaks: successful command=spin request is not demonstrated."
+      ],
+      "http_count": 45,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 2261.9
+    },
+    {
+      "provider": "3oaks",
+      "slug": "lord_of_thunder",
+      "name": "Lord Of Thunder",
+      "url": "https://3oaks.com/api/v1/games/lord_of_thunder/play?lang=en",
+      "browser_url": "https://3oaks.com/games/lord_of_thunder",
+      "symbol": "",
+      "source": "targets.txt",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.88,
+      "protocol_families": [],
+      "blockers": [
+        "3oaks: successful command=spin request is not demonstrated."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "3oaks: successful command=spin request is not demonstrated."
+      ],
+      "http_count": 45,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 2360.5
+    },
+    {
+      "provider": "3oaks",
+      "slug": "lucky_apple_x1000",
+      "name": "Lucky Apple X1000",
+      "url": "https://3oaks.com/api/v1/games/lucky_apple_x1000/play?lang=en",
+      "browser_url": "https://3oaks.com/games/lucky_apple_x1000",
+      "symbol": "",
+      "source": "targets.txt",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.88,
+      "protocol_families": [],
+      "blockers": [
+        "3oaks: successful command=spin request is not demonstrated."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "3oaks: successful command=spin request is not demonstrated."
+      ],
+      "http_count": 45,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 2253.6
+    },
+    {
+      "provider": "3oaks",
+      "slug": "lucky_penny",
+      "name": "Lucky Penny",
+      "url": "https://3oaks.com/api/v1/games/lucky_penny/play?lang=en",
+      "browser_url": "https://3oaks.com/games/lucky_penny",
+      "symbol": "",
+      "source": "targets.txt",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.88,
+      "protocol_families": [],
+      "blockers": [
+        "3oaks: successful command=spin request is not demonstrated."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "3oaks: successful command=spin request is not demonstrated."
+      ],
+      "http_count": 45,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 2260.1
+    },
+    {
+      "provider": "3oaks",
+      "slug": "lucky_penny_2",
+      "name": "Lucky Penny 2",
+      "url": "https://3oaks.com/api/v1/games/lucky_penny_2/play?lang=en",
+      "browser_url": "https://3oaks.com/games/lucky_penny_2",
+      "symbol": "",
+      "source": "targets.txt",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.88,
+      "protocol_families": [],
+      "blockers": [
+        "3oaks: successful command=spin request is not demonstrated."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "3oaks: successful command=spin request is not demonstrated."
+      ],
+      "http_count": 45,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 2253.7
+    },
+    {
+      "provider": "3oaks",
+      "slug": "lucky_penny_3_pots_super_wheel",
+      "name": "Lucky Penny 3 Pots Super Wheel",
+      "url": "https://3oaks.com/api/v1/games/lucky_penny_3_pots_super_wheel/play?lang=en",
+      "browser_url": "https://3oaks.com/games/lucky_penny_3_pots_super_wheel",
+      "symbol": "",
+      "source": "targets.txt",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.88,
+      "protocol_families": [],
+      "blockers": [
+        "3oaks: successful command=spin request is not demonstrated."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "3oaks: successful command=spin request is not demonstrated."
+      ],
+      "http_count": 45,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 2253.0
+    },
+    {
+      "provider": "3oaks",
+      "slug": "lucky_penny_powerscatter",
+      "name": "Lucky Penny Powerscatter",
+      "url": "https://3oaks.com/api/v1/games/lucky_penny_powerscatter/play?lang=en",
+      "browser_url": "https://3oaks.com/games/lucky_penny_powerscatter",
+      "symbol": "",
+      "source": "targets.txt",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.88,
+      "protocol_families": [],
+      "blockers": [
+        "3oaks: successful command=spin request is not demonstrated."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "3oaks: successful command=spin request is not demonstrated."
+      ],
+      "http_count": 45,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 2270.0
+    },
+    {
+      "provider": "3oaks",
+      "slug": "magic_apple",
+      "name": "Magic Apple",
+      "url": "https://3oaks.com/api/v1/games/magic_apple/play?lang=en",
+      "browser_url": "https://3oaks.com/games/magic_apple",
+      "symbol": "",
+      "source": "targets.txt",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.88,
+      "protocol_families": [],
+      "blockers": [
+        "3oaks: successful command=spin request is not demonstrated."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "3oaks: successful command=spin request is not demonstrated."
+      ],
+      "http_count": 46,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 2263.4
+    },
+    {
+      "provider": "3oaks",
+      "slug": "magic_apple_2",
+      "name": "Magic Apple 2",
+      "url": "https://3oaks.com/api/v1/games/magic_apple_2/play?lang=en",
+      "browser_url": "https://3oaks.com/games/magic_apple_2",
+      "symbol": "",
+      "source": "targets.txt",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.88,
+      "protocol_families": [],
+      "blockers": [
+        "3oaks: successful command=spin request is not demonstrated."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "3oaks: successful command=spin request is not demonstrated."
+      ],
+      "http_count": 45,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 2276.1
+    },
+    {
+      "provider": "3oaks",
+      "slug": "magic_clovers",
+      "name": "Magic Clovers",
+      "url": "https://3oaks.com/api/v1/games/magic_clovers/play?lang=en",
+      "browser_url": "https://3oaks.com/games/magic_clovers",
+      "symbol": "",
+      "source": "targets.txt",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.88,
+      "protocol_families": [],
+      "blockers": [
+        "3oaks: successful command=spin request is not demonstrated."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "3oaks: successful command=spin request is not demonstrated."
+      ],
+      "http_count": 45,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 2254.7
+    },
+    {
+      "provider": "3oaks",
+      "slug": "moon_sisters",
+      "name": "Moon Sisters",
+      "url": "https://3oaks.com/api/v1/games/moon_sisters/play?lang=en",
+      "browser_url": "https://3oaks.com/games/moon_sisters",
+      "symbol": "",
+      "source": "targets.txt",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.88,
+      "protocol_families": [],
+      "blockers": [
+        "3oaks: successful command=spin request is not demonstrated."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "3oaks: successful command=spin request is not demonstrated."
+      ],
+      "http_count": 45,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 2258.9
+    },
+    {
+      "provider": "3oaks",
+      "slug": "more_magic_apple",
+      "name": "More Magic Apple",
+      "url": "https://3oaks.com/api/v1/games/more_magic_apple/play?lang=en",
+      "browser_url": "https://3oaks.com/games/more_magic_apple",
+      "symbol": "",
+      "source": "targets.txt",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.88,
+      "protocol_families": [],
+      "blockers": [
+        "3oaks: successful command=spin request is not demonstrated."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "3oaks: successful command=spin request is not demonstrated."
+      ],
+      "http_count": 45,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 2266.7
+    },
+    {
+      "provider": "3oaks",
+      "slug": "power_sun",
+      "name": "Power Sun",
+      "url": "https://3oaks.com/api/v1/games/power_sun/play?lang=en",
+      "browser_url": "https://3oaks.com/games/power_sun",
+      "symbol": "",
+      "source": "targets.txt",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.88,
+      "protocol_families": [],
+      "blockers": [
+        "3oaks: successful command=spin request is not demonstrated."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "3oaks: successful command=spin request is not demonstrated."
+      ],
+      "http_count": 45,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 2257.8
+    },
+    {
+      "provider": "3oaks",
+      "slug": "power_sun_xxl",
+      "name": "Power Sun Xxl",
+      "url": "https://3oaks.com/api/v1/games/power_sun_xxl/play?lang=en",
+      "browser_url": "https://3oaks.com/games/power_sun_xxl",
+      "symbol": "",
+      "source": "targets.txt",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.88,
+      "protocol_families": [],
+      "blockers": [
+        "3oaks: successful command=spin request is not demonstrated."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "3oaks: successful command=spin request is not demonstrated."
+      ],
+      "http_count": 45,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 2249.4
+    },
+    {
+      "provider": "3oaks",
+      "slug": "purple_diamond",
+      "name": "Purple Diamond",
+      "url": "https://3oaks.com/api/v1/games/purple_diamond/play?lang=en",
+      "browser_url": "https://3oaks.com/games/purple_diamond",
+      "symbol": "",
+      "source": "targets.txt",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.88,
+      "protocol_families": [],
+      "blockers": [
+        "3oaks: successful command=spin request is not demonstrated."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "3oaks: successful command=spin request is not demonstrated."
+      ],
+      "http_count": 45,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 2245.5
+    },
+    {
+      "provider": "3oaks",
+      "slug": "rio_gems",
+      "name": "Rio Gems",
+      "url": "https://3oaks.com/api/v1/games/rio_gems/play?lang=en",
+      "browser_url": "https://3oaks.com/games/rio_gems",
+      "symbol": "",
+      "source": "targets.txt",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.88,
+      "protocol_families": [],
+      "blockers": [
+        "3oaks: successful command=spin request is not demonstrated."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "3oaks: successful command=spin request is not demonstrated."
+      ],
+      "http_count": 45,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 2276.8
+    },
+    {
+      "provider": "3oaks",
+      "slug": "rush_for_gold",
+      "name": "Rush For Gold",
+      "url": "https://3oaks.com/api/v1/games/rush_for_gold/play?lang=en",
+      "browser_url": "https://3oaks.com/games/rush_for_gold",
+      "symbol": "",
+      "source": "targets.txt",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.88,
+      "protocol_families": [],
+      "blockers": [
+        "3oaks: successful command=spin request is not demonstrated."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "3oaks: successful command=spin request is not demonstrated."
+      ],
+      "http_count": 45,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 2249.1
+    },
+    {
+      "provider": "3oaks",
+      "slug": "scarab_temple",
+      "name": "Scarab Temple",
+      "url": "https://3oaks.com/api/v1/games/scarab_temple/play?lang=en",
+      "browser_url": "https://3oaks.com/games/scarab_temple",
+      "symbol": "",
+      "source": "targets.txt",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.88,
+      "protocol_families": [],
+      "blockers": [
+        "3oaks: successful command=spin request is not demonstrated."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "3oaks: successful command=spin request is not demonstrated."
+      ],
+      "http_count": 45,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 2259.0
+    },
+    {
+      "provider": "3oaks",
+      "slug": "sky_pearls",
+      "name": "Sky Pearls",
+      "url": "https://3oaks.com/api/v1/games/sky_pearls/play?lang=en",
+      "browser_url": "https://3oaks.com/games/sky_pearls",
+      "symbol": "",
+      "source": "targets.txt",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.88,
+      "protocol_families": [],
+      "blockers": [
+        "3oaks: successful command=spin request is not demonstrated."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "3oaks: successful command=spin request is not demonstrated."
+      ],
+      "http_count": 45,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 2251.6
+    },
+    {
+      "provider": "3oaks",
+      "slug": "space_coins",
+      "name": "Space Coins",
+      "url": "https://3oaks.com/api/v1/games/space_coins/play?lang=en",
+      "browser_url": "https://3oaks.com/games/space_coins",
+      "symbol": "",
+      "source": "targets.txt",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.88,
+      "protocol_families": [],
+      "blockers": [
+        "3oaks: successful command=spin request is not demonstrated."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "3oaks: successful command=spin request is not demonstrated."
+      ],
+      "http_count": 45,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 2262.5
+    },
+    {
+      "provider": "3oaks",
+      "slug": "sun_of_egypt",
+      "name": "Sun Of Egypt",
+      "url": "https://3oaks.com/api/v1/games/sun_of_egypt/play?lang=en",
+      "browser_url": "https://3oaks.com/games/sun_of_egypt",
+      "symbol": "",
+      "source": "targets.txt",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.88,
+      "protocol_families": [],
+      "blockers": [
+        "3oaks: successful command=spin request is not demonstrated."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "3oaks: successful command=spin request is not demonstrated."
+      ],
+      "http_count": 45,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 2361.3
+    },
+    {
+      "provider": "3oaks",
+      "slug": "sun_of_egypt_2",
+      "name": "Sun Of Egypt 2",
+      "url": "https://3oaks.com/api/v1/games/sun_of_egypt_2/play?lang=en",
+      "browser_url": "https://3oaks.com/games/sun_of_egypt_2",
+      "symbol": "",
+      "source": "targets.txt",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.88,
+      "protocol_families": [],
+      "blockers": [
+        "3oaks: successful command=spin request is not demonstrated."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "3oaks: successful command=spin request is not demonstrated."
+      ],
+      "http_count": 45,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 2255.6
+    },
+    {
+      "provider": "3oaks",
+      "slug": "sun_of_egypt_3",
+      "name": "Sun Of Egypt 3",
+      "url": "https://3oaks.com/api/v1/games/sun_of_egypt_3/play?lang=en",
+      "browser_url": "https://3oaks.com/games/sun_of_egypt_3",
+      "symbol": "",
+      "source": "targets.txt",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.88,
+      "protocol_families": [],
+      "blockers": [
+        "3oaks: successful command=spin request is not demonstrated."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "3oaks: successful command=spin request is not demonstrated."
+      ],
+      "http_count": 45,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 2257.8
+    },
+    {
+      "provider": "3oaks",
+      "slug": "sun_of_egypt_4",
+      "name": "Sun Of Egypt 4",
+      "url": "https://3oaks.com/api/v1/games/sun_of_egypt_4/play?lang=en",
+      "browser_url": "https://3oaks.com/games/sun_of_egypt_4",
+      "symbol": "",
+      "source": "targets.txt",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.88,
+      "protocol_families": [],
+      "blockers": [
+        "3oaks: successful command=spin request is not demonstrated."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "3oaks: successful command=spin request is not demonstrated."
+      ],
+      "http_count": 45,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 2253.6
+    },
+    {
+      "provider": "3oaks",
+      "slug": "sun_of_egypt_5",
+      "name": "Sun Of Egypt 5",
+      "url": "https://3oaks.com/api/v1/games/sun_of_egypt_5/play?lang=en",
+      "browser_url": "https://3oaks.com/games/sun_of_egypt_5",
+      "symbol": "",
+      "source": "targets.txt",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.88,
+      "protocol_families": [],
+      "blockers": [
+        "3oaks: successful command=spin request is not demonstrated."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "3oaks: successful command=spin request is not demonstrated."
+      ],
+      "http_count": 45,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 2377.3
+    },
+    {
+      "provider": "3oaks",
+      "slug": "sunlight_princess",
+      "name": "Sunlight Princess",
+      "url": "https://3oaks.com/api/v1/games/sunlight_princess/play?lang=en",
+      "browser_url": "https://3oaks.com/games/sunlight_princess",
+      "symbol": "",
+      "source": "targets.txt",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.88,
+      "protocol_families": [],
+      "blockers": [
+        "3oaks: successful command=spin request is not demonstrated."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "3oaks: successful command=spin request is not demonstrated."
+      ],
+      "http_count": 45,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 2264.9
+    },
+    {
+      "provider": "3oaks",
+      "slug": "super_china_pots",
+      "name": "Super China Pots",
+      "url": "https://3oaks.com/api/v1/games/super_china_pots/play?lang=en",
+      "browser_url": "https://3oaks.com/games/super_china_pots",
+      "symbol": "",
+      "source": "targets.txt",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.88,
+      "protocol_families": [],
+      "blockers": [
+        "3oaks: successful command=spin request is not demonstrated."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "3oaks: successful command=spin request is not demonstrated."
+      ],
+      "http_count": 45,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 2261.3
+    },
+    {
+      "provider": "3oaks",
+      "slug": "super_hot_chilli",
+      "name": "Super Hot Chilli",
+      "url": "https://3oaks.com/api/v1/games/super_hot_chilli/play?lang=en",
+      "browser_url": "https://3oaks.com/games/super_hot_chilli",
+      "symbol": "",
+      "source": "targets.txt",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.88,
+      "protocol_families": [],
+      "blockers": [
+        "3oaks: successful command=spin request is not demonstrated."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "3oaks: successful command=spin request is not demonstrated."
+      ],
+      "http_count": 45,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 2250.1
+    },
+    {
+      "provider": "3oaks",
+      "slug": "super_hot_teapots",
+      "name": "Super Hot Teapots",
+      "url": "https://3oaks.com/api/v1/games/super_hot_teapots/play?lang=en",
+      "browser_url": "https://3oaks.com/games/super_hot_teapots",
+      "symbol": "",
+      "source": "targets.txt",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.88,
+      "protocol_families": [],
+      "blockers": [
+        "3oaks: successful command=spin request is not demonstrated."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "3oaks: successful command=spin request is not demonstrated."
+      ],
+      "http_count": 45,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 2272.3
+    },
+    {
+      "provider": "3oaks",
+      "slug": "super_hotfire_diamonds",
+      "name": "Super Hotfire Diamonds",
+      "url": "https://3oaks.com/api/v1/games/super_hotfire_diamonds/play?lang=en",
+      "browser_url": "https://3oaks.com/games/super_hotfire_diamonds",
+      "symbol": "",
+      "source": "targets.txt",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.88,
+      "protocol_families": [],
+      "blockers": [
+        "3oaks: successful command=spin request is not demonstrated."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "3oaks: successful command=spin request is not demonstrated."
+      ],
+      "http_count": 45,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 2263.5
+    },
+    {
+      "provider": "3oaks",
+      "slug": "super_sticky_piggy",
+      "name": "Super Sticky Piggy",
+      "url": "https://3oaks.com/api/v1/games/super_sticky_piggy/play?lang=en",
+      "browser_url": "https://3oaks.com/games/super_sticky_piggy",
+      "symbol": "",
+      "source": "targets.txt",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.88,
+      "protocol_families": [],
+      "blockers": [
+        "3oaks: successful command=spin request is not demonstrated."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "3oaks: successful command=spin request is not demonstrated."
+      ],
+      "http_count": 45,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 2249.4
+    },
+    {
+      "provider": "3oaks",
+      "slug": "supreme_diamond_xxl",
+      "name": "Supreme Diamond Xxl",
+      "url": "https://3oaks.com/api/v1/games/supreme_diamond_xxl/play?lang=en",
+      "browser_url": "https://3oaks.com/games/supreme_diamond_xxl",
+      "symbol": "",
+      "source": "targets.txt",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.88,
+      "protocol_families": [],
+      "blockers": [
+        "3oaks: successful command=spin request is not demonstrated."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "3oaks: successful command=spin request is not demonstrated."
+      ],
+      "http_count": 46,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 2250.8
+    },
+    {
+      "provider": "3oaks",
+      "slug": "thunder_tiger",
+      "name": "Thunder Tiger",
+      "url": "https://3oaks.com/api/v1/games/thunder_tiger/play?lang=en",
+      "browser_url": "https://3oaks.com/games/thunder_tiger",
+      "symbol": "",
+      "source": "targets.txt",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.88,
+      "protocol_families": [],
+      "blockers": [
+        "3oaks: successful command=spin request is not demonstrated."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "3oaks: successful command=spin request is not demonstrated."
+      ],
+      "http_count": 45,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 2265.1
+    },
+    {
+      "provider": "3oaks",
+      "slug": "tiger_gems",
+      "name": "Tiger Gems",
+      "url": "https://3oaks.com/api/v1/games/tiger_gems/play?lang=en",
+      "browser_url": "https://3oaks.com/games/tiger_gems",
+      "symbol": "",
+      "source": "targets.txt",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.88,
+      "protocol_families": [],
+      "blockers": [
+        "3oaks: successful command=spin request is not demonstrated."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "3oaks: successful command=spin request is not demonstrated."
+      ],
+      "http_count": 45,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 2257.4
+    },
+    {
+      "provider": "3oaks",
+      "slug": "tiger_jungle",
+      "name": "Tiger Jungle",
+      "url": "https://3oaks.com/api/v1/games/tiger_jungle/play?lang=en",
+      "browser_url": "https://3oaks.com/games/tiger_jungle",
+      "symbol": "",
+      "source": "targets.txt",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.88,
+      "protocol_families": [],
+      "blockers": [
+        "3oaks: successful command=spin request is not demonstrated."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "3oaks: successful command=spin request is not demonstrated."
+      ],
+      "http_count": 45,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 2271.3
+    },
+    {
+      "provider": "3oaks",
+      "slug": "wolf_night",
+      "name": "Wolf Night",
+      "url": "https://3oaks.com/api/v1/games/wolf_night/play?lang=en",
+      "browser_url": "https://3oaks.com/games/wolf_night",
+      "symbol": "",
+      "source": "targets.txt",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.88,
+      "protocol_families": [],
+      "blockers": [
+        "3oaks: successful command=spin request is not demonstrated."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "3oaks: successful command=spin request is not demonstrated."
+      ],
+      "http_count": 45,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 2254.7
+    }
+  ]
+}

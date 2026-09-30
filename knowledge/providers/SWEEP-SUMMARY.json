@@ -1,0 +1,73 @@
+{
+  "schema": "multiplay/full-provider-sweep-summary/v1",
+  "provider_count": 8,
+  "catalog_total": 1262,
+  "processed_total": 1262,
+  "recognized_total": 641,
+  "providers": {
+    "3oaks": {
+      "catalog_count": 110,
+      "processed": 110,
+      "recognized": 110,
+      "status_counts": {
+        "PARTIAL_REQUIRES_REVIEW": 110
+      }
+    },
+    "belatra": {
+      "catalog_count": 101,
+      "processed": 101,
+      "recognized": 101,
+      "status_counts": {
+        "PARTIAL_REQUIRES_REVIEW": 101
+      }
+    },
+    "bgaming": {
+      "catalog_count": 215,
+      "processed": 215,
+      "recognized": 215,
+      "status_counts": {
+        "PARTIAL_REQUIRES_REVIEW": 215
+      }
+    },
+    "one_spin4win": {
+      "catalog_count": 229,
+      "processed": 229,
+      "recognized": 0,
+      "status_counts": {
+        "PARTIAL_REQUIRES_REVIEW": 229
+      }
+    },
+    "pragmatic": {
+      "catalog_count": 7,
+      "processed": 7,
+      "recognized": 7,
+      "status_counts": {
+        "PARTIAL_REQUIRES_REVIEW": 7
+      }
+    },
+    "redtiger": {
+      "catalog_count": 392,
+      "processed": 392,
+      "recognized": 0,
+      "status_counts": {
+        "PARTIAL_REQUIRES_REVIEW": 392
+      }
+    },
+    "rubyplay": {
+      "catalog_count": 49,
+      "processed": 49,
+      "recognized": 49,
+      "status_counts": {
+        "PARTIAL_REQUIRES_REVIEW": 49
+      }
+    },
+    "yggdrasil": {
+      "catalog_count": 159,
+      "processed": 159,
+      "recognized": 159,
+      "status_counts": {
+        "PARTIAL_REQUIRES_REVIEW": 159
+      }
+    }
+  }
+}

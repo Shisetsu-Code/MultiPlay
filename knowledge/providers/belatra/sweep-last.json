@@ -1,0 +1,2438 @@
+{
+  "schema": "multiplay/passive-provider-sweep/v1",
+  "provider": "belatra",
+  "catalog_count": 101,
+  "shard_index": 0,
+  "shard_count": 1,
+  "processed": 101,
+  "recognized": 101,
+  "status_counts": {
+    "PARTIAL_REQUIRES_REVIEW": 101
+  },
+  "games": [
+    {
+      "provider": "belatra",
+      "slug": "20-icy-fruits",
+      "name": "20 Icy Fruits",
+      "url": "https://belatragames.com/es/games/game/20-icy-fruits",
+      "browser_url": "https://belatragames.com/es/games/game/20-icy-fruits",
+      "symbol": "44",
+      "source": "live-catalog",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.9,
+      "protocol_families": [],
+      "blockers": [
+        "belatra: POST /game transport is not demonstrated."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "belatra: POST /game transport is not demonstrated."
+      ],
+      "http_count": 69,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 3104.8
+    },
+    {
+      "provider": "belatra",
+      "slug": "20-super-stars",
+      "name": "20 Super Stars",
+      "url": "https://belatragames.com/es/games/game/20-super-stars",
+      "browser_url": "https://belatragames.com/es/games/game/20-super-stars",
+      "symbol": "45",
+      "source": "live-catalog",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.9,
+      "protocol_families": [],
+      "blockers": [
+        "belatra: POST /game transport is not demonstrated."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "belatra: POST /game transport is not demonstrated."
+      ],
+      "http_count": 69,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 2582.6
+    },
+    {
+      "provider": "belatra",
+      "slug": "3x-super-peppers",
+      "name": "3x Super Peppers",
+      "url": "https://belatragames.com/es/games/game/3x-super-peppers",
+      "browser_url": "https://belatragames.com/es/games/game/3x-super-peppers",
+      "symbol": "35",
+      "source": "live-catalog",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.9,
+      "protocol_families": [],
+      "blockers": [
+        "belatra: POST /game transport is not demonstrated."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "belatra: POST /game transport is not demonstrated."
+      ],
+      "http_count": 68,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 2583.7
+    },
+    {
+      "provider": "belatra",
+      "slug": "4-secrets-of-aladdin",
+      "name": "4 Secrets of Aladdin",
+      "url": "https://belatragames.com/es/games/game/4-secrets-of-aladdin",
+      "browser_url": "https://belatragames.com/es/games/game/4-secrets-of-aladdin",
+      "symbol": "122",
+      "source": "live-catalog",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.9,
+      "protocol_families": [],
+      "blockers": [
+        "belatra: POST /game transport is not demonstrated."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "belatra: POST /game transport is not demonstrated."
+      ],
+      "http_count": 69,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 2520.0
+    },
+    {
+      "provider": "belatra",
+      "slug": "5-wild-wild-peppers",
+      "name": "5 Wild Wild Peppers",
+      "url": "https://belatragames.com/es/games/game/5-wild-wild-peppers",
+      "browser_url": "https://belatragames.com/es/games/game/5-wild-wild-peppers",
+      "symbol": "31",
+      "source": "live-catalog",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.9,
+      "protocol_families": [],
+      "blockers": [
+        "belatra: POST /game transport is not demonstrated."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "belatra: POST /game transport is not demonstrated."
+      ],
+      "http_count": 69,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 2700.8
+    },
+    {
+      "provider": "belatra",
+      "slug": "500-juicy-fruits",
+      "name": "500 Juicy Fruits",
+      "url": "https://belatragames.com/es/games/game/500-juicy-fruits",
+      "browser_url": "https://belatragames.com/es/games/game/500-juicy-fruits",
+      "symbol": "47",
+      "source": "live-catalog",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.9,
+      "protocol_families": [],
+      "blockers": [
+        "belatra: POST /game transport is not demonstrated."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "belatra: POST /game transport is not demonstrated."
+      ],
+      "http_count": 68,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 2559.1
+    },
+    {
+      "provider": "belatra",
+      "slug": "7-days-anotherland",
+      "name": "7 Days Anotherland",
+      "url": "https://belatragames.com/es/games/game/7-days-anotherland",
+      "browser_url": "https://belatragames.com/es/games/game/7-days-anotherland",
+      "symbol": "57",
+      "source": "live-catalog",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.9,
+      "protocol_families": [],
+      "blockers": [
+        "belatra: POST /game transport is not demonstrated."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "belatra: POST /game transport is not demonstrated."
+      ],
+      "http_count": 72,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 2587.1
+    },
+    {
+      "provider": "belatra",
+      "slug": "7-days-the-spanish-armada",
+      "name": "7 Days The Spanish Armada",
+      "url": "https://belatragames.com/es/games/game/7-days-the-spanish-armada",
+      "browser_url": "https://belatragames.com/es/games/game/7-days-the-spanish-armada",
+      "symbol": "66",
+      "source": "live-catalog",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.9,
+      "protocol_families": [],
+      "blockers": [
+        "belatra: POST /game transport is not demonstrated."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "belatra: POST /game transport is not demonstrated."
+      ],
+      "http_count": 69,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 2562.0
+    },
+    {
+      "provider": "belatra",
+      "slug": "7-fruits",
+      "name": "7 Fruits",
+      "url": "https://belatragames.com/es/games/game/7-fruits",
+      "browser_url": "https://belatragames.com/es/games/game/7-fruits",
+      "symbol": "89",
+      "source": "live-catalog",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.9,
+      "protocol_families": [],
+      "blockers": [
+        "belatra: POST /game transport is not demonstrated."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "belatra: POST /game transport is not demonstrated."
+      ],
+      "http_count": 69,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 2554.3
+    },
+    {
+      "provider": "belatra",
+      "slug": "88-dragons-bounty",
+      "name": "88 Dragons Bounty",
+      "url": "https://belatragames.com/es/games/game/88-dragons-bounty",
+      "browser_url": "https://belatragames.com/es/games/game/88-dragons-bounty",
+      "symbol": "46",
+      "source": "live-catalog",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.9,
+      "protocol_families": [],
+      "blockers": [
+        "belatra: POST /game transport is not demonstrated."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "belatra: POST /game transport is not demonstrated."
+      ],
+      "http_count": 69,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 2629.4
+    },
+    {
+      "provider": "belatra",
+      "slug": "88-golden",
+      "name": "88 Golden",
+      "url": "https://belatragames.com/es/games/game/88-golden",
+      "browser_url": "https://belatragames.com/es/games/game/88-golden",
+      "symbol": "70",
+      "source": "live-catalog",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.9,
+      "protocol_families": [],
+      "blockers": [
+        "belatra: POST /game transport is not demonstrated."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "belatra: POST /game transport is not demonstrated."
+      ],
+      "http_count": 68,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 2710.8
+    },
+    {
+      "provider": "belatra",
+      "slug": "africa-gold",
+      "name": "Africa Gold",
+      "url": "https://belatragames.com/es/games/game/africa-gold",
+      "browser_url": "https://belatragames.com/es/games/game/africa-gold",
+      "symbol": "56",
+      "source": "live-catalog",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.9,
+      "protocol_families": [],
+      "blockers": [
+        "belatra: POST /game transport is not demonstrated."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "belatra: POST /game transport is not demonstrated."
+      ],
+      "http_count": 69,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 2664.5
+    },
+    {
+      "provider": "belatra",
+      "slug": "africa-gold-2",
+      "name": "Africa Gold 2",
+      "url": "https://belatragames.com/es/games/game/africa-gold-2",
+      "browser_url": "https://belatragames.com/es/games/game/africa-gold-2",
+      "symbol": "48",
+      "source": "live-catalog",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.9,
+      "protocol_families": [],
+      "blockers": [
+        "belatra: POST /game transport is not demonstrated."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "belatra: POST /game transport is not demonstrated."
+      ],
+      "http_count": 69,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 2510.5
+    },
+    {
+      "provider": "belatra",
+      "slug": "an-escape-from-alcatraz",
+      "name": "An Escape from Alcatraz",
+      "url": "https://belatragames.com/es/games/game/an-escape-from-alcatraz",
+      "browser_url": "https://belatragames.com/es/games/game/an-escape-from-alcatraz",
+      "symbol": "90",
+      "source": "live-catalog",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.9,
+      "protocol_families": [],
+      "blockers": [
+        "belatra: POST /game transport is not demonstrated."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "belatra: POST /game transport is not demonstrated."
+      ],
+      "http_count": 69,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 2582.6
+    },
+    {
+      "provider": "belatra",
+      "slug": "ancient-temple-gems",
+      "name": "Ancient Temple Gems",
+      "url": "https://belatragames.com/es/games/game/ancient-temple-gems",
+      "browser_url": "https://belatragames.com/es/games/game/ancient-temple-gems",
+      "symbol": "36",
+      "source": "live-catalog",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.9,
+      "protocol_families": [],
+      "blockers": [
+        "belatra: POST /game transport is not demonstrated."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "belatra: POST /game transport is not demonstrated."
+      ],
+      "http_count": 68,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 2553.6
+    },
+    {
+      "provider": "belatra",
+      "slug": "bear's-tricks",
+      "name": "Bear's Tricks",
+      "url": "https://belatragames.com/es/games/game/bear's-tricks",
+      "browser_url": "https://belatragames.com/es/games/game/bear's-tricks",
+      "symbol": "297",
+      "source": "live-catalog",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.9,
+      "protocol_families": [],
+      "blockers": [
+        "belatra: POST /game transport is not demonstrated."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "belatra: POST /game transport is not demonstrated."
+      ],
+      "http_count": 69,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 2576.3
+    },
+    {
+      "provider": "belatra",
+      "slug": "beauty-and-the-beast",
+      "name": "Beauty and the Beast",
+      "url": "https://belatragames.com/es/games/game/beauty-and-the-beast",
+      "browser_url": "https://belatragames.com/es/games/game/beauty-and-the-beast",
+      "symbol": "58",
+      "source": "live-catalog",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.9,
+      "protocol_families": [],
+      "blockers": [
+        "belatra: POST /game transport is not demonstrated."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "belatra: POST /game transport is not demonstrated."
+      ],
+      "http_count": 69,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 2575.9
+    },
+    {
+      "provider": "belatra",
+      "slug": "big-bang",
+      "name": "Big Bang",
+      "url": "https://belatragames.com/es/games/game/big-bang",
+      "browser_url": "https://belatragames.com/es/games/game/big-bang",
+      "symbol": "34",
+      "source": "live-catalog",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.9,
+      "protocol_families": [],
+      "blockers": [
+        "belatra: POST /game transport is not demonstrated."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "belatra: POST /game transport is not demonstrated."
+      ],
+      "http_count": 61,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 2642.8
+    },
+    {
+      "provider": "belatra",
+      "slug": "big-bang-2",
+      "name": "Big Bang 2",
+      "url": "https://belatragames.com/es/games/game/big-bang-2",
+      "browser_url": "https://belatragames.com/es/games/game/big-bang-2",
+      "symbol": "316",
+      "source": "live-catalog",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.9,
+      "protocol_families": [],
+      "blockers": [
+        "belatra: POST /game transport is not demonstrated."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "belatra: POST /game transport is not demonstrated."
+      ],
+      "http_count": 71,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 2571.7
+    },
+    {
+      "provider": "belatra",
+      "slug": "big-wild-buffalo",
+      "name": "Big Wild Buffalo",
+      "url": "https://belatragames.com/es/games/game/big-wild-buffalo",
+      "browser_url": "https://belatragames.com/es/games/game/big-wild-buffalo",
+      "symbol": "32",
+      "source": "live-catalog",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.9,
+      "protocol_families": [],
+      "blockers": [
+        "belatra: POST /game transport is not demonstrated."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "belatra: POST /game transport is not demonstrated."
+      ],
+      "http_count": 69,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 2601.5
+    },
+    {
+      "provider": "belatra",
+      "slug": "big-wild-buffalo-2",
+      "name": "Big Wild Buffalo 2",
+      "url": "https://belatragames.com/es/games/game/big-wild-buffalo-2",
+      "browser_url": "https://belatragames.com/es/games/game/big-wild-buffalo-2",
+      "symbol": "311",
+      "source": "live-catalog",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.9,
+      "protocol_families": [],
+      "blockers": [
+        "belatra: POST /game transport is not demonstrated."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "belatra: POST /game transport is not demonstrated."
+      ],
+      "http_count": 71,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 2519.1
+    },
+    {
+      "provider": "belatra",
+      "slug": "blast-the-bass",
+      "name": "Blast the Bass",
+      "url": "https://belatragames.com/es/games/game/blast-the-bass",
+      "browser_url": "https://belatragames.com/es/games/game/blast-the-bass",
+      "symbol": "293",
+      "source": "live-catalog",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.9,
+      "protocol_families": [],
+      "blockers": [
+        "belatra: POST /game transport is not demonstrated."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "belatra: POST /game transport is not demonstrated."
+      ],
+      "http_count": 69,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 2573.4
+    },
+    {
+      "provider": "belatra",
+      "slug": "blue-beard",
+      "name": "Blue Beard",
+      "url": "https://belatragames.com/es/games/game/blue-beard",
+      "browser_url": "https://belatragames.com/es/games/game/blue-beard",
+      "symbol": "73",
+      "source": "live-catalog",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.9,
+      "protocol_families": [],
+      "blockers": [
+        "belatra: POST /game transport is not demonstrated."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "belatra: POST /game transport is not demonstrated."
+      ],
+      "http_count": 69,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 2557.0
+    },
+    {
+      "provider": "belatra",
+      "slug": "book-of-doom",
+      "name": "Book of Doom",
+      "url": "https://belatragames.com/es/games/game/book-of-doom",
+      "browser_url": "https://belatragames.com/es/games/game/book-of-doom",
+      "symbol": "50",
+      "source": "live-catalog",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.9,
+      "protocol_families": [],
+      "blockers": [
+        "belatra: POST /game transport is not demonstrated."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "belatra: POST /game transport is not demonstrated."
+      ],
+      "http_count": 61,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 2568.8
+    },
+    {
+      "provider": "belatra",
+      "slug": "buybonus-of-maya",
+      "name": "BuyBonus of Maya",
+      "url": "https://belatragames.com/es/games/game/buybonus-of-maya",
+      "browser_url": "https://belatragames.com/es/games/game/buybonus-of-maya",
+      "symbol": "98",
+      "source": "live-catalog",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.9,
+      "protocol_families": [],
+      "blockers": [
+        "belatra: POST /game transport is not demonstrated."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "belatra: POST /game transport is not demonstrated."
+      ],
+      "http_count": 69,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 2631.1
+    },
+    {
+      "provider": "belatra",
+      "slug": "cafe-50's",
+      "name": "Cafe 50's",
+      "url": "https://belatragames.com/es/games/game/cafe-50's",
+      "browser_url": "https://belatragames.com/es/games/game/cafe-50's",
+      "symbol": "290",
+      "source": "live-catalog",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.9,
+      "protocol_families": [],
+      "blockers": [
+        "belatra: POST /game transport is not demonstrated."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "belatra: POST /game transport is not demonstrated."
+      ],
+      "http_count": 69,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 2516.6
+    },
+    {
+      "provider": "belatra",
+      "slug": "catch-and-snatch",
+      "name": "Catch & Snatch",
+      "url": "https://belatragames.com/es/games/game/catch-and-snatch",
+      "browser_url": "https://belatragames.com/es/games/game/catch-and-snatch",
+      "symbol": "40",
+      "source": "live-catalog",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.9,
+      "protocol_families": [],
+      "blockers": [
+        "belatra: POST /game transport is not demonstrated."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "belatra: POST /game transport is not demonstrated."
+      ],
+      "http_count": 68,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 2546.2
+    },
+    {
+      "provider": "belatra",
+      "slug": "chef's-sticky-fruits",
+      "name": "Chef's Sticky Fruits",
+      "url": "https://belatragames.com/es/games/game/chef's-sticky-fruits",
+      "browser_url": "https://belatragames.com/es/games/game/chef's-sticky-fruits",
+      "symbol": "147",
+      "source": "live-catalog",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.9,
+      "protocol_families": [],
+      "blockers": [
+        "belatra: POST /game transport is not demonstrated."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "belatra: POST /game transport is not demonstrated."
+      ],
+      "http_count": 69,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 2557.3
+    },
+    {
+      "provider": "belatra",
+      "slug": "christmas-jackpot",
+      "name": "Christmas Jackpot",
+      "url": "https://belatragames.com/es/games/game/christmas-jackpot",
+      "browser_url": "https://belatragames.com/es/games/game/christmas-jackpot",
+      "symbol": "103",
+      "source": "live-catalog",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.9,
+      "protocol_families": [],
+      "blockers": [
+        "belatra: POST /game transport is not demonstrated."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "belatra: POST /game transport is not demonstrated."
+      ],
+      "http_count": 69,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 2575.8
+    },
+    {
+      "provider": "belatra",
+      "slug": "cleo's-book",
+      "name": "Cleo's Book",
+      "url": "https://belatragames.com/es/games/game/cleo's-book",
+      "browser_url": "https://belatragames.com/es/games/game/cleo's-book",
+      "symbol": "33",
+      "source": "live-catalog",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.9,
+      "protocol_families": [],
+      "blockers": [
+        "belatra: POST /game transport is not demonstrated."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "belatra: POST /game transport is not demonstrated."
+      ],
+      "http_count": 69,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 2569.6
+    },
+    {
+      "provider": "belatra",
+      "slug": "cops-vs-robs",
+      "name": "Cops vs Robs",
+      "url": "https://belatragames.com/es/games/game/cops-vs-robs",
+      "browser_url": "https://belatragames.com/es/games/game/cops-vs-robs",
+      "symbol": "307",
+      "source": "live-catalog",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.9,
+      "protocol_families": [],
+      "blockers": [
+        "belatra: POST /game transport is not demonstrated."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "belatra: POST /game transport is not demonstrated."
+      ],
+      "http_count": 71,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 2524.5
+    },
+    {
+      "provider": "belatra",
+      "slug": "crystals-digger",
+      "name": "Crystals Digger",
+      "url": "https://belatragames.com/es/games/game/crystals-digger",
+      "browser_url": "https://belatragames.com/es/games/game/crystals-digger",
+      "symbol": "55",
+      "source": "live-catalog",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.9,
+      "protocol_families": [],
+      "blockers": [
+        "belatra: POST /game transport is not demonstrated."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "belatra: POST /game transport is not demonstrated."
+      ],
+      "http_count": 74,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 2603.5
+    },
+    {
+      "provider": "belatra",
+      "slug": "cyber-gypsies",
+      "name": "Cyber Gypsies",
+      "url": "https://belatragames.com/es/games/game/cyber-gypsies",
+      "browser_url": "https://belatragames.com/es/games/game/cyber-gypsies",
+      "symbol": "296",
+      "source": "live-catalog",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.9,
+      "protocol_families": [],
+      "blockers": [
+        "belatra: POST /game transport is not demonstrated."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "belatra: POST /game transport is not demonstrated."
+      ],
+      "http_count": 69,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 2587.1
+    },
+    {
+      "provider": "belatra",
+      "slug": "danludan's-fortune-bass",
+      "name": "DanLudan's Fortune Bass",
+      "url": "https://belatragames.com/es/games/game/danludan's-fortune-bass",
+      "browser_url": "https://belatragames.com/es/games/game/danludan's-fortune-bass",
+      "symbol": "308",
+      "source": "live-catalog",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.9,
+      "protocol_families": [],
+      "blockers": [
+        "belatra: POST /game transport is not demonstrated."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "belatra: POST /game transport is not demonstrated."
+      ],
+      "http_count": 71,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 2556.2
+    },
+    {
+      "provider": "belatra",
+      "slug": "digger's-fortune",
+      "name": "Digger's Fortune",
+      "url": "https://belatragames.com/es/games/game/digger's-fortune",
+      "browser_url": "https://belatragames.com/es/games/game/digger's-fortune",
+      "symbol": "314",
+      "source": "live-catalog",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.9,
+      "protocol_families": [],
+      "blockers": [
+        "belatra: POST /game transport is not demonstrated."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "belatra: POST /game transport is not demonstrated."
+      ],
+      "http_count": 71,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 2517.8
+    },
+    {
+      "provider": "belatra",
+      "slug": "dracula-riches",
+      "name": "Dracula Riches",
+      "url": "https://belatragames.com/es/games/game/dracula-riches",
+      "browser_url": "https://belatragames.com/es/games/game/dracula-riches",
+      "symbol": "83",
+      "source": "live-catalog",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.9,
+      "protocol_families": [],
+      "blockers": [
+        "belatra: POST /game transport is not demonstrated."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "belatra: POST /game transport is not demonstrated."
+      ],
+      "http_count": 69,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 2541.0
+    },
+    {
+      "provider": "belatra",
+      "slug": "dragon's-bonanza",
+      "name": "Dragon's Bonanza",
+      "url": "https://belatragames.com/es/games/game/dragon's-bonanza",
+      "browser_url": "https://belatragames.com/es/games/game/dragon's-bonanza",
+      "symbol": "120",
+      "source": "live-catalog",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.9,
+      "protocol_families": [],
+      "blockers": [
+        "belatra: POST /game transport is not demonstrated."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "belatra: POST /game transport is not demonstrated."
+      ],
+      "http_count": 74,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 2586.8
+    },
+    {
+      "provider": "belatra",
+      "slug": "fortune-mummy",
+      "name": "Fortune Mummy",
+      "url": "https://belatragames.com/es/games/game/fortune-mummy",
+      "browser_url": "https://belatragames.com/es/games/game/fortune-mummy",
+      "symbol": "300",
+      "source": "live-catalog",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.9,
+      "protocol_families": [],
+      "blockers": [
+        "belatra: POST /game transport is not demonstrated."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "belatra: POST /game transport is not demonstrated."
+      ],
+      "http_count": 73,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 2569.0
+    },
+    {
+      "provider": "belatra",
+      "slug": "foxy-eggs",
+      "name": "Foxy Eggs",
+      "url": "https://belatragames.com/es/games/game/foxy-eggs",
+      "browser_url": "https://belatragames.com/es/games/game/foxy-eggs",
+      "symbol": "312",
+      "source": "live-catalog",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.9,
+      "protocol_families": [],
+      "blockers": [
+        "belatra: POST /game transport is not demonstrated."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "belatra: POST /game transport is not demonstrated."
+      ],
+      "http_count": 71,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 2484.5
+    },
+    {
+      "provider": "belatra",
+      "slug": "frozen-barrel-tavern",
+      "name": "Frozen Barrel Tavern",
+      "url": "https://belatragames.com/es/games/game/frozen-barrel-tavern",
+      "browser_url": "https://belatragames.com/es/games/game/frozen-barrel-tavern",
+      "symbol": "309",
+      "source": "live-catalog",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.9,
+      "protocol_families": [],
+      "blockers": [
+        "belatra: POST /game transport is not demonstrated."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "belatra: POST /game transport is not demonstrated."
+      ],
+      "http_count": 71,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 2587.9
+    },
+    {
+      "provider": "belatra",
+      "slug": "full-moon-magic",
+      "name": "Full Moon Magic",
+      "url": "https://belatragames.com/es/games/game/full-moon-magic",
+      "browser_url": "https://belatragames.com/es/games/game/full-moon-magic",
+      "symbol": "119",
+      "source": "live-catalog",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.9,
+      "protocol_families": [],
+      "blockers": [
+        "belatra: POST /game transport is not demonstrated."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "belatra: POST /game transport is not demonstrated."
+      ],
+      "http_count": 69,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 2604.1
+    },
+    {
+      "provider": "belatra",
+      "slug": "golden-lantern",
+      "name": "Golden Lantern",
+      "url": "https://belatragames.com/es/games/game/golden-lantern",
+      "browser_url": "https://belatragames.com/es/games/game/golden-lantern",
+      "symbol": "142",
+      "source": "live-catalog",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.9,
+      "protocol_families": [],
+      "blockers": [
+        "belatra: POST /game transport is not demonstrated."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "belatra: POST /game transport is not demonstrated."
+      ],
+      "http_count": 74,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 2555.3
+    },
+    {
+      "provider": "belatra",
+      "slug": "golden-lemon",
+      "name": "Golden Lemon",
+      "url": "https://belatragames.com/es/games/game/golden-lemon",
+      "browser_url": "https://belatragames.com/es/games/game/golden-lemon",
+      "symbol": "59",
+      "source": "live-catalog",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.9,
+      "protocol_families": [],
+      "blockers": [
+        "belatra: POST /game transport is not demonstrated."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "belatra: POST /game transport is not demonstrated."
+      ],
+      "http_count": 69,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 2501.6
+    },
+    {
+      "provider": "belatra",
+      "slug": "golden-lemon-deluxe",
+      "name": "Golden Lemon DeLuxe",
+      "url": "https://belatragames.com/es/games/game/golden-lemon-deluxe",
+      "browser_url": "https://belatragames.com/es/games/game/golden-lemon-deluxe",
+      "symbol": "97",
+      "source": "live-catalog",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.9,
+      "protocol_families": [],
+      "blockers": [
+        "belatra: POST /game transport is not demonstrated."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "belatra: POST /game transport is not demonstrated."
+      ],
+      "http_count": 69,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 2597.4
+    },
+    {
+      "provider": "belatra",
+      "slug": "golden-oks",
+      "name": "Golden øks",
+      "url": "https://belatragames.com/es/games/game/golden-oks",
+      "browser_url": "https://belatragames.com/es/games/game/golden-oks",
+      "symbol": "146",
+      "source": "live-catalog",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.9,
+      "protocol_families": [],
+      "blockers": [
+        "belatra: POST /game transport is not demonstrated."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "belatra: POST /game transport is not demonstrated."
+      ],
+      "http_count": 69,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 2579.1
+    },
+    {
+      "provider": "belatra",
+      "slug": "halloween-crystals",
+      "name": "Halloween Crystals",
+      "url": "https://belatragames.com/es/games/game/halloween-crystals",
+      "browser_url": "https://belatragames.com/es/games/game/halloween-crystals",
+      "symbol": "42",
+      "source": "live-catalog",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.9,
+      "protocol_families": [],
+      "blockers": [
+        "belatra: POST /game transport is not demonstrated."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "belatra: POST /game transport is not demonstrated."
+      ],
+      "http_count": 69,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 2571.7
+    },
+    {
+      "provider": "belatra",
+      "slug": "halloween-jackpot",
+      "name": "Halloween Jackpot",
+      "url": "https://belatragames.com/es/games/game/halloween-jackpot",
+      "browser_url": "https://belatragames.com/es/games/game/halloween-jackpot",
+      "symbol": "101",
+      "source": "live-catalog",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.9,
+      "protocol_families": [],
+      "blockers": [
+        "belatra: POST /game transport is not demonstrated."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "belatra: POST /game transport is not demonstrated."
+      ],
+      "http_count": 69,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 2525.4
+    },
+    {
+      "provider": "belatra",
+      "slug": "hot-wild-pepper",
+      "name": "Hot Wild Pepper",
+      "url": "https://belatragames.com/es/games/game/hot-wild-pepper",
+      "browser_url": "https://belatragames.com/es/games/game/hot-wild-pepper",
+      "symbol": "26",
+      "source": "live-catalog",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.9,
+      "protocol_families": [],
+      "blockers": [
+        "belatra: POST /game transport is not demonstrated."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "belatra: POST /game transport is not demonstrated."
+      ],
+      "http_count": 68,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 2593.8
+    },
+    {
+      "provider": "belatra",
+      "slug": "hunt-the-bucks",
+      "name": "Hunt the Bucks",
+      "url": "https://belatragames.com/es/games/game/hunt-the-bucks",
+      "browser_url": "https://belatragames.com/es/games/game/hunt-the-bucks",
+      "symbol": "310",
+      "source": "live-catalog",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.9,
+      "protocol_families": [],
+      "blockers": [
+        "belatra: POST /game transport is not demonstrated."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "belatra: POST /game transport is not demonstrated."
+      ],
+      "http_count": 73,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 2580.5
+    },
+    {
+      "provider": "belatra",
+      "slug": "ice-bass",
+      "name": "Ice Bass",
+      "url": "https://belatragames.com/es/games/game/ice-bass",
+      "browser_url": "https://belatragames.com/es/games/game/ice-bass",
+      "symbol": "315",
+      "source": "live-catalog",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.9,
+      "protocol_families": [],
+      "blockers": [
+        "belatra: POST /game transport is not demonstrated."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "belatra: POST /game transport is not demonstrated."
+      ],
+      "http_count": 71,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 2606.5
+    },
+    {
+      "provider": "belatra",
+      "slug": "ice-princess",
+      "name": "Ice Princess",
+      "url": "https://belatragames.com/es/games/game/ice-princess",
+      "browser_url": "https://belatragames.com/es/games/game/ice-princess",
+      "symbol": "139",
+      "source": "live-catalog",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.9,
+      "protocol_families": [],
+      "blockers": [
+        "belatra: POST /game transport is not demonstrated."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "belatra: POST /game transport is not demonstrated."
+      ],
+      "http_count": 69,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 2565.7
+    },
+    {
+      "provider": "belatra",
+      "slug": "irish-thunder",
+      "name": "Irish Thunder",
+      "url": "https://belatragames.com/es/games/game/irish-thunder",
+      "browser_url": "https://belatragames.com/es/games/game/irish-thunder",
+      "symbol": "28",
+      "source": "live-catalog",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.9,
+      "protocol_families": [],
+      "blockers": [
+        "belatra: POST /game transport is not demonstrated."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "belatra: POST /game transport is not demonstrated."
+      ],
+      "http_count": 69,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 2736.5
+    },
+    {
+      "provider": "belatra",
+      "slug": "j-monsters",
+      "name": "J-Monsters",
+      "url": "https://belatragames.com/es/games/game/j-monsters",
+      "browser_url": "https://belatragames.com/es/games/game/j-monsters",
+      "symbol": "61",
+      "source": "live-catalog",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.9,
+      "protocol_families": [],
+      "blockers": [
+        "belatra: POST /game transport is not demonstrated."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "belatra: POST /game transport is not demonstrated."
+      ],
+      "http_count": 69,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 2523.2
+    },
+    {
+      "provider": "belatra",
+      "slug": "jackpot-pagoda",
+      "name": "Jackpot Pagoda",
+      "url": "https://belatragames.com/es/games/game/jackpot-pagoda",
+      "browser_url": "https://belatragames.com/es/games/game/jackpot-pagoda",
+      "symbol": "313",
+      "source": "live-catalog",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.9,
+      "protocol_families": [],
+      "blockers": [
+        "belatra: POST /game transport is not demonstrated."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "belatra: POST /game transport is not demonstrated."
+      ],
+      "http_count": 71,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 2574.0
+    },
+    {
+      "provider": "belatra",
+      "slug": "jewels",
+      "name": "Jewels",
+      "url": "https://belatragames.com/es/games/game/jewels",
+      "browser_url": "https://belatragames.com/es/games/game/jewels",
+      "symbol": "67",
+      "source": "live-catalog",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.9,
+      "protocol_families": [],
+      "blockers": [
+        "belatra: POST /game transport is not demonstrated."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "belatra: POST /game transport is not demonstrated."
+      ],
+      "http_count": 71,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 2527.8
+    },
+    {
+      "provider": "belatra",
+      "slug": "lavish-joker",
+      "name": "Lavish Joker",
+      "url": "https://belatragames.com/es/games/game/lavish-joker",
+      "browser_url": "https://belatragames.com/es/games/game/lavish-joker",
+      "symbol": "51",
+      "source": "live-catalog",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.9,
+      "protocol_families": [],
+      "blockers": [
+        "belatra: POST /game transport is not demonstrated."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "belatra: POST /game transport is not demonstrated."
+      ],
+      "http_count": 69,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 2526.9
+    },
+    {
+      "provider": "belatra",
+      "slug": "lazy-monkey",
+      "name": "Lazy Monkey",
+      "url": "https://belatragames.com/es/games/game/lazy-monkey",
+      "browser_url": "https://belatragames.com/es/games/game/lazy-monkey",
+      "symbol": "105",
+      "source": "live-catalog",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.9,
+      "protocol_families": [],
+      "blockers": [
+        "belatra: POST /game transport is not demonstrated."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "belatra: POST /game transport is not demonstrated."
+      ],
+      "http_count": 69,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 2635.3
+    },
+    {
+      "provider": "belatra",
+      "slug": "legacy-of-doom",
+      "name": "Legacy of Doom",
+      "url": "https://belatragames.com/es/games/game/legacy-of-doom",
+      "browser_url": "https://belatragames.com/es/games/game/legacy-of-doom",
+      "symbol": "27",
+      "source": "live-catalog",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.9,
+      "protocol_families": [],
+      "blockers": [
+        "belatra: POST /game transport is not demonstrated."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "belatra: POST /game transport is not demonstrated."
+      ],
+      "http_count": 69,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 2494.4
+    },
+    {
+      "provider": "belatra",
+      "slug": "long-neck-fortune",
+      "name": "Long Neck Fortune",
+      "url": "https://belatragames.com/es/games/game/long-neck-fortune",
+      "browser_url": "https://belatragames.com/es/games/game/long-neck-fortune",
+      "symbol": "305",
+      "source": "live-catalog",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.9,
+      "protocol_families": [],
+      "blockers": [
+        "belatra: POST /game transport is not demonstrated."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "belatra: POST /game transport is not demonstrated."
+      ],
+      "http_count": 73,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 2595.6
+    },
+    {
+      "provider": "belatra",
+      "slug": "love-magic",
+      "name": "Love Magic",
+      "url": "https://belatragames.com/es/games/game/love-magic",
+      "browser_url": "https://belatragames.com/es/games/game/love-magic",
+      "symbol": "68",
+      "source": "live-catalog",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.9,
+      "protocol_families": [],
+      "blockers": [
+        "belatra: POST /game transport is not demonstrated."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "belatra: POST /game transport is not demonstrated."
+      ],
+      "http_count": 69,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 2581.1
+    },
+    {
+      "provider": "belatra",
+      "slug": "lucie's-cats",
+      "name": "Lucie's cats",
+      "url": "https://belatragames.com/es/games/game/lucie's-cats",
+      "browser_url": "https://belatragames.com/es/games/game/lucie's-cats",
+      "symbol": "43",
+      "source": "live-catalog",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.9,
+      "protocol_families": [],
+      "blockers": [
+        "belatra: POST /game transport is not demonstrated."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "belatra: POST /game transport is not demonstrated."
+      ],
+      "http_count": 69,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 2593.1
+    },
+    {
+      "provider": "belatra",
+      "slug": "lucky-bandits",
+      "name": "Lucky Bandits",
+      "url": "https://belatragames.com/es/games/game/lucky-bandits",
+      "browser_url": "https://belatragames.com/es/games/game/lucky-bandits",
+      "symbol": "285",
+      "source": "live-catalog",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.9,
+      "protocol_families": [],
+      "blockers": [
+        "belatra: POST /game transport is not demonstrated."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "belatra: POST /game transport is not demonstrated."
+      ],
+      "http_count": 69,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 2541.2
+    },
+    {
+      "provider": "belatra",
+      "slug": "lucky-bank-robbers",
+      "name": "Lucky Bank Robbers",
+      "url": "https://belatragames.com/es/games/game/lucky-bank-robbers",
+      "browser_url": "https://belatragames.com/es/games/game/lucky-bank-robbers",
+      "symbol": "63",
+      "source": "live-catalog",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.9,
+      "protocol_families": [],
+      "blockers": [
+        "belatra: POST /game transport is not demonstrated."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "belatra: POST /game transport is not demonstrated."
+      ],
+      "http_count": 74,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 2534.1
+    },
+    {
+      "provider": "belatra",
+      "slug": "lucky-barrel-tavern",
+      "name": "Lucky Barrel Tavern",
+      "url": "https://belatragames.com/es/games/game/lucky-barrel-tavern",
+      "browser_url": "https://belatragames.com/es/games/game/lucky-barrel-tavern",
+      "symbol": "150",
+      "source": "live-catalog",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.9,
+      "protocol_families": [],
+      "blockers": [
+        "belatra: POST /game transport is not demonstrated."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "belatra: POST /game transport is not demonstrated."
+      ],
+      "http_count": 69,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 2579.0
+    },
+    {
+      "provider": "belatra",
+      "slug": "lucky-drink",
+      "name": "Lucky Drink",
+      "url": "https://belatragames.com/es/games/game/lucky-drink",
+      "browser_url": "https://belatragames.com/es/games/game/lucky-drink",
+      "symbol": "93",
+      "source": "live-catalog",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.9,
+      "protocol_families": [],
+      "blockers": [
+        "belatra: POST /game transport is not demonstrated."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "belatra: POST /game transport is not demonstrated."
+      ],
+      "http_count": 69,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 2559.7
+    },
+    {
+      "provider": "belatra",
+      "slug": "make-it-gold",
+      "name": "Make It Gold",
+      "url": "https://belatragames.com/es/games/game/make-it-gold",
+      "browser_url": "https://belatragames.com/es/games/game/make-it-gold",
+      "symbol": "292",
+      "source": "live-catalog",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.9,
+      "protocol_families": [],
+      "blockers": [
+        "belatra: POST /game transport is not demonstrated."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "belatra: POST /game transport is not demonstrated."
+      ],
+      "http_count": 69,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 2541.6
+    },
+    {
+      "provider": "belatra",
+      "slug": "master-of-gold",
+      "name": "Master of Gold",
+      "url": "https://belatragames.com/es/games/game/master-of-gold",
+      "browser_url": "https://belatragames.com/es/games/game/master-of-gold",
+      "symbol": "108",
+      "source": "live-catalog",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.9,
+      "protocol_families": [],
+      "blockers": [
+        "belatra: POST /game transport is not demonstrated."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "belatra: POST /game transport is not demonstrated."
+      ],
+      "http_count": 69,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 2552.2
+    },
+    {
+      "provider": "belatra",
+      "slug": "master-of-xmas",
+      "name": "Master of Xmas",
+      "url": "https://belatragames.com/es/games/game/master-of-xmas",
+      "browser_url": "https://belatragames.com/es/games/game/master-of-xmas",
+      "symbol": "113",
+      "source": "live-catalog",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.9,
+      "protocol_families": [],
+      "blockers": [
+        "belatra: POST /game transport is not demonstrated."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "belatra: POST /game transport is not demonstrated."
+      ],
+      "http_count": 69,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 2562.0
+    },
+    {
+      "provider": "belatra",
+      "slug": "mayan-book",
+      "name": "Mayan Book",
+      "url": "https://belatragames.com/es/games/game/mayan-book",
+      "browser_url": "https://belatragames.com/es/games/game/mayan-book",
+      "symbol": "110",
+      "source": "live-catalog",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.9,
+      "protocol_families": [],
+      "blockers": [
+        "belatra: POST /game transport is not demonstrated."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "belatra: POST /game transport is not demonstrated."
+      ],
+      "http_count": 69,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 2518.8
+    },
+    {
+      "provider": "belatra",
+      "slug": "merry-hog",
+      "name": "Merry Hog",
+      "url": "https://belatragames.com/es/games/game/merry-hog",
+      "browser_url": "https://belatragames.com/es/games/game/merry-hog",
+      "symbol": "138",
+      "source": "live-catalog",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.9,
+      "protocol_families": [],
+      "blockers": [
+        "belatra: POST /game transport is not demonstrated."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "belatra: POST /game transport is not demonstrated."
+      ],
+      "http_count": 69,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 2618.4
+    },
+    {
+      "provider": "belatra",
+      "slug": "monkey-jackpot",
+      "name": "Monkey Jackpot",
+      "url": "https://belatragames.com/es/games/game/monkey-jackpot",
+      "browser_url": "https://belatragames.com/es/games/game/monkey-jackpot",
+      "symbol": "99",
+      "source": "live-catalog",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.9,
+      "protocol_families": [],
+      "blockers": [
+        "belatra: POST /game transport is not demonstrated."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "belatra: POST /game transport is not demonstrated."
+      ],
+      "http_count": 69,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 2532.1
+    },
+    {
+      "provider": "belatra",
+      "slug": "mummyland-treasures",
+      "name": "Mummyland Treasures",
+      "url": "https://belatragames.com/es/games/game/mummyland-treasures",
+      "browser_url": "https://belatragames.com/es/games/game/mummyland-treasures",
+      "symbol": "1",
+      "source": "live-catalog",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.9,
+      "protocol_families": [],
+      "blockers": [
+        "belatra: POST /game transport is not demonstrated."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "belatra: POST /game transport is not demonstrated."
+      ],
+      "http_count": 71,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 2553.8
+    },
+    {
+      "provider": "belatra",
+      "slug": "northern-boom",
+      "name": "Northern Boom",
+      "url": "https://belatragames.com/es/games/game/northern-boom",
+      "browser_url": "https://belatragames.com/es/games/game/northern-boom",
+      "symbol": "24",
+      "source": "live-catalog",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.9,
+      "protocol_families": [],
+      "blockers": [
+        "belatra: POST /game transport is not demonstrated."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "belatra: POST /game transport is not demonstrated."
+      ],
+      "http_count": 69,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 2768.5
+    },
+    {
+      "provider": "belatra",
+      "slug": "penalty-blast",
+      "name": "Penalty Blast",
+      "url": "https://belatragames.com/es/games/game/penalty-blast",
+      "browser_url": "https://belatragames.com/es/games/game/penalty-blast",
+      "symbol": "322",
+      "source": "live-catalog",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.9,
+      "protocol_families": [],
+      "blockers": [
+        "belatra: POST /game transport is not demonstrated."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "belatra: POST /game transport is not demonstrated."
+      ],
+      "http_count": 73,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 2659.9
+    },
+    {
+      "provider": "belatra",
+      "slug": "piggy-bank",
+      "name": "Piggy Bank",
+      "url": "https://belatragames.com/es/games/game/piggy-bank",
+      "browser_url": "https://belatragames.com/es/games/game/piggy-bank",
+      "symbol": "76",
+      "source": "live-catalog",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.9,
+      "protocol_families": [],
+      "blockers": [
+        "belatra: POST /game transport is not demonstrated."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "belatra: POST /game transport is not demonstrated."
+      ],
+      "http_count": 69,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 2495.0
+    },
+    {
+      "provider": "belatra",
+      "slug": "pirate-jackpots",
+      "name": "Pirate Jackpots",
+      "url": "https://belatragames.com/es/games/game/pirate-jackpots",
+      "browser_url": "https://belatragames.com/es/games/game/pirate-jackpots",
+      "symbol": "22",
+      "source": "live-catalog",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.9,
+      "protocol_families": [],
+      "blockers": [
+        "belatra: POST /game transport is not demonstrated."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "belatra: POST /game transport is not demonstrated."
+      ],
+      "http_count": 69,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 2553.0
+    },
+    {
+      "provider": "belatra",
+      "slug": "princess-suki",
+      "name": "Princess Suki",
+      "url": "https://belatragames.com/es/games/game/princess-suki",
+      "browser_url": "https://belatragames.com/es/games/game/princess-suki",
+      "symbol": "109",
+      "source": "live-catalog",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.9,
+      "protocol_families": [],
+      "blockers": [
+        "belatra: POST /game transport is not demonstrated."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "belatra: POST /game transport is not demonstrated."
+      ],
+      "http_count": 69,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 2585.4
+    },
+    {
+      "provider": "belatra",
+      "slug": "richy-hog",
+      "name": "Richy Hog",
+      "url": "https://belatragames.com/es/games/game/richy-hog",
+      "browser_url": "https://belatragames.com/es/games/game/richy-hog",
+      "symbol": "117",
+      "source": "live-catalog",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.9,
+      "protocol_families": [],
+      "blockers": [
+        "belatra: POST /game transport is not demonstrated."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "belatra: POST /game transport is not demonstrated."
+      ],
+      "http_count": 69,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 2610.2
+    },
+    {
+      "provider": "belatra",
+      "slug": "rise-of-zeus",
+      "name": "Rise of Zeus",
+      "url": "https://belatragames.com/es/games/game/rise-of-zeus",
+      "browser_url": "https://belatragames.com/es/games/game/rise-of-zeus",
+      "symbol": "144",
+      "source": "live-catalog",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.9,
+      "protocol_families": [],
+      "blockers": [
+        "belatra: POST /game transport is not demonstrated."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "belatra: POST /game transport is not demonstrated."
+      ],
+      "http_count": 69,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 2642.2
+    },
+    {
+      "provider": "belatra",
+      "slug": "rockets",
+      "name": "Rockets",
+      "url": "https://belatragames.com/es/games/game/rockets",
+      "browser_url": "https://belatragames.com/es/games/game/rockets",
+      "symbol": "30",
+      "source": "live-catalog",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.9,
+      "protocol_families": [],
+      "blockers": [
+        "belatra: POST /game transport is not demonstrated."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "belatra: POST /game transport is not demonstrated."
+      ],
+      "http_count": 71,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 2544.3
+    },
+    {
+      "provider": "belatra",
+      "slug": "santa-mummy",
+      "name": "Santa Mummy",
+      "url": "https://belatragames.com/es/games/game/santa-mummy",
+      "browser_url": "https://belatragames.com/es/games/game/santa-mummy",
+      "symbol": "140",
+      "source": "live-catalog",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.9,
+      "protocol_families": [],
+      "blockers": [
+        "belatra: POST /game transport is not demonstrated."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "belatra: POST /game transport is not demonstrated."
+      ],
+      "http_count": 69,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 2511.0
+    },
+    {
+      "provider": "belatra",
+      "slug": "sevens",
+      "name": "Sevens",
+      "url": "https://belatragames.com/es/games/game/sevens",
+      "browser_url": "https://belatragames.com/es/games/game/sevens",
+      "symbol": "69",
+      "source": "live-catalog",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.9,
+      "protocol_families": [],
+      "blockers": [
+        "belatra: POST /game transport is not demonstrated."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "belatra: POST /game transport is not demonstrated."
+      ],
+      "http_count": 78,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 2648.2
+    },
+    {
+      "provider": "belatra",
+      "slug": "slattors-battle-orcs-vs-elves",
+      "name": "Slattors Battle - Orcs vs Elves",
+      "url": "https://belatragames.com/es/games/game/slattors-battle-orcs-vs-elves",
+      "browser_url": "https://belatragames.com/es/games/game/slattors-battle-orcs-vs-elves",
+      "symbol": "306",
+      "source": "live-catalog",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.9,
+      "protocol_families": [],
+      "blockers": [
+        "belatra: POST /game transport is not demonstrated."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "belatra: POST /game transport is not demonstrated."
+      ],
+      "http_count": 71,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 2575.8
+    },
+    {
+      "provider": "belatra",
+      "slug": "slime-bonanza",
+      "name": "Slime Bonanza",
+      "url": "https://belatragames.com/es/games/game/slime-bonanza",
+      "browser_url": "https://belatragames.com/es/games/game/slime-bonanza",
+      "symbol": "318",
+      "source": "live-catalog",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.9,
+      "protocol_families": [],
+      "blockers": [
+        "belatra: POST /game transport is not demonstrated."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "belatra: POST /game transport is not demonstrated."
+      ],
+      "http_count": 71,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 2608.2
+    },
+    {
+      "provider": "belatra",
+      "slug": "stars-blast",
+      "name": "Stars Blast",
+      "url": "https://belatragames.com/es/games/game/stars-blast",
+      "browser_url": "https://belatragames.com/es/games/game/stars-blast",
+      "symbol": "319",
+      "source": "live-catalog",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.9,
+      "protocol_families": [],
+      "blockers": [
+        "belatra: POST /game transport is not demonstrated."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "belatra: POST /game transport is not demonstrated."
+      ],
+      "http_count": 73,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 2516.8
+    },
+    {
+      "provider": "belatra",
+      "slug": "super-sevens",
+      "name": "Super Sevens",
+      "url": "https://belatragames.com/es/games/game/super-sevens",
+      "browser_url": "https://belatragames.com/es/games/game/super-sevens",
+      "symbol": "84",
+      "source": "live-catalog",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.9,
+      "protocol_families": [],
+      "blockers": [
+        "belatra: POST /game transport is not demonstrated."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "belatra: POST /game transport is not demonstrated."
+      ],
+      "http_count": 69,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 2543.1
+    },
+    {
+      "provider": "belatra",
+      "slug": "the-moneymania",
+      "name": "The Moneymania",
+      "url": "https://belatragames.com/es/games/game/the-moneymania",
+      "browser_url": "https://belatragames.com/es/games/game/the-moneymania",
+      "symbol": "60",
+      "source": "live-catalog",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.9,
+      "protocol_families": [],
+      "blockers": [
+        "belatra: POST /game transport is not demonstrated."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "belatra: POST /game transport is not demonstrated."
+      ],
+      "http_count": 69,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 2902.0
+    },
+    {
+      "provider": "belatra",
+      "slug": "the-night-racing",
+      "name": "The Night Racing",
+      "url": "https://belatragames.com/es/games/game/the-night-racing",
+      "browser_url": "https://belatragames.com/es/games/game/the-night-racing",
+      "symbol": "107",
+      "source": "live-catalog",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.9,
+      "protocol_families": [],
+      "blockers": [
+        "belatra: POST /game transport is not demonstrated."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "belatra: POST /game transport is not demonstrated."
+      ],
+      "http_count": 69,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 2709.4
+    },
+    {
+      "provider": "belatra",
+      "slug": "tony-gambler",
+      "name": "Tony Gambler",
+      "url": "https://belatragames.com/es/games/game/tony-gambler",
+      "browser_url": "https://belatragames.com/es/games/game/tony-gambler",
+      "symbol": "149",
+      "source": "live-catalog",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.9,
+      "protocol_families": [],
+      "blockers": [
+        "belatra: POST /game transport is not demonstrated."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "belatra: POST /game transport is not demonstrated."
+      ],
+      "http_count": 69,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 2579.2
+    },
+    {
+      "provider": "belatra",
+      "slug": "tortuga-codex",
+      "name": "Tortuga CodeX",
+      "url": "https://belatragames.com/es/games/game/tortuga-codex",
+      "browser_url": "https://belatragames.com/es/games/game/tortuga-codex",
+      "symbol": "286",
+      "source": "live-catalog",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.9,
+      "protocol_families": [],
+      "blockers": [
+        "belatra: POST /game transport is not demonstrated."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "belatra: POST /game transport is not demonstrated."
+      ],
+      "http_count": 69,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 2599.7
+    },
+    {
+      "provider": "belatra",
+      "slug": "triple-x-hot-pepper",
+      "name": "Triple X Hot Pepper",
+      "url": "https://belatragames.com/es/games/game/triple-x-hot-pepper",
+      "browser_url": "https://belatragames.com/es/games/game/triple-x-hot-pepper",
+      "symbol": "29",
+      "source": "live-catalog",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.9,
+      "protocol_families": [],
+      "blockers": [
+        "belatra: POST /game transport is not demonstrated."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "belatra: POST /game transport is not demonstrated."
+      ],
+      "http_count": 68,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 2549.6
+    },
+    {
+      "provider": "belatra",
+      "slug": "voodoo-coins",
+      "name": "Voodoo Coins",
+      "url": "https://belatragames.com/es/games/game/voodoo-coins",
+      "browser_url": "https://belatragames.com/es/games/game/voodoo-coins",
+      "symbol": "299",
+      "source": "live-catalog",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.9,
+      "protocol_families": [],
+      "blockers": [
+        "belatra: POST /game transport is not demonstrated."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "belatra: POST /game transport is not demonstrated."
+      ],
+      "http_count": 69,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 2575.9
+    },
+    {
+      "provider": "belatra",
+      "slug": "wild-fruit-jam",
+      "name": "Wild Fruit Jam",
+      "url": "https://belatragames.com/es/games/game/wild-fruit-jam",
+      "browser_url": "https://belatragames.com/es/games/game/wild-fruit-jam",
+      "symbol": "54",
+      "source": "live-catalog",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.9,
+      "protocol_families": [],
+      "blockers": [
+        "belatra: POST /game transport is not demonstrated."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "belatra: POST /game transport is not demonstrated."
+      ],
+      "http_count": 68,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 2567.0
+    },
+    {
+      "provider": "belatra",
+      "slug": "winter-thunder",
+      "name": "Winter Thunder",
+      "url": "https://belatragames.com/es/games/game/winter-thunder",
+      "browser_url": "https://belatragames.com/es/games/game/winter-thunder",
+      "symbol": "291",
+      "source": "live-catalog",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.9,
+      "protocol_families": [],
+      "blockers": [
+        "belatra: POST /game transport is not demonstrated."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "belatra: POST /game transport is not demonstrated."
+      ],
+      "http_count": 69,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 2496.7
+    },
+    {
+      "provider": "belatra",
+      "slug": "witch-school",
+      "name": "Witch School",
+      "url": "https://belatragames.com/es/games/game/witch-school",
+      "browser_url": "https://belatragames.com/es/games/game/witch-school",
+      "symbol": "64",
+      "source": "live-catalog",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.9,
+      "protocol_families": [],
+      "blockers": [
+        "belatra: POST /game transport is not demonstrated."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "belatra: POST /game transport is not demonstrated."
+      ],
+      "http_count": 68,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 2912.0
+    },
+    {
+      "provider": "belatra",
+      "slug": "wolf-thunder",
+      "name": "Wolf Thunder",
+      "url": "https://belatragames.com/es/games/game/wolf-thunder",
+      "browser_url": "https://belatragames.com/es/games/game/wolf-thunder",
+      "symbol": "288",
+      "source": "live-catalog",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.9,
+      "protocol_families": [],
+      "blockers": [
+        "belatra: POST /game transport is not demonstrated."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "belatra: POST /game transport is not demonstrated."
+      ],
+      "http_count": 69,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 2604.5
+    },
+    {
+      "provider": "belatra",
+      "slug": "x-mas-buffalo",
+      "name": "X-Mas Buffalo",
+      "url": "https://belatragames.com/es/games/game/x-mas-buffalo",
+      "browser_url": "https://belatragames.com/es/games/game/x-mas-buffalo",
+      "symbol": "65",
+      "source": "live-catalog",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.9,
+      "protocol_families": [],
+      "blockers": [
+        "belatra: POST /game transport is not demonstrated."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "belatra: POST /game transport is not demonstrated."
+      ],
+      "http_count": 69,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 2560.5
+    },
+    {
+      "provider": "belatra",
+      "slug": "x-mas-gifts",
+      "name": "X-Mas Gifts",
+      "url": "https://belatragames.com/es/games/game/x-mas-gifts",
+      "browser_url": "https://belatragames.com/es/games/game/x-mas-gifts",
+      "symbol": "114",
+      "source": "live-catalog",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.9,
+      "protocol_families": [],
+      "blockers": [
+        "belatra: POST /game transport is not demonstrated."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "belatra: POST /game transport is not demonstrated."
+      ],
+      "http_count": 68,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 2617.6
+    },
+    {
+      "provider": "belatra",
+      "slug": "xing-fu-panda",
+      "name": "Xing Fu Panda",
+      "url": "https://belatragames.com/es/games/game/xing-fu-panda",
+      "browser_url": "https://belatragames.com/es/games/game/xing-fu-panda",
+      "symbol": "294",
+      "source": "live-catalog",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.9,
+      "protocol_families": [],
+      "blockers": [
+        "belatra: POST /game transport is not demonstrated."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "belatra: POST /game transport is not demonstrated."
+      ],
+      "http_count": 69,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 2524.2
+    },
+    {
+      "provider": "belatra",
+      "slug": "yo-ho-ho-2048",
+      "name": "Yo-ho-ho 2048",
+      "url": "https://belatragames.com/es/games/game/yo-ho-ho-2048",
+      "browser_url": "https://belatragames.com/es/games/game/yo-ho-ho-2048",
+      "symbol": "320",
+      "source": "live-catalog",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.9,
+      "protocol_families": [],
+      "blockers": [
+        "belatra: POST /game transport is not demonstrated."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "belatra: POST /game transport is not demonstrated."
+      ],
+      "http_count": 71,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 2575.2
+    },
+    {
+      "provider": "belatra",
+      "slug": "zombie-town",
+      "name": "Zombie Town",
+      "url": "https://belatragames.com/es/games/game/zombie-town",
+      "browser_url": "https://belatragames.com/es/games/game/zombie-town",
+      "symbol": "23",
+      "source": "live-catalog",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.9,
+      "protocol_families": [],
+      "blockers": [
+        "belatra: POST /game transport is not demonstrated."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "belatra: POST /game transport is not demonstrated."
+      ],
+      "http_count": 69,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 2690.6
+    }
+  ]
+}

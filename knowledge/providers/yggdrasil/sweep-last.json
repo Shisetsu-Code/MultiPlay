@@ -1,0 +1,3830 @@
+{
+  "schema": "multiplay/passive-provider-sweep/v1",
+  "provider": "yggdrasil",
+  "catalog_count": 159,
+  "shard_index": 0,
+  "shard_count": 1,
+  "processed": 159,
+  "recognized": 159,
+  "status_counts": {
+    "PARTIAL_REQUIRES_REVIEW": 159
+  },
+  "games": [
+    {
+      "provider": "yggdrasil",
+      "slug": "3-gladiators-vs-caesar",
+      "name": "3 Gladiators Vs Caesar",
+      "url": "https://yggdrasilgaming.com/games/3-gladiators-vs-caesar#tryit",
+      "browser_url": "https://yggdrasilgaming.com/games/3-gladiators-vs-caesar#tryit#tryit",
+      "symbol": "",
+      "source": "live-catalog",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.9,
+      "protocol_families": [],
+      "blockers": [
+        "yggdrasil: no demonstrated fn=play command request."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "yggdrasil: no demonstrated fn=play command request."
+      ],
+      "http_count": 6,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 9329.9
+    },
+    {
+      "provider": "yggdrasil",
+      "slug": "3-piggies-of-bank",
+      "name": "3 Piggies Of Bank",
+      "url": "https://yggdrasilgaming.com/games/3-piggies-of-bank#tryit",
+      "browser_url": "https://yggdrasilgaming.com/games/3-piggies-of-bank#tryit#tryit",
+      "symbol": "",
+      "source": "live-catalog",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.9,
+      "protocol_families": [],
+      "blockers": [
+        "yggdrasil: no demonstrated fn=play command request."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "yggdrasil: no demonstrated fn=play command request."
+      ],
+      "http_count": 37,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 9945.8
+    },
+    {
+      "provider": "yggdrasil",
+      "slug": "4-foxx-crew-wildenergy-multimax",
+      "name": "4 Foxx Crew Wildenergy Multimax",
+      "url": "https://yggdrasilgaming.com/games/4-foxx-crew-wildenergy-multimax#tryit",
+      "browser_url": "https://yggdrasilgaming.com/games/4-foxx-crew-wildenergy-multimax#tryit#tryit",
+      "symbol": "",
+      "source": "live-catalog",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.9,
+      "protocol_families": [],
+      "blockers": [
+        "yggdrasil: no demonstrated fn=play command request."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "yggdrasil: no demonstrated fn=play command request."
+      ],
+      "http_count": 42,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 9129.0
+    },
+    {
+      "provider": "yggdrasil",
+      "slug": "4-wolves-of-fortune-doublemax",
+      "name": "4 Wolves Of Fortune Doublemax",
+      "url": "https://yggdrasilgaming.com/games/4-wolves-of-fortune-doublemax#tryit",
+      "browser_url": "https://yggdrasilgaming.com/games/4-wolves-of-fortune-doublemax#tryit#tryit",
+      "symbol": "",
+      "source": "live-catalog",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.9,
+      "protocol_families": [],
+      "blockers": [
+        "yggdrasil: no demonstrated fn=play command request."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "yggdrasil: no demonstrated fn=play command request."
+      ],
+      "http_count": 27,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 9222.8
+    },
+    {
+      "provider": "yggdrasil",
+      "slug": "777-volt-gigablox",
+      "name": "777 Volt Gigablox",
+      "url": "https://yggdrasilgaming.com/games/777-volt-gigablox#tryit",
+      "browser_url": "https://yggdrasilgaming.com/games/777-volt-gigablox#tryit#tryit",
+      "symbol": "",
+      "source": "live-catalog",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.9,
+      "protocol_families": [],
+      "blockers": [
+        "yggdrasil: no demonstrated fn=play command request."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "yggdrasil: no demonstrated fn=play command request."
+      ],
+      "http_count": 42,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 9175.7
+    },
+    {
+      "provider": "yggdrasil",
+      "slug": "age-asgard",
+      "name": "Age Asgard",
+      "url": "https://yggdrasilgaming.com/games/age-asgard#tryit",
+      "browser_url": "https://yggdrasilgaming.com/games/age-asgard#tryit#tryit",
+      "symbol": "",
+      "source": "live-catalog",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.9,
+      "protocol_families": [],
+      "blockers": [
+        "yggdrasil: no demonstrated fn=play command request."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "yggdrasil: no demonstrated fn=play command request."
+      ],
+      "http_count": 6,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 9070.9
+    },
+    {
+      "provider": "yggdrasil",
+      "slug": "alchymedes",
+      "name": "Alchymedes",
+      "url": "https://yggdrasilgaming.com/games/alchymedes#tryit",
+      "browser_url": "https://yggdrasilgaming.com/games/alchymedes#tryit#tryit",
+      "symbol": "",
+      "source": "live-catalog",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.9,
+      "protocol_families": [],
+      "blockers": [
+        "yggdrasil: no demonstrated fn=play command request."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "yggdrasil: no demonstrated fn=play command request."
+      ],
+      "http_count": 6,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 9062.2
+    },
+    {
+      "provider": "yggdrasil",
+      "slug": "aldos-journey",
+      "name": "Aldos Journey",
+      "url": "https://yggdrasilgaming.com/games/aldos-journey#tryit",
+      "browser_url": "https://yggdrasilgaming.com/games/aldos-journey#tryit#tryit",
+      "symbol": "",
+      "source": "live-catalog",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.9,
+      "protocol_families": [],
+      "blockers": [
+        "yggdrasil: no demonstrated fn=play command request."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "yggdrasil: no demonstrated fn=play command request."
+      ],
+      "http_count": 27,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 9126.0
+    },
+    {
+      "provider": "yggdrasil",
+      "slug": "aphrodite-goes-wild-rushingwilds",
+      "name": "Aphrodite Goes Wild Rushingwilds",
+      "url": "https://yggdrasilgaming.com/games/aphrodite-goes-wild-rushingwilds#tryit",
+      "browser_url": "https://yggdrasilgaming.com/games/aphrodite-goes-wild-rushingwilds#tryit#tryit",
+      "symbol": "",
+      "source": "live-catalog",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.9,
+      "protocol_families": [],
+      "blockers": [
+        "yggdrasil: no demonstrated fn=play command request."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "yggdrasil: no demonstrated fn=play command request."
+      ],
+      "http_count": 6,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 9064.2
+    },
+    {
+      "provider": "yggdrasil",
+      "slug": "arthurs-fortune",
+      "name": "Arthurs Fortune",
+      "url": "https://yggdrasilgaming.com/games/arthurs-fortune#tryit",
+      "browser_url": "https://yggdrasilgaming.com/games/arthurs-fortune#tryit#tryit",
+      "symbol": "",
+      "source": "live-catalog",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.9,
+      "protocol_families": [],
+      "blockers": [
+        "yggdrasil: no demonstrated fn=play command request."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "yggdrasil: no demonstrated fn=play command request."
+      ],
+      "http_count": 32,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 9166.6
+    },
+    {
+      "provider": "yggdrasil",
+      "slug": "atlantean-gigarise",
+      "name": "Atlantean Gigarise",
+      "url": "https://yggdrasilgaming.com/games/atlantean-gigarise#tryit",
+      "browser_url": "https://yggdrasilgaming.com/games/atlantean-gigarise#tryit#tryit",
+      "symbol": "",
+      "source": "live-catalog",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.9,
+      "protocol_families": [],
+      "blockers": [
+        "yggdrasil: no demonstrated fn=play command request."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "yggdrasil: no demonstrated fn=play command request."
+      ],
+      "http_count": 42,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 9325.6
+    },
+    {
+      "provider": "yggdrasil",
+      "slug": "avatars",
+      "name": "Avatars",
+      "url": "https://yggdrasilgaming.com/games/avatars#tryit",
+      "browser_url": "https://yggdrasilgaming.com/games/avatars#tryit#tryit",
+      "symbol": "",
+      "source": "live-catalog",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.9,
+      "protocol_families": [],
+      "blockers": [
+        "yggdrasil: no demonstrated fn=play command request."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "yggdrasil: no demonstrated fn=play command request."
+      ],
+      "http_count": 27,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 9131.2
+    },
+    {
+      "provider": "yggdrasil",
+      "slug": "badger-miners",
+      "name": "Badger Miners",
+      "url": "https://yggdrasilgaming.com/games/badger-miners#tryit",
+      "browser_url": "https://yggdrasilgaming.com/games/badger-miners#tryit#tryit",
+      "symbol": "",
+      "source": "live-catalog",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.9,
+      "protocol_families": [],
+      "blockers": [
+        "yggdrasil: no demonstrated fn=play command request."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "yggdrasil: no demonstrated fn=play command request."
+      ],
+      "http_count": 42,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 9169.5
+    },
+    {
+      "provider": "yggdrasil",
+      "slug": "baron-samedi",
+      "name": "Baron Samedi",
+      "url": "https://yggdrasilgaming.com/games/baron-samedi#tryit",
+      "browser_url": "https://yggdrasilgaming.com/games/baron-samedi#tryit#tryit",
+      "symbol": "",
+      "source": "live-catalog",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.9,
+      "protocol_families": [],
+      "blockers": [
+        "yggdrasil: no demonstrated fn=play command request."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "yggdrasil: no demonstrated fn=play command request."
+      ],
+      "http_count": 6,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 8965.3
+    },
+    {
+      "provider": "yggdrasil",
+      "slug": "beauty-and-the-beast",
+      "name": "Beauty And The Beast",
+      "url": "https://yggdrasilgaming.com/games/beauty-and-the-beast#tryit",
+      "browser_url": "https://yggdrasilgaming.com/games/beauty-and-the-beast#tryit#tryit",
+      "symbol": "",
+      "source": "live-catalog",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.9,
+      "protocol_families": [],
+      "blockers": [
+        "yggdrasil: no demonstrated fn=play command request."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "yggdrasil: no demonstrated fn=play command request."
+      ],
+      "http_count": 6,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 9043.9
+    },
+    {
+      "provider": "yggdrasil",
+      "slug": "bicicleta",
+      "name": "Bicicleta",
+      "url": "https://yggdrasilgaming.com/games/bicicleta#tryit",
+      "browser_url": "https://yggdrasilgaming.com/games/bicicleta#tryit#tryit",
+      "symbol": "",
+      "source": "live-catalog",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.9,
+      "protocol_families": [],
+      "blockers": [
+        "yggdrasil: no demonstrated fn=play command request."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "yggdrasil: no demonstrated fn=play command request."
+      ],
+      "http_count": 6,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 9042.3
+    },
+    {
+      "provider": "yggdrasil",
+      "slug": "big-blox",
+      "name": "Big Blox",
+      "url": "https://yggdrasilgaming.com/games/big-blox#tryit",
+      "browser_url": "https://yggdrasilgaming.com/games/big-blox#tryit#tryit",
+      "symbol": "",
+      "source": "live-catalog",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.9,
+      "protocol_families": [],
+      "blockers": [
+        "yggdrasil: no demonstrated fn=play command request."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "yggdrasil: no demonstrated fn=play command request."
+      ],
+      "http_count": 6,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 9014.3
+    },
+    {
+      "provider": "yggdrasil",
+      "slug": "blood-moon-wilds",
+      "name": "Blood Moon Wilds",
+      "url": "https://yggdrasilgaming.com/games/blood-moon-wilds#tryit",
+      "browser_url": "https://yggdrasilgaming.com/games/blood-moon-wilds#tryit#tryit",
+      "symbol": "",
+      "source": "live-catalog",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.9,
+      "protocol_families": [],
+      "blockers": [
+        "yggdrasil: no demonstrated fn=play command request."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "yggdrasil: no demonstrated fn=play command request."
+      ],
+      "http_count": 27,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 9354.7
+    },
+    {
+      "provider": "yggdrasil",
+      "slug": "bloody-pesos",
+      "name": "Bloody Pesos",
+      "url": "https://yggdrasilgaming.com/games/bloody-pesos#tryit",
+      "browser_url": "https://yggdrasilgaming.com/games/bloody-pesos#tryit#tryit",
+      "symbol": "",
+      "source": "live-catalog",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.9,
+      "protocol_families": [],
+      "blockers": [
+        "yggdrasil: no demonstrated fn=play command request."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "yggdrasil: no demonstrated fn=play command request."
+      ],
+      "http_count": 6,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 9811.5
+    },
+    {
+      "provider": "yggdrasil",
+      "slug": "bob-marlin-goes-deep",
+      "name": "Bob Marlin Goes Deep",
+      "url": "https://yggdrasilgaming.com/games/bob-marlin-goes-deep#tryit",
+      "browser_url": "https://yggdrasilgaming.com/games/bob-marlin-goes-deep#tryit#tryit",
+      "symbol": "",
+      "source": "live-catalog",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.9,
+      "protocol_families": [],
+      "blockers": [
+        "yggdrasil: no demonstrated fn=play command request."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "yggdrasil: no demonstrated fn=play command request."
+      ],
+      "http_count": 42,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 9175.5
+    },
+    {
+      "provider": "yggdrasil",
+      "slug": "bob-marlin-goes-splashing-wild-fight-rushingwilds",
+      "name": "Bob Marlin Goes Splashing Wild Fight Rushingwilds",
+      "url": "https://yggdrasilgaming.com/games/bob-marlin-goes-splashing-wild-fight-rushingwilds#tryit",
+      "browser_url": "https://yggdrasilgaming.com/games/bob-marlin-goes-splashing-wild-fight-rushingwilds#tryit#tryit",
+      "symbol": "",
+      "source": "live-catalog",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.9,
+      "protocol_families": [],
+      "blockers": [
+        "yggdrasil: no demonstrated fn=play command request."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "yggdrasil: no demonstrated fn=play command request."
+      ],
+      "http_count": 43,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 9309.0
+    },
+    {
+      "provider": "yggdrasil",
+      "slug": "boilin-pots",
+      "name": "Boilin Pots",
+      "url": "https://yggdrasilgaming.com/games/boilin-pots#tryit",
+      "browser_url": "https://yggdrasilgaming.com/games/boilin-pots#tryit#tryit",
+      "symbol": "",
+      "source": "live-catalog",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.9,
+      "protocol_families": [],
+      "blockers": [
+        "yggdrasil: no demonstrated fn=play command request."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "yggdrasil: no demonstrated fn=play command request."
+      ],
+      "http_count": 42,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 9315.9
+    },
+    {
+      "provider": "yggdrasil",
+      "slug": "brazil-bomba",
+      "name": "Brazil Bomba",
+      "url": "https://yggdrasilgaming.com/games/brazil-bomba#tryit",
+      "browser_url": "https://yggdrasilgaming.com/games/brazil-bomba#tryit#tryit",
+      "symbol": "",
+      "source": "live-catalog",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.9,
+      "protocol_families": [],
+      "blockers": [
+        "yggdrasil: no demonstrated fn=play command request."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "yggdrasil: no demonstrated fn=play command request."
+      ],
+      "http_count": 42,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 9527.0
+    },
+    {
+      "provider": "yggdrasil",
+      "slug": "buffalo-freedom-doublemax",
+      "name": "Buffalo Freedom Doublemax",
+      "url": "https://yggdrasilgaming.com/games/buffalo-freedom-doublemax#tryit",
+      "browser_url": "https://yggdrasilgaming.com/games/buffalo-freedom-doublemax#tryit#tryit",
+      "symbol": "",
+      "source": "live-catalog",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.9,
+      "protocol_families": [],
+      "blockers": [
+        "yggdrasil: no demonstrated fn=play command request."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "yggdrasil: no demonstrated fn=play command request."
+      ],
+      "http_count": 44,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 9200.1
+    },
+    {
+      "provider": "yggdrasil",
+      "slug": "calavera-crush",
+      "name": "Calavera Crush",
+      "url": "https://yggdrasilgaming.com/games/calavera-crush#tryit",
+      "browser_url": "https://yggdrasilgaming.com/games/calavera-crush#tryit#tryit",
+      "symbol": "",
+      "source": "live-catalog",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.9,
+      "protocol_families": [],
+      "blockers": [
+        "yggdrasil: no demonstrated fn=play command request."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "yggdrasil: no demonstrated fn=play command request."
+      ],
+      "http_count": 43,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 9188.9
+    },
+    {
+      "provider": "yggdrasil",
+      "slug": "candyfinity",
+      "name": "Candyfinity",
+      "url": "https://yggdrasilgaming.com/games/candyfinity#tryit",
+      "browser_url": "https://yggdrasilgaming.com/games/candyfinity#tryit#tryit",
+      "symbol": "",
+      "source": "live-catalog",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.9,
+      "protocol_families": [],
+      "blockers": [
+        "yggdrasil: no demonstrated fn=play command request."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "yggdrasil: no demonstrated fn=play command request."
+      ],
+      "http_count": 27,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 9172.7
+    },
+    {
+      "provider": "yggdrasil",
+      "slug": "cannonade",
+      "name": "Cannonade",
+      "url": "https://yggdrasilgaming.com/games/cannonade#tryit",
+      "browser_url": "https://yggdrasilgaming.com/games/cannonade#tryit#tryit",
+      "symbol": "",
+      "source": "live-catalog",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.9,
+      "protocol_families": [],
+      "blockers": [
+        "yggdrasil: no demonstrated fn=play command request."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "yggdrasil: no demonstrated fn=play command request."
+      ],
+      "http_count": 48,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 9249.2
+    },
+    {
+      "provider": "yggdrasil",
+      "slug": "carol-of-the-elves",
+      "name": "Carol Of The Elves",
+      "url": "https://yggdrasilgaming.com/games/carol-of-the-elves#tryit",
+      "browser_url": "https://yggdrasilgaming.com/games/carol-of-the-elves#tryit#tryit",
+      "symbol": "",
+      "source": "live-catalog",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.9,
+      "protocol_families": [],
+      "blockers": [
+        "yggdrasil: no demonstrated fn=play command request."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "yggdrasil: no demonstrated fn=play command request."
+      ],
+      "http_count": 6,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 9074.2
+    },
+    {
+      "provider": "yggdrasil",
+      "slug": "cazino_cosmos",
+      "name": "Cazino Cosmos",
+      "url": "https://yggdrasilgaming.com/games/cazino_cosmos#tryit",
+      "browser_url": "https://yggdrasilgaming.com/games/cazino_cosmos#tryit#tryit",
+      "symbol": "",
+      "source": "live-catalog",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.9,
+      "protocol_families": [],
+      "blockers": [
+        "yggdrasil: no demonstrated fn=play command request."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "yggdrasil: no demonstrated fn=play command request."
+      ],
+      "http_count": 6,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 9095.2
+    },
+    {
+      "provider": "yggdrasil",
+      "slug": "cazino-zeppelin",
+      "name": "Cazino Zeppelin",
+      "url": "https://yggdrasilgaming.com/games/cazino-zeppelin#tryit",
+      "browser_url": "https://yggdrasilgaming.com/games/cazino-zeppelin#tryit#tryit",
+      "symbol": "",
+      "source": "live-catalog",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.9,
+      "protocol_families": [],
+      "blockers": [
+        "yggdrasil: no demonstrated fn=play command request."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "yggdrasil: no demonstrated fn=play command request."
+      ],
+      "http_count": 6,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 9045.3
+    },
+    {
+      "provider": "yggdrasil",
+      "slug": "cazino-zeppelin-reloaded",
+      "name": "Cazino Zeppelin Reloaded",
+      "url": "https://yggdrasilgaming.com/games/cazino-zeppelin-reloaded#tryit",
+      "browser_url": "https://yggdrasilgaming.com/games/cazino-zeppelin-reloaded#tryit#tryit",
+      "symbol": "",
+      "source": "live-catalog",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.9,
+      "protocol_families": [],
+      "blockers": [
+        "yggdrasil: no demonstrated fn=play command request."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "yggdrasil: no demonstrated fn=play command request."
+      ],
+      "http_count": 39,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 9163.0
+    },
+    {
+      "provider": "yggdrasil",
+      "slug": "champion-of-the-underworld",
+      "name": "Champion Of The Underworld",
+      "url": "https://yggdrasilgaming.com/games/champion-of-the-underworld#tryit",
+      "browser_url": "https://yggdrasilgaming.com/games/champion-of-the-underworld#tryit#tryit",
+      "symbol": "",
+      "source": "live-catalog",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.9,
+      "protocol_families": [],
+      "blockers": [
+        "yggdrasil: no demonstrated fn=play command request."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "yggdrasil: no demonstrated fn=play command request."
+      ],
+      "http_count": 6,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 9125.1
+    },
+    {
+      "provider": "yggdrasil",
+      "slug": "champions_of_rome",
+      "name": "Champions Of Rome",
+      "url": "https://yggdrasilgaming.com/games/champions_of_rome#tryit",
+      "browser_url": "https://yggdrasilgaming.com/games/champions_of_rome#tryit#tryit",
+      "symbol": "",
+      "source": "live-catalog",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.9,
+      "protocol_families": [],
+      "blockers": [
+        "yggdrasil: no demonstrated fn=play command request."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "yggdrasil: no demonstrated fn=play command request."
+      ],
+      "http_count": 6,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 11701.2
+    },
+    {
+      "provider": "yggdrasil",
+      "slug": "chibeasties",
+      "name": "Chibeasties",
+      "url": "https://yggdrasilgaming.com/games/chibeasties#tryit",
+      "browser_url": "https://yggdrasilgaming.com/games/chibeasties#tryit#tryit",
+      "symbol": "",
+      "source": "live-catalog",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.9,
+      "protocol_families": [],
+      "blockers": [
+        "yggdrasil: no demonstrated fn=play command request."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "yggdrasil: no demonstrated fn=play command request."
+      ],
+      "http_count": 6,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 15237.6
+    },
+    {
+      "provider": "yggdrasil",
+      "slug": "christmas-plaza-doublemax",
+      "name": "Christmas Plaza Doublemax",
+      "url": "https://yggdrasilgaming.com/games/christmas-plaza-doublemax#tryit",
+      "browser_url": "https://yggdrasilgaming.com/games/christmas-plaza-doublemax#tryit#tryit",
+      "symbol": "",
+      "source": "live-catalog",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.9,
+      "protocol_families": [],
+      "blockers": [
+        "yggdrasil: no demonstrated fn=play command request."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "yggdrasil: no demonstrated fn=play command request."
+      ],
+      "http_count": 6,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 15204.4
+    },
+    {
+      "provider": "yggdrasil",
+      "slug": "coo-coo-cashoo-lightninglines",
+      "name": "Coo Coo Cashoo Lightninglines",
+      "url": "https://yggdrasilgaming.com/games/coo-coo-cashoo-lightninglines#tryit",
+      "browser_url": "https://yggdrasilgaming.com/games/coo-coo-cashoo-lightninglines#tryit#tryit",
+      "symbol": "",
+      "source": "live-catalog",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.9,
+      "protocol_families": [],
+      "blockers": [
+        "yggdrasil: no demonstrated fn=play command request."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "yggdrasil: no demonstrated fn=play command request."
+      ],
+      "http_count": 6,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 14897.5
+    },
+    {
+      "provider": "yggdrasil",
+      "slug": "dark-joker-rizes",
+      "name": "Dark Joker Rizes",
+      "url": "https://yggdrasilgaming.com/games/dark-joker-rizes#tryit",
+      "browser_url": "https://yggdrasilgaming.com/games/dark-joker-rizes#tryit#tryit",
+      "symbol": "",
+      "source": "live-catalog",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.9,
+      "protocol_families": [],
+      "blockers": [
+        "yggdrasil: no demonstrated fn=play command request."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "yggdrasil: no demonstrated fn=play command request."
+      ],
+      "http_count": 6,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 15780.8
+    },
+    {
+      "provider": "yggdrasil",
+      "slug": "dark-vortex",
+      "name": "Dark Vortex",
+      "url": "https://yggdrasilgaming.com/games/dark-vortex#tryit",
+      "browser_url": "https://yggdrasilgaming.com/games/dark-vortex#tryit#tryit",
+      "symbol": "",
+      "source": "live-catalog",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.9,
+      "protocol_families": [],
+      "blockers": [
+        "yggdrasil: no demonstrated fn=play command request."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "yggdrasil: no demonstrated fn=play command request."
+      ],
+      "http_count": 6,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 20063.6
+    },
+    {
+      "provider": "yggdrasil",
+      "slug": "defenders-of-mystica",
+      "name": "Defenders Of Mystica",
+      "url": "https://yggdrasilgaming.com/games/defenders-of-mystica#tryit",
+      "browser_url": "https://yggdrasilgaming.com/games/defenders-of-mystica#tryit#tryit",
+      "symbol": "",
+      "source": "live-catalog",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.9,
+      "protocol_families": [],
+      "blockers": [
+        "yggdrasil: no demonstrated fn=play command request."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "yggdrasil: no demonstrated fn=play command request."
+      ],
+      "http_count": 1,
+      "websocket_count": 0,
+      "error": "TimeoutError: Page.goto: Timeout 25000ms exceeded.\nCall log:\n  - navigating to \"https://yggdrasilgaming.com/games/defenders-of-mystica#tryit#tryit\", waiting until \"domcontentloaded\"\n",
+      "elapsed_ms": 25043.7
+    },
+    {
+      "provider": "yggdrasil",
+      "slug": "devour-the-weak",
+      "name": "Devour The Weak",
+      "url": "https://yggdrasilgaming.com/games/devour-the-weak#tryit",
+      "browser_url": "https://yggdrasilgaming.com/games/devour-the-weak#tryit#tryit",
+      "symbol": "",
+      "source": "live-catalog",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.9,
+      "protocol_families": [],
+      "blockers": [
+        "yggdrasil: no demonstrated fn=play command request."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "yggdrasil: no demonstrated fn=play command request."
+      ],
+      "http_count": 1,
+      "websocket_count": 0,
+      "error": "TimeoutError: Page.goto: Timeout 25000ms exceeded.\nCall log:\n  - navigating to \"https://yggdrasilgaming.com/games/devour-the-weak#tryit#tryit\", waiting until \"domcontentloaded\"\n",
+      "elapsed_ms": 25041.2
+    },
+    {
+      "provider": "yggdrasil",
+      "slug": "dick-the-farmer",
+      "name": "Dick The Farmer",
+      "url": "https://yggdrasilgaming.com/games/dick-the-farmer#tryit",
+      "browser_url": "https://yggdrasilgaming.com/games/dick-the-farmer#tryit#tryit",
+      "symbol": "",
+      "source": "live-catalog",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.9,
+      "protocol_families": [],
+      "blockers": [
+        "yggdrasil: no demonstrated fn=play command request."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "yggdrasil: no demonstrated fn=play command request."
+      ],
+      "http_count": 1,
+      "websocket_count": 0,
+      "error": "TimeoutError: Page.goto: Timeout 25000ms exceeded.\nCall log:\n  - navigating to \"https://yggdrasilgaming.com/games/dick-the-farmer#tryit#tryit\", waiting until \"domcontentloaded\"\n",
+      "elapsed_ms": 25045.8
+    },
+    {
+      "provider": "yggdrasil",
+      "slug": "double-dragons",
+      "name": "Double Dragons",
+      "url": "https://yggdrasilgaming.com/games/double-dragons#tryit",
+      "browser_url": "https://yggdrasilgaming.com/games/double-dragons#tryit#tryit",
+      "symbol": "",
+      "source": "live-catalog",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.9,
+      "protocol_families": [],
+      "blockers": [
+        "yggdrasil: no demonstrated fn=play command request."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "yggdrasil: no demonstrated fn=play command request."
+      ],
+      "http_count": 1,
+      "websocket_count": 0,
+      "error": "TimeoutError: Page.goto: Timeout 25000ms exceeded.\nCall log:\n  - navigating to \"https://yggdrasilgaming.com/games/double-dragons#tryit#tryit\", waiting until \"domcontentloaded\"\n",
+      "elapsed_ms": 25065.3
+    },
+    {
+      "provider": "yggdrasil",
+      "slug": "dr_fortuno",
+      "name": "Dr Fortuno",
+      "url": "https://yggdrasilgaming.com/games/dr_fortuno#tryit",
+      "browser_url": "https://yggdrasilgaming.com/games/dr_fortuno#tryit#tryit",
+      "symbol": "",
+      "source": "live-catalog",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.9,
+      "protocol_families": [],
+      "blockers": [
+        "yggdrasil: no demonstrated fn=play command request."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "yggdrasil: no demonstrated fn=play command request."
+      ],
+      "http_count": 1,
+      "websocket_count": 0,
+      "error": "TimeoutError: Page.goto: Timeout 25000ms exceeded.\nCall log:\n  - navigating to \"https://yggdrasilgaming.com/games/dr_fortuno#tryit#tryit\", waiting until \"domcontentloaded\"\n",
+      "elapsed_ms": 25064.3
+    },
+    {
+      "provider": "yggdrasil",
+      "slug": "dwarf_mine",
+      "name": "Dwarf Mine",
+      "url": "https://yggdrasilgaming.com/games/dwarf_mine#tryit",
+      "browser_url": "https://yggdrasilgaming.com/games/dwarf_mine#tryit#tryit",
+      "symbol": "",
+      "source": "live-catalog",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.9,
+      "protocol_families": [],
+      "blockers": [
+        "yggdrasil: no demonstrated fn=play command request."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "yggdrasil: no demonstrated fn=play command request."
+      ],
+      "http_count": 1,
+      "websocket_count": 0,
+      "error": "TimeoutError: Page.goto: Timeout 25000ms exceeded.\nCall log:\n  - navigating to \"https://yggdrasilgaming.com/games/dwarf_mine#tryit#tryit\", waiting until \"domcontentloaded\"\n",
+      "elapsed_ms": 25068.5
+    },
+    {
+      "provider": "yggdrasil",
+      "slug": "e-force",
+      "name": "E Force",
+      "url": "https://yggdrasilgaming.com/games/e-force#tryit",
+      "browser_url": "https://yggdrasilgaming.com/games/e-force#tryit#tryit",
+      "symbol": "",
+      "source": "live-catalog",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.9,
+      "protocol_families": [],
+      "blockers": [
+        "yggdrasil: no demonstrated fn=play command request."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "yggdrasil: no demonstrated fn=play command request."
+      ],
+      "http_count": 1,
+      "websocket_count": 0,
+      "error": "TimeoutError: Page.goto: Timeout 25000ms exceeded.\nCall log:\n  - navigating to \"https://yggdrasilgaming.com/games/e-force#tryit#tryit\", waiting until \"domcontentloaded\"\n",
+      "elapsed_ms": 25064.8
+    },
+    {
+      "provider": "yggdrasil",
+      "slug": "easter-island",
+      "name": "Easter Island",
+      "url": "https://yggdrasilgaming.com/games/easter-island#tryit",
+      "browser_url": "https://yggdrasilgaming.com/games/easter-island#tryit#tryit",
+      "symbol": "",
+      "source": "live-catalog",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.9,
+      "protocol_families": [],
+      "blockers": [
+        "yggdrasil: no demonstrated fn=play command request."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "yggdrasil: no demonstrated fn=play command request."
+      ],
+      "http_count": 1,
+      "websocket_count": 0,
+      "error": "TimeoutError: Page.goto: Timeout 25000ms exceeded.\nCall log:\n  - navigating to \"https://yggdrasilgaming.com/games/easter-island#tryit#tryit\", waiting until \"domcontentloaded\"\n",
+      "elapsed_ms": 25065.9
+    },
+    {
+      "provider": "yggdrasil",
+      "slug": "easter-island-2",
+      "name": "Easter Island 2",
+      "url": "https://yggdrasilgaming.com/games/easter-island-2#tryit",
+      "browser_url": "https://yggdrasilgaming.com/games/easter-island-2#tryit#tryit",
+      "symbol": "",
+      "source": "live-catalog",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.9,
+      "protocol_families": [],
+      "blockers": [
+        "yggdrasil: no demonstrated fn=play command request."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "yggdrasil: no demonstrated fn=play command request."
+      ],
+      "http_count": 1,
+      "websocket_count": 0,
+      "error": "TimeoutError: Page.goto: Timeout 25000ms exceeded.\nCall log:\n  - navigating to \"https://yggdrasilgaming.com/games/easter-island-2#tryit#tryit\", waiting until \"domcontentloaded\"\n",
+      "elapsed_ms": 25063.3
+    },
+    {
+      "provider": "yggdrasil",
+      "slug": "elysian-jackpots",
+      "name": "Elysian Jackpots",
+      "url": "https://yggdrasilgaming.com/games/elysian-jackpots#tryit",
+      "browser_url": "https://yggdrasilgaming.com/games/elysian-jackpots#tryit#tryit",
+      "symbol": "",
+      "source": "live-catalog",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.9,
+      "protocol_families": [],
+      "blockers": [
+        "yggdrasil: no demonstrated fn=play command request."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "yggdrasil: no demonstrated fn=play command request."
+      ],
+      "http_count": 1,
+      "websocket_count": 0,
+      "error": "TimeoutError: Page.goto: Timeout 25000ms exceeded.\nCall log:\n  - navigating to \"https://yggdrasilgaming.com/games/elysian-jackpots#tryit#tryit\", waiting until \"domcontentloaded\"\n",
+      "elapsed_ms": 25046.5
+    },
+    {
+      "provider": "yggdrasil",
+      "slug": "empire-fortune",
+      "name": "Empire Fortune",
+      "url": "https://yggdrasilgaming.com/games/empire-fortune#tryit",
+      "browser_url": "https://yggdrasilgaming.com/games/empire-fortune#tryit#tryit",
+      "symbol": "",
+      "source": "live-catalog",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.9,
+      "protocol_families": [],
+      "blockers": [
+        "yggdrasil: no demonstrated fn=play command request."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "yggdrasil: no demonstrated fn=play command request."
+      ],
+      "http_count": 1,
+      "websocket_count": 0,
+      "error": "TimeoutError: Page.goto: Timeout 25000ms exceeded.\nCall log:\n  - navigating to \"https://yggdrasilgaming.com/games/empire-fortune#tryit#tryit\", waiting until \"domcontentloaded\"\n",
+      "elapsed_ms": 25066.3
+    },
+    {
+      "provider": "yggdrasil",
+      "slug": "enchanted-waters",
+      "name": "Enchanted Waters",
+      "url": "https://yggdrasilgaming.com/games/enchanted-waters#tryit",
+      "browser_url": "https://yggdrasilgaming.com/games/enchanted-waters#tryit#tryit",
+      "symbol": "",
+      "source": "live-catalog",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.9,
+      "protocol_families": [],
+      "blockers": [
+        "yggdrasil: no demonstrated fn=play command request."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "yggdrasil: no demonstrated fn=play command request."
+      ],
+      "http_count": 1,
+      "websocket_count": 0,
+      "error": "TimeoutError: Page.goto: Timeout 25000ms exceeded.\nCall log:\n  - navigating to \"https://yggdrasilgaming.com/games/enchanted-waters#tryit#tryit\", waiting until \"domcontentloaded\"\n",
+      "elapsed_ms": 25061.5
+    },
+    {
+      "provider": "yggdrasil",
+      "slug": "fatzs-diner-gigablox",
+      "name": "Fatzs Diner Gigablox",
+      "url": "https://yggdrasilgaming.com/games/fatzs-diner-gigablox#tryit",
+      "browser_url": "https://yggdrasilgaming.com/games/fatzs-diner-gigablox#tryit#tryit",
+      "symbol": "",
+      "source": "live-catalog",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.9,
+      "protocol_families": [],
+      "blockers": [
+        "yggdrasil: no demonstrated fn=play command request."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "yggdrasil: no demonstrated fn=play command request."
+      ],
+      "http_count": 1,
+      "websocket_count": 0,
+      "error": "TimeoutError: Page.goto: Timeout 25000ms exceeded.\nCall log:\n  - navigating to \"https://yggdrasilgaming.com/games/fatzs-diner-gigablox#tryit#tryit\", waiting until \"domcontentloaded\"\n",
+      "elapsed_ms": 25063.0
+    },
+    {
+      "provider": "yggdrasil",
+      "slug": "firekick-multimax",
+      "name": "Firekick Multimax",
+      "url": "https://yggdrasilgaming.com/games/firekick-multimax#tryit",
+      "browser_url": "https://yggdrasilgaming.com/games/firekick-multimax#tryit#tryit",
+      "symbol": "",
+      "source": "live-catalog",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.9,
+      "protocol_families": [],
+      "blockers": [
+        "yggdrasil: no demonstrated fn=play command request."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "yggdrasil: no demonstrated fn=play command request."
+      ],
+      "http_count": 1,
+      "websocket_count": 0,
+      "error": "TimeoutError: Page.goto: Timeout 25000ms exceeded.\nCall log:\n  - navigating to \"https://yggdrasilgaming.com/games/firekick-multimax#tryit#tryit\", waiting until \"domcontentloaded\"\n",
+      "elapsed_ms": 25060.0
+    },
+    {
+      "provider": "yggdrasil",
+      "slug": "florageddon",
+      "name": "Florageddon",
+      "url": "https://yggdrasilgaming.com/games/florageddon#tryit",
+      "browser_url": "https://yggdrasilgaming.com/games/florageddon#tryit#tryit",
+      "symbol": "",
+      "source": "live-catalog",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.9,
+      "protocol_families": [],
+      "blockers": [
+        "yggdrasil: no demonstrated fn=play command request."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "yggdrasil: no demonstrated fn=play command request."
+      ],
+      "http_count": 1,
+      "websocket_count": 0,
+      "error": "TimeoutError: Page.goto: Timeout 25000ms exceeded.\nCall log:\n  - navigating to \"https://yggdrasilgaming.com/games/florageddon#tryit#tryit\", waiting until \"domcontentloaded\"\n",
+      "elapsed_ms": 25055.9
+    },
+    {
+      "provider": "yggdrasil",
+      "slug": "football-glory",
+      "name": "Football Glory",
+      "url": "https://yggdrasilgaming.com/games/football-glory#tryit",
+      "browser_url": "https://yggdrasilgaming.com/games/football-glory#tryit#tryit",
+      "symbol": "",
+      "source": "live-catalog",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.9,
+      "protocol_families": [],
+      "blockers": [
+        "yggdrasil: no demonstrated fn=play command request."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "yggdrasil: no demonstrated fn=play command request."
+      ],
+      "http_count": 1,
+      "websocket_count": 0,
+      "error": "TimeoutError: Page.goto: Timeout 25000ms exceeded.\nCall log:\n  - navigating to \"https://yggdrasilgaming.com/games/football-glory#tryit#tryit\", waiting until \"domcontentloaded\"\n",
+      "elapsed_ms": 25050.8
+    },
+    {
+      "provider": "yggdrasil",
+      "slug": "frost-queen-jackpots",
+      "name": "Frost Queen Jackpots",
+      "url": "https://yggdrasilgaming.com/games/frost-queen-jackpots#tryit",
+      "browser_url": "https://yggdrasilgaming.com/games/frost-queen-jackpots#tryit#tryit",
+      "symbol": "",
+      "source": "live-catalog",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.9,
+      "protocol_families": [],
+      "blockers": [
+        "yggdrasil: no demonstrated fn=play command request."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "yggdrasil: no demonstrated fn=play command request."
+      ],
+      "http_count": 1,
+      "websocket_count": 0,
+      "error": "TimeoutError: Page.goto: Timeout 25000ms exceeded.\nCall log:\n  - navigating to \"https://yggdrasilgaming.com/games/frost-queen-jackpots#tryit#tryit\", waiting until \"domcontentloaded\"\n",
+      "elapsed_ms": 25061.8
+    },
+    {
+      "provider": "yggdrasil",
+      "slug": "fruitoids",
+      "name": "Fruitoids",
+      "url": "https://yggdrasilgaming.com/games/fruitoids#tryit",
+      "browser_url": "https://yggdrasilgaming.com/games/fruitoids#tryit#tryit",
+      "symbol": "",
+      "source": "live-catalog",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.9,
+      "protocol_families": [],
+      "blockers": [
+        "yggdrasil: no demonstrated fn=play command request."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "yggdrasil: no demonstrated fn=play command request."
+      ],
+      "http_count": 1,
+      "websocket_count": 0,
+      "error": "TimeoutError: Page.goto: Timeout 25000ms exceeded.\nCall log:\n  - navigating to \"https://yggdrasilgaming.com/games/fruitoids#tryit#tryit\", waiting until \"domcontentloaded\"\n",
+      "elapsed_ms": 25038.3
+    },
+    {
+      "provider": "yggdrasil",
+      "slug": "fruitpunk",
+      "name": "Fruitpunk",
+      "url": "https://yggdrasilgaming.com/games/fruitpunk#tryit",
+      "browser_url": "https://yggdrasilgaming.com/games/fruitpunk#tryit#tryit",
+      "symbol": "",
+      "source": "live-catalog",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.9,
+      "protocol_families": [],
+      "blockers": [
+        "yggdrasil: no demonstrated fn=play command request."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "yggdrasil: no demonstrated fn=play command request."
+      ],
+      "http_count": 1,
+      "websocket_count": 0,
+      "error": "TimeoutError: Page.goto: Timeout 25000ms exceeded.\nCall log:\n  - navigating to \"https://yggdrasilgaming.com/games/fruitpunk#tryit#tryit\", waiting until \"domcontentloaded\"\n",
+      "elapsed_ms": 25062.8
+    },
+    {
+      "provider": "yggdrasil",
+      "slug": "fruitylicious-doublemax",
+      "name": "Fruitylicious Doublemax",
+      "url": "https://yggdrasilgaming.com/games/fruitylicious-doublemax#tryit",
+      "browser_url": "https://yggdrasilgaming.com/games/fruitylicious-doublemax#tryit#tryit",
+      "symbol": "",
+      "source": "live-catalog",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.9,
+      "protocol_families": [],
+      "blockers": [
+        "yggdrasil: no demonstrated fn=play command request."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "yggdrasil: no demonstrated fn=play command request."
+      ],
+      "http_count": 6,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 20073.5
+    },
+    {
+      "provider": "yggdrasil",
+      "slug": "gator-gold-deluxe-gigablox",
+      "name": "Gator Gold Deluxe Gigablox",
+      "url": "https://yggdrasilgaming.com/games/gator-gold-deluxe-gigablox#tryit",
+      "browser_url": "https://yggdrasilgaming.com/games/gator-gold-deluxe-gigablox#tryit#tryit",
+      "symbol": "",
+      "source": "live-catalog",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.9,
+      "protocol_families": [],
+      "blockers": [
+        "yggdrasil: no demonstrated fn=play command request."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "yggdrasil: no demonstrated fn=play command request."
+      ],
+      "http_count": 1,
+      "websocket_count": 0,
+      "error": "TimeoutError: Page.goto: Timeout 25000ms exceeded.\nCall log:\n  - navigating to \"https://yggdrasilgaming.com/games/gator-gold-deluxe-gigablox#tryit#tryit\", waiting until \"domcontentloaded\"\n",
+      "elapsed_ms": 25062.8
+    },
+    {
+      "provider": "yggdrasil",
+      "slug": "gator-gold-gigablox",
+      "name": "Gator Gold Gigablox",
+      "url": "https://yggdrasilgaming.com/games/gator-gold-gigablox#tryit",
+      "browser_url": "https://yggdrasilgaming.com/games/gator-gold-gigablox#tryit#tryit",
+      "symbol": "",
+      "source": "live-catalog",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.9,
+      "protocol_families": [],
+      "blockers": [
+        "yggdrasil: no demonstrated fn=play command request."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "yggdrasil: no demonstrated fn=play command request."
+      ],
+      "http_count": 41,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 17300.7
+    },
+    {
+      "provider": "yggdrasil",
+      "slug": "gem-rocks",
+      "name": "Gem Rocks",
+      "url": "https://yggdrasilgaming.com/games/gem-rocks#tryit",
+      "browser_url": "https://yggdrasilgaming.com/games/gem-rocks#tryit#tryit",
+      "symbol": "",
+      "source": "live-catalog",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.9,
+      "protocol_families": [],
+      "blockers": [
+        "yggdrasil: no demonstrated fn=play command request."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "yggdrasil: no demonstrated fn=play command request."
+      ],
+      "http_count": 27,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 15991.9
+    },
+    {
+      "provider": "yggdrasil",
+      "slug": "gemstone-jam",
+      "name": "Gemstone Jam",
+      "url": "https://yggdrasilgaming.com/games/gemstone-jam#tryit",
+      "browser_url": "https://yggdrasilgaming.com/games/gemstone-jam#tryit#tryit",
+      "symbol": "",
+      "source": "live-catalog",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.9,
+      "protocol_families": [],
+      "blockers": [
+        "yggdrasil: no demonstrated fn=play command request."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "yggdrasil: no demonstrated fn=play command request."
+      ],
+      "http_count": 1,
+      "websocket_count": 0,
+      "error": "TimeoutError: Page.goto: Timeout 25000ms exceeded.\nCall log:\n  - navigating to \"https://yggdrasilgaming.com/games/gemstone-jam#tryit#tryit\", waiting until \"domcontentloaded\"\n",
+      "elapsed_ms": 25044.3
+    },
+    {
+      "provider": "yggdrasil",
+      "slug": "giga-zombies-gigablox",
+      "name": "Giga Zombies Gigablox",
+      "url": "https://yggdrasilgaming.com/games/giga-zombies-gigablox#tryit",
+      "browser_url": "https://yggdrasilgaming.com/games/giga-zombies-gigablox#tryit#tryit",
+      "symbol": "",
+      "source": "live-catalog",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.9,
+      "protocol_families": [],
+      "blockers": [
+        "yggdrasil: no demonstrated fn=play command request."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "yggdrasil: no demonstrated fn=play command request."
+      ],
+      "http_count": 1,
+      "websocket_count": 0,
+      "error": "TimeoutError: Page.goto: Timeout 25000ms exceeded.\nCall log:\n  - navigating to \"https://yggdrasilgaming.com/games/giga-zombies-gigablox#tryit#tryit\", waiting until \"domcontentloaded\"\n",
+      "elapsed_ms": 25039.3
+    },
+    {
+      "provider": "yggdrasil",
+      "slug": "gigagong-gigablox",
+      "name": "Gigagong Gigablox",
+      "url": "https://yggdrasilgaming.com/games/gigagong-gigablox#tryit",
+      "browser_url": "https://yggdrasilgaming.com/games/gigagong-gigablox#tryit#tryit",
+      "symbol": "",
+      "source": "live-catalog",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.9,
+      "protocol_families": [],
+      "blockers": [
+        "yggdrasil: no demonstrated fn=play command request."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "yggdrasil: no demonstrated fn=play command request."
+      ],
+      "http_count": 42,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 19956.2
+    },
+    {
+      "provider": "yggdrasil",
+      "slug": "giganimals-gigablox",
+      "name": "Giganimals Gigablox",
+      "url": "https://yggdrasilgaming.com/games/giganimals-gigablox#tryit",
+      "browser_url": "https://yggdrasilgaming.com/games/giganimals-gigablox#tryit#tryit",
+      "symbol": "",
+      "source": "live-catalog",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.9,
+      "protocol_families": [],
+      "blockers": [
+        "yggdrasil: no demonstrated fn=play command request."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "yggdrasil: no demonstrated fn=play command request."
+      ],
+      "http_count": 6,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 17541.0
+    },
+    {
+      "provider": "yggdrasil",
+      "slug": "goals-of-olympus-boltlock",
+      "name": "Goals Of Olympus Boltlock",
+      "url": "https://yggdrasilgaming.com/games/goals-of-olympus-boltlock#tryit",
+      "browser_url": "https://yggdrasilgaming.com/games/goals-of-olympus-boltlock#tryit#tryit",
+      "symbol": "",
+      "source": "live-catalog",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.9,
+      "protocol_families": [],
+      "blockers": [
+        "yggdrasil: no demonstrated fn=play command request."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "yggdrasil: no demonstrated fn=play command request."
+      ],
+      "http_count": 42,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 19154.6
+    },
+    {
+      "provider": "yggdrasil",
+      "slug": "gold-frontier-jackpots-fastpot5",
+      "name": "Gold Frontier Jackpots Fastpot5",
+      "url": "https://yggdrasilgaming.com/games/gold-frontier-jackpots-fastpot5#tryit",
+      "browser_url": "https://yggdrasilgaming.com/games/gold-frontier-jackpots-fastpot5#tryit#tryit",
+      "symbol": "",
+      "source": "live-catalog",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.9,
+      "protocol_families": [],
+      "blockers": [
+        "yggdrasil: no demonstrated fn=play command request."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "yggdrasil: no demonstrated fn=play command request."
+      ],
+      "http_count": 6,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 13514.9
+    },
+    {
+      "provider": "yggdrasil",
+      "slug": "golden-chip-roulette",
+      "name": "Golden Chip Roulette",
+      "url": "https://yggdrasilgaming.com/games/golden-chip-roulette#tryit",
+      "browser_url": "https://yggdrasilgaming.com/games/golden-chip-roulette#tryit#tryit",
+      "symbol": "",
+      "source": "live-catalog",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.9,
+      "protocol_families": [],
+      "blockers": [
+        "yggdrasil: no demonstrated fn=play command request."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "yggdrasil: no demonstrated fn=play command request."
+      ],
+      "http_count": 42,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 9708.5
+    },
+    {
+      "provider": "yggdrasil",
+      "slug": "golden-fish-tank",
+      "name": "Golden Fish Tank",
+      "url": "https://yggdrasilgaming.com/games/golden-fish-tank#tryit",
+      "browser_url": "https://yggdrasilgaming.com/games/golden-fish-tank#tryit#tryit",
+      "symbol": "",
+      "source": "live-catalog",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.9,
+      "protocol_families": [],
+      "blockers": [
+        "yggdrasil: no demonstrated fn=play command request."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "yggdrasil: no demonstrated fn=play command request."
+      ],
+      "http_count": 6,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 9088.9
+    },
+    {
+      "provider": "yggdrasil",
+      "slug": "golden-fish-tank-2-gigablox",
+      "name": "Golden Fish Tank 2 Gigablox",
+      "url": "https://yggdrasilgaming.com/games/golden-fish-tank-2-gigablox#tryit",
+      "browser_url": "https://yggdrasilgaming.com/games/golden-fish-tank-2-gigablox#tryit#tryit",
+      "symbol": "",
+      "source": "live-catalog",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.9,
+      "protocol_families": [],
+      "blockers": [
+        "yggdrasil: no demonstrated fn=play command request."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "yggdrasil: no demonstrated fn=play command request."
+      ],
+      "http_count": 6,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 9094.1
+    },
+    {
+      "provider": "yggdrasil",
+      "slug": "golden-fish-tank-party",
+      "name": "Golden Fish Tank Party",
+      "url": "https://yggdrasilgaming.com/games/golden-fish-tank-party#tryit",
+      "browser_url": "https://yggdrasilgaming.com/games/golden-fish-tank-party#tryit#tryit",
+      "symbol": "",
+      "source": "live-catalog",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.9,
+      "protocol_families": [],
+      "blockers": [
+        "yggdrasil: no demonstrated fn=play command request."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "yggdrasil: no demonstrated fn=play command request."
+      ],
+      "http_count": 6,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 9064.3
+    },
+    {
+      "provider": "yggdrasil",
+      "slug": "golden-gorgon",
+      "name": "Golden Gorgon",
+      "url": "https://yggdrasilgaming.com/games/golden-gorgon#tryit",
+      "browser_url": "https://yggdrasilgaming.com/games/golden-gorgon#tryit#tryit",
+      "symbol": "",
+      "source": "live-catalog",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.9,
+      "protocol_families": [],
+      "blockers": [
+        "yggdrasil: no demonstrated fn=play command request."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "yggdrasil: no demonstrated fn=play command request."
+      ],
+      "http_count": 41,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 9212.7
+    },
+    {
+      "provider": "yggdrasil",
+      "slug": "golden-monkey",
+      "name": "Golden Monkey",
+      "url": "https://yggdrasilgaming.com/games/golden-monkey#tryit",
+      "browser_url": "https://yggdrasilgaming.com/games/golden-monkey#tryit#tryit",
+      "symbol": "",
+      "source": "live-catalog",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.9,
+      "protocol_families": [],
+      "blockers": [
+        "yggdrasil: no demonstrated fn=play command request."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "yggdrasil: no demonstrated fn=play command request."
+      ],
+      "http_count": 43,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 9213.9
+    },
+    {
+      "provider": "yggdrasil",
+      "slug": "goldstorm-ultra",
+      "name": "Goldstorm Ultra",
+      "url": "https://yggdrasilgaming.com/games/goldstorm-ultra#tryit",
+      "browser_url": "https://yggdrasilgaming.com/games/goldstorm-ultra#tryit#tryit",
+      "symbol": "",
+      "source": "live-catalog",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.9,
+      "protocol_families": [],
+      "blockers": [
+        "yggdrasil: no demonstrated fn=play command request."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "yggdrasil: no demonstrated fn=play command request."
+      ],
+      "http_count": 42,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 9063.7
+    },
+    {
+      "provider": "yggdrasil",
+      "slug": "hades",
+      "name": "Hades",
+      "url": "https://yggdrasilgaming.com/games/hades#tryit",
+      "browser_url": "https://yggdrasilgaming.com/games/hades#tryit#tryit",
+      "symbol": "",
+      "source": "live-catalog",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.9,
+      "protocol_families": [],
+      "blockers": [
+        "yggdrasil: no demonstrated fn=play command request."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "yggdrasil: no demonstrated fn=play command request."
+      ],
+      "http_count": 64,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 9261.4
+    },
+    {
+      "provider": "yggdrasil",
+      "slug": "hanzos-dojo",
+      "name": "Hanzos Dojo",
+      "url": "https://yggdrasilgaming.com/games/hanzos-dojo#tryit",
+      "browser_url": "https://yggdrasilgaming.com/games/hanzos-dojo#tryit#tryit",
+      "symbol": "",
+      "source": "live-catalog",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.9,
+      "protocol_families": [],
+      "blockers": [
+        "yggdrasil: no demonstrated fn=play command request."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "yggdrasil: no demonstrated fn=play command request."
+      ],
+      "http_count": 6,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 9111.4
+    },
+    {
+      "provider": "yggdrasil",
+      "slug": "holmes-stolen-stones",
+      "name": "Holmes Stolen Stones",
+      "url": "https://yggdrasilgaming.com/games/holmes-stolen-stones#tryit",
+      "browser_url": "https://yggdrasilgaming.com/games/holmes-stolen-stones#tryit#tryit",
+      "symbol": "",
+      "source": "live-catalog",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.9,
+      "protocol_families": [],
+      "blockers": [
+        "yggdrasil: no demonstrated fn=play command request."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "yggdrasil: no demonstrated fn=play command request."
+      ],
+      "http_count": 6,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 9594.7
+    },
+    {
+      "provider": "yggdrasil",
+      "slug": "hyperburst",
+      "name": "Hyperburst",
+      "url": "https://yggdrasilgaming.com/games/hyperburst#tryit",
+      "browser_url": "https://yggdrasilgaming.com/games/hyperburst#tryit#tryit",
+      "symbol": "",
+      "source": "live-catalog",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.9,
+      "protocol_families": [],
+      "blockers": [
+        "yggdrasil: no demonstrated fn=play command request."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "yggdrasil: no demonstrated fn=play command request."
+      ],
+      "http_count": 6,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 9016.4
+    },
+    {
+      "provider": "yggdrasil",
+      "slug": "incinerator",
+      "name": "Incinerator",
+      "url": "https://yggdrasilgaming.com/games/incinerator#tryit",
+      "browser_url": "https://yggdrasilgaming.com/games/incinerator#tryit#tryit",
+      "symbol": "",
+      "source": "live-catalog",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.9,
+      "protocol_families": [],
+      "blockers": [
+        "yggdrasil: no demonstrated fn=play command request."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "yggdrasil: no demonstrated fn=play command request."
+      ],
+      "http_count": 6,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 9141.2
+    },
+    {
+      "provider": "yggdrasil",
+      "slug": "jackpot-express",
+      "name": "Jackpot Express",
+      "url": "https://yggdrasilgaming.com/games/jackpot-express#tryit",
+      "browser_url": "https://yggdrasilgaming.com/games/jackpot-express#tryit#tryit",
+      "symbol": "",
+      "source": "live-catalog",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.9,
+      "protocol_families": [],
+      "blockers": [
+        "yggdrasil: no demonstrated fn=play command request."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "yggdrasil: no demonstrated fn=play command request."
+      ],
+      "http_count": 63,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 9169.9
+    },
+    {
+      "provider": "yggdrasil",
+      "slug": "jackpot-raiders",
+      "name": "Jackpot Raiders",
+      "url": "https://yggdrasilgaming.com/games/jackpot-raiders#tryit",
+      "browser_url": "https://yggdrasilgaming.com/games/jackpot-raiders#tryit#tryit",
+      "symbol": "",
+      "source": "live-catalog",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.9,
+      "protocol_families": [],
+      "blockers": [
+        "yggdrasil: no demonstrated fn=play command request."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "yggdrasil: no demonstrated fn=play command request."
+      ],
+      "http_count": 6,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 9549.1
+    },
+    {
+      "provider": "yggdrasil",
+      "slug": "joker-millions",
+      "name": "Joker Millions",
+      "url": "https://yggdrasilgaming.com/games/joker-millions#tryit",
+      "browser_url": "https://yggdrasilgaming.com/games/joker-millions#tryit#tryit",
+      "symbol": "",
+      "source": "live-catalog",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.9,
+      "protocol_families": [],
+      "blockers": [
+        "yggdrasil: no demonstrated fn=play command request."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "yggdrasil: no demonstrated fn=play command request."
+      ],
+      "http_count": 6,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 9024.6
+    },
+    {
+      "provider": "yggdrasil",
+      "slug": "jokerizer",
+      "name": "Jokerizer",
+      "url": "https://yggdrasilgaming.com/games/jokerizer#tryit",
+      "browser_url": "https://yggdrasilgaming.com/games/jokerizer#tryit#tryit",
+      "symbol": "",
+      "source": "live-catalog",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.9,
+      "protocol_families": [],
+      "blockers": [
+        "yggdrasil: no demonstrated fn=play command request."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "yggdrasil: no demonstrated fn=play command request."
+      ],
+      "http_count": 6,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 9930.2
+    },
+    {
+      "provider": "yggdrasil",
+      "slug": "jungle-books",
+      "name": "Jungle Books",
+      "url": "https://yggdrasilgaming.com/games/jungle-books#tryit",
+      "browser_url": "https://yggdrasilgaming.com/games/jungle-books#tryit#tryit",
+      "symbol": "",
+      "source": "live-catalog",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.9,
+      "protocol_families": [],
+      "blockers": [
+        "yggdrasil: no demonstrated fn=play command request."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "yggdrasil: no demonstrated fn=play command request."
+      ],
+      "http_count": 6,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 9631.9
+    },
+    {
+      "provider": "yggdrasil",
+      "slug": "lightning-joker",
+      "name": "Lightning Joker",
+      "url": "https://yggdrasilgaming.com/games/lightning-joker#tryit",
+      "browser_url": "https://yggdrasilgaming.com/games/lightning-joker#tryit#tryit",
+      "symbol": "",
+      "source": "live-catalog",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.9,
+      "protocol_families": [],
+      "blockers": [
+        "yggdrasil: no demonstrated fn=play command request."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "yggdrasil: no demonstrated fn=play command request."
+      ],
+      "http_count": 62,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 9196.9
+    },
+    {
+      "provider": "yggdrasil",
+      "slug": "lucha-maniacs",
+      "name": "Lucha Maniacs",
+      "url": "https://yggdrasilgaming.com/games/lucha-maniacs#tryit",
+      "browser_url": "https://yggdrasilgaming.com/games/lucha-maniacs#tryit#tryit",
+      "symbol": "",
+      "source": "live-catalog",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.9,
+      "protocol_families": [],
+      "blockers": [
+        "yggdrasil: no demonstrated fn=play command request."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "yggdrasil: no demonstrated fn=play command request."
+      ],
+      "http_count": 6,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 10093.3
+    },
+    {
+      "provider": "yggdrasil",
+      "slug": "lucky-apocalypse-gigablox",
+      "name": "Lucky Apocalypse Gigablox",
+      "url": "https://yggdrasilgaming.com/games/lucky-apocalypse-gigablox",
+      "browser_url": "https://yggdrasilgaming.com/games/lucky-apocalypse-gigablox#tryit",
+      "symbol": "",
+      "source": "live-catalog",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.9,
+      "protocol_families": [],
+      "blockers": [
+        "yggdrasil: no demonstrated fn=play command request."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "yggdrasil: no demonstrated fn=play command request."
+      ],
+      "http_count": 6,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 9322.8
+    },
+    {
+      "provider": "yggdrasil",
+      "slug": "lucky-neko",
+      "name": "Lucky Neko",
+      "url": "https://yggdrasilgaming.com/games/lucky-neko#tryit",
+      "browser_url": "https://yggdrasilgaming.com/games/lucky-neko#tryit#tryit",
+      "symbol": "",
+      "source": "live-catalog",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.9,
+      "protocol_families": [],
+      "blockers": [
+        "yggdrasil: no demonstrated fn=play command request."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "yggdrasil: no demonstrated fn=play command request."
+      ],
+      "http_count": 62,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 9302.7
+    },
+    {
+      "provider": "yggdrasil",
+      "slug": "lucky-ryan-gigablox",
+      "name": "Lucky Ryan Gigablox",
+      "url": "https://yggdrasilgaming.com/games/lucky-ryan-gigablox#tryit",
+      "browser_url": "https://yggdrasilgaming.com/games/lucky-ryan-gigablox#tryit#tryit",
+      "symbol": "",
+      "source": "live-catalog",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.9,
+      "protocol_families": [],
+      "blockers": [
+        "yggdrasil: no demonstrated fn=play command request."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "yggdrasil: no demonstrated fn=play command request."
+      ],
+      "http_count": 6,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 9111.1
+    },
+    {
+      "provider": "yggdrasil",
+      "slug": "max-elements-gigablox",
+      "name": "Max Elements Gigablox",
+      "url": "https://yggdrasilgaming.com/games/max-elements-gigablox#tryit",
+      "browser_url": "https://yggdrasilgaming.com/games/max-elements-gigablox#tryit#tryit",
+      "symbol": "",
+      "source": "live-catalog",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.9,
+      "protocol_families": [],
+      "blockers": [
+        "yggdrasil: no demonstrated fn=play command request."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "yggdrasil: no demonstrated fn=play command request."
+      ],
+      "http_count": 6,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 9174.2
+    },
+    {
+      "provider": "yggdrasil",
+      "slug": "mexomax",
+      "name": "Mexomax",
+      "url": "https://yggdrasilgaming.com/games/mexomax#tryit",
+      "browser_url": "https://yggdrasilgaming.com/games/mexomax#tryit#tryit",
+      "symbol": "",
+      "source": "live-catalog",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.9,
+      "protocol_families": [],
+      "blockers": [
+        "yggdrasil: no demonstrated fn=play command request."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "yggdrasil: no demonstrated fn=play command request."
+      ],
+      "http_count": 6,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 9098.0
+    },
+    {
+      "provider": "yggdrasil",
+      "slug": "mexomax-2-wildenergy-multimax",
+      "name": "Mexomax 2 Wildenergy Multimax",
+      "url": "https://yggdrasilgaming.com/games/mexomax-2-wildenergy-multimax#tryit",
+      "browser_url": "https://yggdrasilgaming.com/games/mexomax-2-wildenergy-multimax#tryit#tryit",
+      "symbol": "",
+      "source": "live-catalog",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.9,
+      "protocol_families": [],
+      "blockers": [
+        "yggdrasil: no demonstrated fn=play command request."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "yggdrasil: no demonstrated fn=play command request."
+      ],
+      "http_count": 42,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 9262.8
+    },
+    {
+      "provider": "yggdrasil",
+      "slug": "monkeys-go-bananas-multimax",
+      "name": "Monkeys Go Bananas Multimax",
+      "url": "https://yggdrasilgaming.com/games/monkeys-go-bananas-multimax#tryit",
+      "browser_url": "https://yggdrasilgaming.com/games/monkeys-go-bananas-multimax#tryit#tryit",
+      "symbol": "",
+      "source": "live-catalog",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.9,
+      "protocol_families": [],
+      "blockers": [
+        "yggdrasil: no demonstrated fn=play command request."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "yggdrasil: no demonstrated fn=play command request."
+      ],
+      "http_count": 42,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 9082.6
+    },
+    {
+      "provider": "yggdrasil",
+      "slug": "multifly",
+      "name": "Multifly",
+      "url": "https://yggdrasilgaming.com/games/multifly#tryit",
+      "browser_url": "https://yggdrasilgaming.com/games/multifly#tryit#tryit",
+      "symbol": "",
+      "source": "live-catalog",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.9,
+      "protocol_families": [],
+      "blockers": [
+        "yggdrasil: no demonstrated fn=play command request."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "yggdrasil: no demonstrated fn=play command request."
+      ],
+      "http_count": 48,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 9246.4
+    },
+    {
+      "provider": "yggdrasil",
+      "slug": "multifly-2-multimax",
+      "name": "Multifly 2 Multimax",
+      "url": "https://yggdrasilgaming.com/games/multifly-2-multimax#tryit",
+      "browser_url": "https://yggdrasilgaming.com/games/multifly-2-multimax#tryit#tryit",
+      "symbol": "",
+      "source": "live-catalog",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.9,
+      "protocol_families": [],
+      "blockers": [
+        "yggdrasil: no demonstrated fn=play command request."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "yggdrasil: no demonstrated fn=play command request."
+      ],
+      "http_count": 42,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 9266.3
+    },
+    {
+      "provider": "yggdrasil",
+      "slug": "neon-rush",
+      "name": "Neon Rush",
+      "url": "https://yggdrasilgaming.com/games/neon-rush#tryit",
+      "browser_url": "https://yggdrasilgaming.com/games/neon-rush#tryit#tryit",
+      "symbol": "",
+      "source": "live-catalog",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.9,
+      "protocol_families": [],
+      "blockers": [
+        "yggdrasil: no demonstrated fn=play command request."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "yggdrasil: no demonstrated fn=play command request."
+      ],
+      "http_count": 42,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 9181.5
+    },
+    {
+      "provider": "yggdrasil",
+      "slug": "neon-villains-doublemax",
+      "name": "Neon Villains Doublemax",
+      "url": "https://yggdrasilgaming.com/games/neon-villains-doublemax#tryit",
+      "browser_url": "https://yggdrasilgaming.com/games/neon-villains-doublemax#tryit#tryit",
+      "symbol": "",
+      "source": "live-catalog",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.9,
+      "protocol_families": [],
+      "blockers": [
+        "yggdrasil: no demonstrated fn=play command request."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "yggdrasil: no demonstrated fn=play command request."
+      ],
+      "http_count": 62,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 9230.1
+    },
+    {
+      "provider": "yggdrasil",
+      "slug": "neon-west",
+      "name": "Neon West",
+      "url": "https://yggdrasilgaming.com/games/neon-west#tryit",
+      "browser_url": "https://yggdrasilgaming.com/games/neon-west#tryit#tryit",
+      "symbol": "",
+      "source": "live-catalog",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.9,
+      "protocol_families": [],
+      "blockers": [
+        "yggdrasil: no demonstrated fn=play command request."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "yggdrasil: no demonstrated fn=play command request."
+      ],
+      "http_count": 42,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 9286.9
+    },
+    {
+      "provider": "yggdrasil",
+      "slug": "nice-catch-2-doublemax",
+      "name": "Nice Catch 2 Doublemax",
+      "url": "https://yggdrasilgaming.com/games/nice-catch-2-doublemax#tryit",
+      "browser_url": "https://yggdrasilgaming.com/games/nice-catch-2-doublemax#tryit#tryit",
+      "symbol": "",
+      "source": "live-catalog",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.9,
+      "protocol_families": [],
+      "blockers": [
+        "yggdrasil: no demonstrated fn=play command request."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "yggdrasil: no demonstrated fn=play command request."
+      ],
+      "http_count": 42,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 9336.0
+    },
+    {
+      "provider": "yggdrasil",
+      "slug": "nice-catch-doublemax",
+      "name": "Nice Catch Doublemax",
+      "url": "https://yggdrasilgaming.com/games/nice-catch-doublemax#tryit",
+      "browser_url": "https://yggdrasilgaming.com/games/nice-catch-doublemax#tryit#tryit",
+      "symbol": "",
+      "source": "live-catalog",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.9,
+      "protocol_families": [],
+      "blockers": [
+        "yggdrasil: no demonstrated fn=play command request."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "yggdrasil: no demonstrated fn=play command request."
+      ],
+      "http_count": 63,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 9132.0
+    },
+    {
+      "provider": "yggdrasil",
+      "slug": "nirvana",
+      "name": "Nirvana",
+      "url": "https://yggdrasilgaming.com/games/nirvana#tryit",
+      "browser_url": "https://yggdrasilgaming.com/games/nirvana#tryit#tryit",
+      "symbol": "",
+      "source": "live-catalog",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.9,
+      "protocol_families": [],
+      "blockers": [
+        "yggdrasil: no demonstrated fn=play command request."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "yggdrasil: no demonstrated fn=play command request."
+      ],
+      "http_count": 6,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 8988.9
+    },
+    {
+      "provider": "yggdrasil",
+      "slug": "nitro-circus",
+      "name": "Nitro Circus",
+      "url": "https://yggdrasilgaming.com/games/nitro-circus#tryit",
+      "browser_url": "https://yggdrasilgaming.com/games/nitro-circus#tryit#tryit",
+      "symbol": "",
+      "source": "live-catalog",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.9,
+      "protocol_families": [],
+      "blockers": [
+        "yggdrasil: no demonstrated fn=play command request."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "yggdrasil: no demonstrated fn=play command request."
+      ],
+      "http_count": 6,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 8981.8
+    },
+    {
+      "provider": "yggdrasil",
+      "slug": "notre-dame-tales-gigablox",
+      "name": "Notre Dame Tales Gigablox",
+      "url": "https://yggdrasilgaming.com/games/notre-dame-tales-gigablox#tryit",
+      "browser_url": "https://yggdrasilgaming.com/games/notre-dame-tales-gigablox#tryit#tryit",
+      "symbol": "",
+      "source": "live-catalog",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.9,
+      "protocol_families": [],
+      "blockers": [
+        "yggdrasil: no demonstrated fn=play command request."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "yggdrasil: no demonstrated fn=play command request."
+      ],
+      "http_count": 42,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 9137.5
+    },
+    {
+      "provider": "yggdrasil",
+      "slug": "of-sabers-and-monsters",
+      "name": "Of Sabers And Monsters",
+      "url": "https://yggdrasilgaming.com/games/of-sabers-and-monsters#tryit",
+      "browser_url": "https://yggdrasilgaming.com/games/of-sabers-and-monsters#tryit#tryit",
+      "symbol": "",
+      "source": "live-catalog",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.9,
+      "protocol_families": [],
+      "blockers": [
+        "yggdrasil: no demonstrated fn=play command request."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "yggdrasil: no demonstrated fn=play command request."
+      ],
+      "http_count": 42,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 9453.1
+    },
+    {
+      "provider": "yggdrasil",
+      "slug": "one-armed-bandit",
+      "name": "One Armed Bandit",
+      "url": "https://yggdrasilgaming.com/games/one-armed-bandit#tryit",
+      "browser_url": "https://yggdrasilgaming.com/games/one-armed-bandit#tryit#tryit",
+      "symbol": "",
+      "source": "live-catalog",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.9,
+      "protocol_families": [],
+      "blockers": [
+        "yggdrasil: no demonstrated fn=play command request."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "yggdrasil: no demonstrated fn=play command request."
+      ],
+      "http_count": 6,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 9194.6
+    },
+    {
+      "provider": "yggdrasil",
+      "slug": "orient-express",
+      "name": "Orient Express",
+      "url": "https://yggdrasilgaming.com/games/orient-express#tryit",
+      "browser_url": "https://yggdrasilgaming.com/games/orient-express#tryit#tryit",
+      "symbol": "",
+      "source": "live-catalog",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.9,
+      "protocol_families": [],
+      "blockers": [
+        "yggdrasil: no demonstrated fn=play command request."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "yggdrasil: no demonstrated fn=play command request."
+      ],
+      "http_count": 6,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 9233.4
+    },
+    {
+      "provider": "yggdrasil",
+      "slug": "ozwins-jackpots",
+      "name": "Ozwins Jackpots",
+      "url": "https://yggdrasilgaming.com/games/ozwins-jackpots#tryit",
+      "browser_url": "https://yggdrasilgaming.com/games/ozwins-jackpots#tryit#tryit",
+      "symbol": "",
+      "source": "live-catalog",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.9,
+      "protocol_families": [],
+      "blockers": [
+        "yggdrasil: no demonstrated fn=play command request."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "yggdrasil: no demonstrated fn=play command request."
+      ],
+      "http_count": 6,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 9431.7
+    },
+    {
+      "provider": "yggdrasil",
+      "slug": "penguin-city",
+      "name": "Penguin City",
+      "url": "https://yggdrasilgaming.com/games/penguin-city#tryit",
+      "browser_url": "https://yggdrasilgaming.com/games/penguin-city#tryit#tryit",
+      "symbol": "",
+      "source": "live-catalog",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.9,
+      "protocol_families": [],
+      "blockers": [
+        "yggdrasil: no demonstrated fn=play command request."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "yggdrasil: no demonstrated fn=play command request."
+      ],
+      "http_count": 6,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 9089.4
+    },
+    {
+      "provider": "yggdrasil",
+      "slug": "pirates-2-mutiny",
+      "name": "Pirates 2 Mutiny",
+      "url": "https://yggdrasilgaming.com/games/pirates-2-mutiny#tryit",
+      "browser_url": "https://yggdrasilgaming.com/games/pirates-2-mutiny#tryit#tryit",
+      "symbol": "",
+      "source": "live-catalog",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.9,
+      "protocol_families": [],
+      "blockers": [
+        "yggdrasil: no demonstrated fn=play command request."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "yggdrasil: no demonstrated fn=play command request."
+      ],
+      "http_count": 6,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 9021.4
+    },
+    {
+      "provider": "yggdrasil",
+      "slug": "pirates-smugglers-paradise",
+      "name": "Pirates Smugglers Paradise",
+      "url": "https://yggdrasilgaming.com/games/pirates-smugglers-paradise#tryit",
+      "browser_url": "https://yggdrasilgaming.com/games/pirates-smugglers-paradise#tryit#tryit",
+      "symbol": "",
+      "source": "live-catalog",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.9,
+      "protocol_families": [],
+      "blockers": [
+        "yggdrasil: no demonstrated fn=play command request."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "yggdrasil: no demonstrated fn=play command request."
+      ],
+      "http_count": 6,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 9057.9
+    },
+    {
+      "provider": "yggdrasil",
+      "slug": "pumpkin-smash",
+      "name": "Pumpkin Smash",
+      "url": "https://yggdrasilgaming.com/games/pumpkin-smash#tryit",
+      "browser_url": "https://yggdrasilgaming.com/games/pumpkin-smash#tryit#tryit",
+      "symbol": "",
+      "source": "live-catalog",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.9,
+      "protocol_families": [],
+      "blockers": [
+        "yggdrasil: no demonstrated fn=play command request."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "yggdrasil: no demonstrated fn=play command request."
+      ],
+      "http_count": 61,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 9384.4
+    },
+    {
+      "provider": "yggdrasil",
+      "slug": "pushy-cats",
+      "name": "Pushy Cats",
+      "url": "https://yggdrasilgaming.com/games/pushy-cats#tryit",
+      "browser_url": "https://yggdrasilgaming.com/games/pushy-cats#tryit#tryit",
+      "symbol": "",
+      "source": "live-catalog",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.9,
+      "protocol_families": [],
+      "blockers": [
+        "yggdrasil: no demonstrated fn=play command request."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "yggdrasil: no demonstrated fn=play command request."
+      ],
+      "http_count": 42,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 9122.7
+    },
+    {
+      "provider": "yggdrasil",
+      "slug": "ragnaravens-wildenergy",
+      "name": "Ragnaravens Wildenergy",
+      "url": "https://yggdrasilgaming.com/games/ragnaravens-wildenergy#tryit",
+      "browser_url": "https://yggdrasilgaming.com/games/ragnaravens-wildenergy#tryit#tryit",
+      "symbol": "",
+      "source": "live-catalog",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.9,
+      "protocol_families": [],
+      "blockers": [
+        "yggdrasil: no demonstrated fn=play command request."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "yggdrasil: no demonstrated fn=play command request."
+      ],
+      "http_count": 6,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 9091.5
+    },
+    {
+      "provider": "yggdrasil",
+      "slug": "ragnawolves",
+      "name": "Ragnawolves",
+      "url": "https://yggdrasilgaming.com/games/ragnawolves#tryit",
+      "browser_url": "https://yggdrasilgaming.com/games/ragnawolves#tryit#tryit",
+      "symbol": "",
+      "source": "live-catalog",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.9,
+      "protocol_families": [],
+      "blockers": [
+        "yggdrasil: no demonstrated fn=play command request."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "yggdrasil: no demonstrated fn=play command request."
+      ],
+      "http_count": 6,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 9230.8
+    },
+    {
+      "provider": "yggdrasil",
+      "slug": "rainbow-ryan",
+      "name": "Rainbow Ryan",
+      "url": "https://yggdrasilgaming.com/games/rainbow-ryan#tryit",
+      "browser_url": "https://yggdrasilgaming.com/games/rainbow-ryan#tryit#tryit",
+      "symbol": "",
+      "source": "live-catalog",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.9,
+      "protocol_families": [],
+      "blockers": [
+        "yggdrasil: no demonstrated fn=play command request."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "yggdrasil: no demonstrated fn=play command request."
+      ],
+      "http_count": 6,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 9124.4
+    },
+    {
+      "provider": "yggdrasil",
+      "slug": "rainbow-ryan-2",
+      "name": "Rainbow Ryan 2",
+      "url": "https://yggdrasilgaming.com/games/rainbow-ryan-2#tryit",
+      "browser_url": "https://yggdrasilgaming.com/games/rainbow-ryan-2#tryit#tryit",
+      "symbol": "",
+      "source": "live-catalog",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.9,
+      "protocol_families": [],
+      "blockers": [
+        "yggdrasil: no demonstrated fn=play command request."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "yggdrasil: no demonstrated fn=play command request."
+      ],
+      "http_count": 6,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 9255.4
+    },
+    {
+      "provider": "yggdrasil",
+      "slug": "raptor-2",
+      "name": "Raptor 2",
+      "url": "https://yggdrasilgaming.com/games/raptor-2#tryit",
+      "browser_url": "https://yggdrasilgaming.com/games/raptor-2#tryit#tryit",
+      "symbol": "",
+      "source": "live-catalog",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.9,
+      "protocol_families": [],
+      "blockers": [
+        "yggdrasil: no demonstrated fn=play command request."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "yggdrasil: no demonstrated fn=play command request."
+      ],
+      "http_count": 42,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 9293.8
+    },
+    {
+      "provider": "yggdrasil",
+      "slug": "raptor-doublemax",
+      "name": "Raptor Doublemax",
+      "url": "https://yggdrasilgaming.com/games/raptor-doublemax#tryit",
+      "browser_url": "https://yggdrasilgaming.com/games/raptor-doublemax#tryit#tryit",
+      "symbol": "",
+      "source": "live-catalog",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.9,
+      "protocol_families": [],
+      "blockers": [
+        "yggdrasil: no demonstrated fn=play command request."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "yggdrasil: no demonstrated fn=play command request."
+      ],
+      "http_count": 42,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 9710.8
+    },
+    {
+      "provider": "yggdrasil",
+      "slug": "red-dragon-sails",
+      "name": "Red Dragon Sails",
+      "url": "https://yggdrasilgaming.com/games/red-dragon-sails#tryit",
+      "browser_url": "https://yggdrasilgaming.com/games/red-dragon-sails#tryit#tryit",
+      "symbol": "",
+      "source": "live-catalog",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.9,
+      "protocol_families": [],
+      "blockers": [
+        "yggdrasil: no demonstrated fn=play command request."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "yggdrasil: no demonstrated fn=play command request."
+      ],
+      "http_count": 27,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 9028.3
+    },
+    {
+      "provider": "yggdrasil",
+      "slug": "reel-desire",
+      "name": "Reel Desire",
+      "url": "https://yggdrasilgaming.com/games/reel-desire#tryit",
+      "browser_url": "https://yggdrasilgaming.com/games/reel-desire#tryit#tryit",
+      "symbol": "",
+      "source": "live-catalog",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.9,
+      "protocol_families": [],
+      "blockers": [
+        "yggdrasil: no demonstrated fn=play command request."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "yggdrasil: no demonstrated fn=play command request."
+      ],
+      "http_count": 6,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 9076.4
+    },
+    {
+      "provider": "yggdrasil",
+      "slug": "rock-star-santa-multimax",
+      "name": "Rock Star Santa Multimax",
+      "url": "https://yggdrasilgaming.com/games/rock-star-santa-multimax#tryit",
+      "browser_url": "https://yggdrasilgaming.com/games/rock-star-santa-multimax#tryit#tryit",
+      "symbol": "",
+      "source": "live-catalog",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.9,
+      "protocol_families": [],
+      "blockers": [
+        "yggdrasil: no demonstrated fn=play command request."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "yggdrasil: no demonstrated fn=play command request."
+      ],
+      "http_count": 42,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 9402.7
+    },
+    {
+      "provider": "yggdrasil",
+      "slug": "royal-family",
+      "name": "Royal Family",
+      "url": "https://yggdrasilgaming.com/games/royal-family#tryit",
+      "browser_url": "https://yggdrasilgaming.com/games/royal-family#tryit#tryit",
+      "symbol": "",
+      "source": "live-catalog",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.9,
+      "protocol_families": [],
+      "blockers": [
+        "yggdrasil: no demonstrated fn=play command request."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "yggdrasil: no demonstrated fn=play command request."
+      ],
+      "http_count": 42,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 9359.5
+    },
+    {
+      "provider": "yggdrasil",
+      "slug": "sahara-nights",
+      "name": "Sahara Nights",
+      "url": "https://yggdrasilgaming.com/games/sahara-nights#tryit",
+      "browser_url": "https://yggdrasilgaming.com/games/sahara-nights#tryit#tryit",
+      "symbol": "",
+      "source": "live-catalog",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.9,
+      "protocol_families": [],
+      "blockers": [
+        "yggdrasil: no demonstrated fn=play command request."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "yggdrasil: no demonstrated fn=play command request."
+      ],
+      "http_count": 6,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 9076.3
+    },
+    {
+      "provider": "yggdrasil",
+      "slug": "scara-bucks",
+      "name": "Scara Bucks",
+      "url": "https://yggdrasilgaming.com/games/scara-bucks#tryit",
+      "browser_url": "https://yggdrasilgaming.com/games/scara-bucks#tryit#tryit",
+      "symbol": "",
+      "source": "live-catalog",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.9,
+      "protocol_families": [],
+      "blockers": [
+        "yggdrasil: no demonstrated fn=play command request."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "yggdrasil: no demonstrated fn=play command request."
+      ],
+      "http_count": 42,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 9344.8
+    },
+    {
+      "provider": "yggdrasil",
+      "slug": "seasons",
+      "name": "Seasons",
+      "url": "https://yggdrasilgaming.com/games/seasons#tryit",
+      "browser_url": "https://yggdrasilgaming.com/games/seasons#tryit#tryit",
+      "symbol": "",
+      "source": "live-catalog",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.9,
+      "protocol_families": [],
+      "blockers": [
+        "yggdrasil: no demonstrated fn=play command request."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "yggdrasil: no demonstrated fn=play command request."
+      ],
+      "http_count": 6,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 9159.0
+    },
+    {
+      "provider": "yggdrasil",
+      "slug": "shaker-club",
+      "name": "Shaker Club",
+      "url": "https://yggdrasilgaming.com/games/shaker-club#tryit",
+      "browser_url": "https://yggdrasilgaming.com/games/shaker-club#tryit#tryit",
+      "symbol": "",
+      "source": "live-catalog",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.9,
+      "protocol_families": [],
+      "blockers": [
+        "yggdrasil: no demonstrated fn=play command request."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "yggdrasil: no demonstrated fn=play command request."
+      ],
+      "http_count": 6,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 9634.0
+    },
+    {
+      "provider": "yggdrasil",
+      "slug": "spina-colada",
+      "name": "Spina Colada",
+      "url": "https://yggdrasilgaming.com/games/spina-colada#tryit",
+      "browser_url": "https://yggdrasilgaming.com/games/spina-colada#tryit#tryit",
+      "symbol": "",
+      "source": "live-catalog",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.9,
+      "protocol_families": [],
+      "blockers": [
+        "yggdrasil: no demonstrated fn=play command request."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "yggdrasil: no demonstrated fn=play command request."
+      ],
+      "http_count": 6,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 9468.4
+    },
+    {
+      "provider": "yggdrasil",
+      "slug": "suncatcher-gigablox",
+      "name": "Suncatcher Gigablox",
+      "url": "https://yggdrasilgaming.com/games/suncatcher-gigablox#tryit",
+      "browser_url": "https://yggdrasilgaming.com/games/suncatcher-gigablox#tryit#tryit",
+      "symbol": "",
+      "source": "live-catalog",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.9,
+      "protocol_families": [],
+      "blockers": [
+        "yggdrasil: no demonstrated fn=play command request."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "yggdrasil: no demonstrated fn=play command request."
+      ],
+      "http_count": 42,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 9516.8
+    },
+    {
+      "provider": "yggdrasil",
+      "slug": "sunny-shores",
+      "name": "Sunny Shores",
+      "url": "https://yggdrasilgaming.com/games/sunny-shores#tryit",
+      "browser_url": "https://yggdrasilgaming.com/games/sunny-shores#tryit#tryit",
+      "symbol": "",
+      "source": "live-catalog",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.9,
+      "protocol_families": [],
+      "blockers": [
+        "yggdrasil: no demonstrated fn=play command request."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "yggdrasil: no demonstrated fn=play command request."
+      ],
+      "http_count": 6,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 9119.0
+    },
+    {
+      "provider": "yggdrasil",
+      "slug": "syncronite",
+      "name": "Syncronite",
+      "url": "https://yggdrasilgaming.com/games/syncronite#tryit",
+      "browser_url": "https://yggdrasilgaming.com/games/syncronite#tryit#tryit",
+      "symbol": "",
+      "source": "live-catalog",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.9,
+      "protocol_families": [],
+      "blockers": [
+        "yggdrasil: no demonstrated fn=play command request."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "yggdrasil: no demonstrated fn=play command request."
+      ],
+      "http_count": 6,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 9143.9
+    },
+    {
+      "provider": "yggdrasil",
+      "slug": "temple-stacks",
+      "name": "Temple Stacks",
+      "url": "https://yggdrasilgaming.com/games/temple-stacks#tryit",
+      "browser_url": "https://yggdrasilgaming.com/games/temple-stacks#tryit#tryit",
+      "symbol": "",
+      "source": "live-catalog",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.9,
+      "protocol_families": [],
+      "blockers": [
+        "yggdrasil: no demonstrated fn=play command request."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "yggdrasil: no demonstrated fn=play command request."
+      ],
+      "http_count": 42,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 9452.2
+    },
+    {
+      "provider": "yggdrasil",
+      "slug": "timber-trail-treasures",
+      "name": "Timber Trail Treasures",
+      "url": "https://yggdrasilgaming.com/games/timber-trail-treasures#tryit",
+      "browser_url": "https://yggdrasilgaming.com/games/timber-trail-treasures#tryit#tryit",
+      "symbol": "",
+      "source": "live-catalog",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.9,
+      "protocol_families": [],
+      "blockers": [
+        "yggdrasil: no demonstrated fn=play command request."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "yggdrasil: no demonstrated fn=play command request."
+      ],
+      "http_count": 42,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 9421.5
+    },
+    {
+      "provider": "yggdrasil",
+      "slug": "time-travel-tigers",
+      "name": "Time Travel Tigers",
+      "url": "https://yggdrasilgaming.com/games/time-travel-tigers#tryit",
+      "browser_url": "https://yggdrasilgaming.com/games/time-travel-tigers#tryit#tryit",
+      "symbol": "",
+      "source": "live-catalog",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.9,
+      "protocol_families": [],
+      "blockers": [
+        "yggdrasil: no demonstrated fn=play command request."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "yggdrasil: no demonstrated fn=play command request."
+      ],
+      "http_count": 6,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 9254.9
+    },
+    {
+      "provider": "yggdrasil",
+      "slug": "trickstar-spins",
+      "name": "Trickstar Spins",
+      "url": "https://yggdrasilgaming.com/games/trickstar-spins#tryit",
+      "browser_url": "https://yggdrasilgaming.com/games/trickstar-spins#tryit#tryit",
+      "symbol": "",
+      "source": "live-catalog",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.9,
+      "protocol_families": [],
+      "blockers": [
+        "yggdrasil: no demonstrated fn=play command request."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "yggdrasil: no demonstrated fn=play command request."
+      ],
+      "http_count": 42,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 9174.6
+    },
+    {
+      "provider": "yggdrasil",
+      "slug": "trolls_bridge",
+      "name": "Trolls Bridge",
+      "url": "https://yggdrasilgaming.com/games/trolls_bridge#tryit",
+      "browser_url": "https://yggdrasilgaming.com/games/trolls_bridge#tryit#tryit",
+      "symbol": "",
+      "source": "live-catalog",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.9,
+      "protocol_families": [],
+      "blockers": [
+        "yggdrasil: no demonstrated fn=play command request."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "yggdrasil: no demonstrated fn=play command request."
+      ],
+      "http_count": 42,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 9696.2
+    },
+    {
+      "provider": "yggdrasil",
+      "slug": "turbo-gold-deluxe-gigablox",
+      "name": "Turbo Gold Deluxe Gigablox",
+      "url": "https://yggdrasilgaming.com/games/turbo-gold-deluxe-gigablox#tryit",
+      "browser_url": "https://yggdrasilgaming.com/games/turbo-gold-deluxe-gigablox#tryit#tryit",
+      "symbol": "",
+      "source": "live-catalog",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.9,
+      "protocol_families": [],
+      "blockers": [
+        "yggdrasil: no demonstrated fn=play command request."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "yggdrasil: no demonstrated fn=play command request."
+      ],
+      "http_count": 6,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 9135.4
+    },
+    {
+      "provider": "yggdrasil",
+      "slug": "tuts_twister",
+      "name": "Tuts Twister",
+      "url": "https://yggdrasilgaming.com/games/tuts_twister#tryit",
+      "browser_url": "https://yggdrasilgaming.com/games/tuts_twister#tryit#tryit",
+      "symbol": "",
+      "source": "live-catalog",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.9,
+      "protocol_families": [],
+      "blockers": [
+        "yggdrasil: no demonstrated fn=play command request."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "yggdrasil: no demonstrated fn=play command request."
+      ],
+      "http_count": 64,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 4198.8
+    },
+    {
+      "provider": "yggdrasil",
+      "slug": "valley-of-the-dead-onlywins",
+      "name": "Valley Of The Dead Onlywins",
+      "url": "https://yggdrasilgaming.com/games/valley-of-the-dead-onlywins#tryit",
+      "browser_url": "https://yggdrasilgaming.com/games/valley-of-the-dead-onlywins#tryit#tryit",
+      "symbol": "",
+      "source": "live-catalog",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.9,
+      "protocol_families": [],
+      "blockers": [
+        "yggdrasil: no demonstrated fn=play command request."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "yggdrasil: no demonstrated fn=play command request."
+      ],
+      "http_count": 42,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 9449.5
+    },
+    {
+      "provider": "yggdrasil",
+      "slug": "valley-of-the-gods",
+      "name": "Valley Of The Gods",
+      "url": "https://yggdrasilgaming.com/games/valley-of-the-gods#tryit",
+      "browser_url": "https://yggdrasilgaming.com/games/valley-of-the-gods#tryit#tryit",
+      "symbol": "",
+      "source": "live-catalog",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.9,
+      "protocol_families": [],
+      "blockers": [
+        "yggdrasil: no demonstrated fn=play command request."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "yggdrasil: no demonstrated fn=play command request."
+      ],
+      "http_count": 6,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 9558.3
+    },
+    {
+      "provider": "yggdrasil",
+      "slug": "valley-of-the-gods-2",
+      "name": "Valley Of The Gods 2",
+      "url": "https://yggdrasilgaming.com/games/valley-of-the-gods-2#tryit",
+      "browser_url": "https://yggdrasilgaming.com/games/valley-of-the-gods-2#tryit#tryit",
+      "symbol": "",
+      "source": "live-catalog",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.9,
+      "protocol_families": [],
+      "blockers": [
+        "yggdrasil: no demonstrated fn=play command request."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "yggdrasil: no demonstrated fn=play command request."
+      ],
+      "http_count": 6,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 9110.4
+    },
+    {
+      "provider": "yggdrasil",
+      "slug": "vampire-riches-doublemax",
+      "name": "Vampire Riches Doublemax",
+      "url": "https://yggdrasilgaming.com/games/vampire-riches-doublemax#tryit",
+      "browser_url": "https://yggdrasilgaming.com/games/vampire-riches-doublemax#tryit#tryit",
+      "symbol": "",
+      "source": "live-catalog",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.9,
+      "protocol_families": [],
+      "blockers": [
+        "yggdrasil: no demonstrated fn=play command request."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "yggdrasil: no demonstrated fn=play command request."
+      ],
+      "http_count": 6,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 9021.6
+    },
+    {
+      "provider": "yggdrasil",
+      "slug": "vault-of-fortune",
+      "name": "Vault Of Fortune",
+      "url": "https://yggdrasilgaming.com/games/vault-of-fortune#tryit",
+      "browser_url": "https://yggdrasilgaming.com/games/vault-of-fortune#tryit#tryit",
+      "symbol": "",
+      "source": "live-catalog",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.9,
+      "protocol_families": [],
+      "blockers": [
+        "yggdrasil: no demonstrated fn=play command request."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "yggdrasil: no demonstrated fn=play command request."
+      ],
+      "http_count": 62,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 9366.5
+    },
+    {
+      "provider": "yggdrasil",
+      "slug": "vikings-go-berzerk",
+      "name": "Vikings Go Berzerk",
+      "url": "https://yggdrasilgaming.com/games/vikings-go-berzerk#tryit",
+      "browser_url": "https://yggdrasilgaming.com/games/vikings-go-berzerk#tryit#tryit",
+      "symbol": "",
+      "source": "live-catalog",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.9,
+      "protocol_families": [],
+      "blockers": [
+        "yggdrasil: no demonstrated fn=play command request."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "yggdrasil: no demonstrated fn=play command request."
+      ],
+      "http_count": 6,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 9164.7
+    },
+    {
+      "provider": "yggdrasil",
+      "slug": "vikings-go-berzerk-reloaded",
+      "name": "Vikings Go Berzerk Reloaded",
+      "url": "https://yggdrasilgaming.com/games/vikings-go-berzerk-reloaded#tryit",
+      "browser_url": "https://yggdrasilgaming.com/games/vikings-go-berzerk-reloaded#tryit#tryit",
+      "symbol": "",
+      "source": "live-catalog",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.9,
+      "protocol_families": [],
+      "blockers": [
+        "yggdrasil: no demonstrated fn=play command request."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "yggdrasil: no demonstrated fn=play command request."
+      ],
+      "http_count": 41,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 9188.1
+    },
+    {
+      "provider": "yggdrasil",
+      "slug": "vikings-go-to-egypt-wild-fight",
+      "name": "Vikings Go To Egypt Wild Fight",
+      "url": "https://yggdrasilgaming.com/games/vikings-go-to-egypt-wild-fight#tryit",
+      "browser_url": "https://yggdrasilgaming.com/games/vikings-go-to-egypt-wild-fight#tryit#tryit",
+      "symbol": "",
+      "source": "live-catalog",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.9,
+      "protocol_families": [],
+      "blockers": [
+        "yggdrasil: no demonstrated fn=play command request."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "yggdrasil: no demonstrated fn=play command request."
+      ],
+      "http_count": 6,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 9056.5
+    },
+    {
+      "provider": "yggdrasil",
+      "slug": "vikings-go-to-hell",
+      "name": "Vikings Go To Hell",
+      "url": "https://yggdrasilgaming.com/games/vikings-go-to-hell#tryit",
+      "browser_url": "https://yggdrasilgaming.com/games/vikings-go-to-hell#tryit#tryit",
+      "symbol": "",
+      "source": "live-catalog",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.9,
+      "protocol_families": [],
+      "blockers": [
+        "yggdrasil: no demonstrated fn=play command request."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "yggdrasil: no demonstrated fn=play command request."
+      ],
+      "http_count": 6,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 9126.3
+    },
+    {
+      "provider": "yggdrasil",
+      "slug": "vikings-go-to-hollywood-wildfight-rushingwilds",
+      "name": "Vikings Go To Hollywood Wildfight Rushingwilds",
+      "url": "https://yggdrasilgaming.com/games/vikings-go-to-hollywood-wildfight-rushingwilds#tryit",
+      "browser_url": "https://yggdrasilgaming.com/games/vikings-go-to-hollywood-wildfight-rushingwilds#tryit#tryit",
+      "symbol": "",
+      "source": "live-catalog",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.9,
+      "protocol_families": [],
+      "blockers": [
+        "yggdrasil: no demonstrated fn=play command request."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "yggdrasil: no demonstrated fn=play command request."
+      ],
+      "http_count": 42,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 9163.9
+    },
+    {
+      "provider": "yggdrasil",
+      "slug": "vikings-go-to-olympus-wildfight-rushingwilds",
+      "name": "Vikings Go To Olympus Wildfight Rushingwilds",
+      "url": "https://yggdrasilgaming.com/games/vikings-go-to-olympus-wildfight-rushingwilds#tryit",
+      "browser_url": "https://yggdrasilgaming.com/games/vikings-go-to-olympus-wildfight-rushingwilds#tryit#tryit",
+      "symbol": "",
+      "source": "live-catalog",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.9,
+      "protocol_families": [],
+      "blockers": [
+        "yggdrasil: no demonstrated fn=play command request."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "yggdrasil: no demonstrated fn=play command request."
+      ],
+      "http_count": 27,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 9160.9
+    },
+    {
+      "provider": "yggdrasil",
+      "slug": "vikings-go-to-valhalla",
+      "name": "Vikings Go To Valhalla",
+      "url": "https://yggdrasilgaming.com/games/vikings-go-to-valhalla#tryit",
+      "browser_url": "https://yggdrasilgaming.com/games/vikings-go-to-valhalla#tryit#tryit",
+      "symbol": "",
+      "source": "live-catalog",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.9,
+      "protocol_families": [],
+      "blockers": [
+        "yggdrasil: no demonstrated fn=play command request."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "yggdrasil: no demonstrated fn=play command request."
+      ],
+      "http_count": 39,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 9274.2
+    },
+    {
+      "provider": "yggdrasil",
+      "slug": "vikings-go-to-vegas-wild-fight",
+      "name": "Vikings Go To Vegas Wild Fight",
+      "url": "https://yggdrasilgaming.com/games/vikings-go-to-vegas-wild-fight#tryit",
+      "browser_url": "https://yggdrasilgaming.com/games/vikings-go-to-vegas-wild-fight#tryit#tryit",
+      "symbol": "",
+      "source": "live-catalog",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.9,
+      "protocol_families": [],
+      "blockers": [
+        "yggdrasil: no demonstrated fn=play command request."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "yggdrasil: no demonstrated fn=play command request."
+      ],
+      "http_count": 6,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 9022.7
+    },
+    {
+      "provider": "yggdrasil",
+      "slug": "vikings-go-wild",
+      "name": "Vikings Go Wild",
+      "url": "https://yggdrasilgaming.com/games/vikings-go-wild#tryit",
+      "browser_url": "https://yggdrasilgaming.com/games/vikings-go-wild#tryit#tryit",
+      "symbol": "",
+      "source": "live-catalog",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.9,
+      "protocol_families": [],
+      "blockers": [
+        "yggdrasil: no demonstrated fn=play command request."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "yggdrasil: no demonstrated fn=play command request."
+      ],
+      "http_count": 6,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 8957.1
+    },
+    {
+      "provider": "yggdrasil",
+      "slug": "wild-robo-factory",
+      "name": "Wild Robo Factory",
+      "url": "https://yggdrasilgaming.com/games/wild-robo-factory#tryit",
+      "browser_url": "https://yggdrasilgaming.com/games/wild-robo-factory#tryit#tryit",
+      "symbol": "",
+      "source": "live-catalog",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.9,
+      "protocol_families": [],
+      "blockers": [
+        "yggdrasil: no demonstrated fn=play command request."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "yggdrasil: no demonstrated fn=play command request."
+      ],
+      "http_count": 6,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 9003.6
+    },
+    {
+      "provider": "yggdrasil",
+      "slug": "wild-stack-frenzy",
+      "name": "Wild Stack Frenzy",
+      "url": "https://yggdrasilgaming.com/games/wild-stack-frenzy#tryit",
+      "browser_url": "https://yggdrasilgaming.com/games/wild-stack-frenzy#tryit#tryit",
+      "symbol": "",
+      "source": "live-catalog",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.9,
+      "protocol_families": [],
+      "blockers": [
+        "yggdrasil: no demonstrated fn=play command request."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "yggdrasil: no demonstrated fn=play command request."
+      ],
+      "http_count": 45,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 9143.5
+    },
+    {
+      "provider": "yggdrasil",
+      "slug": "wilhelm-tell",
+      "name": "Wilhelm Tell",
+      "url": "https://yggdrasilgaming.com/games/wilhelm-tell#tryit",
+      "browser_url": "https://yggdrasilgaming.com/games/wilhelm-tell#tryit#tryit",
+      "symbol": "",
+      "source": "live-catalog",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.9,
+      "protocol_families": [],
+      "blockers": [
+        "yggdrasil: no demonstrated fn=play command request."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "yggdrasil: no demonstrated fn=play command request."
+      ],
+      "http_count": 42,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 9182.5
+    },
+    {
+      "provider": "yggdrasil",
+      "slug": "winter-berries",
+      "name": "Winter Berries",
+      "url": "https://yggdrasilgaming.com/games/winter-berries#tryit",
+      "browser_url": "https://yggdrasilgaming.com/games/winter-berries#tryit#tryit",
+      "symbol": "",
+      "source": "live-catalog",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.9,
+      "protocol_families": [],
+      "blockers": [
+        "yggdrasil: no demonstrated fn=play command request."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "yggdrasil: no demonstrated fn=play command request."
+      ],
+      "http_count": 6,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 9361.3
+    },
+    {
+      "provider": "yggdrasil",
+      "slug": "winterberries-2",
+      "name": "Winterberries 2",
+      "url": "https://yggdrasilgaming.com/games/winterberries-2#tryit",
+      "browser_url": "https://yggdrasilgaming.com/games/winterberries-2#tryit#tryit",
+      "symbol": "",
+      "source": "live-catalog",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.9,
+      "protocol_families": [],
+      "blockers": [
+        "yggdrasil: no demonstrated fn=play command request."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "yggdrasil: no demonstrated fn=play command request."
+      ],
+      "http_count": 6,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 9022.0
+    },
+    {
+      "provider": "yggdrasil",
+      "slug": "wolf-hunters",
+      "name": "Wolf Hunters",
+      "url": "https://yggdrasilgaming.com/games/wolf-hunters#tryit",
+      "browser_url": "https://yggdrasilgaming.com/games/wolf-hunters#tryit#tryit",
+      "symbol": "",
+      "source": "live-catalog",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.9,
+      "protocol_families": [],
+      "blockers": [
+        "yggdrasil: no demonstrated fn=play command request."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "yggdrasil: no demonstrated fn=play command request."
+      ],
+      "http_count": 6,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 8997.7
+    },
+    {
+      "provider": "yggdrasil",
+      "slug": "yokozuna-clash",
+      "name": "Yokozuna Clash",
+      "url": "https://yggdrasilgaming.com/games/yokozuna-clash#tryit",
+      "browser_url": "https://yggdrasilgaming.com/games/yokozuna-clash#tryit#tryit",
+      "symbol": "",
+      "source": "live-catalog",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.9,
+      "protocol_families": [],
+      "blockers": [
+        "yggdrasil: no demonstrated fn=play command request."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "yggdrasil: no demonstrated fn=play command request."
+      ],
+      "http_count": 6,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 9128.7
+    },
+    {
+      "provider": "yggdrasil",
+      "slug": "your-own-island",
+      "name": "Your Own Island",
+      "url": "https://yggdrasilgaming.com/games/your-own-island#tryit",
+      "browser_url": "https://yggdrasilgaming.com/games/your-own-island#tryit#tryit",
+      "symbol": "",
+      "source": "live-catalog",
+      "status": "PARTIAL_REQUIRES_REVIEW",
+      "recognized": true,
+      "confidence": 0.9,
+      "protocol_families": [],
+      "blockers": [
+        "yggdrasil: no demonstrated fn=play command request."
+      ],
+      "reasons": [
+        "No protocol family reached the detection threshold.",
+        "yggdrasil: no demonstrated fn=play command request."
+      ],
+      "http_count": 42,
+      "websocket_count": 0,
+      "error": "",
+      "elapsed_ms": 9017.7
+    }
+  ]
+}
