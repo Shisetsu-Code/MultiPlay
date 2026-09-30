@@ -200,39 +200,30 @@ def _target_inventory(provider: str) -> list[dict[str, Any]]:
 def _pragmatic_inventory() -> list[dict[str, Any]]:
     root = "https://www.pragmaticplay.com/en/games/"
     found: dict[str, dict[str, Any]] = {}
-    empty = 0
-    for page in range(1, 101):
-        url = root if page == 1 else urljoin(root, f"page/{page}/")
-        try:
-            text = _request_text(url)
-        except HTTPError as exc:
-            if exc.code == 404:
-                break
-            raise
-        candidates = _hrefs(text, url)
-        if not any("/games/game/" in urlsplit(item).path for item in candidates):
-            candidates = _browser_hrefs(url)
 
-        new_count = 0
-        for href in candidates:
-            parsed = urlsplit(href)
-            match = re.fullmatch(r"/en/games/([^/?#]+)/?", parsed.path, re.I)
-            if not match:
-                continue
-            slug = match.group(1).casefold()
-            if slug in found:
-                continue
-            found[slug] = _row(
-                "pragmatic",
-                slug,
-                f"https://www.pragmaticplay.com/en/games/{slug}/",
-            )
-            new_count += 1
-        empty = empty + 1 if new_count == 0 else 0
-        if empty >= 2:
-            break
+    # The current catalogue is a dynamic "Load More Games" list. Static
+    # /page/N URLs can expose only a small initial subset, so one rendered
+    # session is the authority for the full catalogue.
+    candidates = _browser_hrefs(root, load_more=True, timeout_ms=90_000)
+    for href in candidates:
+        parsed = urlsplit(href)
+        if (parsed.hostname or "").casefold() not in {
+            "pragmaticplay.com",
+            "www.pragmaticplay.com",
+        }:
+            continue
+        match = re.fullmatch(r"/en/games/([^/?#]+)/?", parsed.path, re.I)
+        if not match:
+            continue
+        slug = match.group(1).casefold()
+        found[slug] = _row(
+            "pragmatic",
+            slug,
+            f"https://www.pragmaticplay.com/en/games/{slug}/",
+        )
+
     if not found:
-        raise RuntimeError("Pragmatic catalog produced no game links")
+        raise RuntimeError("Pragmatic rendered catalog produced no game links")
     return list(found.values())
 
 
