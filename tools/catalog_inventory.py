@@ -284,17 +284,84 @@ def _one_spin_inventory() -> list[dict[str, Any]]:
 
 def _belatra_next_stream(payload: str) -> str:
     text = payload or ""
-    if "self.__next_f.push" not in text:
+    marker = 'self.__next_f.push([1,"'
+    if marker not in text:
         return text
 
     chunks: list[str] = []
     for script in re.findall(r"<script[^>]*>(.*?)</script>", text, re.I | re.S):
-        if "self.__next_f.push" not in script:
+        if marker not in script:
             continue
-        match = re.search(
-            r'self\.__next_f\.push\(\[1,"(.*)"\]\)\s*    root = "https://belatragames.com/es/games/category/2"
+        begin = script.find(marker)
+        if begin < 0:
+            continue
+        begin += len(marker)
+        finish = script.rfind('"])')
+        if finish <= begin:
+            continue
+        raw = script[begin:finish]
+        try:
+            chunks.append(json.loads('"' + raw + '"'))
+        except json.JSONDecodeError:
+            continue
+    return "".join(chunks) if chunks else text
+
+
+def _belatra_game_objects(stream: str) -> list[dict[str, Any]]:
+    needle = '"games":'
+    offset = 0
+    decoder = json.JSONDecoder()
+    best: list[dict[str, Any]] = []
+    while True:
+        index = stream.find(needle, offset)
+        if index < 0:
+            return best
+        try:
+            value, _end = decoder.raw_decode(stream[index + len(needle) :])
+        except json.JSONDecodeError:
+            offset = index + len(needle)
+            continue
+        if isinstance(value, list):
+            candidates = [
+                item
+                for item in value
+                if isinstance(item, dict)
+                and str(item.get("slug") or "").strip()
+                and str(item.get("title") or "").strip()
+            ]
+            if len(candidates) > len(best):
+                best = candidates
+        offset = index + len(needle)
+
+
+def _belatra_pagination_meta(stream: str) -> dict[str, Any]:
+    needle = '"meta":'
+    offset = 0
+    decoder = json.JSONDecoder()
+    while True:
+        index = stream.find(needle, offset)
+        if index < 0:
+            return {}
+        try:
+            value, _end = decoder.raw_decode(stream[index + len(needle) :])
+        except json.JSONDecodeError:
+            offset = index + len(needle)
+            continue
+        if (
+            isinstance(value, dict)
+            and "current_page" in value
+            and "last_page" in value
+            and "per_page" in value
+        ):
+            return value
+        offset = index + len(needle)
+
+
+def _belatra_inventory() -> list[dict[str, Any]]:
+    root = "https://belatragames.com/es/games/category/2"
     found: dict[str, dict[str, Any]] = {}
-    empty = 0
+    expected_last_page: int | None = None
+
     for page in range(1, 101):
         url = root if page == 1 else f"{root}/{page}"
         try:
@@ -304,23 +371,61 @@ def _belatra_next_stream(payload: str) -> str:
                 break
             raise
 
-        new_count = 0
-        for href in _hrefs(text, url):
-            parsed = urlsplit(href)
-            match = re.fullmatch(r"/(?:[a-z]{2}/)?games/game/([^/?#]+)/?", parsed.path, re.I)
-            if not match:
-                continue
-            slug = match.group(1).casefold()
-            if slug in found:
-                continue
-            found[slug] = _row("belatra", slug, href)
-            new_count += 1
+        stream = _belatra_next_stream(text)
+        games = _belatra_game_objects(stream)
+        meta = _belatra_pagination_meta(stream)
 
-        empty = empty + 1 if new_count == 0 else 0
-        if empty >= 2:
+        if games:
+            parsed = urlsplit(url)
+            origin = f"{parsed.scheme}://{parsed.netloc}"
+            language_parts = [part for part in parsed.path.split("/") if part]
+            language = (
+                language_parts[0].casefold()
+                if language_parts
+                and re.fullmatch(r"[a-z]{2}", language_parts[0], re.I)
+                else "en"
+            )
+            for item in games:
+                slug = str(item.get("slug") or "").strip().casefold()
+                if not slug:
+                    continue
+                name = str(item.get("title") or "").strip() or _slug_title(slug)
+                provider_id = str(item.get("id") or "").strip()
+                found[slug] = _row(
+                    "belatra",
+                    slug,
+                    f"{origin}/{language}/games/game/{slug}",
+                    name=name,
+                    symbol=provider_id or slug,
+                )
+        else:
+            candidates = _browser_hrefs(url)
+            for href in candidates:
+                parsed = urlsplit(href)
+                match = re.fullmatch(
+                    r"/(?:[a-z]{2}/)?games/game/([^/?#]+)/?",
+                    parsed.path,
+                    re.I,
+                )
+                if not match:
+                    continue
+                slug = match.group(1).casefold()
+                found.setdefault(slug, _row("belatra", slug, href))
+
+        try:
+            last_page = int(meta.get("last_page") or 0)
+        except (TypeError, ValueError):
+            last_page = 0
+        if last_page > 0:
+            expected_last_page = last_page
+
+        if expected_last_page is not None and page >= expected_last_page:
             break
+        if not games and not meta and page >= 2:
+            break
+
     if not found:
-        raise RuntimeError("Belatra catalog produced no game detail links")
+        raise RuntimeError("Belatra catalog produced no games from Next.js RSC data")
     return list(found.values())
 
 
