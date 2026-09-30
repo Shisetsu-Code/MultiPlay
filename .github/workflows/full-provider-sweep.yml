@@ -37,15 +37,11 @@ jobs:
           - 3oaks
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/checkout@v4
-        with:
-          repository: Shisetsu-Code/Tester-Spin
-          path: legacy-tester-spin
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
       - run: python -m pip install --upgrade pip
-      - run: pip install -e ".[dev]" -r legacy-tester-spin/requirements.txt
+      - run: pip install -e ".[dev]"
       - name: Crawl current catalog
         run: |
           mkdir -p catalog
