@@ -71,7 +71,10 @@ Actual token/session/credential values are always redacted.
 
 ## Status
 
-Initial architecture/migration baseline. Provider implementations are migrated and revalidated incrementally rather than copied blindly from legacy code.
+Provider adapters are now registered for BGaming, Yggdrasil, Pragmatic Play,
+1Spin4Win / D1, Belatra, RubyPlay, Red Tiger and 3 Oaks. Historical contracts are
+migrated conservatively and each provider is revalidated independently against
+current evidence. See `knowledge/providers/MIGRATION-STATUS.md`.
 
 
 ## BGaming evidence workflow

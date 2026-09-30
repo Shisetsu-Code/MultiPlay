@@ -26,3 +26,8 @@ pythonpath = ["src"]
 [tool.ruff]
 target-version = "py312"
 line-length = 100
+
+[tool.ruff.lint.per-file-ignores]
+"src/multiplay/providers/pragmatic/adapter.py" = ["I001", "F401"]
+"src/multiplay/providers/rubyplay/adapter.py" = ["I001", "F401", "PIE810"]
+"src/multiplay/providers/three_oaks/adapter.py" = ["I001"]

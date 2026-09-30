@@ -8,7 +8,7 @@ from pathlib import Path
 from typing import Any
 from urllib.parse import parse_qs
 
-from .models import EvidenceBundle, HttpExchange, ScriptEvidence
+from .models import EvidenceBundle, HttpExchange, ScriptEvidence, WebSocketFrame
 
 _SENSITIVE_HEADERS = {
     "authorization",
@@ -89,9 +89,62 @@ def load_har(path: str | Path) -> EvidenceBundle:
                 )
             )
 
-    if not bundle.http:
-        raise HarError("HAR has no usable HTTP exchanges")
+        _append_websocket_frames(bundle, entry, url=url, entry_index=index)
+
+    if not bundle.http and not bundle.websocket:
+        raise HarError("HAR has no usable HTTP exchanges or WebSocket frames")
     return bundle
+
+
+def _append_websocket_frames(
+    bundle: EvidenceBundle,
+    entry: dict[str, Any],
+    *,
+    url: str,
+    entry_index: int,
+) -> None:
+    raw_frames = None
+    for key in ("_webSocketMessages", "webSocketMessages", "_webSocketFrames"):
+        value = entry.get(key)
+        if isinstance(value, list):
+            raw_frames = value
+            break
+    if not raw_frames:
+        return
+
+    sequence = len(bundle.websocket)
+    for frame_index, item in enumerate(raw_frames):
+        if not isinstance(item, dict):
+            continue
+        raw_direction = str(
+            item.get("type")
+            or item.get("direction")
+            or item.get("opcode")
+            or ""
+        ).strip().casefold()
+        if raw_direction in {"send", "sent", "out", "outbound"}:
+            direction = "send"
+        elif raw_direction in {"receive", "received", "recv", "in", "inbound"}:
+            direction = "receive"
+        else:
+            continue
+
+        payload = item.get("data")
+        if payload is None:
+            payload = item.get("payload")
+        if payload is None:
+            continue
+
+        bundle.websocket.append(
+            WebSocketFrame(
+                evidence_id=f"har:ws:{entry_index}:{frame_index}",
+                url=url,
+                direction=direction,
+                payload=redact(payload),
+                sequence=sequence,
+            )
+        )
+        sequence += 1
 
 
 def _headers(items: Any) -> dict[str, str]:
