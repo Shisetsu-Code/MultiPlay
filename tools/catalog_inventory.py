@@ -1,63 +1,92 @@
 from __future__ import annotations
 
 import argparse
+import html
 import json
-import os
 import re
-import sys
-import threading
 from pathlib import Path
 from typing import Any
-from urllib.parse import urljoin, urlsplit
+from urllib.error import HTTPError
+from urllib.parse import parse_qs, urlencode, urljoin, urlsplit
 from urllib.request import Request, urlopen
 
 
-LEGACY_CLASSES = {
-    "pragmatic": ("PragmaticProvider", "pragmatic"),
-    "one_spin4win": ("OneSpin4WinProvider", "one_spin4win"),
-    "belatra": ("BelatraProvider", "belatra"),
-    "rubyplay": ("RubyPlayProvider", "rubyplay"),
-    "redtiger": ("RedTigerProvider", "redtiger"),
-}
-
 TARGET_FILES = {
-    "bgaming": (
-        "https://raw.githubusercontent.com/Shisetsu-Code/Crawler-BGaming/main/targets.txt"
-    ),
-    "3oaks": (
-        "https://raw.githubusercontent.com/Shisetsu-Code/Crawler-3oaks/main/targets.txt"
-    ),
+    "bgaming": "https://raw.githubusercontent.com/Shisetsu-Code/Crawler-BGaming/main/targets.txt",
+    "3oaks": "https://raw.githubusercontent.com/Shisetsu-Code/Crawler-3oaks/main/targets.txt",
 }
 
+UA = (
+    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
+    "AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128 Safari/537.36"
+)
 
-def _request_text(url: str, timeout: float = 30.0) -> str:
+
+def _request(url: str, timeout: float = 30.0):
     request = Request(
         url,
         headers={
-            "User-Agent": (
-                "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
-                "AppleWebKit/537.36 Chrome/128 Safari/537.36"
-            ),
+            "User-Agent": UA,
             "Accept-Language": "en-US,en;q=0.9",
+            "Accept": "application/json,text/html,application/xhtml+xml,*/*;q=0.8",
         },
     )
-    with urlopen(request, timeout=timeout) as response:
+    return urlopen(request, timeout=timeout)
+
+
+def _request_text(url: str, timeout: float = 30.0) -> str:
+    with _request(url, timeout) as response:
         return response.read().decode("utf-8", errors="replace")
+
+
+def _request_json(url: str, timeout: float = 30.0) -> tuple[Any, dict[str, str]]:
+    with _request(url, timeout) as response:
+        body = response.read().decode("utf-8", errors="replace")
+        headers = {str(k): str(v) for k, v in response.headers.items()}
+    return json.loads(body), headers
+
+
+def _strip_tags(value: str) -> str:
+    return re.sub(r"\s+", " ", re.sub(r"<[^>]+>", " ", html.unescape(value or ""))).strip()
+
+
+def _slug_title(slug: str) -> str:
+    return re.sub(r"[-_]+", " ", slug).strip().title()
+
+
+def _hrefs(text: str, base_url: str) -> list[str]:
+    values: list[str] = []
+    seen: set[str] = set()
+    for raw in re.findall(r'href\s*=\s*["\']([^"\']+)["\']', text or "", re.I):
+        url = urljoin(base_url, html.unescape(raw.strip()))
+        if url not in seen:
+            seen.add(url)
+            values.append(url)
+    return values
 
 
 def _slug_from_url(url: str) -> str:
     parts = [item for item in urlsplit(url).path.split("/") if item]
     if not parts:
         return ""
-    if "games" in parts:
-        index = parts.index("games")
-        if index + 1 < len(parts):
-            return parts[index + 1]
-    if "play" in parts:
-        index = parts.index("play")
-        if index + 1 < len(parts):
-            return parts[index + 1]
+    for marker in ("games", "play"):
+        if marker in parts:
+            index = parts.index(marker)
+            if index + 1 < len(parts):
+                return parts[index + 1]
     return parts[-1]
+
+
+def _row(provider: str, slug: str, url: str, *, name: str = "", symbol: str = ""):
+    return {
+        "provider": provider,
+        "slug": slug,
+        "name": name or _slug_title(slug),
+        "url": url,
+        "browser_url": url,
+        "symbol": symbol,
+        "source": "live-catalog",
+    }
 
 
 def _target_inventory(provider: str) -> list[dict[str, Any]]:
@@ -70,101 +99,295 @@ def _target_inventory(provider: str) -> list[dict[str, Any]]:
             continue
         seen.add(url)
         slug = _slug_from_url(url)
-        browser_url = url
+        item = _row(provider, slug, url)
+        item["source"] = "targets.txt"
         if provider == "3oaks":
-            browser_url = f"https://3oaks.com/games/{slug}"
-        rows.append(
-            {
-                "provider": provider,
-                "slug": slug,
-                "name": slug.replace("_", " ").replace("-", " ").strip().title(),
-                "url": url,
-                "browser_url": browser_url,
-                "source": "targets.txt",
-            }
-        )
+            item["browser_url"] = f"https://3oaks.com/games/{slug}"
+        rows.append(item)
     return rows
 
 
-def _legacy_inventory(provider: str, legacy_root: Path) -> list[dict[str, Any]]:
-    if str(legacy_root) not in sys.path:
-        sys.path.insert(0, str(legacy_root))
-    os.environ["TESTER_SPIN_PROVIDER_ONLY"] = provider
+def _pragmatic_inventory() -> list[dict[str, Any]]:
+    root = "https://www.pragmaticplay.com/en/games/"
+    found: dict[str, dict[str, Any]] = {}
+    empty = 0
+    for page in range(1, 101):
+        url = root if page == 1 else urljoin(root, f"page/{page}/")
+        try:
+            text = _request_text(url)
+        except HTTPError as exc:
+            if exc.code == 404:
+                break
+            raise
+        new_count = 0
+        for href in _hrefs(text, url):
+            parsed = urlsplit(href)
+            match = re.fullmatch(r"/en/games/([^/?#]+)/?", parsed.path, re.I)
+            if not match:
+                continue
+            slug = match.group(1).casefold()
+            if slug in found:
+                continue
+            found[slug] = _row(
+                "pragmatic",
+                slug,
+                f"https://www.pragmaticplay.com/en/games/{slug}/",
+            )
+            new_count += 1
+        empty = empty + 1 if new_count == 0 else 0
+        if empty >= 2:
+            break
+    if not found:
+        raise RuntimeError("Pragmatic catalog produced no game links")
+    return list(found.values())
 
-    import tester_spin.providers as providers  # type: ignore
 
-    class_name, _key = LEGACY_CLASSES[provider]
-    cls = getattr(providers, class_name)
-    data_root = Path(os.environ.get("RUNNER_TEMP", ".")) / "tester-spin-catalog"
-    adapter = cls(data_root)
-    messages: list[str] = []
-    games = adapter.crawl_catalog(
-        stop_event=threading.Event(),
-        progress=lambda message: messages.append(str(message)),
-        max_pages=100,
-    )
+def _one_spin_inventory() -> list[dict[str, Any]]:
+    root = "https://www.1spin4win.com/games"
+    found: dict[str, dict[str, Any]] = {}
+    visited: set[str] = set()
+    url = root
 
-    rows = []
-    for game in games:
-        rows.append(
-            {
-                "provider": provider,
-                "slug": str(game.slug),
-                "name": str(game.name),
-                "url": str(game.url),
-                "browser_url": str(game.url),
-                "symbol": str(game.symbol or ""),
-                "thumbnail_url": str(game.thumbnail_url or ""),
-                "source": "tester-spin-catalog",
-            }
-        )
+    for _page in range(100):
+        if not url or url in visited:
+            break
+        visited.add(url)
+        text = _request_text(url)
+        hrefs = _hrefs(text, url)
+
+        for href in hrefs:
+            parsed = urlsplit(href)
+            host = (parsed.hostname or "").casefold()
+            if host != "gs.1spin4win.com":
+                continue
+            query = parse_qs(parsed.query)
+            slug = str((query.get("game") or [""])[0]).strip()
+            if not slug:
+                slug = Path(parsed.path).stem
+            slug = slug.strip().casefold()
+            if slug and slug not in found:
+                found[slug] = _row("one_spin4win", slug, href)
+
+        next_candidates: list[tuple[int, str]] = []
+        for href in hrefs:
+            parsed = urlsplit(href)
+            query = parse_qs(parsed.query)
+            for key, values in query.items():
+                if not key.endswith("_page"):
+                    continue
+                try:
+                    page_number = int((values or ["0"])[0])
+                except ValueError:
+                    continue
+                if href not in visited:
+                    next_candidates.append((page_number, href))
+        url = min(next_candidates, default=(0, ""))[1]
+
+    if not found:
+        raise RuntimeError("1Spin4Win catalog produced no gs.1spin4win.com demos")
+    return list(found.values())
+
+
+def _belatra_inventory() -> list[dict[str, Any]]:
+    root = "https://belatragames.com/es/games/category/2"
+    found: dict[str, dict[str, Any]] = {}
+    empty = 0
+    for page in range(1, 101):
+        url = root if page == 1 else f"{root}/{page}"
+        try:
+            text = _request_text(url)
+        except HTTPError as exc:
+            if exc.code == 404:
+                break
+            raise
+
+        new_count = 0
+        for href in _hrefs(text, url):
+            parsed = urlsplit(href)
+            match = re.fullmatch(r"/(?:[a-z]{2}/)?games/game/([^/?#]+)/?", parsed.path, re.I)
+            if not match:
+                continue
+            slug = match.group(1).casefold()
+            if slug in found:
+                continue
+            found[slug] = _row("belatra", slug, href)
+            new_count += 1
+
+        empty = empty + 1 if new_count == 0 else 0
+        if empty >= 2:
+            break
+    if not found:
+        raise RuntimeError("Belatra catalog produced no game detail links")
+    return list(found.values())
+
+
+def _rubyplay_wp_inventory() -> list[dict[str, Any]]:
+    found: dict[str, dict[str, Any]] = {}
+    for page in range(1, 101):
+        query = urlencode({"per_page": 100, "page": page})
+        url = f"https://rubyplay.com/wp-json/wp/v2/games?{query}"
+        try:
+            payload, headers = _request_json(url)
+        except HTTPError as exc:
+            if exc.code in {400, 404} and page > 1:
+                break
+            raise
+        if not isinstance(payload, list):
+            raise RuntimeError("RubyPlay wp-json games response is not a list")
+        for item in payload:
+            if not isinstance(item, dict):
+                continue
+            slug = str(item.get("slug") or "").strip().casefold()
+            link = str(item.get("link") or "").strip()
+            title = item.get("title")
+            rendered = title.get("rendered") if isinstance(title, dict) else ""
+            if slug and link:
+                found[slug] = _row(
+                    "rubyplay",
+                    slug,
+                    link,
+                    name=_strip_tags(str(rendered or "")),
+                    symbol=str(item.get("id") or ""),
+                )
+        total_pages = int(headers.get("X-WP-TotalPages") or headers.get("x-wp-totalpages") or 0)
+        if (total_pages and page >= total_pages) or len(payload) < 100:
+            break
+    return list(found.values())
+
+
+def _rubyplay_sitemap_inventory() -> list[dict[str, Any]]:
+    roots = [
+        "https://rubyplay.com/wp-sitemap-posts-games-1.xml",
+        "https://rubyplay.com/game-sitemap.xml",
+        "https://rubyplay.com/wp-sitemap.xml",
+    ]
+    found: dict[str, dict[str, Any]] = {}
+    pending = list(roots)
+    seen_docs: set[str] = set()
+
+    while pending and len(seen_docs) < 30:
+        url = pending.pop(0)
+        if url in seen_docs:
+            continue
+        seen_docs.add(url)
+        try:
+            text = _request_text(url)
+        except Exception:
+            continue
+        locs = re.findall(r"<loc>\s*([^<]+)\s*</loc>", text, re.I)
+        for loc in locs:
+            loc = html.unescape(loc.strip())
+            parsed = urlsplit(loc)
+            match = re.fullmatch(r"/games/([^/]+)/?", parsed.path, re.I)
+            if match:
+                slug = match.group(1).casefold()
+                found[slug] = _row("rubyplay", slug, loc)
+            elif "sitemap" in parsed.path.casefold() and "games" in parsed.path.casefold():
+                pending.append(loc)
+
+    if not found:
+        text = _request_text("https://rubyplay.com/games/")
+        for href in _hrefs(text, "https://rubyplay.com/games/"):
+            match = re.fullmatch(r"/games/([^/]+)/?", urlsplit(href).path, re.I)
+            if match:
+                slug = match.group(1).casefold()
+                found[slug] = _row("rubyplay", slug, href)
+    return list(found.values())
+
+
+def _rubyplay_inventory() -> list[dict[str, Any]]:
+    try:
+        rows = _rubyplay_wp_inventory()
+    except Exception:
+        rows = []
+    if not rows:
+        rows = _rubyplay_sitemap_inventory()
+    if not rows:
+        raise RuntimeError("RubyPlay catalog produced no game links")
     return rows
+
+
+def _redtiger_inventory() -> list[dict[str, Any]]:
+    endpoint = "https://games.evolution.com/wp-json/wp/v2/pages"
+    found: dict[str, dict[str, Any]] = {}
+    for page in range(1, 101):
+        query = urlencode(
+            [
+                ("_embed", 1),
+                ("acf_format", "standard"),
+                ("page", page),
+                ("per_page", 100),
+                ("game_provider[]", "1185"),
+                ("custom_sort", "featured"),
+                ("only_games", 1),
+            ]
+        )
+        try:
+            payload, headers = _request_json(f"{endpoint}?{query}")
+        except HTTPError as exc:
+            if exc.code == 400 and page > 1:
+                break
+            raise
+        if not isinstance(payload, list):
+            raise RuntimeError("Red Tiger WordPress response is not a list")
+        for item in payload:
+            if not isinstance(item, dict):
+                continue
+            slug = str(item.get("slug") or "").strip().casefold()
+            link = str(item.get("link") or "").strip()
+            title = item.get("title")
+            rendered = title.get("rendered") if isinstance(title, dict) else ""
+            if slug and link:
+                found[slug] = _row(
+                    "redtiger",
+                    slug,
+                    link,
+                    name=_strip_tags(str(rendered or "")),
+                    symbol=str(item.get("id") or ""),
+                )
+        total_pages = int(headers.get("X-WP-TotalPages") or headers.get("x-wp-totalpages") or 0)
+        if (total_pages and page >= total_pages) or len(payload) < 100:
+            break
+    if not found:
+        raise RuntimeError("Red Tiger catalog produced no provider=1185 games")
+    return list(found.values())
 
 
 def _yggdrasil_inventory() -> list[dict[str, Any]]:
     root = "https://yggdrasilgaming.com/game-provider/yggdrasil-gaming"
-    html = _request_text(root)
-    hrefs = re.findall(r'href=["\']([^"\']+)["\']', html, flags=re.IGNORECASE)
-    rows: list[dict[str, Any]] = []
-    seen: set[str] = set()
-
-    for href in hrefs:
-        absolute = urljoin(root, href)
-        parsed = urlsplit(absolute)
+    text = _request_text(root)
+    found: dict[str, dict[str, Any]] = {}
+    for href in _hrefs(text, root):
+        parsed = urlsplit(href)
         if (parsed.hostname or "").casefold() != "yggdrasilgaming.com":
             continue
-        path = parsed.path.rstrip("/")
-        if not path.startswith("/games/"):
+        match = re.fullmatch(r"/games/([^/]+)/?", parsed.path, re.I)
+        if not match:
             continue
-        slug = path.split("/", 2)[-1].strip()
-        if not slug or slug in seen:
-            continue
-        seen.add(slug)
-        rows.append(
-            {
-                "provider": "yggdrasil",
-                "slug": slug,
-                "name": slug.replace("-", " ").title(),
-                "url": absolute,
-                "browser_url": absolute + "#tryit",
-                "source": "yggdrasil-provider-page",
-            }
-        )
-
-    if not rows:
+        slug = match.group(1).casefold()
+        item = _row("yggdrasil", slug, href)
+        item["browser_url"] = href + "#tryit"
+        found[slug] = item
+    if not found:
         raise RuntimeError("Yggdrasil catalog produced no /games/ links")
-    return rows
+    return list(found.values())
 
 
-def inventory(provider: str, legacy_root: Path | None) -> list[dict[str, Any]]:
+def inventory(provider: str) -> list[dict[str, Any]]:
     if provider in TARGET_FILES:
         return _target_inventory(provider)
+    if provider == "pragmatic":
+        return _pragmatic_inventory()
+    if provider == "one_spin4win":
+        return _one_spin_inventory()
+    if provider == "belatra":
+        return _belatra_inventory()
+    if provider == "rubyplay":
+        return _rubyplay_inventory()
+    if provider == "redtiger":
+        return _redtiger_inventory()
     if provider == "yggdrasil":
         return _yggdrasil_inventory()
-    if provider in LEGACY_CLASSES:
-        if legacy_root is None:
-            raise ValueError("--legacy-root is required for this provider")
-        return _legacy_inventory(provider, legacy_root)
     raise ValueError(f"unsupported provider: {provider}")
 
 
@@ -175,7 +398,7 @@ def main() -> int:
     parser.add_argument("--output", type=Path, required=True)
     args = parser.parse_args()
 
-    rows = inventory(args.provider, args.legacy_root)
+    rows = inventory(args.provider)
     rows.sort(key=lambda row: (str(row.get("name") or "").casefold(), str(row["slug"])))
     args.output.parent.mkdir(parents=True, exist_ok=True)
     args.output.write_text(
