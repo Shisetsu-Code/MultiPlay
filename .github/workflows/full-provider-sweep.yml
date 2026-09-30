@@ -43,7 +43,7 @@ jobs:
       - run: python -m pip install --upgrade pip
       - run: pip install -e ".[browser,dev]" certifi
       - name: Install Chromium for rendered catalogs
-        if: matrix.provider == 'yggdrasil' || matrix.provider == 'belatra' || matrix.provider == 'rubyplay'
+        if: matrix.provider == 'yggdrasil' || matrix.provider == 'belatra' || matrix.provider == 'rubyplay' || matrix.provider == 'pragmatic'
         run: python -m playwright install --with-deps chromium
       - name: Crawl current catalog
         run: |
