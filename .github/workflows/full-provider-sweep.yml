@@ -41,11 +41,15 @@ jobs:
         with:
           python-version: "3.12"
       - run: python -m pip install --upgrade pip
-      - run: pip install -e ".[dev]"
+      - run: pip install -e ".[browser,dev]" certifi
+      - name: Install Chromium for rendered catalogs
+        if: matrix.provider == 'yggdrasil' || matrix.provider == 'belatra' || matrix.provider == 'rubyplay'
+        run: python -m playwright install --with-deps chromium
       - name: Crawl current catalog
         run: |
           mkdir -p catalog
-          python tools/catalog_inventory.py "${{ matrix.provider }}"             --legacy-root legacy-tester-spin             --output "catalog/${{ matrix.provider }}.json"
+          python tools/catalog_inventory.py "${{ matrix.provider }}" \
+            --output "catalog/${{ matrix.provider }}.json"
           python - <<'PY'
           import json
           from pathlib import Path
