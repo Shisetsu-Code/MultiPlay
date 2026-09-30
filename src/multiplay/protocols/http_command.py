@@ -41,8 +41,10 @@ class HttpCommandProtocol(ProtocolAdapter):
             self.family,
             score,
             (
-                f"{actionful}/{len(stateful)} requests expose a body action; "
-                f"{endpoint_routed} use an action-like endpoint leaf",
+                (
+                    f"{actionful}/{len(stateful)} requests expose a body action; "
+                    f"{endpoint_routed} use an action-like endpoint leaf"
+                ),
             ),
         )
 
