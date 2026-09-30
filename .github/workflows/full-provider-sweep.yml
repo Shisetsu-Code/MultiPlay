@@ -17,7 +17,7 @@ permissions:
   contents: write
 
 concurrency:
-  group: full-provider-catalog-sweep
+  group: full-provider-catalog-sweep-v2
   cancel-in-progress: true
 
 jobs:
