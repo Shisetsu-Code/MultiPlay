@@ -1,0 +1,187 @@
+name: Full provider catalog sweep
+
+on:
+  workflow_dispatch:
+  push:
+    branches: ["main"]
+    paths:
+      - ".github/workflows/full-provider-sweep.yml"
+      - "tools/catalog_inventory.py"
+      - "tools/passive_provider_sweep.py"
+      - "src/multiplay/evidence.py"
+      - "src/multiplay/pipeline.py"
+      - "src/multiplay/providers/**"
+      - "src/multiplay/protocols/**"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: full-provider-catalog-sweep
+  cancel-in-progress: true
+
+jobs:
+  catalog:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        provider:
+          - bgaming
+          - yggdrasil
+          - pragmatic
+          - one_spin4win
+          - belatra
+          - rubyplay
+          - redtiger
+          - 3oaks
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/checkout@v4
+        with:
+          repository: Shisetsu-Code/Tester-Spin
+          path: legacy-tester-spin
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install --upgrade pip
+      - run: pip install -e ".[dev]" -r legacy-tester-spin/requirements.txt
+      - name: Crawl current catalog
+        run: |
+          mkdir -p catalog
+          python tools/catalog_inventory.py "${{ matrix.provider }}"             --legacy-root legacy-tester-spin             --output "catalog/${{ matrix.provider }}.json"
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          p = Path("catalog/${{ matrix.provider }}.json")
+          d = json.loads(p.read_text(encoding="utf-8"))
+          if int(d.get("count") or 0) <= 0:
+              raise SystemExit("catalog is empty")
+          print(json.dumps({"provider": d["provider"], "count": d["count"]}))
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: catalog-${{ matrix.provider }}
+          path: catalog/${{ matrix.provider }}.json
+          if-no-files-found: error
+          retention-days: 7
+
+  sweep:
+    needs: catalog
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    strategy:
+      fail-fast: false
+      max-parallel: 8
+      matrix:
+        provider:
+          - bgaming
+          - yggdrasil
+          - pragmatic
+          - one_spin4win
+          - belatra
+          - rubyplay
+          - redtiger
+          - 3oaks
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install --upgrade pip
+      - run: pip install -e ".[browser,dev]"
+      - run: python -m playwright install --with-deps chromium
+      - uses: actions/download-artifact@v4
+        with:
+          name: catalog-${{ matrix.provider }}
+          path: catalog
+      - name: Passively process every game
+        run: |
+          mkdir -p sweep
+          python tools/passive_provider_sweep.py "${{ matrix.provider }}"             --catalog "catalog/${{ matrix.provider }}.json"             --shard-index 0             --shard-count 1             --settle-ms 1800             --output "sweep/${{ matrix.provider }}.json"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: sweep-${{ matrix.provider }}
+          path: sweep/${{ matrix.provider }}.json
+          if-no-files-found: error
+          retention-days: 7
+
+  aggregate:
+    needs: sweep
+    if: always() && needs.sweep.result == 'success'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: sweep-*
+          path: downloaded
+      - name: Aggregate sweep results
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          providers = {}
+          for path in sorted(Path("downloaded").rglob("*.json")):
+              try:
+                  d = json.loads(path.read_text(encoding="utf-8"))
+              except Exception:
+                  continue
+              if d.get("schema") != "multiplay/passive-provider-sweep/v1":
+                  continue
+              provider = str(d.get("provider") or "")
+              if not provider:
+                  continue
+              providers[provider] = d
+
+          if len(providers) != 8:
+              raise SystemExit(f"expected 8 provider results, got {sorted(providers)}")
+
+          staging = Path("/tmp/multiplay-sweep")
+          staging.mkdir(parents=True, exist_ok=True)
+          summary = {
+              "schema": "multiplay/full-provider-sweep-summary/v1",
+              "provider_count": len(providers),
+              "catalog_total": sum(int(d.get("catalog_count") or 0) for d in providers.values()),
+              "processed_total": sum(int(d.get("processed") or 0) for d in providers.values()),
+              "recognized_total": sum(int(d.get("recognized") or 0) for d in providers.values()),
+              "providers": {},
+          }
+          for provider, d in sorted(providers.items()):
+              out = staging / f"{provider}.json"
+              out.write_text(json.dumps(d, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+              summary["providers"][provider] = {
+                  "catalog_count": d.get("catalog_count"),
+                  "processed": d.get("processed"),
+                  "recognized": d.get("recognized"),
+                  "status_counts": d.get("status_counts") or {},
+              }
+
+          (staging / "SUMMARY.json").write_text(
+              json.dumps(summary, ensure_ascii=False, indent=2) + "\n",
+              encoding="utf-8",
+          )
+          print(json.dumps(summary, ensure_ascii=False, indent=2))
+          PY
+      - name: Persist current sweep
+        run: |
+          git fetch origin main
+          git reset --hard origin/main
+          for provider in bgaming yggdrasil pragmatic one_spin4win belatra rubyplay redtiger 3oaks; do
+            mkdir -p "knowledge/providers/$provider"
+            cp "/tmp/multiplay-sweep/$provider.json" "knowledge/providers/$provider/sweep-last.json"
+          done
+          cp /tmp/multiplay-sweep/SUMMARY.json knowledge/providers/SWEEP-SUMMARY.json
+          git config user.name "MultiPlay Worker"
+          git config user.email "multiplay-worker@users.noreply.github.com"
+          git add knowledge/providers
+          if git diff --cached --quiet; then
+            echo "No sweep changes"
+            exit 0
+          fi
+          git commit -m "Update full provider sweep results"
+          git push origin HEAD:main
