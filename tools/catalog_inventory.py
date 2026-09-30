@@ -282,8 +282,17 @@ def _one_spin_inventory() -> list[dict[str, Any]]:
     return list(found.values())
 
 
-def _belatra_inventory() -> list[dict[str, Any]]:
-    root = "https://belatragames.com/es/games/category/2"
+def _belatra_next_stream(payload: str) -> str:
+    text = payload or ""
+    if "self.__next_f.push" not in text:
+        return text
+
+    chunks: list[str] = []
+    for script in re.findall(r"<script[^>]*>(.*?)</script>", text, re.I | re.S):
+        if "self.__next_f.push" not in script:
+            continue
+        match = re.search(
+            r'self\.__next_f\.push\(\[1,"(.*)"\]\)\s*    root = "https://belatragames.com/es/games/category/2"
     found: dict[str, dict[str, Any]] = {}
     empty = 0
     for page in range(1, 101):
@@ -312,6 +321,360 @@ def _belatra_inventory() -> list[dict[str, Any]]:
             break
     if not found:
         raise RuntimeError("Belatra catalog produced no game detail links")
+    return list(found.values())
+
+
+def _rubyplay_wp_inventory() -> list[dict[str, Any]]:
+    found: dict[str, dict[str, Any]] = {}
+    for page in range(1, 101):
+        query = urlencode({"per_page": 100, "page": page})
+        url = f"https://rubyplay.com/wp-json/wp/v2/games?{query}"
+        try:
+            payload, headers = _request_json(url)
+        except HTTPError as exc:
+            if exc.code in {400, 404} and page > 1:
+                break
+            raise
+        if not isinstance(payload, list):
+            raise RuntimeError("RubyPlay wp-json games response is not a list")
+        for item in payload:
+            if not isinstance(item, dict):
+                continue
+            slug = str(item.get("slug") or "").strip().casefold()
+            link = str(item.get("link") or "").strip()
+            title = item.get("title")
+            rendered = title.get("rendered") if isinstance(title, dict) else ""
+            if slug and link:
+                found[slug] = _row(
+                    "rubyplay",
+                    slug,
+                    link,
+                    name=_strip_tags(str(rendered or "")),
+                    symbol=str(item.get("id") or ""),
+                )
+        total_pages = int(headers.get("X-WP-TotalPages") or headers.get("x-wp-totalpages") or 0)
+        if (total_pages and page >= total_pages) or len(payload) < 100:
+            break
+    return list(found.values())
+
+
+def _rubyplay_sitemap_inventory() -> list[dict[str, Any]]:
+    roots = [
+        "https://rubyplay.com/wp-sitemap-posts-games-1.xml",
+        "https://rubyplay.com/game-sitemap.xml",
+        "https://rubyplay.com/wp-sitemap.xml",
+    ]
+    found: dict[str, dict[str, Any]] = {}
+    pending = list(roots)
+    seen_docs: set[str] = set()
+
+    while pending and len(seen_docs) < 30:
+        url = pending.pop(0)
+        if url in seen_docs:
+            continue
+        seen_docs.add(url)
+        try:
+            text = _request_text(url)
+        except Exception:
+            continue
+        locs = re.findall(r"<loc>\s*([^<]+)\s*</loc>", text, re.I)
+        for loc in locs:
+            loc = html.unescape(loc.strip())
+            parsed = urlsplit(loc)
+            match = re.fullmatch(r"/games/([^/]+)/?", parsed.path, re.I)
+            if match:
+                slug = match.group(1).casefold()
+                found[slug] = _row("rubyplay", slug, loc)
+            elif "sitemap" in parsed.path.casefold() and "games" in parsed.path.casefold():
+                pending.append(loc)
+
+    if not found:
+        try:
+            text = _request_text("https://rubyplay.com/games/")
+            candidates = _hrefs(text, "https://rubyplay.com/games/")
+        except Exception:
+            candidates = []
+        if not candidates:
+            candidates = _browser_hrefs(
+                "https://rubyplay.com/games/",
+                load_more=True,
+            )
+        for href in candidates:
+            match = re.fullmatch(r"/games/([^/]+)/?", urlsplit(href).path, re.I)
+            if match:
+                slug = match.group(1).casefold()
+                found[slug] = _row("rubyplay", slug, href)
+    return list(found.values())
+
+
+def _rubyplay_inventory() -> list[dict[str, Any]]:
+    try:
+        rows = _rubyplay_wp_inventory()
+    except Exception:
+        rows = []
+    if not rows:
+        rows = _rubyplay_sitemap_inventory()
+    if not rows:
+        raise RuntimeError("RubyPlay catalog produced no game links")
+    return rows
+
+
+def _redtiger_inventory() -> list[dict[str, Any]]:
+    endpoint = "https://games.evolution.com/wp-json/wp/v2/pages"
+    found: dict[str, dict[str, Any]] = {}
+    for page in range(1, 101):
+        query = urlencode(
+            [
+                ("_embed", 1),
+                ("acf_format", "standard"),
+                ("page", page),
+                ("per_page", 100),
+                ("game_provider[]", "1185"),
+                ("custom_sort", "featured"),
+                ("only_games", 1),
+            ]
+        )
+        try:
+            payload, headers = _request_json(f"{endpoint}?{query}")
+        except HTTPError as exc:
+            if exc.code == 400 and page > 1:
+                break
+            raise
+        if not isinstance(payload, list):
+            raise RuntimeError("Red Tiger WordPress response is not a list")
+        for item in payload:
+            if not isinstance(item, dict):
+                continue
+            slug = str(item.get("slug") or "").strip().casefold()
+            link = str(item.get("link") or "").strip()
+            title = item.get("title")
+            rendered = title.get("rendered") if isinstance(title, dict) else ""
+            if slug and link:
+                found[slug] = _row(
+                    "redtiger",
+                    slug,
+                    link,
+                    name=_strip_tags(str(rendered or "")),
+                    symbol=str(item.get("id") or ""),
+                )
+        total_pages = int(headers.get("X-WP-TotalPages") or headers.get("x-wp-totalpages") or 0)
+        if (total_pages and page >= total_pages) or len(payload) < 100:
+            break
+    if not found:
+        raise RuntimeError("Red Tiger catalog produced no provider=1185 games")
+    return list(found.values())
+
+
+def _yggdrasil_inventory() -> list[dict[str, Any]]:
+    root = "https://yggdrasilgaming.com/game-provider/yggdrasil-gaming"
+    found: dict[str, dict[str, Any]] = {}
+
+    try:
+        text = _request_text(root)
+        candidates = _hrefs(text, root)
+    except Exception:
+        candidates = []
+
+    if not any("/games/" in urlsplit(item).path for item in candidates):
+        candidates = _browser_hrefs(root, load_more=True)
+
+    for href in candidates:
+        parsed = urlsplit(href)
+        if (parsed.hostname or "").casefold() != "yggdrasilgaming.com":
+            continue
+        match = re.fullmatch(r"/games/([^/]+)/?", parsed.path, re.I)
+        if not match:
+            continue
+        slug = match.group(1).casefold()
+        item = _row("yggdrasil", slug, href)
+        item["browser_url"] = href + "#tryit"
+        found[slug] = item
+    if not found:
+        raise RuntimeError("Yggdrasil catalog produced no /games/ links")
+    return list(found.values())
+
+
+def inventory(provider: str) -> list[dict[str, Any]]:
+    if provider in TARGET_FILES:
+        return _target_inventory(provider)
+    if provider == "pragmatic":
+        return _pragmatic_inventory()
+    if provider == "one_spin4win":
+        return _one_spin_inventory()
+    if provider == "belatra":
+        return _belatra_inventory()
+    if provider == "rubyplay":
+        return _rubyplay_inventory()
+    if provider == "redtiger":
+        return _redtiger_inventory()
+    if provider == "yggdrasil":
+        return _yggdrasil_inventory()
+    raise ValueError(f"unsupported provider: {provider}")
+
+
+def main() -> int:
+    parser = argparse.ArgumentParser()
+    parser.add_argument("provider")
+    parser.add_argument("--legacy-root", type=Path)
+    parser.add_argument("--output", type=Path, required=True)
+    args = parser.parse_args()
+
+    rows = inventory(args.provider)
+    rows.sort(key=lambda row: (str(row.get("name") or "").casefold(), str(row["slug"])))
+    args.output.parent.mkdir(parents=True, exist_ok=True)
+    args.output.write_text(
+        json.dumps(
+            {
+                "schema": "multiplay/catalog-inventory/v1",
+                "provider": args.provider,
+                "count": len(rows),
+                "games": rows,
+            },
+            ensure_ascii=False,
+            indent=2,
+        )
+        + "\n",
+        encoding="utf-8",
+    )
+    print(json.dumps({"provider": args.provider, "count": len(rows)}))
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())
+,
+            script,
+            re.S,
+        )
+        if not match:
+            continue
+        try:
+            chunks.append(json.loads('"' + match.group(1) + '"'))
+        except json.JSONDecodeError:
+            continue
+    return "".join(chunks) if chunks else text
+
+
+def _belatra_game_objects(stream: str) -> list[dict[str, Any]]:
+    needle = '"games":'
+    offset = 0
+    decoder = json.JSONDecoder()
+    best: list[dict[str, Any]] = []
+    while True:
+        index = stream.find(needle, offset)
+        if index < 0:
+            return best
+        try:
+            value, _end = decoder.raw_decode(stream[index + len(needle) :])
+        except json.JSONDecodeError:
+            offset = index + len(needle)
+            continue
+        if isinstance(value, list):
+            candidates = [
+                item
+                for item in value
+                if isinstance(item, dict)
+                and str(item.get("slug") or "").strip()
+                and str(item.get("title") or "").strip()
+            ]
+            if len(candidates) > len(best):
+                best = candidates
+        offset = index + len(needle)
+
+
+def _belatra_pagination_meta(stream: str) -> dict[str, Any]:
+    needle = '"meta":'
+    offset = 0
+    decoder = json.JSONDecoder()
+    while True:
+        index = stream.find(needle, offset)
+        if index < 0:
+            return {}
+        try:
+            value, _end = decoder.raw_decode(stream[index + len(needle) :])
+        except json.JSONDecodeError:
+            offset = index + len(needle)
+            continue
+        if (
+            isinstance(value, dict)
+            and "current_page" in value
+            and "last_page" in value
+            and "per_page" in value
+        ):
+            return value
+        offset = index + len(needle)
+
+
+def _belatra_inventory() -> list[dict[str, Any]]:
+    root = "https://belatragames.com/es/games/category/2"
+    found: dict[str, dict[str, Any]] = {}
+    expected_last_page: int | None = None
+
+    for page in range(1, 101):
+        url = root if page == 1 else f"{root}/{page}"
+        try:
+            text = _request_text(url)
+        except HTTPError as exc:
+            if exc.code == 404:
+                break
+            raise
+
+        stream = _belatra_next_stream(text)
+        games = _belatra_game_objects(stream)
+        meta = _belatra_pagination_meta(stream)
+
+        if not games:
+            # Defensive rendered fallback for future frontend changes. The
+            # canonical current catalog is the Next.js RSC games[] object.
+            candidates = _browser_hrefs(url)
+            for href in candidates:
+                parsed = urlsplit(href)
+                match = re.fullmatch(
+                    r"/(?:[a-z]{2}/)?games/game/([^/?#]+)/?",
+                    parsed.path,
+                    re.I,
+                )
+                if not match:
+                    continue
+                slug = match.group(1).casefold()
+                found.setdefault(slug, _row("belatra", slug, href))
+        else:
+            parsed = urlsplit(url)
+            origin = f"{parsed.scheme}://{parsed.netloc}"
+            language_parts = [part for part in parsed.path.split("/") if part]
+            language = (
+                language_parts[0].casefold()
+                if language_parts and re.fullmatch(r"[a-z]{2}", language_parts[0], re.I)
+                else "en"
+            )
+            for item in games:
+                slug = str(item.get("slug") or "").strip().casefold()
+                if not slug:
+                    continue
+                name = str(item.get("title") or "").strip() or _slug_title(slug)
+                provider_id = str(item.get("id") or "").strip()
+                found[slug] = _row(
+                    "belatra",
+                    slug,
+                    f"{origin}/{language}/games/game/{slug}",
+                    name=name,
+                    symbol=provider_id or slug,
+                )
+
+        try:
+            last_page = int(meta.get("last_page") or 0)
+        except (TypeError, ValueError):
+            last_page = 0
+        if last_page > 0:
+            expected_last_page = last_page
+
+        if expected_last_page is not None and page >= expected_last_page:
+            break
+        if not games and not meta and page >= 2:
+            break
+
+    if not found:
+        raise RuntimeError("Belatra catalog produced no games from Next.js RSC data")
     return list(found.values())
 
 
