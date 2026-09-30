@@ -4,6 +4,7 @@ import argparse
 import html
 import json
 import re
+import ssl
 from pathlib import Path
 from typing import Any
 from urllib.error import HTTPError
@@ -31,7 +32,14 @@ def _request(url: str, timeout: float = 30.0):
             "Accept": "application/json,text/html,application/xhtml+xml,*/*;q=0.8",
         },
     )
-    return urlopen(request, timeout=timeout)
+    context = ssl.create_default_context()
+    try:
+        import certifi
+
+        context = ssl.create_default_context(cafile=certifi.where())
+    except ImportError:
+        pass
+    return urlopen(request, timeout=timeout, context=context)
 
 
 def _request_text(url: str, timeout: float = 30.0) -> str:
@@ -63,6 +71,88 @@ def _hrefs(text: str, base_url: str) -> list[str]:
             seen.add(url)
             values.append(url)
     return values
+
+
+def _browser_hrefs(
+    url: str,
+    *,
+    load_more: bool = False,
+    timeout_ms: int = 60_000,
+) -> list[str]:
+    try:
+        from playwright.sync_api import sync_playwright
+    except ImportError:
+        return []
+
+    with sync_playwright() as playwright:
+        browser = playwright.chromium.launch(
+            headless=True,
+            args=["--disable-dev-shm-usage", "--no-sandbox"],
+        )
+        context = browser.new_context(
+            viewport={"width": 1440, "height": 1000},
+            locale="en-US",
+        )
+        page = context.new_page()
+
+        def route_handler(route):
+            if route.request.resource_type in {"image", "media", "font"}:
+                route.abort()
+            else:
+                route.continue_()
+
+        page.route("**/*", route_handler)
+        page.goto(url, wait_until="domcontentloaded", timeout=timeout_ms)
+        page.wait_for_timeout(1800)
+
+        if load_more:
+            previous = -1
+            stagnant = 0
+            for _ in range(40):
+                href_count = page.locator("a[href]").count()
+                if href_count == previous:
+                    stagnant += 1
+                else:
+                    stagnant = 0
+                previous = href_count
+                if stagnant >= 3:
+                    break
+
+                page.evaluate("window.scrollTo(0, document.body.scrollHeight)")
+                page.wait_for_timeout(350)
+                clicked = False
+                for pattern in (
+                    r"load more",
+                    r"show more",
+                    r"more games",
+                    r"view more",
+                ):
+                    try:
+                        locator = page.get_by_text(re.compile(pattern, re.I)).first
+                        if locator.count() and locator.is_visible():
+                            locator.click(timeout=1500)
+                            clicked = True
+                            page.wait_for_timeout(700)
+                            break
+                    except Exception:
+                        continue
+                if not clicked:
+                    page.wait_for_timeout(250)
+
+        values = page.locator("a[href]").evaluate_all(
+            "(nodes) => nodes.map(n => n.href).filter(Boolean)"
+        )
+        context.close()
+        browser.close()
+
+    out: list[str] = []
+    seen: set[str] = set()
+    for value in values:
+        href = str(value or "").strip()
+        if href and href not in seen:
+            seen.add(href)
+            out.append(href)
+    return out
 
 
 def _slug_from_url(url: str) -> str:
@@ -119,8 +209,12 @@ def _pragmatic_inventory() -> list[dict[str, Any]]:
             if exc.code == 404:
                 break
             raise
+        candidates = _hrefs(text, url)
+        if not any("/games/game/" in urlsplit(item).path for item in candidates):
+            candidates = _browser_hrefs(url)
+
         new_count = 0
-        for href in _hrefs(text, url):
+        for href in candidates:
             parsed = urlsplit(href)
             match = re.fullmatch(r"/en/games/([^/?#]+)/?", parsed.path, re.I)
             if not match:
@@ -286,8 +380,17 @@ def _rubyplay_sitemap_inventory() -> list[dict[str, Any]]:
                 pending.append(loc)
 
     if not found:
-        text = _request_text("https://rubyplay.com/games/")
-        for href in _hrefs(text, "https://rubyplay.com/games/"):
+        try:
+            text = _request_text("https://rubyplay.com/games/")
+            candidates = _hrefs(text, "https://rubyplay.com/games/")
+        except Exception:
+            candidates = []
+        if not candidates:
+            candidates = _browser_hrefs(
+                "https://rubyplay.com/games/",
+                load_more=True,
+            )
+        for href in candidates:
             match = re.fullmatch(r"/games/([^/]+)/?", urlsplit(href).path, re.I)
             if match:
                 slug = match.group(1).casefold()
@@ -355,9 +458,18 @@ def _redtiger_inventory() -> list[dict[str, Any]]:
 
 def _yggdrasil_inventory() -> list[dict[str, Any]]:
     root = "https://yggdrasilgaming.com/game-provider/yggdrasil-gaming"
-    text = _request_text(root)
     found: dict[str, dict[str, Any]] = {}
-    for href in _hrefs(text, root):
+
+    try:
+        text = _request_text(root)
+        candidates = _hrefs(text, root)
+    except Exception:
+        candidates = []
+
+    if not any("/games/" in urlsplit(item).path for item in candidates):
+        candidates = _browser_hrefs(root, load_more=True)
+
+    for href in candidates:
         parsed = urlsplit(href)
         if (parsed.hostname or "").casefold() != "yggdrasilgaming.com":
             continue
